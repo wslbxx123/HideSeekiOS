@@ -1,0 +1,20 @@
+/* 
+  Localizable.strings
+  HideSeek
+
+  Created by apple on 6/22/16.
+  Copyright © 2016 mj. All rights reserved.
+*/
+
+"LOADING_HINT" = "请等待……";
+"JOIN" = "加入";
+"SCORE_TITLE" = " 积分：%d ";
+"LOADING" = "加载中……";
+"M" = "%.0f 米";
+
+"ERROR_LOGIN_FAILED" = "用户名和密码不匹配";
+"ERROR_CONNECT_NETWORK_FAILED" = "网络连接失败";
+
+"MESSAGE_GET_MUSHROOM" = "成功收1枚蘑菇丢入囊中";
+"MESSAGE_GET_MONSTER" = "成功打败1个怪兽";
+"MESSAGE_GET_BOMB" = "不幸引爆1枚炸弹，吓晕";

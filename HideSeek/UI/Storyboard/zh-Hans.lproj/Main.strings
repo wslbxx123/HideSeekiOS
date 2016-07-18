@@ -1,0 +1,23 @@
+/* Class = "UITabBarItem"; title = "Home"; ObjectID = "4Jo-V6-7ko"; */
+"4Jo-V6-7ko.title" = "主页";
+
+/* Class = "UITabBarItem"; title = "Record"; ObjectID = "7JJ-io-Bbj"; */
+"7JJ-io-Bbj.title" = "战绩";
+
+/* Class = "UITabBarItem"; title = "Race Group"; ObjectID = "VaG-vy-IRT"; */
+"VaG-vy-IRT.title" = "部落圈";
+
+/* Class = "UITabBarItem"; title = "Me"; ObjectID = "WJ3-WG-74f"; */
+"WJ3-WG-74f.title" = "我的";
+
+/* Class = "UILabel"; text = "Not Login"; ObjectID = "B2j-Xy-yaY"; */
+"B2j-Xy-yaY.text" = "未登录";
+
+/* Class = "UILabel"; text = "Friends"; ObjectID = "JCj-PH-oIZ"; */
+"JCj-PH-oIZ.text" = "朋友";
+
+/* Class = "UILabel"; text = "Scores"; ObjectID = "9WQ-2f-x8M"; */
+"9WQ-2f-x8M.text" = "积分";
+
+/* Class = "UILabel"; text = "My Profile"; ObjectID = "WXl-Ej-rs6"; */
+"WXl-Ej-rs6.text" = "个人中心";

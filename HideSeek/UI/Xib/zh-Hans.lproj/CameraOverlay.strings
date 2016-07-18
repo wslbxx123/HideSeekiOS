@@ -1,0 +1,15 @@
+
+/* Class = "UIButton"; normalTitle = "Get"; ObjectID = "Ee5-PQ-CfK"; */
+"Ee5-PQ-CfK.normalTitle" = "获得";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "iqj-2I-Iwq"; */
+"iqj-2I-Iwq.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Boss, a goal there!"; ObjectID = "89j-Ef-BxR"; */
+"89j-Ef-BxR.text" = "士官！发现目标！";
+
+/* Class = "UILabel"; text = "Destination\nDistance"; ObjectID = "Ilx-Hf-298"; */
+"Ilx-Hf-298.text" = "目标距离";
+
+/* Class = "UIButton"; text = "Guide Me"; ObjectID = "iqj-2I-Iwq"; */
+"iqj-2I-Iwq.normalTitle" = "速拿下";

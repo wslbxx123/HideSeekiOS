@@ -1,0 +1,20 @@
+/* 
+  Localizable.strings
+  HideSeek
+
+  Created by apple on 6/22/16.
+  Copyright © 2016 mj. All rights reserved.
+*/
+
+"LOADING_HINT" = "Please wait...";
+"JOIN" = "join";
+"SCORE_TITLE" = " Score：%d ";
+"LOADING" = "Loading...";
+"M" = "%.0f m";
+
+"ERROR_LOGIN_FAILED" = "Phone or password error";
+"ERROR_CONNECT_NETWORK_FAILED" = "Failed to connect the network";
+
+"MESSAGE_GET_MUSHROOM" = "Get a mushroom into a sack successfully";
+"MESSAGE_GET_MONSTER" = "Beat a monster successfully";
+"MESSAGE_GET_BOMB" = "A bomb went off, ouch";

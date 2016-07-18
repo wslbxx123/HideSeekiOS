@@ -1,0 +1,23 @@
+/* Class = "UITabBarItem"; title = "Home"; ObjectID = "4Jo-V6-7ko"; */
+"4Jo-V6-7ko.title" = "Home";
+
+/* Class = "UITabBarItem"; title = "Record"; ObjectID = "7JJ-io-Bbj"; */
+"7JJ-io-Bbj.title" = "Record";
+
+/* Class = "UITabBarItem"; title = "Race Group"; ObjectID = "VaG-vy-IRT"; */
+"VaG-vy-IRT.title" = "Race Group";
+
+/* Class = "UITabBarItem"; title = "Me"; ObjectID = "WJ3-WG-74f"; */
+"WJ3-WG-74f.title" = "Me";
+
+/* Class = "UILabel"; text = "Not Login"; ObjectID = "B2j-Xy-yaY"; */
+"B2j-Xy-yaY.text" = "Not Login";
+
+/* Class = "UILabel"; text = "Friends"; ObjectID = "JCj-PH-oIZ"; */
+"JCj-PH-oIZ.text" = "Friends";
+
+/* Class = "UILabel"; text = "Scores"; ObjectID = "9WQ-2f-x8M"; */
+"9WQ-2f-x8M.text" = "Scores";
+
+/* Class = "UILabel"; text = "My Profile"; ObjectID = "WXl-Ej-rs6"; */
+"WXl-Ej-rs6.text" = "Profile";
