@@ -48,7 +48,7 @@ class UserCache {
                          role: User.RoleEnum(rawValue: (userInfo["role"] as! NSString).integerValue)!,
                          version: (userInfo["version"] as! NSString).longLongValue,
                          pinyin: PinYinUtil.converterToFirstSpell(userInfo["nickname"] as! String),
-                         bombNum: (userInfo["bomb_num"] as! NSString).integerValue,
+                         bombNum: (userInfo["bomb_num"] as! NSNumber).integerValue,
                          hasGuide: (userInfo["has_guide"] as! NSString).integerValue == 1)
         
         if((userInfo.objectForKey("photo_url")) != nil) {

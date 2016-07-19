@@ -25,15 +25,29 @@
                             <state key="selected" backgroundImage="monster_guide_click"/>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9I-w2-uCC" userLabel="SetBombBtn">
-                            <rect key="frame" x="545" y="15" width="45" height="40"/>
+                            <rect key="frame" x="545" y="15" width="40" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="45" id="5Cf-FT-RPI"/>
+                                <constraint firstAttribute="width" constant="40" id="5Cf-FT-RPI"/>
                                 <constraint firstAttribute="height" constant="40" id="BBI-uC-SrZ"/>
                             </constraints>
                             <state key="normal" backgroundImage="set_bomb"/>
                             <state key="selected" backgroundImage="set_bomb_click"/>
                             <connections>
                                 <action selector="setBombClicked:" destination="iN0-l3-epB" eventType="touchDown" id="jr1-Ox-4eL"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FHb-2i-GSr" userLabel="BombNumBtn">
+                            <rect key="frame" x="575" y="35" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="0V2-Wb-sVG"/>
+                                <constraint firstAttribute="width" constant="20" id="34Z-6O-PjZ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="0" backgroundImage="circle">
+                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="bombNumClicked:" destination="iN0-l3-epB" eventType="touchDown" id="rek-lI-raJ"/>
                             </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ssn-ak-qNT" userLabel="GoalImageView">
@@ -45,9 +59,11 @@
                         </imageView>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="FHb-2i-GSr" firstAttribute="leading" secondItem="M9I-w2-uCC" secondAttribute="trailing" constant="-10" id="7ay-2G-wo4"/>
                         <constraint firstItem="Ssn-ak-qNT" firstAttribute="centerX" secondItem="bFr-RG-79B" secondAttribute="centerX" id="JN4-PJ-kHt"/>
                         <constraint firstItem="M9I-w2-uCC" firstAttribute="bottom" secondItem="BNQ-eh-gqy" secondAttribute="top" constant="-5" id="LY6-b6-XQu"/>
-                        <constraint firstAttribute="trailing" secondItem="M9I-w2-uCC" secondAttribute="trailing" constant="10" id="YIv-0e-g1p"/>
+                        <constraint firstAttribute="trailing" secondItem="M9I-w2-uCC" secondAttribute="trailing" constant="15" id="YIv-0e-g1p"/>
+                        <constraint firstItem="FHb-2i-GSr" firstAttribute="bottom" secondItem="M9I-w2-uCC" secondAttribute="bottom" id="cPO-pC-lfo"/>
                         <constraint firstItem="M9I-w2-uCC" firstAttribute="top" secondItem="bFr-RG-79B" secondAttribute="top" constant="15" id="o4j-Xe-cnV"/>
                         <constraint firstItem="M9I-w2-uCC" firstAttribute="leading" secondItem="BNQ-eh-gqy" secondAttribute="leading" id="oJ0-XV-xft"/>
                     </constraints>
@@ -255,6 +271,7 @@
                 <constraint firstItem="bFr-RG-79B" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="piY-s7-8lf"/>
             </constraints>
             <connections>
+                <outlet property="bombNumBtn" destination="FHb-2i-GSr" id="PHQ-O2-tbb"/>
                 <outlet property="distanceLabel" destination="GTX-in-qZb" id="VbK-uj-MP5"/>
                 <outlet property="goalImageView" destination="Ssn-ak-qNT" id="HCL-FJ-npF"/>
                 <outlet property="guideBtn" destination="iqj-2I-Iwq" id="95P-6e-68G"/>
@@ -265,12 +282,13 @@
         </view>
     </objects>
     <resources>
+        <image name="circle" width="37" height="37"/>
         <image name="get_btn" width="105" height="104"/>
         <image name="get_btn_click" width="105" height="104"/>
         <image name="introduce_icon" width="268" height="332"/>
         <image name="monster_guide" width="84" height="84"/>
         <image name="monster_guide_click" width="84" height="84"/>
-        <image name="set_bomb" width="100" height="84"/>
-        <image name="set_bomb_click" width="100" height="84"/>
+        <image name="set_bomb" width="84" height="84"/>
+        <image name="set_bomb_click" width="84" height="84"/>
     </resources>
 </document>

@@ -18,7 +18,26 @@ class User {
     var role: RoleEnum
     var version: Int64!
     var pinyin: String!
-    var bombNum: Int!
+    
+    var _bombNum: Int = 0
+    var bombNum: Int {
+        get {
+            return self._bombNum
+        }
+        set {
+            self._bombNum = newValue
+            
+            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            
+            if tempUserInfo != nil {
+                let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
+                userInfo["bomb_num"] = newValue
+                
+                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+            }
+        }
+    }
+    
     var hasGuide: Bool!
     var dateFormatter: NSDateFormatter = NSDateFormatter()
     
@@ -51,7 +70,7 @@ class User {
         self.role = role
         self.version = version
         self.pinyin = pinyin
-        self.bombNum = bombNum
+        self._bombNum = bombNum
         self.hasGuide = hasGuide
     }
     

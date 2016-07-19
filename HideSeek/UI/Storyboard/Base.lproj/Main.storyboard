@@ -929,7 +929,7 @@
         <image name="grass_fairy_role" width="50" height="50"/>
         <image name="home" width="30" height="30"/>
         <image name="me" width="30" height="30"/>
-        <image name="mushroom" width="364" height="300"/>
+        <image name="mushroom" width="300" height="290"/>
         <image name="order" width="60" height="60"/>
         <image name="password_icon" width="43" height="57"/>
         <image name="phone_icon" width="46" height="72"/>

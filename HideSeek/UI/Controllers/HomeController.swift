@@ -74,6 +74,18 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         overlayView.setBombDelegate = self
         overlayView.guideDelegate = self
         overlayView.getGoalDelegate = self
+        
+        if UserCache.instance.ifLogin() {
+            let bombNum = UserCache.instance.user.bombNum
+            if bombNum >= 100 {
+                overlayView.bombNumBtn.setTitle("99+", forState: UIControlState.Normal)
+            } else {
+                overlayView.bombNumBtn.setTitle("\(bombNum)", forState: UIControlState.Normal)
+            }
+        } else {
+            overlayView.bombNumBtn.hidden = true
+            overlayView.setBombBtn.hidden = true
+        }
     }
     
     func controlHardware() {
@@ -304,6 +316,10 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         setBombManager.POST(UrlParam.SET_BOMB_URL, paramDict: paramDict, success: { (operation, responseObject) in
                 let response = responseObject as! NSDictionary
                 print("JSON: " + responseObject.description!)
+            
+                let bombNum = (response["result"] as! NSNumber).integerValue
+                UserCache.instance.user.bombNum = bombNum
+                self.overlayView.bombNumBtn.setTitle("\(bombNum)", forState: UIControlState.Normal)
             }) { (operation, error) in
                 print("Error: " + error.localizedDescription)
         }

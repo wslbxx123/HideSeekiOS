@@ -11,11 +11,13 @@ import UIKit
 class CameraOverlayView: UIView {
     var mapView:MAMapView!
     
+    @IBOutlet weak var bombNumBtn: UIButton!
     @IBOutlet weak var guideBtn: UIButton!
     @IBOutlet weak var mapUIView: UIView!
     @IBOutlet weak var setBombBtn: UIButton!
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var goalImageView: UIImageView!
+    
     var setBombDelegate: SetBombDelegate!
     var guideDelegate: GuideDelegate!
     var getGoalDelegate: GetGoalDelegate!
@@ -65,6 +67,10 @@ class CameraOverlayView: UIView {
     
     @IBAction func guideBtnClicked(sender: AnyObject) {
         guideDelegate?.guideMe()
+    }
+    
+    @IBAction func bombNumClicked(sender: AnyObject) {
+        setBombDelegate?.setBomb()
     }
     
     override init(frame: CGRect) {
