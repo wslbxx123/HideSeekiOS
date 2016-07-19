@@ -69,4 +69,15 @@ class AnimationImageFactory {
         }
         return imageArray
     }
+    
+    class func getDuration(goal: Goal)-> NSTimeInterval {
+        switch goal.type {
+        case .mushroom:
+            return 5
+        case .bomb:
+            return 5
+        case .monster:
+            return 5
+        }
+    }
 }

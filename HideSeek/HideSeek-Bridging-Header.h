@@ -6,6 +6,8 @@
 #import <iflyMSC/IFlySpeechUtility.h>
 #import <iflyMSC/IFlySpeechSynthesizerDelegate.h>
 #import <iflyMSC/IFlySpeechSynthesizer.h>
+#import <iflyMSC/IFlySpeechError.h>
+#import <CoreMotion/CMMotionManager.h>
 
 //#import <AFNetworking.h>
 //#import <MBProgressHUD.h>

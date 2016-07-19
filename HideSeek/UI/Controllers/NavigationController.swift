@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NavigationController: UIViewController, AMapNaviWalkManagerDelegate, AMapNaviWalkViewDelegate, AMapNaviWalkDataRepresentable {
+class NavigationController: UIViewController, AMapNaviWalkManagerDelegate, AMapNaviWalkViewDelegate, AMapNaviWalkDataRepresentable, IFlySpeechSynthesizerDelegate {
     
     var startPoint: AMapNaviPoint!
     var endPoint: AMapNaviPoint!
@@ -22,6 +22,10 @@ class NavigationController: UIViewController, AMapNaviWalkManagerDelegate, AMapN
         initWalkView()
         initWalkManager()
         speechSynthesizer = IFlySpeechSynthesizer.sharedInstance()
+        speechSynthesizer.delegate = self
+        speechSynthesizer.setParameter(IFlySpeechConstant.TYPE_CLOUD(), forKey: IFlySpeechConstant.ENGINE_TYPE())
+        speechSynthesizer.setParameter("50", forKey: IFlySpeechConstant.VOLUME())
+        speechSynthesizer.setParameter("xiaoyan", forKey: IFlySpeechConstant.VOICE_NAME())
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -120,5 +124,9 @@ class NavigationController: UIViewController, AMapNaviWalkManagerDelegate, AMapN
             self.walkManager.addDataRepresentative(self)
             self.walkManager.allowsBackgroundLocationUpdates = true
         }
+    }
+    
+    func onCompleted(error: IFlySpeechError!) {
+        
     }
 }

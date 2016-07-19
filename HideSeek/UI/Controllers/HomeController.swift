@@ -9,12 +9,14 @@
 import UIKit
 import MobileCoreServices
 import AFNetworking
+import CoreMotion.CMMotionManager
 
-class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegate, GuideDelegate {
+class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate {
     let HtmlType = "text/html"
     let REFRESH_MAP_INTERVAL: Double = 5
     var manager: AFHTTPRequestOperationManager!
     var setBombManager: CustomRequestManager!
+    var getGoalManager: CustomRequestManager!
     var success: AFHTTPRequestOperation!
     var latitude: CLLocationDegrees!
     var longitude: CLLocationDegrees!
@@ -28,6 +30,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     var time: NSTimer!
     var locationFlag = false
     var orientation: Int!
+    var motionManager: CMMotionManager!
     
     override func viewDidLoad() {
         openCamera()
@@ -38,6 +41,10 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
         setBombManager = CustomRequestManager()
         setBombManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        getGoalManager = CustomRequestManager()
+        getGoalManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        self.motionManager = CMMotionManager()
+        self.motionManager.deviceMotionUpdateInterval = 1.0/2.0
         
         time = NSTimer.scheduledTimerWithTimeInterval(REFRESH_MAP_INTERVAL, target: self, selector: #selector(HomeController.refreshMap), userInfo: nil, repeats: true)
     }
@@ -50,12 +57,14 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         super.viewDidAppear(animated)
         
         time.fire()
+        controlHardware()
     }
     
     override func viewDidDisappear(animated: Bool) {
-        super.viewDidAppear(animated)
+        super.viewDidDisappear(animated)
         
         time.invalidate()
+        self.motionManager.stopDeviceMotionUpdates()
     }
     
     func initOverlayView() {
@@ -64,6 +73,19 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         overlayView.guideBtn.layer.masksToBounds = true
         overlayView.setBombDelegate = self
         overlayView.guideDelegate = self
+        overlayView.getGoalDelegate = self
+    }
+    
+    func controlHardware() {
+        self.motionManager.startDeviceMotionUpdatesToQueue(NSOperationQueue.currentQueue()!) { (motion, error) in
+            let x = motion!.gravity.x
+            let z = motion!.gravity.z
+            
+            self.orientation = (Int(atan2(x, z) * 180 / M_PI) + 180) / 90 * 90 % 360
+            print("Orienction: " + String(self.orientation))
+            
+            self.checkIfGoalDisplayed()
+        }
     }
     
     func openCamera() {
@@ -117,8 +139,21 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     
     func checkIfGoalDisplayed() {
         if endGoal != nil {
-
+            if (endGoal?.orientation)! == orientation && distance < 20 && (endGoal?.valid)! {
+                overlayView.showGoal()
+            }
         }
+    }
+    
+    func updateEndGoal() {
+        endGoal!.valid = false
+        GoalCache.instance.selectedGoal = nil
+        GoalCache.instance.refreshClosestGoal(latitude, longitude: longitude)
+        let list = NSMutableArray()
+        list.addObject(endGoal!)
+        list.addObject(GoalCache.instance.selectedGoal!)
+        setEndGoal()
+        setGoalsOnMap(list)
     }
     
     func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
@@ -222,11 +257,11 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             let goalInfo = goal as! Goal
             
             if markerDictionary.allKeys.contains({ element in
-                return ((element as? Int64) == goalInfo.pkId)
+                return ((element as! NSNumber).longLongValue == goalInfo.pkId)
             }) {
                 
                 let annotation = markerDictionary.objectForKey(NSNumber(longLong: goalInfo.pkId)) as! MAPointAnnotation
-                if goalInfo.valid {
+                if !goalInfo.valid {
                     overlayView.mapView.removeAnnotation(annotation)
                     markerDictionary.removeObjectForKey(NSNumber(longLong: goalInfo.pkId))
                     goalDictionary.removeObjectForKey(NSNumber(longLong: goalInfo.pkId))
@@ -281,6 +316,26 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             viewController.startPoint = AMapNaviPoint.locationWithLatitude(CGFloat(latitude), longitude: CGFloat(longitude))
             viewController.endPoint = AMapNaviPoint.locationWithLatitude(CGFloat(endGoal!.latitude), longitude: CGFloat(endGoal!.longitude))
             self.presentViewController(viewController, animated: true, completion: nil)
+        }
+    }
+    
+    func getGoal() {
+        let paramDict = NSMutableDictionary()
+        let pkId: Int64 = (endGoal?.pkId)!
+        let goal_type: Int = (endGoal?.type.rawValue)!
+        paramDict["goal_id"] = "\(pkId)"
+        paramDict["goal_type"] = "\(goal_type)"
+        
+        getGoalManager.POST(UrlParam.GET_GOAL_URL, paramDict: paramDict, success: { (operation, responseObject) in
+            if self.endGoal!.type == Goal.GoalTypeEnum.bomb {
+                
+            } else {
+                
+            }
+            
+            self.updateEndGoal()
+        }) { (operation, error) in
+            print("Error: " + error.localizedDescription)
         }
     }
 }

@@ -14,4 +14,5 @@ class UrlParam {
     static let REFRESH_RECORD_URL = "http://120.25.252.252/index.php/home/record/refreshRecords"
     static let GET_RECORD_URL = "http://120.25.252.252/index.php/home/record/getRecords"
     static let SET_BOMB_URL = "http://120.25.252.252/index.php/home/map/setBomb"
+    static let GET_GOAL_URL = "http://120.25.252.252/index.php/home/map/getGoal"
 }

@@ -32,6 +32,7 @@
 		184955FB1D0959DC001A20DC /* HideSeekTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184955FA1D0959DC001A20DC /* HideSeekTests.swift */; };
 		184956061D0959DC001A20DC /* HideSeekUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184956051D0959DC001A20DC /* HideSeekUITests.swift */; };
 		1857C5EC1D1E719C00D1101C /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1857C5EB1D1E719C00D1101C /* CustomButton.swift */; };
+		185E3DB81D3E2AE800898FED /* GetGoalDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185E3DB71D3E2AE800898FED /* GetGoalDelegate.swift */; };
 		185EF6D81D210F4E00ADEDC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 185EF6D71D210F4E00ADEDC8 /* Assets.xcassets */; };
 		186672591D35348F0047D220 /* RecordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186672581D35348F0047D220 /* RecordController.swift */; };
 		186BC2801D3C99A5002A0BFE /* GuideDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186BC27F1D3C99A5002A0BFE /* GuideDelegate.swift */; };
@@ -73,7 +74,6 @@
 		18C7892F1D3DCC4B003123F8 /* mushroom_d.png in Resources */ = {isa = PBXBuildFile; fileRef = 18C7892A1D3DCC4B003123F8 /* mushroom_d.png */; };
 		18C789301D3DCC4B003123F8 /* mushroom.png in Resources */ = {isa = PBXBuildFile; fileRef = 18C7892B1D3DCC4B003123F8 /* mushroom.png */; };
 		18C789321D3DD939003123F8 /* bomb_d.png in Resources */ = {isa = PBXBuildFile; fileRef = 18C789311D3DD939003123F8 /* bomb_d.png */; };
-		18C789341D3DDF7C003123F8 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18C789331D3DDF7C003123F8 /* CoreMotion.framework */; };
 		18C8D6361D2F6A4C00464394 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C8D6351D2F6A4C00464394 /* Record.swift */; };
 		18C8D6381D2FF36300464394 /* RecordCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C8D6371D2FF36300464394 /* RecordCache.swift */; };
 		18D7831F1D2DE20D0013FB3C /* LoadMoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D7831E1D2DE20D0013FB3C /* LoadMoreDelegate.swift */; };
@@ -162,6 +162,7 @@
 		184956051D0959DC001A20DC /* HideSeekUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideSeekUITests.swift; sourceTree = "<group>"; };
 		184956071D0959DC001A20DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1857C5EB1D1E719C00D1101C /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomButton.swift; path = Common/Extenstion/CustomButton.swift; sourceTree = "<group>"; };
+		185E3DB71D3E2AE800898FED /* GetGoalDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetGoalDelegate.swift; path = Common/Delegate/GetGoalDelegate.swift; sourceTree = "<group>"; };
 		185EF6D71D210F4E00ADEDC8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		186672581D35348F0047D220 /* RecordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecordController.swift; path = UI/Controllers/RecordController.swift; sourceTree = "<group>"; };
 		186BC2781D3C7EEB002A0BFE /* AMapNaviKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AMapNaviKit.framework; path = Pods/AMapNavi/AMapNaviKit.framework; sourceTree = "<group>"; };
@@ -256,7 +257,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18C789341D3DDF7C003123F8 /* CoreMotion.framework in Frameworks */,
 				18E19B5E1D13E66E004D99E4 /* QuartzCore.framework in Frameworks */,
 				186BC28A1D3CEB41002A0BFE /* AddressBook.framework in Frameworks */,
 				186BC2881D3CEB2C002A0BFE /* UIKit.framework in Frameworks */,
@@ -445,6 +445,7 @@
 				18D7831E1D2DE20D0013FB3C /* LoadMoreDelegate.swift */,
 				182BBF231D3A7AB00095DE4A /* SetBombDelegate.swift */,
 				186BC27F1D3C99A5002A0BFE /* GuideDelegate.swift */,
+				185E3DB71D3E2AE800898FED /* GetGoalDelegate.swift */,
 			);
 			name = Delegate;
 			sourceTree = "<group>";
@@ -852,6 +853,7 @@
 				186672591D35348F0047D220 /* RecordController.swift in Sources */,
 				18EC94031D24AED400559627 /* UserDefaultParam.swift in Sources */,
 				1817148B1D221D2C00B1685B /* UserCache.swift in Sources */,
+				185E3DB81D3E2AE800898FED /* GetGoalDelegate.swift in Sources */,
 				18DCE98B1D2B9FC1009510FD /* RefreshView.swift in Sources */,
 				18FD1A861D1A291800225C92 /* ViewController.swift in Sources */,
 				187B556F1D1D291C00841430 /* LoginController.swift in Sources */,

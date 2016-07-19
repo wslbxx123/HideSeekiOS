@@ -18,7 +18,11 @@ class CameraOverlayView: UIView {
     @IBOutlet weak var goalImageView: UIImageView!
     var setBombDelegate: SetBombDelegate!
     var guideDelegate: GuideDelegate!
-    var imageArray: Array<UIImage> = Array<UIImage>()
+    var getGoalDelegate: GetGoalDelegate!
+    var imageArray: Array<CGImage> = Array<CGImage>()
+    var ifGoalPaused: Bool = false
+    var ifGoalShowing: Bool = false
+    var animation: CAKeyframeAnimation!
     
     private var _endGoal: Goal! = nil
     var endGoal: Goal! {
@@ -27,19 +31,31 @@ class CameraOverlayView: UIView {
         }
         set {
             _endGoal = newValue
+            ifGoalPaused = false
             imageArray.removeAll()
             
             let imageNameArray = AnimationImageFactory.get(newValue)
             
             for imageName in imageNameArray {
                 let filePath = NSBundle.mainBundle().pathForResource(imageName as? String, ofType: ".png")
-                imageArray.append(UIImage(contentsOfFile: filePath!)!)
+                imageArray.append((UIImage(contentsOfFile: filePath!)?.CGImage)!)
             }
-            goalImageView.animationImages = imageArray
-            goalImageView.contentMode = UIViewContentMode.ScaleAspectFit
-            goalImageView.animationRepeatCount = LONG_MAX
-            goalImageView.animationDuration = 0.2
-            showGoal()
+            
+            animation = CAKeyframeAnimation(keyPath: "contents")
+            animation.delegate = self
+            animation.values = imageArray
+            animation.duration = 3
+            if(newValue.type == Goal.GoalTypeEnum.bomb) {
+                animation.repeatCount = 1
+            } else {
+                animation.repeatCount = MAXFLOAT
+            }
+        }
+    }
+    
+    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+        if endGoal!.type == Goal.GoalTypeEnum.bomb {
+            getGoalDelegate?.getGoal()
         }
     }
     
@@ -73,10 +89,17 @@ class CameraOverlayView: UIView {
     }
     
     func showGoal() {
-        goalImageView.startAnimating()
+        if(!ifGoalPaused && goalImageView.layer.animationForKey("goal") == nil) {
+            print("goalImageView show!!!!!!!!'")
+            goalImageView.layer.addAnimation(animation, forKey: "goal")
+            
+            if endGoal.type == Goal.GoalTypeEnum.bomb {
+                ifGoalPaused = true
+            }
+        }
     }
     
     func hideGoal() {
-        goalImageView.stopAnimating()
+        goalImageView.layer.removeAllAnimations()
     }
 }

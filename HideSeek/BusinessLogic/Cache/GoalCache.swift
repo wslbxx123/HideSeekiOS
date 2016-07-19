@@ -22,6 +22,8 @@ class GoalCache : BaseCache<Goal> {
             }
             
             return _selectedGoal
+        } set {
+            _selectedGoal = newValue
         }
     }
     
@@ -29,23 +31,7 @@ class GoalCache : BaseCache<Goal> {
         updateList.removeAllObjects()
         saveGoals(goalInfo)
         
-        if cacheList.count > 0 {
-            let array = cacheList.sort{pow(($0 as! Goal).latitude - latitude, 2)
-                + pow(($0 as! Goal).longitude - longitude, 2)
-                < pow(($1 as! Goal).latitude - latitude, 2)
-                + pow(($1 as! Goal).latitude - latitude, 2)}
-            cacheList = (array as NSArray).mutableCopy() as! NSMutableArray
-            
-            repeat {
-                closestGoal = cacheList[0] as! Goal
-                
-                if !closestGoal.valid {
-                    cacheList.removeObjectAtIndex(0)
-                }
-                
-            } while(!closestGoal.valid && cacheList.count > 0)
-        }
-        
+        refreshClosestGoal(latitude, longitude: longitude)
         ifNeedClearMap = false
     }
     
@@ -69,5 +55,24 @@ class GoalCache : BaseCache<Goal> {
         }
         
         updateTime = result["update_time"] as! String
+    }
+    
+    func refreshClosestGoal(latitude: Double, longitude: Double) {
+        if cacheList.count > 0 {
+            let array = cacheList.sort{pow(($0 as! Goal).latitude - latitude, 2)
+                + pow(($0 as! Goal).longitude - longitude, 2)
+                < pow(($1 as! Goal).latitude - latitude, 2)
+                + pow(($1 as! Goal).latitude - latitude, 2)}
+            cacheList = (array as NSArray).mutableCopy() as! NSMutableArray
+            
+            repeat {
+                closestGoal = cacheList[0] as! Goal
+                
+                if !closestGoal.valid {
+                    cacheList.removeObjectAtIndex(0)
+                }
+                
+            } while(!closestGoal.valid && cacheList.count > 0)
+        }
     }
 }
