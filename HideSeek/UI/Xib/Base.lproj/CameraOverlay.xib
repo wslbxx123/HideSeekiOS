@@ -36,8 +36,16 @@
                                 <action selector="setBombClicked:" destination="iN0-l3-epB" eventType="touchDown" id="jr1-Ox-4eL"/>
                             </connections>
                         </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ssn-ak-qNT" userLabel="GoalImageView">
+                            <rect key="frame" x="200" y="111" width="200" height="200"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="200" id="FzR-8u-5wC"/>
+                                <constraint firstAttribute="width" constant="200" id="uvS-2Q-jR2"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="Ssn-ak-qNT" firstAttribute="centerX" secondItem="bFr-RG-79B" secondAttribute="centerX" id="JN4-PJ-kHt"/>
                         <constraint firstItem="M9I-w2-uCC" firstAttribute="bottom" secondItem="BNQ-eh-gqy" secondAttribute="top" constant="-5" id="LY6-b6-XQu"/>
                         <constraint firstAttribute="trailing" secondItem="M9I-w2-uCC" secondAttribute="trailing" constant="10" id="YIv-0e-g1p"/>
                         <constraint firstItem="M9I-w2-uCC" firstAttribute="top" secondItem="bFr-RG-79B" secondAttribute="top" constant="15" id="o4j-Xe-cnV"/>
@@ -236,6 +244,7 @@
                 <constraint firstItem="BY3-2w-hFz" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="5Kh-85-kIn"/>
                 <constraint firstAttribute="trailing" secondItem="9v8-E7-fn6" secondAttribute="trailing" id="5MJ-ZY-v2L"/>
                 <constraint firstItem="bFr-RG-79B" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="80H-1E-PiQ"/>
+                <constraint firstItem="9v8-E7-fn6" firstAttribute="top" secondItem="Ssn-ak-qNT" secondAttribute="bottom" constant="81" id="A5D-Xl-ozO"/>
                 <constraint firstAttribute="bottom" secondItem="BY3-2w-hFz" secondAttribute="bottom" id="Brl-Yt-YQz"/>
                 <constraint firstAttribute="trailing" secondItem="bFr-RG-79B" secondAttribute="trailing" id="Jai-ug-q8E"/>
                 <constraint firstItem="9v8-E7-fn6" firstAttribute="bottom" secondItem="BY3-2w-hFz" secondAttribute="top" id="LcD-JT-Feq"/>
@@ -247,6 +256,7 @@
             </constraints>
             <connections>
                 <outlet property="distanceLabel" destination="GTX-in-qZb" id="VbK-uj-MP5"/>
+                <outlet property="goalImageView" destination="Ssn-ak-qNT" id="HCL-FJ-npF"/>
                 <outlet property="guideBtn" destination="iqj-2I-Iwq" id="95P-6e-68G"/>
                 <outlet property="mapUIView" destination="mjI-7t-vi7" id="fvM-Fb-ZXk"/>
                 <outlet property="setBombBtn" destination="M9I-w2-uCC" id="FT1-4c-Ac2"/>

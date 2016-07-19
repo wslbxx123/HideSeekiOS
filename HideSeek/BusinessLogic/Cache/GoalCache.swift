@@ -52,8 +52,8 @@ class GoalCache : BaseCache<Goal> {
     func saveGoals(result: NSDictionary!) {
         let goalArray = result["goals"] as! NSArray
         
-        for goal in goalArray {
-            let goalInfo = goal as! NSDictionary
+        for goalItem in goalArray {
+            let goalInfo = goalItem as! NSDictionary
             let goal = Goal(pkId: (goalInfo["pk_id"] as! NSString).longLongValue,
                             latitude: (goalInfo["latitude"] as! NSString).doubleValue,
                             longitude: (goalInfo["longitude"] as! NSString).doubleValue,
@@ -63,7 +63,7 @@ class GoalCache : BaseCache<Goal> {
                             isEnabled: (goalInfo["is_enabled"] as! NSString).integerValue == 1,
                             showTypeName: goalInfo["show_type_name"] as? String)
             updateList.addObject(goal)
-            if((goal.valid) != nil && goal.valid as Bool) {
+            if(goal.valid) {
                 cacheList.addObject(goal)
             }
         }

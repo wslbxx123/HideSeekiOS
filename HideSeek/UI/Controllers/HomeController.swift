@@ -99,11 +99,12 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             
             if(!locationFlag) {
                 refreshMap();
-//                overlayView.mapView.centerCoordinate = CLLocationCoordinate2DMake(latitude, longitude)
                 locationFlag = true;
             }
             
             refreshDistance()
+            
+            checkIfGoalDisplayed()
         }
     }
     
@@ -111,6 +112,12 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         if startPoint != nil && endPoint != nil {
             distance = MAMetersBetweenMapPoints(startPoint, endPoint)
             overlayView.distanceLabel.text = NSString(format: NSLocalizedString("M", comment: "%.0f m"), distance) as String
+        }
+    }
+    
+    func checkIfGoalDisplayed() {
+        if endGoal != nil {
+
         }
     }
     
@@ -219,13 +226,13 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             }) {
                 
                 let annotation = markerDictionary.objectForKey(NSNumber(longLong: goalInfo.pkId)) as! MAPointAnnotation
-                if goal.valid != nil && goal.valid {
+                if goalInfo.valid {
                     overlayView.mapView.removeAnnotation(annotation)
                     markerDictionary.removeObjectForKey(NSNumber(longLong: goalInfo.pkId))
                     goalDictionary.removeObjectForKey(NSNumber(longLong: goalInfo.pkId))
                 }
             } else {
-                if goalInfo.valid != nil && goalInfo.valid {
+                if goalInfo.valid {
                     let annotation = MAPointAnnotation()
                     annotation.coordinate = CLLocationCoordinate2DMake(goalInfo.latitude, goalInfo.longitude)
                     markerDictionary.setObject(annotation, forKey: NSNumber(longLong: goalInfo.pkId))
@@ -241,6 +248,8 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         
         if endGoal != nil {
             endPoint = MAMapPointForCoordinate(CLLocationCoordinate2DMake(endGoal!.latitude, endGoal!.longitude));
+            
+            overlayView.endGoal = endGoal
         }
         
         refreshDistance()

@@ -15,8 +15,33 @@ class CameraOverlayView: UIView {
     @IBOutlet weak var mapUIView: UIView!
     @IBOutlet weak var setBombBtn: UIButton!
     @IBOutlet weak var distanceLabel: UILabel!
+    @IBOutlet weak var goalImageView: UIImageView!
     var setBombDelegate: SetBombDelegate!
     var guideDelegate: GuideDelegate!
+    var imageArray: Array<UIImage> = Array<UIImage>()
+    
+    private var _endGoal: Goal! = nil
+    var endGoal: Goal! {
+        get {
+            return _endGoal
+        }
+        set {
+            _endGoal = newValue
+            imageArray.removeAll()
+            
+            let imageNameArray = AnimationImageFactory.get(newValue)
+            
+            for imageName in imageNameArray {
+                let filePath = NSBundle.mainBundle().pathForResource(imageName as? String, ofType: ".png")
+                imageArray.append(UIImage(contentsOfFile: filePath!)!)
+            }
+            goalImageView.animationImages = imageArray
+            goalImageView.contentMode = UIViewContentMode.ScaleAspectFit
+            goalImageView.animationRepeatCount = LONG_MAX
+            goalImageView.animationDuration = 0.2
+            showGoal()
+        }
+    }
     
     @IBAction func setBombClicked(sender: AnyObject) {
         setBombDelegate?.setBomb()
@@ -45,5 +70,13 @@ class CameraOverlayView: UIView {
         mapView.showsCompass = false
         mapView.customizeUserLocationAccuracyCircleRepresentation = true
         mapUIView.addSubview(mapView)
+    }
+    
+    func showGoal() {
+        goalImageView.startAnimating()
+    }
+    
+    func hideGoal() {
+        goalImageView.stopAnimating()
     }
 }

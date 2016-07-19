@@ -7,14 +7,14 @@
 //
 
 class Goal{
-    var pkId: Int64!
-    var latitude: Double!
-    var longitude: Double!
-    var orientation: Int!
-    var valid: Bool!
-    var type: GoalTypeEnum!
-    var isEnabled: Bool!
-    var showTypeName: String!
+    var pkId: Int64
+    var latitude: Double
+    var longitude: Double
+    var orientation: Int
+    var valid: Bool
+    var type: GoalTypeEnum
+    var isEnabled: Bool
+    var showTypeName: String?
     var isSelected: Bool = false
     
     init(pkId: Int64, latitude: Double, longitude: Double, orientation: Int, valid: Bool,
