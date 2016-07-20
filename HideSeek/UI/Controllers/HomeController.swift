@@ -63,6 +63,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
+        initMenuBtn()
         time.invalidate()
         self.motionManager.stopDeviceMotionUpdates()
     }
@@ -75,6 +76,10 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         overlayView.guideDelegate = self
         overlayView.getGoalDelegate = self
         
+        initMenuBtn()
+    }
+    
+    func initMenuBtn() {
         if UserCache.instance.ifLogin() {
             let bombNum = UserCache.instance.user.bombNum
             if bombNum >= 100 {
@@ -303,26 +308,35 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     }
     
     func setBomb() {
-        orientation = 0
-        if(latitude == nil || longitude == nil || orientation == nil) {
-            return
-        }
-        
-        let paramDict = NSMutableDictionary()
-        paramDict["latitude"] = "\(latitude)"
-        paramDict["longitude"] = "\(longitude)"
-        paramDict["orientation"] = "\(orientation)"
-        
-        setBombManager.POST(UrlParam.SET_BOMB_URL, paramDict: paramDict, success: { (operation, responseObject) in
+        if UserCache.instance.user.bombNum > 0 {
+            if(latitude == nil || longitude == nil || orientation == nil) {
+                return
+            }
+            
+            let paramDict = NSMutableDictionary()
+            paramDict["latitude"] = "\(latitude)"
+            paramDict["longitude"] = "\(longitude)"
+            paramDict["orientation"] = "\(orientation)"
+            
+            setBombManager.POST(UrlParam.SET_BOMB_URL, paramDict: paramDict, success: { (operation, responseObject) in
                 let response = responseObject as! NSDictionary
                 print("JSON: " + responseObject.description!)
-            
+                
                 let bombNum = (response["result"] as! NSNumber).integerValue
                 UserCache.instance.user.bombNum = bombNum
                 self.overlayView.bombNumBtn.setTitle("\(bombNum)", forState: UIControlState.Normal)
             }) { (operation, error) in
                 print("Error: " + error.localizedDescription)
+            }
+        } else {
+            goToStore()
         }
+    }
+    
+    func goToStore() {
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        let viewController = storyboard.instantiateViewControllerWithIdentifier("Store")
+        self.presentViewController(viewController, animated: true, completion: nil)
     }
     
     func guideMe() {

@@ -76,6 +76,12 @@
 		18C789321D3DD939003123F8 /* bomb_d.png in Resources */ = {isa = PBXBuildFile; fileRef = 18C789311D3DD939003123F8 /* bomb_d.png */; };
 		18C8D6361D2F6A4C00464394 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C8D6351D2F6A4C00464394 /* Record.swift */; };
 		18C8D6381D2FF36300464394 /* RecordCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C8D6371D2FF36300464394 /* RecordCache.swift */; };
+		18D016FB1D3EF29900695BD4 /* StoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D016FA1D3EF29900695BD4 /* StoreController.swift */; };
+		18D016FD1D3F159500695BD4 /* CustomImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D016FC1D3F159500695BD4 /* CustomImage.swift */; };
+		18D016FF1D3F2EA900695BD4 /* PurchaseCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D016FE1D3F2EA900695BD4 /* PurchaseCollectionView.swift */; };
+		18D017011D3F3F2900695BD4 /* ProductCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D017001D3F3F2900695BD4 /* ProductCache.swift */; };
+		18D017031D3F3F5B00695BD4 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D017021D3F3F5B00695BD4 /* Product.swift */; };
+		18D017051D3F5A1300695BD4 /* PurchaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D017041D3F5A1300695BD4 /* PurchaseCollectionViewCell.swift */; };
 		18D7831F1D2DE20D0013FB3C /* LoadMoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D7831E1D2DE20D0013FB3C /* LoadMoreDelegate.swift */; };
 		18D783211D2F3FF50013FB3C /* RecordTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D783201D2F3FF50013FB3C /* RecordTableView.swift */; };
 		18DCE98B1D2B9FC1009510FD /* RefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE98A1D2B9FC1009510FD /* RefreshView.swift */; };
@@ -207,6 +213,12 @@
 		18C789331D3DDF7C003123F8 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		18C8D6351D2F6A4C00464394 /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Record.swift; path = Common/Model/Record.swift; sourceTree = "<group>"; };
 		18C8D6371D2FF36300464394 /* RecordCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecordCache.swift; path = BusinessLogic/Cache/RecordCache.swift; sourceTree = "<group>"; };
+		18D016FA1D3EF29900695BD4 /* StoreController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoreController.swift; path = UI/Controllers/StoreController.swift; sourceTree = "<group>"; };
+		18D016FC1D3F159500695BD4 /* CustomImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomImage.swift; path = Common/Extenstion/CustomImage.swift; sourceTree = "<group>"; };
+		18D016FE1D3F2EA900695BD4 /* PurchaseCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PurchaseCollectionView.swift; path = UI/View/PurchaseCollectionView.swift; sourceTree = "<group>"; };
+		18D017001D3F3F2900695BD4 /* ProductCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProductCache.swift; path = BusinessLogic/Cache/ProductCache.swift; sourceTree = "<group>"; };
+		18D017021D3F3F5B00695BD4 /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Product.swift; path = Common/Model/Product.swift; sourceTree = "<group>"; };
+		18D017041D3F5A1300695BD4 /* PurchaseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PurchaseCollectionViewCell.swift; path = UI/View/PurchaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		18D7831E1D2DE20D0013FB3C /* LoadMoreDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadMoreDelegate.swift; path = Common/Delegate/LoadMoreDelegate.swift; sourceTree = "<group>"; };
 		18D783201D2F3FF50013FB3C /* RecordTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecordTableView.swift; path = UI/View/RecordTableView.swift; sourceTree = "<group>"; };
 		18DCE98A1D2B9FC1009510FD /* RefreshView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefreshView.swift; path = UI/View/RefreshView.swift; sourceTree = "<group>"; };
@@ -311,6 +323,7 @@
 				180E97051D29EBB800481703 /* RecordItem.swift */,
 				180E97091D29EC6900481703 /* Goal.swift */,
 				18C8D6351D2F6A4C00464394 /* Record.swift */,
+				18D017021D3F3F5B00695BD4 /* Product.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -399,6 +412,7 @@
 				1857C5EB1D1E719C00D1101C /* CustomButton.swift */,
 				180E970F1D2A46A200481703 /* CustomLabel.swift */,
 				1824E37B1D3B16A8008A4E15 /* CustomTabBar.swift */,
+				18D016FC1D3F159500695BD4 /* CustomImage.swift */,
 			);
 			name = Extenstion;
 			sourceTree = "<group>";
@@ -515,6 +529,7 @@
 				181DB5611D291D1000E91100 /* RaceGroupController.swift */,
 				186672581D35348F0047D220 /* RecordController.swift */,
 				186BC2811D3C9CDB002A0BFE /* NavigationController.swift */,
+				18D016FA1D3EF29900695BD4 /* StoreController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -535,6 +550,8 @@
 				18FD1A801D1A281700225C92 /* CameraOverlayView.swift */,
 				18DCE98A1D2B9FC1009510FD /* RefreshView.swift */,
 				18D783201D2F3FF50013FB3C /* RecordTableView.swift */,
+				18D016FE1D3F2EA900695BD4 /* PurchaseCollectionView.swift */,
+				18D017041D3F5A1300695BD4 /* PurchaseCollectionViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -574,6 +591,7 @@
 				180E97011D29EAE500481703 /* RaceGroupCache.swift */,
 				18C8D6371D2FF36300464394 /* RecordCache.swift */,
 				18F80BB21D3903F80083A0FC /* GoalCache.swift */,
+				18D017001D3F3F2900695BD4 /* ProductCache.swift */,
 			);
 			name = Cache;
 			sourceTree = "<group>";
@@ -848,6 +866,7 @@
 				18D7831F1D2DE20D0013FB3C /* LoadMoreDelegate.swift in Sources */,
 				18C8D6361D2F6A4C00464394 /* Record.swift in Sources */,
 				181DB5621D291D1000E91100 /* RaceGroupController.swift in Sources */,
+				18D017031D3F3F5B00695BD4 /* Product.swift in Sources */,
 				180E97061D29EBB800481703 /* RecordItem.swift in Sources */,
 				1857C5EC1D1E719C00D1101C /* CustomButton.swift in Sources */,
 				186672591D35348F0047D220 /* RecordController.swift in Sources */,
@@ -869,8 +888,10 @@
 				18FD1AA81D1A804D00225C92 /* ImageCache.swift in Sources */,
 				184573D01D2BF0C20012C2B9 /* RaceGroupTableManager.swift in Sources */,
 				18FD1AAC1D1B7F4200225C92 /* MeController.swift in Sources */,
+				18D016FD1D3F159500695BD4 /* CustomImage.swift in Sources */,
 				186BC2821D3C9CDB002A0BFE /* NavigationController.swift in Sources */,
 				1817148E1D221DF500B1685B /* User.swift in Sources */,
+				18D017051D3F5A1300695BD4 /* PurchaseCollectionViewCell.swift in Sources */,
 				18DCE9921D2BDFB9009510FD /* DatabaseParam.swift in Sources */,
 				18F80BB31D3903F80083A0FC /* GoalCache.swift in Sources */,
 				18FD1A811D1A281700225C92 /* CameraOverlayView.swift in Sources */,
@@ -881,8 +902,11 @@
 				18D783211D2F3FF50013FB3C /* RecordTableView.swift in Sources */,
 				183EC7941D309A7E0009B2A3 /* RecordTableManager.swift in Sources */,
 				186BC2801D3C99A5002A0BFE /* GuideDelegate.swift in Sources */,
+				18D016FF1D3F2EA900695BD4 /* PurchaseCollectionView.swift in Sources */,
+				18D017011D3F3F2900695BD4 /* ProductCache.swift in Sources */,
 				182527661D0E9C29007FB54B /* CameraUtil.swift in Sources */,
 				18FD1AAA1D1A8B8900225C92 /* CustomImageView.swift in Sources */,
+				18D016FB1D3EF29900695BD4 /* StoreController.swift in Sources */,
 				18EC94051D24C6D500559627 /* PinYinUtil.swift in Sources */,
 				18DCE9901D2BDBEB009510FD /* DatabaseManager.swift in Sources */,
 				18C8D6381D2FF36300464394 /* RecordCache.swift in Sources */,

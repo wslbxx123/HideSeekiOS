@@ -32,4 +32,17 @@ class BaseInfoUtil {
         
         return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(1))
     }
+    
+    class func getLabelHeight(size: CGFloat, width: CGFloat, message: NSString?) -> CGFloat{
+        if message == nil {
+            return 0
+        }
+        
+        let font = UIFont.systemFontOfSize(size)
+        let option = NSStringDrawingOptions.UsesLineFragmentOrigin
+        let attributes = NSDictionary(object: font, forKey: NSFontAttributeName)
+        let size = CGSizeMake(width, CGFloat(MAXFLOAT))
+        let stringRect = message!.boundingRectWithSize(size, options: option, attributes: attributes as? [String : AnyObject], context: nil)
+        return stringRect.height
+    }
 }

@@ -86,13 +86,10 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let raceGroup = raceGroupList.objectAtIndex(indexPath.row) as! RaceGroup
         let message = getMessage(raceGroup.recordItem.goalType) as NSString
-        let font = UIFont.systemFontOfSize(15.0)
-        let option = NSStringDrawingOptions.UsesLineFragmentOrigin
-        let attributes = NSDictionary(object: font, forKey: NSFontAttributeName)
+        
         let frame = UIScreen.mainScreen().bounds
-        let size = CGSizeMake(frame.width - 130, CGFloat(MAXFLOAT))
-        let stringRect = message.boundingRectWithSize(size, options: option, attributes: attributes as? [String : AnyObject], context: nil)
-        return stringRect.height + 95
+        let labelHeight = BaseInfoUtil.getLabelHeight(15.0, width: frame.width - 130, message: message)
+        return labelHeight + 95
     }
     
     func getMessage(goalType: Goal.GoalTypeEnum)-> String {

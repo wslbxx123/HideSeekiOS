@@ -15,7 +15,18 @@ extension UILabel {
                                                          options: option,
                                                          attributes: attributes as? [String : AnyObject],
                                                          context: nil)
-        self.layer.frame = CGRectMake(0, 0, stringRect.size.width, stringRect.size.height)
+        self.layer.frame = CGRectMake(self.frame.minX, self.frame.minY, stringRect.size.width, stringRect.size.height)
         
+    }
+    
+    func modifyWidth() {
+        let option = NSStringDrawingOptions.UsesLineFragmentOrigin
+        let attributes = NSDictionary(object: self.font, forKey: NSFontAttributeName)
+        let size = CGSizeMake(CGFloat(MAXFLOAT), self.frame.height)
+        let stringRect = self.text!.boundingRectWithSize(size,
+                                                         options: option,
+                                                         attributes: attributes as? [String : AnyObject],
+                                                         context: nil)
+        self.layer.frame = CGRectMake(self.frame.minX, self.frame.minY, stringRect.size.width, stringRect.size.height)
     }
 }
