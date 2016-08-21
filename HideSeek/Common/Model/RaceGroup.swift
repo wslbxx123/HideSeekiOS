@@ -10,12 +10,14 @@ class RaceGroup {
     var recordId: Int64
     var nickname: String
     var photoUrl: String
+    var smallPhotoUrl: String
     var recordItem: RecordItem
     
-    init(recordId: Int64, nickname: String, photoUrl: String, recordItem: RecordItem) {
+    init(recordId: Int64, nickname: String, photoUrl: String, smallPhotoUrl: String, recordItem: RecordItem) {
         self.recordId = recordId
         self.nickname = nickname
         self.photoUrl = photoUrl
+        self.smallPhotoUrl = smallPhotoUrl
         self.recordItem = recordItem
     }
 }

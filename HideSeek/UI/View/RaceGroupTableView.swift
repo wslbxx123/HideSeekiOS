@@ -14,20 +14,23 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
     let TAG_GOAL_IMAGEVIEW = 3
     let TAG_MESSAGE_LABEL = 4
     let TAG_SCORE_LABEL = 5
+    let VISIBLE_REFRESH_COUNT = 3;
     
-    var raceGroupList: NSArray!
+    var raceGroupList: NSMutableArray!
     var tabelViewCell: UITableViewCell!
     var messageWidth: CGFloat!
     var infiniteScrollingView: UIView!
     var loadMoreDelegate: LoadMoreDelegate!
+    var screenHeight: CGFloat!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         self.dataSource = self
         self.delegate = self
-        self.raceGroupList = NSArray()
+        self.raceGroupList = NSMutableArray()
         self.setupInfiniteScrollingView()
+        self.screenHeight = UIScreen.mainScreen().bounds.height - 44
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -48,30 +51,14 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         
         photoImageView.layer.cornerRadius = 5
         photoImageView.layer.masksToBounds = true
-        photoImageView.setWebImage(raceGroup.photoUrl, defaultImage: "default_photo", isCache: true)
+        photoImageView.setWebImage(raceGroup.smallPhotoUrl, defaultImage: "default_photo", isCache: true)
         nameLabel.text = raceGroup.nickname
         
-        switch(raceGroup.recordItem.goalType) {
-        case .mushroom:
-            goalImageView.image = UIImage(named: "mushroom")
-            break
-        case .monster:
-            goalImageView.image = UIImage(named: "monster")
-            break
-        case .bomb:
-            goalImageView.image = UIImage(named: "bomb")
-            break
-        }
+        goalImageView.image = UIImage(named: GoalImageFactory.get(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName))
     
         messageLabel.text = getMessage(raceGroup.recordItem.goalType)
         scoreLabel.text = String.init(format: NSLocalizedString("SCORE_TITLE", comment: "Score：%d"),
                                       raceGroup.recordItem.scoreSum)
-        
-        if indexPath.row == self.raceGroupList.count - 1 && self.raceGroupList.count >= 10{
-            self.tableFooterView = self.infiniteScrollingView
-            
-            loadMoreDelegate?.loadMore()
-        }
         return cell
     }
     
@@ -92,6 +79,21 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         return labelHeight + 95
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let indexPath = self.indexPathForRowAtPoint(CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y + screenHeight))
+        
+        if indexPath != nil {
+            print(indexPath!.row)
+        }
+        
+        if indexPath != nil && indexPath!.row >= self.raceGroupList.count - VISIBLE_REFRESH_COUNT && self.raceGroupList.count >= 10{
+            self.tableFooterView = self.infiniteScrollingView
+            self.tableFooterView?.hidden = false
+            
+            loadMoreDelegate?.loadMore()
+        }
+    }
+    
     func getMessage(goalType: Goal.GoalTypeEnum)-> String {
         switch(goalType) {
         case .mushroom:
@@ -105,12 +107,12 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
     
     func setupInfiniteScrollingView() {
         let screenWidth = UIScreen.mainScreen().bounds.width
-        self.infiniteScrollingView = UIView(frame: CGRectMake(0, self.contentSize.height, screenWidth, 60))
+        self.infiniteScrollingView = UIView(frame: CGRectMake(0, self.contentSize.height, screenWidth, 40))
         self.infiniteScrollingView!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
         self.infiniteScrollingView!.backgroundColor = UIColor.whiteColor()
         
         let loadinglabel = UILabel()
-        loadinglabel.frame.size = CGSize(width: 100, height: 50)
+        loadinglabel.frame.size = CGSize(width: 100, height: 30)
         loadinglabel.text = NSLocalizedString("LOADING", comment: "Loading...")
         loadinglabel.textAlignment = NSTextAlignment.Center
         loadinglabel.font = UIFont.systemFontOfSize(15.0)

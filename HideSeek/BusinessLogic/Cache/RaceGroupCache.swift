@@ -11,7 +11,7 @@ class RaceGroupCache : BaseCache<RaceGroup> {
     var raceGroupTableManager: RaceGroupTableManager!
     var version: Int64 = 0
     
-    var raceGrouplist: NSArray {
+    var raceGroupList: NSMutableArray {
         if(super.cacheList.count > 0) {
             return super.cacheList
         }
@@ -24,10 +24,11 @@ class RaceGroupCache : BaseCache<RaceGroup> {
         raceGroupTableManager = RaceGroupTableManager.instance
     }
     
-    func getMoreRaceGroup(count: Int) -> NSArray {
-        let raceGroupList = raceGroupTableManager.getMoreRaceGroup(count, version: version)
+    func getMoreRaceGroup(count: Int, hasLoaded: Bool) -> Bool {
+        let raceGroupList = raceGroupTableManager.getMoreRaceGroup(count, version: version, hasLoaded: hasLoaded)
         
-        return raceGroupList
+        self.cacheList.addObjectsFromArray(raceGroupList as [AnyObject])
+        return raceGroupList.count > 0
     }
     
     func setRaceGroup(raceGroupInfo: NSDictionary!) {
@@ -55,13 +56,15 @@ class RaceGroupCache : BaseCache<RaceGroup> {
             list.addObject(RaceGroup(recordId: recordIdStr.longLongValue,
                 nickname: raceGroupInfo["nickname"] as! String,
                 photoUrl: raceGroupInfo["photo_url"] as! String,
+                smallPhotoUrl: raceGroupInfo["small_photo_url"] as! String,
                 recordItem: RecordItem(
                     recordId: recordIdStr.longLongValue,
                     time: raceGroupInfo["time"] as! String,
                     goalType: Goal.GoalTypeEnum(rawValue: (raceGroupInfo["goal_type"] as! NSString).integerValue)!,
                     score: (raceGroupInfo["score"] as! NSString).integerValue,
                     scoreSum: (raceGroupInfo["score_sum"] as! NSString).integerValue,
-                    version: (raceGroupInfo["version"] as! NSString).longLongValue)))
+                    version: (raceGroupInfo["version"] as! NSString).longLongValue,
+                    showTypeName: raceGroupInfo["show_type_name"] as? String)))
         }
         
         raceGroupTableManager.updateRaceGroup(recordMinId, version: version, raceGroupList: list)
@@ -70,6 +73,6 @@ class RaceGroupCache : BaseCache<RaceGroup> {
     func addRaceGroup(result: NSDictionary!) {
         saveRaceGroup(result)
         
-        cacheList.arrayByAddingObjectsFromArray(getMoreRaceGroup(10) as [AnyObject])
+        getMoreRaceGroup(10, hasLoaded: true)
     }
 }

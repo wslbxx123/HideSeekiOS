@@ -10,12 +10,12 @@ class Product {
     var pkId: Int64
     var name: String
     var imageUrl: String?
-    var price: Int = 0
+    var price: Double = 0
     var purchaseCount: Int
     var introduction: String?
     var version: Int64 = 0
     
-    init(pkId: Int64, name: String, imageUrl: String?, price: Int, purchaseCount: Int,
+    init(pkId: Int64, name: String, imageUrl: String?, price: Double, purchaseCount: Int,
         introduction: String?, version: Int64) {
         self.pkId = pkId
         self.name = name

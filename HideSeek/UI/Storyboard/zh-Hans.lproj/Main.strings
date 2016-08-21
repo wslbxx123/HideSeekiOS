@@ -1,23 +1,204 @@
-/* Class = "UITabBarItem"; title = "Home"; ObjectID = "4Jo-V6-7ko"; */
-"4Jo-V6-7ko.title" = "主页";
+
+/* Class = "UILabel"; text = "Forget Password"; ObjectID = "17H-ry-GFN"; */
+"17H-ry-GFN.text" = "忘记密码";
+
+/* Class = "UILabel"; text = "Friends"; ObjectID = "75e-7F-mjl"; */
+"75e-7F-mjl.text" = "好友";
 
 /* Class = "UITabBarItem"; title = "Record"; ObjectID = "7JJ-io-Bbj"; */
-"7JJ-io-Bbj.title" = "战绩";
+"7JJ-io-Bbj.title" = "战绩列表";
+
+/* Class = "UINavigationItem"; title = "Record"; ObjectID = "8Yy-Iu-b7g"; */
+"8Yy-Iu-b7g.title" = "战绩列表"
+
+/* Class = "UILabel"; text = "Region"; ObjectID = "7ta-wH-Me0"; */
+"7ta-wH-Me0.text" = "区域";
+
+/* Class = "UILabel"; text = "Sex"; ObjectID = "8R1-Et-cpe"; */
+"8R1-Et-cpe.text" = "性别";
+
+/* Class = "UILabel"; text = "Profile"; ObjectID = "8ms-Lo-W7g"; */
+"8ms-Lo-W7g.text" = "个人中心";
+
+/* Class = "UISegmentedControl"; 9Q3-Qy-m5v.segmentTitles[0] = "Purchase Area"; ObjectID = "9Q3-Qy-m5v"; */
+"9Q3-Qy-m5v.segmentTitles[0]" = "购买区";
+
+/* Class = "UISegmentedControl"; 9Q3-Qy-m5v.segmentTitles[1] = "Exchange Area"; ObjectID = "9Q3-Qy-m5v"; */
+"9Q3-Qy-m5v.segmentTitles[1]" = "兑换区";
+
+/* Class = "UIButton"; normalTitle = "Send Verification Code"; ObjectID = "C9j-3z-2t6"; */
+"C9j-3z-2t6.normalTitle" = "发送验证码";
+
+/* Class = "UITextField"; placeholder = "Re-input Password"; ObjectID = "DKo-tV-ulW"; */
+"DKo-tV-ulW.placeholder" = "重输密码";
+
+/* Class = "UILabel"; text = "Score"; ObjectID = "DT1-0r-9sQ"; */
+"DT1-0r-9sQ.text" = "积分";
+
+/* Class = "UILabel"; text = "Rate HideSeek"; ObjectID = "EnV-Xk-JA5"; */
+"EnV-Xk-JA5.text" = "评价寻宝部落";
+
+/* Class = "UIButton"; normalTitle = "Register"; ObjectID = "GJm-jv-w27"; */
+"GJm-jv-w27.normalTitle" = "注册";
+
+/* Class = "UIButton"; normalTitle = "Go To HideSeek"; ObjectID = "Gdb-qG-x7d"; */
+"Gdb-qG-x7d.normalTitle" = "进入寻宝部落";
+
+/* Class = "UILabel"; text = "Score"; ObjectID = "HQ1-a2-0h6"; */
+"HQ1-a2-0h6.text" = "积分";
+
+/* Class = "UILabel"; text = "Register"; ObjectID = "IsJ-2v-8It"; */
+"IsJ-2v-8It.text" = "注册";
+
+/* Class = "UITextField"; placeholder = "My Nickname"; ObjectID = "Kcb-Na-Snt"; */
+"Kcb-Na-Snt.placeholder" = "我的昵称";
+
+/* Class = "UILabel"; text = "Help & Feedback"; ObjectID = "MJA-yq-dvX"; */
+"MJA-yq-dvX.text" = "帮助与反馈";
+
+/* Class = "UITabBarItem"; title = "Home"; ObjectID = "N9F-hm-NrH"; */
+"N9F-hm-NrH.title" = "主页";
+
+/* Class = "UITextField"; placeholder = "My Password"; ObjectID = "Q6r-qk-NsA"; */
+"Q6r-qk-NsA.placeholder" = "我的密码";
+
+/* Class = "UILabel"; text = "Total Cities"; ObjectID = "R6T-hB-m5E"; */
+"R6T-hB-m5E.text" = "全部城市";
 
 /* Class = "UITabBarItem"; title = "Race Group"; ObjectID = "VaG-vy-IRT"; */
 "VaG-vy-IRT.title" = "部落圈";
 
-/* Class = "UITabBarItem"; title = "Me"; ObjectID = "WJ3-WG-74f"; */
-"WJ3-WG-74f.title" = "我的";
+/* Class = "UINavigationItem"; title = "Race Group"; ObjectID = "9yQ-QZ-VYU"; */
+"9yQ-QZ-VYU.title" = "部落圈";
 
-/* Class = "UILabel"; text = "Not Login"; ObjectID = "B2j-Xy-yaY"; */
-"B2j-Xy-yaY.text" = "未登录";
+/* Class = "UILabel"; text = "Recent Searched Cities"; ObjectID = "WFO-ZK-rmh"; */
+"WFO-ZK-rmh.text" = "最近访问的城市";
 
-/* Class = "UILabel"; text = "Friends"; ObjectID = "JCj-PH-oIZ"; */
-"JCj-PH-oIZ.text" = "朋友";
+/* Class = "UITabBarItem"; title = "Me"; ObjectID = "QF2-sL-kDe"; */
+"QF2-sL-kDe.title" = "我的";
 
-/* Class = "UILabel"; text = "Scores"; ObjectID = "9WQ-2f-x8M"; */
-"9WQ-2f-x8M.text" = "积分";
+/* Class = "UILabel"; text = "My Orders"; ObjectID = "Wev-OH-bzj"; */
+"Wev-OH-bzj.text" = "我的订单";
 
-/* Class = "UILabel"; text = "My Profile"; ObjectID = "WXl-Ej-rs6"; */
-"WXl-Ej-rs6.text" = "个人中心";
+/* Class = "UILabel"; text = "Not Login"; ObjectID = "Wmo-fC-vpE"; */
+"Wmo-fC-vpE.text" = "未登录";
+
+/* Class = "UILabel"; text = "Not Set"; ObjectID = "Y3a-gJ-iyJ"; */
+"Y3a-gJ-iyJ.text" = "未设置";
+
+/* Class = "UILabel"; text = "Message"; ObjectID = "YWw-tA-5lg"; */
+"YWw-tA-5lg.text" = "信息";
+
+/* Class = "UIButton"; normalTitle = "Match My Role"; ObjectID = "ahF-if-pps"; */
+"ahF-if-pps.normalTitle" = "匹配我的角色";
+
+/* Class = "UILabel"; text = "News Notification"; ObjectID = "ath-28-Lz9"; */
+"ath-28-Lz9.text" = "新消息通知";
+
+/* Class = "UITabBarItem"; title = "Internal"; ObjectID = "ccM-9u-sEj"; */
+"ccM-9u-sEj.title" = "国内";
+
+/* Class = "UITextField"; placeholder = "My Password"; ObjectID = "dB7-a4-rOf"; */
+"dB7-a4-rOf.placeholder" = "我的密码";
+
+/* Class = "UIButton"; normalTitle = "External"; ObjectID = "eo6-jH-ZJb"; */
+"eo6-jH-ZJb.normalTitle" = "国外";
+
+/* Class = "UILabel"; text = "Region"; ObjectID = "exQ-oE-aJb"; */
+"exQ-oE-aJb.text" = "区域";
+
+/* Class = "UINavigationItem"; title = "Me"; ObjectID = "Ptk-2v-As5"; */
+"Ptk-2v-As5.title" = "我的";
+
+/* Class = "UILabel"; text = "Hot Cities"; ObjectID = "hTP-73-ZeO"; */
+"hTP-73-ZeO.text" = "热门城市";
+
+/* Class = "UITabBarItem"; title = "External"; ObjectID = "hdd-hE-66x"; */
+"hdd-hE-66x.title" = "国外";
+
+/* Class = "UILabel"; text = "Matching..."; ObjectID = "huy-h7-7LX"; */
+"huy-h7-7LX.text" = "匹配中……";
+
+/* Class = "UILabel"; text = "Log Out"; ObjectID = "kdt-VR-kH5"; */
+"kdt-VR-kH5.text" = "注销";
+
+/* Class = "UILabel"; text = "Not Set"; ObjectID = "lcR-iR-yVa"; */
+"lcR-iR-yVa.text" = "未设置";
+
+/* Class = "UILabel"; text = "Settings"; ObjectID = "ldB-Xp-MPL"; */
+"ldB-Xp-MPL.text" = "设置";
+
+/* Class = "UILabel"; text = "Reward Exchange"; ObjectID = "mUV-Qk-Qyy"; */
+"mUV-Qk-Qyy.text" = "积分兑换";
+
+/* Class = "UIButton"; normalTitle = "Internal"; ObjectID = "qO2-fC-3xM"; */
+"qO2-fC-3xM.normalTitle" = "国内";
+
+/* Class = "UILabel"; text = "Clear Cache"; ObjectID = "rQt-2f-7UN"; */
+"rQt-2f-7UN.text" = "清除缓存";
+
+/* Class = "UIButton"; normalTitle = "Log In"; ObjectID = "sOw-vl-T7L"; */
+"sOw-vl-T7L.normalTitle" = "登录";
+
+/* Class = "UITextField"; placeholder = "Register Phone"; ObjectID = "ugL-Cg-TKE"; */
+"ugL-Cg-TKE.placeholder" = "注册手机";
+
+/* Class = "UILabel"; text = "About"; ObjectID = "wKq-cu-KdM"; */
+"wKq-cu-KdM.text" = "关于";
+
+/* Class = "UILabel"; text = "Settings"; ObjectID = "wwi-T4-mz7"; */
+"wwi-T4-mz7.text" = "设置";
+
+/* Class = "UITextField"; placeholder = "My Phone"; ObjectID = "xi9-gk-O7h"; */
+"xi9-gk-O7h.placeholder" = "我的手机";
+
+/* Class = "UILabel"; text = "Score"; ObjectID = "yHU-Rb-fXR"; */
+"yHU-Rb-fXR.text" = "积分";
+
+/* Class = "UIButton"; normalTitle = "Confirm Payment"; ObjectID = "MX3-87-E48"; */
+"MX3-87-E48.normalTitle" = "确认支付";
+
+/* Class = "UILabel"; text = "Payment Amount"; ObjectID = "KKA-xU-PMu"; */
+"KKA-xU-PMu.text" = "支付总计：";
+
+/* Class = "UILabel"; text = "Yuan"; ObjectID = "ZlY-QT-nf5"; */
+"ZlY-QT-nf5.text" = "元";
+
+/* Class = "UILabel"; text = "Transaction Completed"; ObjectID = "AdG-ah-jUa"; */
+"AdG-ah-jUa.text" = "交易成功";
+
+/* Class = "UILabel"; text = "Not Pay"; ObjectID = "tze-St-Y5f"; */
+"tze-St-Y5f.text" = "未付款";
+
+/* Class = "UIButton"; normalTitle = "Click To Pay"; ObjectID = "IbW-gA-cb9"; */
+"IbW-gA-cb9.normalTitle" = "点击付款";
+
+/* Class = "UISegmentedControl"; 86C-XE-3lY.segmentTitles[0] = "Purchase Area"; ObjectID = "86C-XE-3lY"; */
+"86C-XE-3lY.segmentTitles[0]" = "购买区";
+
+/* Class = "UISegmentedControl"; 86C-XE-3lY.segmentTitles[1] = "Exchange Area"; ObjectID = "86C-XE-3lY"; */
+"86C-XE-3lY.segmentTitles[1]" = "兑换区";
+
+/* Class = "UILabel"; text = "My Orders"; ObjectID = "ygd-pu-lSv"; */
+"ygd-pu-lSv.text" = "我的订单";
+
+/* Class = "UIButton"; normalTitle = "Confirm Exchange"; ObjectID = "xyM-25-7b3"; */
+"xyM-25-7b3.normalTitle" = "确认兑换";
+
+/* Class = "UILabel"; text = "Score"; ObjectID = "LUC-ks-rti"; */
+"LUC-ks-rti.text" = "积分";
+
+/* Class = "UILabel"; text = "Exchange Amount: "; ObjectID = "AZB-KY-2EY"; */
+"AZB-KY-2EY.text" = "兑换总计：";
+
+/* Class = "UILabel"; text = "Transaction Completed"; ObjectID = "NxW-Uw-1yw"; */
+"NxW-Uw-1yw.text" = "交易成功";
+
+/* Class = "UILabel"; text = "Not Exchange"; ObjectID = "iBK-x5-N6e"; */
+"iBK-x5-N6e.text" = "未兑换";
+
+/* Class = "UIButton"; normalTitle = "Click To Exchange"; ObjectID = "Rf0-eq-EfD"; */
+"Rf0-eq-EfD.normalTitle" = "点击兑换";
+
+/* Class = "UINavigationItem"; title = "Store"; ObjectID = "wkP-8z-xVN"; */
+"wkP-8z-xVN.title" = "商城";

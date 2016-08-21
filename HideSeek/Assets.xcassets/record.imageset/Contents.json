@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "战绩2png-1.png",
+      "filename" : "record.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "战绩2png.png",
+      "filename" : "record-1.png",
       "scale" : "2x"
     },
     {

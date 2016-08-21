@@ -19,6 +19,7 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
     var loadingImageView: UIImageView!
     var angle: CGFloat = 0
     var raceGroupTableManager: RaceGroupTableManager!
+    var isLoading: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,13 +28,13 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
         manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
         raceGroupTableManager = RaceGroupTableManager.instance
         initView()
-        
-        self.raceGroupTableView.raceGroupList = RaceGroupCache.instance.raceGrouplist
-        self.raceGroupTableView.reloadData()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
+        self.raceGroupTableView.raceGroupList = RaceGroupCache.instance.raceGroupList
+        self.raceGroupTableView.reloadData()
         
         if(UserCache.instance.ifLogin()) {
             UIView.animateWithDuration(0.25,
@@ -47,6 +48,14 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
                     self.refreshControl.sendActionsForControlEvents(UIControlEvents.ValueChanged)
             })
         }
+        
+        self.tabBarController?.tabBar.hidden = false
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.tabBarController?.tabBar.hidden = true
+        
+        super.viewWillDisappear(animated)
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,6 +67,7 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
         refreshControl.addTarget(self, action: #selector(RaceGroupController.refreshData), forControlEvents: UIControlEvents.ValueChanged)
         raceGroupTableView.addSubview(refreshControl)
         raceGroupTableView.loadMoreDelegate = self
+        raceGroupTableView.separatorStyle = UITableViewCellSeparatorStyle.None;
         
         let refreshContents = NSBundle.mainBundle().loadNibNamed("RefreshView",
                                                                  owner: self, options: nil)
@@ -65,10 +75,12 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
         loadingImageView = customLoadingView.viewWithTag(TAG_LOADING_IMAGEVIEW) as! UIImageView
         customLoadingView.frame = refreshControl.bounds
         refreshControl.addSubview(customLoadingView)
+        self.automaticallyAdjustsScrollViewInsets = false
     }
 
     func refreshData() {
         let paramDict: NSMutableDictionary = ["version": String(raceGroupTableManager.version), "record_min_id": String(raceGroupTableManager.recordMinId)]
+        isLoading = true
         manager.POST(UrlParam.REFRESH_RACE_GROUP_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
@@ -78,10 +90,11 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
                         self.raceGroupTableView.raceGroupList = RaceGroupCache.instance.cacheList
                         self.raceGroupTableView.reloadData()
                         self.refreshControl.endRefreshing()
-            },
-                     failure: { (operation, error) in
+                        self.isLoading = false
+                    }, failure: { (operation, error) in
                         print("Error: " + error.localizedDescription)
-        })
+                        self.isLoading = false
+                    })
         playAnimateRefresh()
     }
     
@@ -102,28 +115,36 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
     }
     
     func loadMore() {
-        let raceGroupList = RaceGroupCache.instance.getMoreRaceGroup(10)
-        
-        if(raceGroupList.count == 0) {
-            let paramDict: NSMutableDictionary = ["version": String(raceGroupTableManager.version), "record_min_id": String(raceGroupTableManager.recordMinId)]
-            manager.POST(UrlParam.GET_RACE_GROUP_URL,
-                         paramDict: paramDict,
-                         success: { (operation, responseObject) in
-                            print("JSON: " + responseObject.description!)
-                            let response = responseObject as! NSDictionary
-                            RaceGroupCache.instance.addRaceGroup(response["result"] as! NSDictionary)
-                            
-                            self.raceGroupTableView.raceGroupList = RaceGroupCache.instance.cacheList
-                            self.raceGroupTableView.reloadData()
-                            self.raceGroupTableView.tableFooterView = nil
-                },
-                         failure: { (operation, error) in
-                            print("Error: " + error.localizedDescription)
-                            self.raceGroupTableView.tableFooterView = nil
-            })
-        } else {
-            self.raceGroupTableView.raceGroupList.arrayByAddingObjectsFromArray(raceGroupList as [AnyObject])
-            self.raceGroupTableView.reloadData()
+        if !isLoading {
+            isLoading = true
+            let hasData = RaceGroupCache.instance.getMoreRaceGroup(10, hasLoaded: false)
+            
+            if(!hasData) {
+                let paramDict: NSMutableDictionary = ["version": String(raceGroupTableManager.version), "record_min_id": String(raceGroupTableManager.recordMinId)]
+                manager.POST(UrlParam.GET_RACE_GROUP_URL,
+                             paramDict: paramDict,
+                             success: { (operation, responseObject) in
+                                print("JSON: " + responseObject.description!)
+                                let response = responseObject as! NSDictionary
+                                RaceGroupCache.instance.addRaceGroup(response["result"] as! NSDictionary)
+                                
+                                self.raceGroupTableView.raceGroupList = RaceGroupCache.instance.cacheList
+                                self.raceGroupTableView.reloadData()
+                                self.isLoading = false
+                                self.raceGroupTableView.tableFooterView?.hidden = true
+                    },
+                             failure: { (operation, error) in
+                                print("Error: " + error.localizedDescription)
+                                self.raceGroupTableView.tableFooterView?.hidden = true
+                })
+            } else {
+                self.raceGroupTableView.raceGroupList.removeAllObjects();
+                self.raceGroupTableView.raceGroupList.addObjectsFromArray(RaceGroupCache.instance.raceGroupList as [AnyObject])
+                self.raceGroupTableView.reloadData()
+                
+                isLoading = false
+                self.raceGroupTableView.tableFooterView?.hidden = true
+            }
         }
     }
 }

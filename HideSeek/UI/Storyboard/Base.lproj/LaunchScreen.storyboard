@@ -3,8 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -19,67 +17,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash_back" translatesAutoresizingMaskIntoConstraints="NO" id="ihs-1h-2hA" userLabel="SplashImageView">
-                                <rect key="frame" x="30" y="20" width="540" height="435"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash_back.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="ihs-1h-2hA" userLabel="SplashImageView">
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dmm-2Z-Uhg" userLabel="AppInfoView">
-                                <rect key="frame" x="0.0" y="455" width="600" height="145"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Mr8-O3-k3T" userLabel="AppStackView">
-                                        <rect key="frame" x="147" y="55" width="307" height="60"/>
-                                        <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_launcher" translatesAutoresizingMaskIntoConstraints="NO" id="bTh-Xu-G33" userLabel="IconImageView">
-                                                <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="60" id="Nxd-3a-TfB"/>
-                                                    <constraint firstAttribute="width" constant="60" id="iJI-1v-3ww"/>
-                                                </constraints>
-                                            </imageView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="QNu-2c-d7s" userLabel="IntroStackView">
-                                                <rect key="frame" x="70" y="0.0" width="237" height="60"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seeking is a wonderful thing!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ec5-yV-jZX" userLabel="IntroLabel">
-                                                        <rect key="frame" x="0.0" y="0.0" width="237" height="30"/>
-                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HideSeek" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fSw-8a-xbe" userLabel="AppNameLabel">
-                                                        <rect key="frame" x="0.0" y="30" width="237" height="30"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstItem="fSw-8a-xbe" firstAttribute="height" secondItem="ec5-yV-jZX" secondAttribute="height" id="ZIB-fa-MMv"/>
-                                                </constraints>
-                                            </stackView>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="QNu-2c-d7s" firstAttribute="top" secondItem="Mr8-O3-k3T" secondAttribute="top" id="7Bq-6V-m1e"/>
-                                            <constraint firstItem="bTh-Xu-G33" firstAttribute="height" secondItem="Mr8-O3-k3T" secondAttribute="height" id="TPO-f9-yet"/>
-                                            <constraint firstItem="bTh-Xu-G33" firstAttribute="leading" secondItem="Mr8-O3-k3T" secondAttribute="leading" id="aML-OR-TZV"/>
-                                            <constraint firstAttribute="trailing" secondItem="QNu-2c-d7s" secondAttribute="trailing" id="zLc-2V-q7y"/>
-                                        </constraints>
-                                    </stackView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="Mr8-O3-k3T" firstAttribute="centerX" secondItem="dmm-2Z-Uhg" secondAttribute="centerX" id="VWm-7Y-6Tn"/>
-                                    <constraint firstAttribute="bottom" secondItem="Mr8-O3-k3T" secondAttribute="bottom" constant="30" id="bgg-oa-CGp"/>
-                                </constraints>
-                            </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.96862745098039216" green="0.80784313725490198" blue="0.2196078431372549" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="ihs-1h-2hA" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="10" id="PnE-HI-GlS"/>
+                            <constraint firstItem="ihs-1h-2hA" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="8pA-Gx-htE"/>
                             <constraint firstItem="ihs-1h-2hA" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="VgJ-B6-Cmm"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="dmm-2Z-Uhg" secondAttribute="bottom" id="XYq-Mh-2dB"/>
-                            <constraint firstItem="ihs-1h-2hA" firstAttribute="bottom" secondItem="dmm-2Z-Uhg" secondAttribute="top" id="bGb-68-Wk2"/>
-                            <constraint firstItem="ihs-1h-2hA" firstAttribute="height" secondItem="dmm-2Z-Uhg" secondAttribute="height" multiplier="3" id="dJN-0e-pKV"/>
-                            <constraint firstItem="dmm-2Z-Uhg" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" id="tDU-hn-DI7"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="ihs-1h-2hA" secondAttribute="trailing" constant="10" id="z56-fY-YOx"/>
-                            <constraint firstItem="dmm-2Z-Uhg" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ztj-c5-nKV"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="ihs-1h-2hA" secondAttribute="bottom" id="cV7-J3-xIa"/>
+                            <constraint firstItem="ihs-1h-2hA" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" id="zg4-KN-jsW"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -89,7 +35,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic_launcher" width="72" height="72"/>
-        <image name="splash_back" width="1097" height="1073"/>
+        <image name="splash_back.jpg" width="664" height="1000"/>
     </resources>
 </document>

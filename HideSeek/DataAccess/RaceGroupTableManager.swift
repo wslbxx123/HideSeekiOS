@@ -12,16 +12,29 @@ class RaceGroupTableManager {
     
     let recordId = Expression<Int64>("record_id")
     let photoUrl = Expression<String>("photo_url")
+    let smallPhotoUrl = Expression<String>("small_photo_url")
     let nickname = Expression<String>("nickname")
     let time = Expression<String>("time")
     let goalType = Expression<Int>("goal_type")
     let score = Expression<Int>("score")
     let scoreSum = Expression<Int>("score_sum")
     let pullVersion = Expression<Int64>("version")
+    let showTypeName = Expression<String?>("show_type_name")
     
     var database: Connection!
     var raceGroupTable: Table!
-    var recordMinId: Int64 = 0
+    var _recordMinId: Int64 = 0
+    
+    var recordMinId: Int64 {
+        get{
+            let tempRecordMinId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.RACE_GROUP_RECORD_MIN_ID) as? NSNumber
+            
+            if(tempRecordMinId == nil) {
+                return 0
+            }
+            return (tempRecordMinId?.longLongValue)!
+        }
+    }
     
     var version: Int64 {
         get{
@@ -43,12 +56,14 @@ class RaceGroupTableManager {
             try database.run(raceGroupTable.create(ifNotExists: true) { t in
                 t.column(recordId, primaryKey: true)
                 t.column(photoUrl)
+                t.column(smallPhotoUrl)
                 t.column(nickname)
                 t.column(time)
                 t.column(goalType)
                 t.column(score)
                 t.column(scoreSum)
                 t.column(pullVersion)
+                t.column(showTypeName)
                 })
         } catch let error as NSError {
             print("SQLiteDB - failed to create table race_group!")
@@ -61,20 +76,28 @@ class RaceGroupTableManager {
         let raceGroupList = NSMutableArray()
         do {
             var result: Table
-            if recordMinId == 0 {
+            if self._recordMinId == 0 {
                 result = raceGroupTable.order(recordId.desc).limit(10)
             } else {
-                result = raceGroupTable.filter(recordId >= recordMinId).order(recordId.desc)
+                result = raceGroupTable.filter(recordId >= self._recordMinId).order(recordId.desc)
             }
             
             for item in try database.prepare(result) {
                 raceGroupList.addObject(RaceGroup(
-                    recordId: item[recordId], nickname: item[nickname], photoUrl: item[photoUrl], recordItem: RecordItem(recordId: item[recordId], time: item[time],
+                    recordId: item[recordId],
+                    nickname: item[nickname],
+                    photoUrl: item[photoUrl],
+                    smallPhotoUrl: item[smallPhotoUrl],
+                    recordItem: RecordItem(recordId: item[recordId],
+                        time: item[time],
                         goalType: Goal.GoalTypeEnum(rawValue: item[goalType])!,
-                        score: item[score], scoreSum: item[scoreSum], version: item[pullVersion])))
+                        score: item[score],
+                        scoreSum: item[scoreSum],
+                        version: item[pullVersion],
+                        showTypeName: item[showTypeName])))
                 
-                if recordMinId == 0 || recordMinId > item[recordId] {
-                    recordMinId = item[recordId]
+                if _recordMinId == 0 || _recordMinId > item[recordId] {
+                    _recordMinId = item[recordId]
                 }
             }
         }
@@ -97,22 +120,26 @@ class RaceGroupTableManager {
                 let count = try database.run(raceGroupTable.filter(recordId == raceGroupInfo.recordId)
                     .update(
                         photoUrl <- raceGroupInfo.photoUrl,
-                        nickname <- raceGroupInfo.nickname,
-                        time <- raceGroupInfo.recordItem.time,
-                        goalType <- raceGroupInfo.recordItem.goalType.rawValue,
-                        score <- raceGroupInfo.recordItem.score,
-                        scoreSum <- raceGroupInfo.recordItem.scoreSum,
-                        pullVersion <- raceGroupInfo.recordItem.version))
-                
-                if count == 0 {
-                    let insert = raceGroupTable.insert(
-                        photoUrl <- raceGroupInfo.photoUrl,
+                        smallPhotoUrl <- raceGroupInfo.smallPhotoUrl,
                         nickname <- raceGroupInfo.nickname,
                         time <- raceGroupInfo.recordItem.time,
                         goalType <- raceGroupInfo.recordItem.goalType.rawValue,
                         score <- raceGroupInfo.recordItem.score,
                         scoreSum <- raceGroupInfo.recordItem.scoreSum,
                         pullVersion <- raceGroupInfo.recordItem.version,
+                        showTypeName <- raceGroupInfo.recordItem.showTypeName))
+                
+                if count == 0 {
+                    let insert = raceGroupTable.insert(
+                        photoUrl <- raceGroupInfo.photoUrl,
+                        smallPhotoUrl <- raceGroupInfo.smallPhotoUrl,
+                        nickname <- raceGroupInfo.nickname,
+                        time <- raceGroupInfo.recordItem.time,
+                        goalType <- raceGroupInfo.recordItem.goalType.rawValue,
+                        score <- raceGroupInfo.recordItem.score,
+                        scoreSum <- raceGroupInfo.recordItem.scoreSum,
+                        pullVersion <- raceGroupInfo.recordItem.version,
+                        showTypeName <- raceGroupInfo.recordItem.showTypeName,
                         recordId <- raceGroupInfo.recordId)
                     
                     try database.run(insert)
@@ -126,22 +153,30 @@ class RaceGroupTableManager {
         }
     }
     
-    func getMoreRaceGroup(count: Int, version: Int64)-> NSMutableArray {
+    func getMoreRaceGroup(count: Int, version: Int64, hasLoaded: Bool)-> NSMutableArray {
         let raceGroupList = NSMutableArray()
         
         do {
-            let result = raceGroupTable.filter(pullVersion <= version && recordId < recordMinId)
+            let result = raceGroupTable.filter(pullVersion <= version && recordId < _recordMinId)
                 .order(recordId.desc).limit(count)
             
-            if(database.scalar(result.count) == count) {
+            if(database.scalar(result.count) == count || hasLoaded) {
                 for item in try database.prepare(result) {
                     raceGroupList.addObject(RaceGroup(
-                        recordId: item[recordId], nickname: item[nickname], photoUrl: item[photoUrl], recordItem: RecordItem(recordId: item[recordId], time: item[time],
+                        recordId: item[recordId],
+                        nickname: item[nickname],
+                        photoUrl: item[photoUrl],
+                        smallPhotoUrl: item[smallPhotoUrl],
+                        recordItem: RecordItem(recordId: item[recordId],
+                            time: item[time],
                             goalType: Goal.GoalTypeEnum(rawValue: item[goalType])!,
-                            score: item[score], scoreSum: item[scoreSum], version: item[pullVersion])))
+                            score: item[score],
+                            scoreSum: item[scoreSum],
+                            version: item[pullVersion],
+                            showTypeName: item[showTypeName])))
                     
-                    if recordMinId == 0 || recordMinId > item[recordId] {
-                        recordMinId = item[recordId]
+                    if _recordMinId == 0 || _recordMinId > item[recordId] {
+                        _recordMinId = item[recordId]
                     }
                 }
             }
@@ -152,5 +187,17 @@ class RaceGroupTableManager {
         }
         
         return raceGroupList
+    }
+    
+    func clear() {
+        do {
+            let sqlStr = "delete from race_group; " +
+            "update sqlite_sequence SET seq = 0 where name ='race_group'"
+            try database.execute(sqlStr)
+        }
+        catch let error as NSError {
+            print("SQLiteDB - failed to truncate table race_group!")
+            print("Error - \(error.localizedDescription)")
+        }
     }
 }

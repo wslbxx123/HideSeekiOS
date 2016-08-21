@@ -8,7 +8,7 @@
 
 class GoalCache : BaseCache<Goal> {
     static let instance = GoalCache()
-    var updateTime: String!
+    var version: Int64 = 0
     var updateList = NSMutableArray()
     var ifNeedClearMap = true
     
@@ -47,32 +47,36 @@ class GoalCache : BaseCache<Goal> {
                             valid: (goalInfo["valid"] as! NSString).integerValue == 1,
                             type: Goal.GoalTypeEnum(rawValue: (goalInfo["type"] as! NSString).integerValue)!,
                             isEnabled: (goalInfo["is_enabled"] as! NSString).integerValue == 1,
-                            showTypeName: goalInfo["show_type_name"] as? String)
+                            showTypeName: goalInfo["show_type_name"] as? String,
+                            createBy: (goalInfo["create_by"] as! NSString).longLongValue,
+                            introduction: goalInfo["introduction"] as? String,
+                            score: (goalInfo["create_by"] as! NSString).integerValue)
             updateList.addObject(goal)
             if(goal.valid) {
                 cacheList.addObject(goal)
             }
         }
         
-        updateTime = result["update_time"] as! String
+        version = (result["version"] as! NSString).longLongValue
     }
     
     func refreshClosestGoal(latitude: Double, longitude: Double) {
-        if cacheList.count > 0 {
-            let array = cacheList.sort{pow(($0 as! Goal).latitude - latitude, 2)
-                + pow(($0 as! Goal).longitude - longitude, 2)
-                < pow(($1 as! Goal).latitude - latitude, 2)
-                + pow(($1 as! Goal).latitude - latitude, 2)}
-            cacheList = (array as NSArray).mutableCopy() as! NSMutableArray
+        var minDistance: Double = -1
+        
+        for item in cacheList {
+            let goal = item as! Goal
+            if(!goal.valid) {
+                cacheList.removeObject(goal)
+                continue
+            }
             
-            repeat {
-                closestGoal = cacheList[0] as! Goal
-                
-                if !closestGoal.valid {
-                    cacheList.removeObjectAtIndex(0)
-                }
-                
-            } while(!closestGoal.valid && cacheList.count > 0)
+            let distance = pow(goal.latitude - latitude, 2)
+                + pow(goal.longitude - longitude, 2)
+            
+            if minDistance == -1 || minDistance > distance {
+                minDistance = distance
+                closestGoal = goal
+            }
         }
     }
 }

@@ -6,14 +6,52 @@
   Copyright © 2016 mj. All rights reserved.
 */
 
+"CFBundleDisplayName" = "寻宝部落";
 "LOADING_HINT" = "请等待……";
 "JOIN" = "加入";
 "SCORE_TITLE" = " 积分：%d ";
 "LOADING" = "加载中……";
 "M" = "%.0f 米";
+"PURCHASE" = "购买";
+"PURCHASE_COUNT" = "%d人购买";
+"EXCHAGNE_COUNT" = "%d人兑换";
+"SEND_VERIFICATION_CODE" = "发送验证码";
+"MALE" = "男";
+"FEMALE" = "女";
+"NOT_SET" = "未设置";
+"SECRET" = "秘密";
+"CANCEL" = "取消";
+"CAMERA" = "相机";
+"PHOTO_LIBRARY" = "照片库";
+"SEARCH" = "搜索";
+"LOCATING" = "定位中";
+"CURRENT_CITY" = "当前城市";
+"RE_LOCATE" = "重新定位";
+"FAILED_TO_LOCATE" = "定位失败";
+"GRASS_FAIRY" = "草魅精灵";
+"WATER_MAGICIAN" = "水影巫师";
+"FIRE_KNIGHT" = "火光骑士";
+"STONE_MONSTER" = "岩石兽族";
+"LIGHTNING_GIANT" = "闪电巨人";
+"AMOUNT_TITLE" = "总价: %.2f 元";
+"EXCHANGE_AMOUNT_TITLE" = "总价: %.2f 积分";
+"TRANSACTION_COMPLETE" = "交易成功";
+"ORDER_PROCESSING" = "订单正在处理";
+"FALIED_PAY_ORDER" = "订单支付失败";
+"ORDER_CANCLED" = "订单取消";
+"FAILED_CONNECT_NETWORK" = "网络连接出错";
+"OK" = "好的";
+"NOT_HAS_GUIDE" = "你没有怪兽图鉴。去商城购买吗？";
+"NOT_HAS_BOMB" = "你没有炸弹，去商城购买吗？";
+"ME" = "我的";
+"CANCEL" = "取消";
+"SAVE" = "保存";
 
 "ERROR_LOGIN_FAILED" = "用户名和密码不匹配";
 "ERROR_CONNECT_NETWORK_FAILED" = "网络连接失败";
+"ERROR_PASSWORD_NOT_SAME" = "两次输入的密码不一致";
+"ERROR_VERIFICATION_CODE" = "输入的验证码不正确";
+"ERROR_USER_ALREADY_EXIST" = "手机号已经被注册";
 
 "MESSAGE_GET_MUSHROOM" = "成功收1枚蘑菇丢入囊中";
 "MESSAGE_GET_MONSTER" = "成功打败1个怪兽";

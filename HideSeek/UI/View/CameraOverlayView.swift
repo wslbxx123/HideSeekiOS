@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CameraOverlayView: UIView {
+class CameraOverlayView: UIView, HitMonsterDelegate {
     var mapView:MAMapView!
     
     @IBOutlet weak var bombNumBtn: UIButton!
@@ -16,15 +16,17 @@ class CameraOverlayView: UIView {
     @IBOutlet weak var mapUIView: UIView!
     @IBOutlet weak var setBombBtn: UIButton!
     @IBOutlet weak var distanceLabel: UILabel!
-    @IBOutlet weak var goalImageView: UIImageView!
+    @IBOutlet weak var monsterGuideBtn: UIButton!
+    @IBOutlet weak var distanceView: HomeView!
+    @IBOutlet weak var locationStackView: UIStackView!
+    @IBOutlet weak var goalImageView: GoalImageView!
+    @IBOutlet weak var swordImageView: SwordImageView!
     
     var setBombDelegate: SetBombDelegate!
     var guideDelegate: GuideDelegate!
     var getGoalDelegate: GetGoalDelegate!
-    var imageArray: Array<CGImage> = Array<CGImage>()
-    var ifGoalPaused: Bool = false
-    var ifGoalShowing: Bool = false
-    var animation: CAKeyframeAnimation!
+    var hitMonsterDelegate: HitMonsterDelegate!
+    var guideMonsterDelegate: GuideMonsterDelegate!
     
     private var _endGoal: Goal! = nil
     var endGoal: Goal! {
@@ -33,36 +35,32 @@ class CameraOverlayView: UIView {
         }
         set {
             _endGoal = newValue
-            ifGoalPaused = false
-            imageArray.removeAll()
-            
-            let imageNameArray = AnimationImageFactory.get(newValue)
-            
-            for imageName in imageNameArray {
-                let filePath = NSBundle.mainBundle().pathForResource(imageName as? String, ofType: ".png")
-                imageArray.append((UIImage(contentsOfFile: filePath!)?.CGImage)!)
-            }
-            
-            animation = CAKeyframeAnimation(keyPath: "contents")
-            animation.delegate = self
-            animation.values = imageArray
-            animation.duration = 3
-            if(newValue.type == Goal.GoalTypeEnum.bomb) {
-                animation.repeatCount = 1
-            } else {
-                animation.repeatCount = MAXFLOAT
-            }
+            goalImageView.endGoal = newValue
         }
     }
     
-    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
-        if endGoal!.type == Goal.GoalTypeEnum.bomb {
-            getGoalDelegate?.getGoal()
+    @IBAction func getBtnClicked(sender: AnyObject) {
+        if ifGoalShow() {
+            switch(_endGoal.type) {
+            case .mushroom:
+                getGoalDelegate?.getGoal()
+                break
+            case .monster:
+                swordImageView.hitMonster()
+                hitMonsterDelegate?.hitMonster()
+                break;
+            default:
+                break
+            }
         }
     }
     
     @IBAction func setBombClicked(sender: AnyObject) {
         setBombDelegate?.setBomb()
+    }
+    
+    @IBAction func monsterGuideClicked(sender: AnyObject) {
+        guideMonsterDelegate?.guideMonster()
     }
     
     @IBAction func guideBtnClicked(sender: AnyObject) {
@@ -81,8 +79,24 @@ class CameraOverlayView: UIView {
         super.init(coder: aDecoder)
     }
     
+    func getDuration(endGoal: Goal) -> Double{
+        switch(endGoal.type) {
+        case .bomb:
+            return 3
+        case .mushroom:
+            return 2
+        case .monster:
+            return 2
+        }
+    }
+    
     func addMapView(mapViewDelegate: MAMapViewDelegate) {
-        mapView = MAMapView(frame: CGRectMake(0, 0, CGRectGetWidth(mapUIView.bounds), CGRectGetHeight(mapUIView.bounds)))
+        if mapView == nil {
+            mapView = MAMapView(frame: CGRectMake(0, 0, CGRectGetWidth(mapUIView.bounds), CGRectGetHeight(mapUIView.bounds)))
+        } else {
+            mapView.removeFromSuperview()
+        }
+        
         mapView.showsUserLocation = true
         mapView.setUserTrackingMode(MAUserTrackingMode.Follow, animated: false)
         mapView.showsScale = true
@@ -95,17 +109,24 @@ class CameraOverlayView: UIView {
     }
     
     func showGoal() {
-        if(!ifGoalPaused && goalImageView.layer.animationForKey("goal") == nil) {
-            print("goalImageView show!!!!!!!!'")
-            goalImageView.layer.addAnimation(animation, forKey: "goal")
-            
-            if endGoal.type == Goal.GoalTypeEnum.bomb {
-                ifGoalPaused = true
-            }
-        }
+        goalImageView.getGoalDelegate = getGoalDelegate
+        swordImageView.hitMonsterDelegate = self
+        
+        print("goalImageView show!!!!!!!!'")
+        goalImageView.hidden = false
+        goalImageView.startAnimating()
     }
     
     func hideGoal() {
-        goalImageView.layer.removeAllAnimations()
+        goalImageView.hidden = true
+        goalImageView.stopAnimating()
+    }
+    
+    func ifGoalShow() -> Bool {
+        return !goalImageView.hidden
+    }
+    
+    func hitMonster() {
+        goalImageView.hitMonster()
     }
 }

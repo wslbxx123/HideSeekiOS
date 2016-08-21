@@ -45,4 +45,71 @@ class BaseInfoUtil {
         let stringRect = message!.boundingRectWithSize(size, options: option, attributes: attributes as? [String : AnyObject], context: nil)
         return stringRect.height
     }
+    
+    class func getLabelWidth(size: CGFloat, height: CGFloat, message: NSString?) -> CGFloat{
+        if message == nil {
+            return 0
+        }
+        
+        let font = UIFont.systemFontOfSize(size)
+        let option = NSStringDrawingOptions.UsesLineFragmentOrigin
+        let attributes = NSDictionary(object: font, forKey: NSFontAttributeName)
+        let size = CGSizeMake(CGFloat(MAXFLOAT), height)
+        let stringRect = message!.boundingRectWithSize(size, options: option, attributes: attributes as? [String : AnyObject], context: nil)
+        return stringRect.width
+    }
+
+    class func cancelButtonDelay(tableView: UITableView) {
+        for view in tableView.subviews {
+            if view.isKindOfClass(UIScrollView) {
+                let scroll = view as! UIScrollView
+                scroll.delaysContentTouches = false
+            }
+        }
+    }
+    
+    class func cancelButtonDelay(collectionView: UICollectionView) {
+        for view in collectionView.subviews {
+            if view.isKindOfClass(UIScrollView) {
+                let scroll = view as! UIScrollView
+                scroll.delaysContentTouches = false
+            }
+        }
+    }
+    
+    class func cancelButtonDelay(cell: UITableViewCell) {
+        for view in cell.subviews
+        {
+            if view.isKindOfClass(UIScrollView)
+            {
+                let scroll = view as! UIScrollView;
+                scroll.delaysContentTouches = false;
+            }
+        }
+    }
+    
+    class func cancelButtonDelay(cell: UICollectionViewCell) {
+        for view in cell.subviews
+        {
+            if view.isKindOfClass(UIScrollView)
+            {
+                let scroll = view as! UIScrollView;
+                scroll.delaysContentTouches = false;
+            }
+        }
+    }
+    
+    class func removeNullFromDictionary(dictionary: NSDictionary) -> NSMutableDictionary{
+        let mutableDictionary = NSMutableDictionary()
+        
+        for key in dictionary.allKeys {
+            let value = dictionary.objectForKey(key);
+            
+            if (value != nil && !value!.isKindOfClass(NSNull)) {
+                mutableDictionary.setValue(dictionary.objectForKey(key) as! NSString, forKey: key as! String);
+            }
+        }
+        
+        return mutableDictionary
+    }
 }

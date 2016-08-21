@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "朋友圈-1.png",
+      "filename" : "friend_group.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "朋友圈.png",
+      "filename" : "friend_group-1.png",
       "scale" : "2x"
     },
     {

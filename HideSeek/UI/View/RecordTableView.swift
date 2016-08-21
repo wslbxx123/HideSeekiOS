@@ -10,69 +10,57 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     let TAG_TIME_LABEL = 1
     let TAG_GOAL_IMAGEVIEW = 2
     let TAG_SCORE_LABEL = 3
+    let TAG_DATE_LABEL = 4
+    let TAG_DATE_VIEW = 5
+    let VISIBLE_REFRESH_COUNT = 2;
     
-    var recordList: NSArray!
+    var recordList: NSMutableArray!
     var tabelViewCell: UITableViewCell!
     var messageWidth: CGFloat!
     var infiniteScrollingView: UIView!
     var loadMoreDelegate: LoadMoreDelegate!
+    var screenHeight: CGFloat!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         self.dataSource = self
         self.delegate = self
-        self.recordList = NSArray()
+        self.recordList = NSMutableArray()
         self.setupInfiniteScrollingView()
+        self.screenHeight = UIScreen.mainScreen().bounds.height - 184
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return recordList.count
+        return 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.dequeueReusableCellWithIdentifier("recordCell")! as UITableViewCell
-        let record = recordList.objectAtIndex(indexPath.section) as! Record
-        let recordItem = record.recordItems.objectAtIndex(indexPath.row) as! RecordItem
+        let record = recordList.objectAtIndex(indexPath.row) as! Record
         
+        let dateLabel = cell.viewWithTag(TAG_DATE_LABEL) as! UILabel
         let timeLabel = cell.viewWithTag(TAG_TIME_LABEL) as! UILabel
         let goalImageView = cell.viewWithTag(TAG_GOAL_IMAGEVIEW) as! UIImageView
         let scoreLabel = cell.viewWithTag(TAG_SCORE_LABEL) as! UILabel
 
-        timeLabel.text = recordItem.time
-        switch(recordItem.goalType) {
-        case .mushroom:
-            goalImageView.image = UIImage(named: "mushroom")
-            break
-        case .monster:
-            goalImageView.image = UIImage(named: "monster")
-            break
-        case .bomb:
-            goalImageView.image = UIImage(named: "bomb")
-            break
+        timeLabel.text = record.time
+        
+        goalImageView.image = UIImage(named: GoalImageFactory.get(record.goalType, showTypeName: record.showTypeName))
+        scoreLabel.text = String(record.scoreSum)
+        dateLabel.text = String(record.date)
+        
+        if indexPath.row == 0 ||
+            record.date != (recordList.objectAtIndex(indexPath.row - 1) as! Record).date {
+        } else {
+            dateLabel.text = ""
         }
-        scoreLabel.text = String(recordItem.scoreSum)
 
-        if indexPath.section == recordList.count - 1 &&
-            indexPath.row == record.recordItems.count - 1 &&
-            getRecordCount() >= 10 {
-            self.tableFooterView = self.infiniteScrollingView
-            
-            loadMoreDelegate?.loadMore()
-        }
         return cell
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let record = recordList.objectAtIndex(section) as! Record
-        
-        return record.recordItems.count
-    }
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let record = recordList.objectAtIndex(section) as! Record
-        
-        return record.date
+        return recordList.count
     }
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -80,19 +68,29 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 60
-    }
-    
-    func getRecordCount() -> Int {
-        var count: Int = 0
+        let record = recordList.objectAtIndex(indexPath.row) as! Record
         
-        for record in recordList {
-            let recordInfo = record as! Record
-            
-            count += recordInfo.recordItems.count
+        if indexPath.row == 0 ||
+            record.date != (recordList.objectAtIndex(indexPath.row - 1) as! Record).date {
+            return 100
         }
         
-        return count
+        return 58
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let indexPath = self.indexPathForRowAtPoint(CGPointMake(scrollView.contentOffset.x + 30, scrollView.contentOffset.y + screenHeight - 100))
+        
+        if indexPath != nil {
+            print(indexPath!.row)
+        }
+        
+        if indexPath != nil && indexPath!.row >= self.recordList.count - VISIBLE_REFRESH_COUNT && self.recordList.count >= 10{
+            self.tableFooterView = self.infiniteScrollingView
+            self.tableFooterView?.hidden = false
+            
+            loadMoreDelegate?.loadMore()
+        }
     }
     
     func getMessage(goalType: Goal.GoalTypeEnum)-> String {
@@ -108,12 +106,12 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     
     func setupInfiniteScrollingView() {
         let screenWidth = UIScreen.mainScreen().bounds.width
-        self.infiniteScrollingView = UIView(frame: CGRectMake(0, self.contentSize.height, screenWidth, 60))
+        self.infiniteScrollingView = UIView(frame: CGRectMake(0, self.contentSize.height, screenWidth, 25))
         self.infiniteScrollingView!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
         self.infiniteScrollingView!.backgroundColor = UIColor.whiteColor()
         
         let loadinglabel = UILabel()
-        loadinglabel.frame.size = CGSize(width: 100, height: 50)
+        loadinglabel.frame.size = CGSize(width: 100, height: 20)
         loadinglabel.text = NSLocalizedString("LOADING", comment: "Loading...")
         loadinglabel.textAlignment = NSTextAlignment.Center
         loadinglabel.font = UIFont.systemFontOfSize(15.0)

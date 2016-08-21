@@ -186,7 +186,7 @@ extern NSString * const kMAMapLayerCameraDegreeKey;
 - (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated;
 
 /**
- * @brief 缩放级别
+ * @brief 缩放级别（默认3-19，有室内地图时为3-20）
  */
 @property (nonatomic) CGFloat zoomLevel;
 - (void)setZoomLevel:(CGFloat)zoomLevel animated:(BOOL)animated;
@@ -194,12 +194,12 @@ extern NSString * const kMAMapLayerCameraDegreeKey;
 /**
  * @brief 最小缩放级别
  */
-@property (nonatomic, readonly) CGFloat minZoomLevel;
+@property (nonatomic) CGFloat minZoomLevel;
 
 /**
- * @brief 最大缩放级别
+ * @brief 最大缩放级别（有室内地图时最大为20，否则为19）
  */
-@property (nonatomic, readonly) CGFloat maxZoomLevel;
+@property (nonatomic) CGFloat maxZoomLevel;
 
 /**
  * @brief 根据指定的枢纽点来缩放地图
@@ -276,6 +276,11 @@ extern NSString * const kMAMapLayerCameraDegreeKey;
  对应的回调是 - (void)mapView:(MAMapView *)mapView didTouchPois:(NSArray *)pois
  */
 @property (nonatomic) BOOL touchPOIEnabled;
+
+/**
+ *  是否以screenAnchor点作为锚点进行缩放，默认为YES。如果为NO，则以手势中心点作为锚点
+ */
+@property (nonatomic, assign) BOOL zoomingInPivotsAroundAnchorPoint;
 
 #pragma mark - userLocation
 /**
@@ -534,6 +539,13 @@ extern NSString * const kMAMapLayerCameraDegreeKey;
  * @return 指定overlay对应的Renderer
  */
 - (MAOverlayRenderer *)rendererForOverlay:(id <MAOverlay>)overlay;
+
+#pragma mark - Cache
+
+/**
+ @brief 清除所有磁盘上缓存的地图数据(不包括离线地图)。
+ */
+- (void)clearDisk;
 
 #pragma mark - compassView
 

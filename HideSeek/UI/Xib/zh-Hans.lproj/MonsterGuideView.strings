@@ -1,0 +1,9 @@
+
+/* Class = "UILabel"; text = "Win Score: "; ObjectID = "KEi-GE-SNF"; */
+"KEi-GE-SNF.text" = "战胜积分: ";
+
+/* Class = "UILabel"; text = "Battle Roles: "; ObjectID = "YLE-W6-r3m"; */
+"YLE-W6-r3m.text" = "战斗角色: ";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "YbZ-RO-IXw"; */
+"YbZ-RO-IXw.text" = "Label";

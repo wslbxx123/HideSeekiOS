@@ -7,6 +7,19 @@
 //
 
 class AnimationImageFactory {
+    class func getSwordArray() -> NSArray {
+        let imageArray = NSMutableArray()
+        imageArray.addObject("sword_a")
+        imageArray.addObject("sword_b")
+        imageArray.addObject("sword_c")
+        imageArray.addObject("sword_d")
+        imageArray.addObject("sword_e")
+        imageArray.addObject("sword_f")
+        imageArray.addObject("sword_g")
+        imageArray.addObject("sword_h")
+        return imageArray
+    }
+    
     class func get(goal: Goal) -> NSArray {
         var imageArray = NSMutableArray()
         switch goal.type {
@@ -79,5 +92,15 @@ class AnimationImageFactory {
         case .monster:
             return 5
         }
+    }
+    
+    class func getRoleArray()-> NSMutableArray{
+        let imageArray = NSMutableArray()
+        imageArray.addObject("grass_fairy")
+        imageArray.addObject("water_magician")
+        imageArray.addObject("fire_knight")
+        imageArray.addObject("stone_monster")
+        imageArray.addObject("lightning_giant")
+        return imageArray
     }
 }

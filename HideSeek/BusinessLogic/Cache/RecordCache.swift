@@ -16,12 +16,16 @@ class RecordCache : BaseCache<Record> {
     private var _scoreSum: Int = 0
     var scoreSum: Int {
         get{
-            if(_scoreSum > 0) {
-                return _scoreSum;
-            }
-            
             return recordTableManager.scoreSumValue
         }
+    }
+    
+    var recordList: NSMutableArray {
+        if(super.cacheList.count > 0) {
+            return super.cacheList
+        }
+        
+        return recordTableManager.searchRecords()
     }
     
     private override init() {
@@ -39,10 +43,14 @@ class RecordCache : BaseCache<Record> {
         version = recordTableManager.version
     }
     
+    func addRecords(result: NSDictionary!) {
+        saveRecords(result)
+        
+        getMoreRecord(10, hasLoaded: true)
+    }
+    
     func saveRecords(result: NSDictionary!) {
-        var currentDate: String!
         let list = NSMutableArray()
-        let recordItems = NSMutableArray()
         let tempVersion = result["version"] as? NSString
         var version: Int64
         if(tempVersion == nil) {
@@ -52,73 +60,37 @@ class RecordCache : BaseCache<Record> {
         }
         let recordMinId = (result["record_min_id"] as! NSString).longLongValue
         
-        let tempScoreSum = result["score_sum"] as? NSString
+        let tempScoreSum = result["score_sum"] as? NSNumber
         
         if(tempScoreSum != nil) {
             _scoreSum = tempScoreSum!.integerValue
         }
         
         let recordArray = result["scores"] as! NSArray
-        var index: Int = 0
         
         for record in recordArray{
             let recordInfo = record as! NSDictionary
             let time = recordInfo["time"] as! String
             let date = dateTimeFormatter.dateFromString(time)
-            let dateStr = dateFormatter.stringFromDate(date!)
             
-            if index == recordArray.count - 1 {
-                recordItems.addObject(RecordItem(
-                    recordId: (recordInfo["pk_id"] as! NSString).longLongValue,
-                    time: timeFormatter.stringFromDate(date!),
-                    goalType: Goal.GoalTypeEnum(rawValue: (recordInfo["goal_type"] as! NSString).integerValue)!,
-                    score: (recordInfo["score"] as! NSString).integerValue,
-                    scoreSum: (recordInfo["score_sum"] as! NSString).integerValue,
-                    version: (recordInfo["version"] as! NSString).longLongValue))
-                
-                currentDate = dateStr
-                list.addObject(Record(date: currentDate, recordItems: recordItems.copy() as! NSArray))
-                recordItems.removeAllObjects()
-            } else if currentDate != nil && dateStr != currentDate {
-                list.addObject(Record(date: currentDate, recordItems: recordItems.copy() as! NSArray))
-                recordItems.removeAllObjects()
-                
-                recordItems.addObject(RecordItem(
-                    recordId: (recordInfo["pk_id"] as! NSString).longLongValue,
-                    time: timeFormatter.stringFromDate(date!),
-                    goalType: Goal.GoalTypeEnum(rawValue: (recordInfo["goal_type"] as! NSString).integerValue)!,
-                    score: (recordInfo["score"] as! NSString).integerValue,
-                    scoreSum: (recordInfo["score_sum"] as! NSString).integerValue,
-                    version: (recordInfo["version"] as! NSString).longLongValue))
-            } else {
-                recordItems.addObject(RecordItem(
-                    recordId: (recordInfo["pk_id"] as! NSString).longLongValue,
-                    time: timeFormatter.stringFromDate(date!),
-                    goalType: Goal.GoalTypeEnum(rawValue: (recordInfo["goal_type"] as! NSString).integerValue)!,
-                    score: (recordInfo["score"] as! NSString).integerValue,
-                    scoreSum: (recordInfo["score_sum"] as! NSString).integerValue,
-                    version: (recordInfo["version"] as! NSString).longLongValue))
-            }
-            
-            currentDate = dateStr
-            index += 1
+            list.addObject(Record(date: dateFormatter.stringFromDate(date!),
+                recordId: (recordInfo["pk_id"] as! NSString).longLongValue,
+                time: timeFormatter.stringFromDate(date!),
+                goalType: Goal.GoalTypeEnum(rawValue: (recordInfo["goal_type"] as! NSString).integerValue)!,
+                score: (recordInfo["score"] as! NSString).integerValue,
+                scoreSum: (recordInfo["score_sum"] as! NSString).integerValue,
+                version: (recordInfo["version"] as! NSString).longLongValue,
+                showTypeName: recordInfo["show_type_name"] as? String))
         }
         
-        recordTableManager.updateRecords(scoreSum, recordMinId: recordMinId, version: version, recordList: list)
+        recordTableManager.updateRecords(_scoreSum, recordMinId: recordMinId, version: version, recordList: list)
     }
     
-    func getMoreRecord(count: Int) -> NSArray{
-        let recordList = recordTableManager.getMoreRecords(count, version: version)
+    func getMoreRecord(count: Int, hasLoaded: Bool) -> Bool{
+        let recordList = recordTableManager.getMoreRecords(count, version: version, hasLoaded: hasLoaded)
         
-        if recordList.count > 0 {
-            let lastRecord = cacheList[cacheList.count - 1] as! Record
-            let firstRecord = cacheList[0] as! Record
-            if lastRecord.date == firstRecord.date {
-                lastRecord.recordItems.arrayByAddingObjectsFromArray(firstRecord.recordItems as [AnyObject])
-                recordList.removeObject(firstRecord)
-            }
-        }
+        self.cacheList.addObjectsFromArray(recordList as [AnyObject])
         
-        return recordList
+        return recordList.count > 0
     }
 }

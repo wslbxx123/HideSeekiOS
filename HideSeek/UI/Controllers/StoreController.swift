@@ -7,41 +7,33 @@
 //
 
 import UIKit
-import AFNetworking
 
 class StoreController: UIViewController {
-    let HtmlType = "text/html"
-    let TAG_LOADING_IMAGEVIEW = 1
     @IBOutlet weak var segmentControl: UISegmentedControl!
-    @IBOutlet weak var purchaseCollectionView: PurchaseCollectionView!
-    var manager: AFHTTPRequestOperationManager!
-    var refreshControl: UIRefreshControl!
-    var angle: CGFloat = 0
-    var loadingImageView: UIImageView!
-    var customLoadingView: UIView!
+    @IBOutlet weak var contentView: UIView!
+    var purchaseController: PurchaseController!
+    var exchangeController: ExchangeController!
+    var rect: CGRect!
+    
+    @IBAction func storeBackBtnClicked(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         initView()
-        manager = AFHTTPRequestOperationManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
-        UIView.animateWithDuration(0.25,
-                                   delay: 0,
-                                   options: UIViewAnimationOptions.BeginFromCurrentState,
-                                   animations: {
-                                    
-                                    self.purchaseCollectionView.contentOffset = CGPointMake(0, -self.refreshControl.frame.size.height);
-            }, completion: { (finished) in
-                self.refreshControl.beginRefreshing()
-                self.refreshControl.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-        })
+        showPurchaseArea()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+
     }
 
     @IBAction func segmentControlChanged(sender: AnyObject) {
@@ -50,6 +42,7 @@ class StoreController: UIViewController {
             showPurchaseArea()
             break;
         case 1:
+            showExchangeArea()
             break;
         default:
             break;
@@ -57,10 +50,6 @@ class StoreController: UIViewController {
     }
     
     func initView() {
-        refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(StoreController.refreshData), forControlEvents: UIControlEvents.ValueChanged)
-        purchaseCollectionView.addSubview(refreshControl)
-        purchaseCollectionView.alwaysBounceVertical = true
         let font = UIFont.systemFontOfSize(14.0)
         let color = UIColor.blackColor()
         let yellowColor = BaseInfoUtil.stringToRGB("#ffcc00")
@@ -80,45 +69,32 @@ class StoreController: UIViewController {
         segmentControl.layer.masksToBounds = true;
         segmentControl.apportionsSegmentWidthsByContent = true
         
-        let refreshContents = NSBundle.mainBundle().loadNibNamed("RefreshView",
-                                                                 owner: self, options: nil)
-        customLoadingView = refreshContents[0] as! UIView
-        loadingImageView = customLoadingView.viewWithTag(TAG_LOADING_IMAGEVIEW) as! UIImageView
-        customLoadingView.frame = refreshControl.bounds
-        refreshControl.addSubview(customLoadingView)
-    }
-    
-    func refreshData() {
-        let paramDict: NSMutableDictionary = ["version": 0,
-                                              "product_min_id": 0]
-        manager.POST(UrlParam.REFRESH_PURCHASE_URL,
-                     parameters: paramDict,
-                     success: { (operation, responseObject) in
-                        let response = responseObject as! NSDictionary
-                        print("JSON: " + responseObject.description!)
-                        ProductCache.instance.setProducts(response["result"] as! NSDictionary)
-                        
-                        self.purchaseCollectionView.productList = ProductCache.instance.cacheList
-                        self.purchaseCollectionView.reloadData()
-                        self.refreshControl.endRefreshing()
-            },
-                     failure: { (operation, error) in
-                        print("Error: " + error.localizedDescription)
-        })
-        playAnimateRefresh()
-    }
-    
-    func playAnimateRefresh() {
-        UIView.beginAnimations(nil, context: nil)
-        UIView.setAnimationDuration(0.01)
-        UIView.setAnimationDelegate(self)
-        UIView.setAnimationDidStopSelector(#selector(RaceGroupController.endAnimation))
-        self.loadingImageView.transform = CGAffineTransformMakeRotation(angle * CGFloat(M_PI / 180))
-        UIView.commitAnimations()
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        purchaseController = storyboard.instantiateViewControllerWithIdentifier("purchase") as! PurchaseController
+        exchangeController = storyboard.instantiateViewControllerWithIdentifier("exchange") as! ExchangeController
+        rect = UIScreen.mainScreen().bounds
+        purchaseController.view.layer.frame = CGRectMake(
+            purchaseController.view.layer.frame.minX,
+            purchaseController.view.layer.frame.minY,
+            purchaseController.view.layer.frame.width,
+            purchaseController.view.layer.frame.height - 128)
+        exchangeController.view.layer.frame = CGRectMake(
+            exchangeController.view.layer.frame.minX,
+            exchangeController.view.layer.frame.minY,
+            exchangeController.view.layer.frame.width,
+            exchangeController.view.layer.frame.height - 128)
     }
     
     func showPurchaseArea() {
-        
+        self.addChildViewController(purchaseController)
+        contentView.addSubview(purchaseController.view)
+        exchangeController.removeFromParentViewController()
     }
 
+    func showExchangeArea() {
+        self.addChildViewController(exchangeController)
+        contentView.addSubview(exchangeController.view)
+        
+        purchaseController.removeFromParentViewController()
+    }
 }

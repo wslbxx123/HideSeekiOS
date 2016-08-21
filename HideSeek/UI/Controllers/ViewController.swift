@@ -15,10 +15,11 @@ class ViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        uiTabBar.tintColor = BaseInfoUtil.stringToRGB("ffcc00")
+        uiTabBar.tintColor = UIColor.blackColor()
         
         for item in uiTabBar.items! {
             item.image = item.image?.imageWithRenderingMode(.AlwaysOriginal)
+            item.selectedImage = item.selectedImage?.imageWithRenderingMode(.AlwaysOriginal)
         }
     }
     

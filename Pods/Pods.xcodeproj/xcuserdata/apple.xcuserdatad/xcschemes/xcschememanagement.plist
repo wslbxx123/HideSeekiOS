@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>PEPhotoCropEditor.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-HideSeek.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,7 +32,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>085B80A007A3EEDDD9823246B45DB9BE</key>
+		<key>2CB780A3052DC7D845D09CEE3CCFDA6A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -37,7 +42,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C52A62017894F6240C3316E065B591EE</key>
+		<key>99A5DE99AF1B2CD4C59BC066C0D62089</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BD7F588C36705C4D4AF3930C05066179</key>
 		<dict>
 			<key>primary</key>
 			<true/>

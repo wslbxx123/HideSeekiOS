@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "房子2 copy.png",
+      "filename" : "home-1.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "房子2.png",
+      "filename" : "home.png",
       "scale" : "2x"
     },
     {

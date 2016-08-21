@@ -13,14 +13,16 @@ class RecordItem {
     var score: Int
     var scoreSum: Int
     var version: Int64
+    var showTypeName: String?
     
     init(recordId: Int64, time: String, goalType: Goal.GoalTypeEnum,
-         score: Int, scoreSum: Int, version: Int64) {
+         score: Int, scoreSum: Int, version: Int64, showTypeName: String?) {
         self.recordId = recordId
         self.time = time
         self.goalType = goalType
         self.score = score
         self.scoreSum = scoreSum
         self.version = version
+        self.showTypeName = showTypeName
     }
 }

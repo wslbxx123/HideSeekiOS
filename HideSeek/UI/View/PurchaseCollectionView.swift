@@ -7,9 +7,12 @@
 //
 
 class PurchaseCollectionView: UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    let VISIBLE_REFRESH_COUNT = 3
     var cellIdentifier: String = "purchaseCell"
     var productList: NSArray!
     var bound: CGRect!
+    var screenHeight: CGFloat!
+    var purchaseDelegate: PurchaseDelegate!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -18,6 +21,10 @@ class PurchaseCollectionView: UICollectionView, UICollectionViewDelegateFlowLayo
         self.registerClass(PurchaseCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
         self.productList = NSArray()
         self.bound = UIScreen.mainScreen().bounds
+        self.screenHeight = bound.height
+        
+        self.delaysContentTouches = false
+        BaseInfoUtil.cancelButtonDelay(self)
     }
     
     /**
@@ -32,13 +39,17 @@ class PurchaseCollectionView: UICollectionView, UICollectionViewDelegateFlowLayo
         
         if(indexPath.row < productList.count) {
             let product = productList.objectAtIndex(indexPath.row) as! Product
+            cell.purchaseDelegate = purchaseDelegate
             cell.backgroundColor = UIColor.whiteColor()
+            cell.product = product
             cell.setName(product.name)
             cell.setImageUrl(product.imageUrl)
             cell.setPrice(product.price)
             cell.setPurchaseCount(product.purchaseCount)
             cell.setIntroduction(product.introduction)
+            cell.setPurchaseBtn()
         }
+        BaseInfoUtil.cancelButtonDelay(cell)
         return cell
     }
     
@@ -48,15 +59,29 @@ class PurchaseCollectionView: UICollectionView, UICollectionViewDelegateFlowLayo
         let nameheight = BaseInfoUtil.getLabelHeight(15,
                                                      width: bound.width / 2 - 40,
                                                      message: product.name)
-        let introductionHeight = BaseInfoUtil.getLabelHeight(12,
-                                                             width: bound.width / 2 - 40,
-                                                             message: product.introduction)
-        let height = nameheight + introductionHeight + bound.width / 2 + 30
+        
+        let height = nameheight + bound.width / 2 + 80
         return CGSizeMake((bound.width - 40) / 2, height)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         let edgeInsets = UIEdgeInsetsMake(15, 15, 5, 15)
         return edgeInsets
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let indexPath = self.indexPathForItemAtPoint(CGPointMake(scrollView.contentOffset.x + 30, scrollView.contentOffset.y + screenHeight - 104))
+        
+        if indexPath != nil && indexPath!.row >= self.productList.count / 2 - VISIBLE_REFRESH_COUNT && self.productList.count >= 10{
+//            self.collectionvIEWfOOT = self.infiniteScrollingView
+//            
+//            loadMoreDelegate?.loadMore()
+        }
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let location:CGPoint! = touches.first?.locationInView(self)
+        
+        print("\(location.x) : \(location.y)")
     }
 }

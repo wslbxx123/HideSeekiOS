@@ -13,12 +13,13 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
     let TAG_LOADING_IMAGEVIEW = 1
     var manager: CustomRequestManager!
     @IBOutlet weak var recordTableView: RecordTableView!
-    @IBOutlet weak var scoreSum: UILabel!
+    @IBOutlet weak var scoreSumLabel: UILabel!
     var refreshControl: UIRefreshControl!
     var recordTableManager: RecordTableManager!
     var loadingImageView: UIImageView!
     var customLoadingView: UIView!
     var angle: CGFloat = 0
+    var isLoading: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,9 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        self.recordTableView.recordList = RecordCache.instance.recordList
+        self.recordTableView.reloadData()
+        
         if(UserCache.instance.ifLogin()) {
             UIView.animateWithDuration(0.25,
                                        delay: 0,
@@ -44,6 +48,14 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
                     self.refreshControl.sendActionsForControlEvents(UIControlEvents.ValueChanged)
             })
         }
+        
+        self.tabBarController?.tabBar.hidden = false
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.tabBarController?.tabBar.hidden = true
+        
+        super.viewWillDisappear(animated)
     }
 
     override func didReceiveMemoryWarning() {
@@ -64,6 +76,8 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
         loadingImageView = customLoadingView.viewWithTag(TAG_LOADING_IMAGEVIEW) as! UIImageView
         customLoadingView.frame = refreshControl.bounds
         refreshControl.addSubview(customLoadingView)
+        recordTableView.layoutMargins = UIEdgeInsetsZero
+        self.automaticallyAdjustsScrollViewInsets = false
     }
     
     func refreshData() {
@@ -74,7 +88,7 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
                         print("JSON: " + responseObject.description!)
                         let response = responseObject as! NSDictionary
                         RecordCache.instance.setRecords(response["result"] as! NSDictionary)
-                        self.scoreSum.text = String(RecordCache.instance.scoreSum)
+                        self.scoreSumLabel.text = String(RecordCache.instance.scoreSum)
                         self.recordTableView.recordList = RecordCache.instance.cacheList
                         self.recordTableView.reloadData()
                         self.refreshControl.endRefreshing()
@@ -102,28 +116,37 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
     }
     
     func loadMore() {
-        let recordList = RecordCache.instance.getMoreRecord(10)
-        
-        if(recordList.count == 0) {
-            let paramDict: NSMutableDictionary = ["version": String(recordTableManager.version), "record_min_id": String(recordTableManager.recordMinId)]
-            manager.POST(UrlParam.GET_RECORD_URL,
-                         paramDict: paramDict,
-                         success: { (operation, responseObject) in
-                            print("JSON: " + responseObject.description!)
-                            let response = responseObject as! NSDictionary
-                            RecordCache.instance.setRecords(response["result"] as! NSDictionary)
-                            
-                            self.recordTableView.recordList = RecordCache.instance.cacheList
-                            self.recordTableView.reloadData()
-                            self.recordTableView.tableFooterView = nil
-                },
-                         failure: { (operation, error) in
-                            print("Error: " + error.localizedDescription)
-                            self.recordTableView.tableFooterView = nil
-            })
-        } else {
-            self.recordTableView.recordList.arrayByAddingObjectsFromArray(recordList as [AnyObject])
-            self.recordTableView.reloadData()
+        if !isLoading {
+            isLoading = true
+            
+            let hasData = RecordCache.instance.getMoreRecord(10, hasLoaded: false)
+            
+            if(!hasData) {
+                let paramDict: NSMutableDictionary = ["version": String(recordTableManager.version), "record_min_id": String(recordTableManager.recordMinId)]
+                manager.POST(UrlParam.GET_RECORD_URL,
+                             paramDict: paramDict,
+                             success: { (operation, responseObject) in
+                                print("JSON: " + responseObject.description!)
+                                let response = responseObject as! NSDictionary
+                                RecordCache.instance.addRecords(response["result"] as! NSDictionary)
+                                
+                                self.recordTableView.recordList = RecordCache.instance.cacheList
+                                self.recordTableView.reloadData()
+                                self.isLoading = false
+                                self.recordTableView.tableFooterView?.hidden = true
+                    },
+                             failure: { (operation, error) in
+                                print("Error: " + error.localizedDescription)
+                                self.recordTableView.tableFooterView?.hidden = true
+                })
+            } else {
+                self.recordTableView.recordList.removeAllObjects()
+                self.recordTableView.recordList.addObjectsFromArray(RecordCache.instance.recordList as [AnyObject])
+                self.recordTableView.reloadData()
+                
+                isLoading = false
+                self.recordTableView.tableFooterView?.hidden = true
+            }
         }
     }
 }

@@ -6,14 +6,52 @@
   Copyright © 2016 mj. All rights reserved.
 */
 
+"CFBundleDisplayName" = "HideSeek";
 "LOADING_HINT" = "Please wait...";
 "JOIN" = "join";
 "SCORE_TITLE" = " Score：%d ";
 "LOADING" = "Loading...";
 "M" = "%.0f m";
+"PURCHASE" = "Purchase";
+"PURCHASE_COUNT" = "%d purchased";
+"EXCHAGNE_COUNT" = "%d exchanged";
+"SEND_VERIFICATION_CODE" = "Send Verification Code";
+"MALE" = "Male";
+"FEMALE" = "Female";
+"NOT_SET" = "Not Set";
+"SECRET" = "Secret";
+"CANCEL" = "Cancel";
+"CAMERA" = "Camera";
+"PHOTO_LIBRARY" = "Photo Library";
+"SEARCH" = "Search";
+"LOCATING" = "Locating";
+"CURRENT_CITY" = "Current City";
+"RE_LOCATE" = "Re-Locate";
+"FAILED_TO_LOCATE" = "Failed to locate";
+"GRASS_FAIRY" = "Grass Fairy";
+"WATER_MAGICIAN" = "Water Magician";
+"FIRE_KNIGHT" = "Fire Knight";
+"STONE_MONSTER" = "Stone Monster";
+"LIGHTNING_GIANT" = "Lightning Giant";
+"AMOUNT_TITLE" = "Amount: %.2f yuan";
+"EXCHANGE_AMOUNT_TITLE" = "Amount: %.2f score";
+"TRANSACTION_COMPLETE" = "Transaction Completed";
+"ORDER_PROCESSING" = "The order is being processed";
+"FALIED_PAY_ORDER" = "Failed to pay the order";
+"ORDER_CANCLED" = "The order is canceled";
+"FAILED_CONNECT_NETWORK" = "Failed to connect the network";
+"OK" = "OK";
+"NOT_HAS_GUIDE" = "You don't have monster guide. Go to store to buy one?";
+"NOT_HAS_BOMB" = "You don't have bombs. Go to store to buy some?";
+"ME" = "Me";
+"CANCEL" = "Cancel";
+"SAVE" = "Save";
 
 "ERROR_LOGIN_FAILED" = "Phone or password error";
 "ERROR_CONNECT_NETWORK_FAILED" = "Failed to connect the network";
+"ERROR_PASSWORD_NOT_SAME" = "Two passwords are not the same";
+"ERROR_VERIFICATION_CODE" = "The input verification code is wrong";
+"ERROR_USER_ALREADY_EXIST" = "The phone is already registered";
 
 "MESSAGE_GET_MUSHROOM" = "Get a mushroom into a sack successfully";
 "MESSAGE_GET_MONSTER" = "Beat a monster successfully";

@@ -12,4 +12,8 @@ class BaseCache<T> {
     init() {
         cacheList = []
     }
+    
+    func clearList() {
+        cacheList.removeAllObjects()
+    }
 }

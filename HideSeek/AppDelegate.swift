@@ -10,17 +10,21 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    let mapKey = "293ee05942de45f4f221656ca2faa5b9"
-    let audioKey = "578cb259"
+    let MAP_KEY = "293ee05942de45f4f221656ca2faa5b9"
+    let AUDIO_KEY = "578cb259"
+    let SMS_KEY = "156855918c1ab"
+    let SMS_SECRET = "5a5efd0f24dbafa7647c7dd60fd99fed"
     var window: UIWindow?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        AMapServices.sharedServices().apiKey = mapKey
-        let initString = NSString.init(format: "appid=%@", audioKey)
+        AMapServices.sharedServices().apiKey = MAP_KEY
+        let initString = NSString.init(format: "appid=%@", AUDIO_KEY)
         IFlySpeechUtility.createUtility(initString as String)
+        SMSSDK.registerApp(SMS_KEY, withSecret: SMS_SECRET)
+        
         return true
     }
 
@@ -46,6 +50,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+        if url.host == "safepay" {
+            AlipaySDK.defaultService().processOrderWithPaymentResult(url, standbyCallback: { (result) in
+                NSLog("result = %@", result.description);
+                
+                let resultDic = result as NSDictionary
+                let resultStatus = resultDic["resultStatus"]?.integerValue
+                let message = AlipayManager.instance.getAlipayResult(resultStatus!)
+                
+                let window = UIApplication.sharedApplication().keyWindow
+                let controller = window!.visibleViewController()
+                
+                if controller.isKindOfClass(StoreController) {
+                    let storeController = controller as! StoreController
+                    if(resultStatus == 9000) {
+                        storeController.purchaseController.showMessage(message as String, type: HudToastFactory.MessageType.SUCCESS)
+                        storeController.purchaseController.close()
+                    } else {
+                        storeController.purchaseController.showMessage(message as String, type: HudToastFactory.MessageType.ERROR)
+                    }
+                } else if controller.isKindOfClass(MyOrderController){
+                    let myOrderController = controller as! MyOrderController
+                    if(resultStatus == 9000) {
+                        myOrderController.purchaseOrderController.showMessage(message as String, type: HudToastFactory.MessageType.SUCCESS)
+                         myOrderController.purchaseOrderController.close()
+                    }
+                    myOrderController.purchaseOrderController.showMessage(message as String, type: HudToastFactory.MessageType.ERROR)
+                }
+            })
+        }
+        return true;
+    }
 }
 

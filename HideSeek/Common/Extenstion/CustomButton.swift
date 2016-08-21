@@ -27,4 +27,13 @@ extension UIButton {
         
         return image;
     }
+    
+    func setImageUpTitleDown() {
+        let internalImage = self.imageForState(UIControlState.Normal)
+        self.titleEdgeInsets = UIEdgeInsetsMake(30, -internalImage!.size.width, 0, 0)
+        
+        let height = self.titleLabel?.frame.size.height
+        let width = BaseInfoUtil.getLabelWidth((self.titleLabel?.font.pointSize)!, height: height!, message: self.currentTitle)
+        self.imageEdgeInsets = UIEdgeInsetsMake(-8, 0, 0, -width)
+    }
 }

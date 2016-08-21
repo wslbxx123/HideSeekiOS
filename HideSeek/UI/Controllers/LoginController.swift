@@ -15,6 +15,8 @@ class LoginController: UIViewController {
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var phoneTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var loginScrollView: UIScrollView!
+    
     var manager: AFHTTPRequestOperationManager!
     var phone: String = ""
     var password: String = ""
@@ -41,17 +43,21 @@ class LoginController: UIViewController {
                     failure: { (operation, error) in
                         print("Error: " + error.localizedDescription)
                         let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                        HudToastFactory.show(errorMessage, view: self.view)
+                        HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
                         hud.removeFromSuperview()
                         hud = nil
         })
     }
     
     @IBAction func phoneTextChanged(sender: AnyObject) {
+        phone = phoneTextField.text!
+        
         checkIfLoginEnabled()
     }
     
     @IBAction func passwordTextChanged(sender: AnyObject) {
+        password = passwordTextField.text!
+        
         checkIfLoginEnabled()
     }
     
@@ -59,6 +65,28 @@ class LoginController: UIViewController {
         super.viewDidLoad()
         
         initView()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.navigationController?.navigationBarHidden = true
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.navigationBarHidden = true
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.navigationController?.navigationBarHidden = false
+        
+        super.viewWillDisappear(animated)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        loginScrollView.contentSize = CGSizeMake(UIScreen.mainScreen().bounds.width, 700)
     }
 
     override func didReceiveMemoryWarning() {
@@ -70,12 +98,11 @@ class LoginController: UIViewController {
         loginBtn.setBackgroundColor("#fccb05", selectedColorStr: "#ffa200", disabledColorStr: "#bab8b8")
         loginBtn.layer.cornerRadius = 5
         loginBtn.layer.masksToBounds = true
+        loginScrollView.delaysContentTouches = false
+        self.automaticallyAdjustsScrollViewInsets = false
     }
     
     func checkIfLoginEnabled() {
-        phone = phoneTextField.text!
-        password = passwordTextField.text!
-        
         loginBtn.enabled = !phone.isEmpty && !password.isEmpty
     }
     
@@ -84,18 +111,10 @@ class LoginController: UIViewController {
         
         if code == CodeParam.SUCCESS {
             UserCache.instance.setUser(response["result"] as! NSDictionary)
-            self.dismissViewControllerAnimated(true, completion: nil)
-            self.closure()
+            self.navigationController?.popViewControllerAnimated(true)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
         }
-    }
-    
-    typealias Closure = () ->Void
-    var closure: Closure!
-    
-    func callBack(closure: Closure!) {
-        self.closure = closure
     }
 }

@@ -16,9 +16,13 @@ class Goal{
     var isEnabled: Bool
     var showTypeName: String?
     var isSelected: Bool = false
+    var createBy: Int64
+    var introduction: String?
+    var score: Int
     
     init(pkId: Int64, latitude: Double, longitude: Double, orientation: Int, valid: Bool,
-         type: GoalTypeEnum, isEnabled: Bool, showTypeName: String?) {
+         type: GoalTypeEnum, isEnabled: Bool, showTypeName: String?, createBy: Int64,
+         introduction: String?, score: Int) {
         self.pkId = pkId
         self.latitude = latitude
         self.longitude = longitude
@@ -27,6 +31,9 @@ class Goal{
         self.type = type
         self.isEnabled = isEnabled
         self.showTypeName = showTypeName
+        self.createBy = createBy
+        self.introduction = introduction
+        self.score = score
     }
     enum GoalTypeEnum : Int{
         case mushroom = 1

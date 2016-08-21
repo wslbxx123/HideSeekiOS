@@ -29,12 +29,13 @@ class UserCache {
         }
     }
     
-    func setUser(userInfo: NSDictionary!) {
+    func setUser(userInfo: NSDictionary) {
         user = from(userInfo)
         
         if(user.pkId > 0) {
             NSUserDefaults.standardUserDefaults().setObject(userInfo["session_id"], forKey: UserDefaultParam.SESSION_TOKEN)
-            NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+            let tempUserInfo = BaseInfoUtil.removeNullFromDictionary(userInfo)
+            NSUserDefaults.standardUserDefaults().setObject(tempUserInfo, forKey: UserDefaultParam.USER_INFO)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
@@ -45,19 +46,25 @@ class UserCache {
                          sessionId: userInfo["session_id"] as! String,
                          nickname: userInfo["nickname"] as! String,
                          registerDateStr: userInfo["register_date"] as! String,
+                         record: (userInfo["record"] as! NSString).doubleValue,
                          role: User.RoleEnum(rawValue: (userInfo["role"] as! NSString).integerValue)!,
                          version: (userInfo["version"] as! NSString).longLongValue,
                          pinyin: PinYinUtil.converterToFirstSpell(userInfo["nickname"] as! String),
-                         bombNum: (userInfo["bomb_num"] as! NSNumber).integerValue,
-                         hasGuide: (userInfo["has_guide"] as! NSString).integerValue == 1)
+                         bombNum: (userInfo["bomb_num"] as! NSString).integerValue,
+                         hasGuide: (userInfo["has_guide"] as! NSString).integerValue == 1,
+                         friendNum: (userInfo["friend_num"] as! NSString).integerValue)
         
-        if((userInfo.objectForKey("photo_url")) != nil) {
-            user.photoUrl = userInfo["photo_url"] as! String
+        if(userInfo.objectForKey("photo_url") != nil && !userInfo.objectForKey("photo_url")!.isKindOfClass(NSNull)) {
+            user.photoUrl = userInfo["photo_url"] as! NSString
         }
         
-        if((userInfo.objectForKey("sex")) != nil) {
-            user.sex = User.SexEnum(rawValue: (userInfo["sex"] as! NSString).integerValue)
+        if(userInfo.objectForKey("small_photo_url") != nil && !userInfo.objectForKey("small_photo_url")!.isKindOfClass(NSNull)) {
+            user.smallPhotoUrl = userInfo["small_photo_url"] as! NSString
         }
+        
+        user.sex = User.SexEnum(rawValue: (userInfo["sex"] as! NSString).integerValue)!
+        
+        user.region = userInfo["region"] as? String
         
         return user
     }
