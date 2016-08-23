@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "3179102308CA3448B78F8855F03BCE66439F493F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "3179102308CA3448B78F8855F03BCE66439F493F" : 0,
+    "F23FE039E203161C6DB02AD836EF228173A11733" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "61595503-54A2-4853-9C68-55178C1CBA65",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "3179102308CA3448B78F8855F03BCE66439F493F" : "HideSeek\/",
+    "F23FE039E203161C6DB02AD836EF228173A11733" : "..\/Android\/HideSeek"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "HideSeek",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "HideSeek.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:wslbxx123\/HideSeekiOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3179102308CA3448B78F8855F03BCE66439F493F"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:wslbxx123\/HideSeekAndroid.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F23FE039E203161C6DB02AD836EF228173A11733"
+    }
+  ]
+}
