@@ -27,6 +27,10 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         manager = CustomRequestManager()
         manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -67,7 +71,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         if mediaType != nil && mediaType!.isEqualToString("public.image") {
             let originImage = info[UIImagePickerControllerOriginalImage] as! UIImage
             
-            let scaledImage = scaleImage(originImage, toScale: 0.3)
+            let scaledImage = scaleImage(originImage, toScale: 0.8)
             
             if (UIImagePNGRepresentation(scaledImage) == nil){
                 data = UIImageJPEGRepresentation(scaledImage, 1)!
@@ -105,7 +109,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         hud.dimBackground = true
         manager.POST(UrlParam.UPDATE_PHOTO_URL, paramDict: paramDict, constructingBodyWithBlock: { (formData) in
             if self.croppedImage != nil {
-                let imgData = UIImageJPEGRepresentation(self.croppedImage!, 0.5);
+                let imgData = UIImageJPEGRepresentation(self.croppedImage!, 1);
                 formData.appendPartWithFileData(imgData!, name: "photo", fileName: "photo", mimeType: "image/jpeg")
             }
             }, success: { (operation, responseObject) in

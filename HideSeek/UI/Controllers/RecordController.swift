@@ -14,6 +14,7 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
     var manager: CustomRequestManager!
     @IBOutlet weak var recordTableView: RecordTableView!
     @IBOutlet weak var scoreSumLabel: UILabel!
+    @IBOutlet weak var noResultStackView: UIStackView!
     var refreshControl: UIRefreshControl!
     var recordTableManager: RecordTableManager!
     var loadingImageView: UIImageView!
@@ -90,6 +91,11 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
                         RecordCache.instance.setRecords(response["result"] as! NSDictionary)
                         self.scoreSumLabel.text = String(RecordCache.instance.scoreSum)
                         self.recordTableView.recordList = RecordCache.instance.cacheList
+                        if self.recordTableView.recordList.count == 0 {
+                            self.noResultStackView.hidden = false
+                        } else {
+                            self.noResultStackView.hidden = true
+                        }
                         self.recordTableView.reloadData()
                         self.refreshControl.endRefreshing()
             },

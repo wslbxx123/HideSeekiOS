@@ -112,4 +112,83 @@ class BaseInfoUtil {
         
         return mutableDictionary
     }
+    
+    class func getRootViewController() -> UIViewController{
+        var controller: UIViewController
+        let systemVersion: NSString = UIDevice.currentDevice().systemVersion
+        if systemVersion.floatValue < 6.0 {
+            let array = UIApplication.sharedApplication().windows
+            let window = array[0]
+            
+            let uiview = window.subviews[0]
+            controller = uiview.nextResponder() as! UIViewController
+        } else {
+            controller = (UIApplication.sharedApplication().keyWindow?.rootViewController)!
+        }
+        
+        return controller
+    }
+    
+    class func checkIfGoToLogin(viewController: UIViewController) -> Bool {
+        if UserCache.instance.ifLogin() {
+            return false
+        }
+        
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        let loginController = storyboard.instantiateViewControllerWithIdentifier("Login") as! WarningController
+        
+        viewController.navigationController?.pushViewController(loginController, animated: true)
+        
+        return true
+    }
+    
+    class func getCachesPath() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, .UserDomainMask, true)
+        var cachePath = paths[0]
+        cachePath = cachePath.stringByAppendingFormat("/%@", NSBundle.mainBundle().bundleIdentifier!)
+        return cachePath
+    }
+    
+    class func cachefileSize() -> String {
+        let basePath = getCachesPath()
+        let fileManager = NSFileManager.defaultManager()
+        var total: Float = 0
+        if fileManager.fileExistsAtPath(basePath){
+            let childrenPath = fileManager.subpathsAtPath(basePath)
+            if childrenPath != nil{
+                for path in childrenPath!{
+                    let childPath = basePath.stringByAppendingString("/").stringByAppendingString(path)
+                    do{
+                        let attr = try fileManager.attributesOfItemAtPath(childPath)
+                        let fileSize = attr["NSFileSize"] as! Float
+                        total += fileSize
+                        
+                    }catch _{
+                        
+                    }
+                }
+            }
+        }
+        
+        return NSString(format: "%.2f MB", total / 1024.0 / 1024.0 ) as String
+    }
+    
+    class func clearCache() -> Bool{
+        var result = true
+        let basePath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
+        let fileManager = NSFileManager.defaultManager()
+        if fileManager.fileExistsAtPath(basePath!){
+            let childrenPath = fileManager.subpathsAtPath(basePath!)
+            for childPath in childrenPath!{
+                let cachePath = basePath?.stringByAppendingString("/").stringByAppendingString(childPath)
+                do{
+                    try fileManager.removeItemAtPath(cachePath!)
+                }catch _{
+                    result = false
+                }
+            }
+        }
+        
+        return result
+    }
 }

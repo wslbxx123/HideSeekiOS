@@ -10,8 +10,9 @@ import UIKit
 import MobileCoreServices
 import AFNetworking
 import CoreMotion.CMMotionManager
+import MBProgressHUD
 
-class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate {
+class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, ArriveDelegate, RefreshMapDelegate {
     let HtmlType = "text/html"
     let REFRESH_MAP_INTERVAL: Double = 5
     var manager: AFHTTPRequestOperationManager!
@@ -37,6 +38,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     var grayView: UIView!
     var locManager: CLLocationManager!
     var guideView: MonsterGuideView!
+    var ifSeeGoal: Bool = false
     
     override func viewDidLoad() {
         openCamera()
@@ -52,9 +54,6 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         
         locManager = CLLocationManager()
         locManager.delegate = self
-        if CLLocationManager.headingAvailable() {
-            locManager.startUpdatingHeading()
-        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -73,6 +72,9 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         
         self.tabBarController?.tabBar.hidden = false
         self.navigationController?.navigationBarHidden = true
+        if CLLocationManager.headingAvailable() {
+            locManager.startUpdatingHeading()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -85,6 +87,9 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     override func viewWillDisappear(animated: Bool) {
         self.tabBarController?.tabBar.hidden = true
         self.navigationController?.navigationBarHidden = false
+        if CLLocationManager.headingAvailable() {
+            locManager.stopUpdatingHeading()
+        }
         
         super.viewWillDisappear(animated)
     }
@@ -100,12 +105,15 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         overlayView.guideBtn.setBackgroundColor("#fccb05", selectedColorStr: "#ffa200", disabledColorStr: "#bab8b8")
         overlayView.guideBtn.layer.cornerRadius = 5
         overlayView.guideBtn.layer.masksToBounds = true
+        overlayView.refreshMapDelegate = self
         overlayView.setBombDelegate = self
         overlayView.guideDelegate = self
         overlayView.getGoalDelegate = self
         overlayView.guideMonsterDelegate = self
         overlayView.distanceView.touchDownDelegate = self
         overlayView.hitMonsterDelegate = self
+        overlayView.warningDelegate = self
+        overlayView.shareDelegate = self
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeController.touchDown))
         overlayView.locationStackView.userInteractionEnabled = true
         overlayView.locationStackView.addGestureRecognizer(gestureRecognizer)
@@ -126,10 +134,14 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             overlayView.bombNumBtn.hidden = false
             overlayView.setBombBtn.hidden = false
             overlayView.monsterGuideBtn.hidden = false
+            overlayView.warningBtn.hidden = false
+            overlayView.shareBtn.hidden = false
         } else {
             overlayView.bombNumBtn.hidden = true
             overlayView.setBombBtn.hidden = true
             overlayView.monsterGuideBtn.hidden = true
+            overlayView.warningBtn.hidden = true
+            overlayView.shareBtn.hidden = true
         }
     }
     
@@ -165,12 +177,13 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         guideView = guideViewContents[0] as! MonsterGuideView
         guideView.layer.frame = CGRectMake(
             20,
-            (screenRect.height - 200) / 2 - 50,
+            (screenRect.height - 250) / 2 - 50,
             screenRect.width - 40,
-            200)
+            250)
         self.view.addSubview(guideView)
         guideView.initView()
         guideView.hidden = true
+        guideView.closeDelegate = self
     }
     
     func initMapDialog() {
@@ -181,13 +194,15 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
         mapDialogController = storyboard.instantiateViewControllerWithIdentifier("mapDialog") as! MapDialogController
-        mapDialogController.mapViewDelegate = self
         mapDialogController.view.layer.frame = CGRectMake(
             (screenRect.width - mapWidth) / 2,
             (screenRect.height - mapHeight) / 2,
             mapWidth,
             mapHeight)
         mapDialogController.view.userInteractionEnabled = true
+        mapDialogController.markerDictionary = markerDictionary
+        mapDialogController.goalDictionary = goalDictionary
+        mapDialogController.setEndGoalDelegate = self
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeController.closeMapDialog(_:)))
         gestureRecognizer.numberOfTapsRequired = 1
         grayView.addGestureRecognizer(gestureRecognizer)
@@ -227,6 +242,13 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         if endGoal != nil {
             if endGoal.orientation == orientation && distance < 10 && (endGoal.valid) {
                 overlayView.showGoal()
+                
+                if !ifSeeGoal && UserCache.instance.ifLogin() {
+                    ifSeeGoal = true
+                    if endGoal.type == Goal.GoalTypeEnum.monster {
+                        seeMonster()
+                    }
+                }
             } else {
                 overlayView.hideGoal()
             }
@@ -235,15 +257,32 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         }
     }
     
+    func seeMonster() {
+        let paramDict = NSMutableDictionary()
+        let pkId: Int64 = (endGoal.pkId)
+        paramDict["goal_id"] = "\(pkId)"
+        getGoalManager.POST(UrlParam.SEE_MONSTER_URL, paramDict: paramDict, success: { (operation, responseObject) in
+            print("JSON: " + responseObject.description!)
+            let response = responseObject as! NSDictionary
+            let code = (response["code"] as! NSString).integerValue
+            
+            if code != CodeParam.SUCCESS {
+                let errorMessage = ErrorMessageFactory.get(code)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                self.ifSeeGoal = false
+            }
+        }) { (operation, error) in
+            let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            self.ifSeeGoal = false
+        }
+    }
+    
     func updateEndGoal() {
         endGoal.valid = false
         GoalCache.instance.selectedGoal = nil
         GoalCache.instance.refreshClosestGoal(latitude, longitude: longitude)
-        let list = NSMutableArray()
-        list.addObject(endGoal)
-        list.addObject(GoalCache.instance.selectedGoal!)
         setEndGoal()
-        setGoalsOnMap(list)
     }
     
     func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
@@ -254,9 +293,8 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             if annotationView == nil {
                 annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: userLocationStyleReuseIdentifier)
                 annotationView.image = UIImage(named: "location")
-                annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
-                annotationView.contentMode = UIViewContentMode.ScaleAspectFit
             }
+            annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
         } else if annotation.isKindOfClass(MAPointAnnotation) {
             let reuseIndetifier = "annotationReuseIndetifier"
             annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIndetifier)
@@ -272,14 +310,18 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                     && goal.type == Goal.GoalTypeEnum.bomb {
                     if goal.isSelected {
                         annotationView.image = UIImage(named: "box_selected_marker")
+                        annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 30)
                     } else {
                         annotationView.image = UIImage(named: "box_marker")
+                        annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
                     }
                 } else {
                     if goal.isSelected {
                         annotationView.image = UIImage(named: "box_selected_marker")
+                        annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 30)
                     } else {
                         annotationView.image = UIImage(named: "box_marker")
+                        annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
                     }
                 }
             }
@@ -287,7 +329,6 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             annotationView = MAAnnotationView()
         }
         
-        annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
         annotationView.contentMode = UIViewContentMode.ScaleAspectFit
         return annotationView
     }
@@ -315,6 +356,13 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         paramDict["longitude"] = "\(longitude)"
         paramDict["version"] = "\(GoalCache.instance.version)"
         
+        var hud: MBProgressHUD!
+        if GoalCache.instance.version == 0 {
+            hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            hud.labelText = NSLocalizedString("REFRESH_MAP_HINT", comment: "Refreshing map...")
+            hud.dimBackground = true
+        }
+        
         startPoint = MAMapPointForCoordinate(CLLocationCoordinate2DMake(latitude, longitude));
         
         let user = UserCache.instance.user
@@ -334,9 +382,18 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                         }
 
                         self.setGoalsOnMap(GoalCache.instance.updateList)
+                        
+                        if hud != nil {
+                            hud.removeFromSuperview()
+                            hud = nil
+                        }
             },
                     failure: { (operation, error) in
                         print("Error: " + error.localizedDescription)
+                        if hud != nil {
+                            hud.removeFromSuperview()
+                            hud = nil
+                        }
         })
 
     }
@@ -366,6 +423,11 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                     mapDialogController.mapView.removeAnnotation(annotation)
                     markerDictionary.removeObjectForKey(NSNumber(longLong: goalInfo.pkId))
                     goalDictionary.removeObjectForKey(NSNumber(longLong: goalInfo.pkId))
+                } else {
+                    overlayView.mapView.removeAnnotation(annotation)
+                    overlayView.mapView.addAnnotation(annotation)
+                    mapDialogController.mapView.removeAnnotation(annotation)
+                    mapDialogController.mapView.addAnnotation(annotation)
                 }
             } else {
                 if goalInfo.valid {
@@ -381,6 +443,12 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     }
     
     func setEndGoal() {
+        let list = NSMutableArray()
+        if endGoal != nil {
+            list.addObject(endGoal)
+            list.addObject(GoalCache.instance.selectedGoal!)
+        }
+        distance = 100
         endGoal = GoalCache.instance.selectedGoal
         
         if endGoal != nil {
@@ -390,6 +458,8 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         }
         
         refreshDistance()
+        self.ifSeeGoal = false;
+        setGoalsOnMap(list)
     }
     
     func setBomb() {
@@ -438,6 +508,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         if endGoal != nil {
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
             let viewController = storyboard.instantiateViewControllerWithIdentifier("Navigation") as! NavigationController
+            viewController.arriveDelegate = self
             viewController.startPoint = AMapNaviPoint.locationWithLatitude(CGFloat(latitude), longitude: CGFloat(longitude))
             viewController.endPoint = AMapNaviPoint.locationWithLatitude(CGFloat(endGoal!.latitude), longitude: CGFloat(endGoal!.longitude))
             self.presentViewController(viewController, animated: true, completion: nil)
@@ -445,6 +516,10 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     }
     
     func getGoal() {
+        if BaseInfoUtil.checkIfGoToLogin(self) {
+            return
+        }
+        
         let paramDict = NSMutableDictionary()
         let pkId: Int64 = (endGoal.pkId)
         let goalType: Int = (endGoal.type.rawValue)
@@ -462,6 +537,9 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                     HudToastFactory.showScore(self.endGoal.score, view: self.view)
                 }
                 
+                UserCache.instance.user.record = response["result"] is NSString ?
+                    (response["result"] as! NSString).integerValue :
+                    (response["result"] as! NSNumber).integerValue
                 self.updateEndGoal()
             } else {
                 let errorMessage = ErrorMessageFactory.get(code)
@@ -493,7 +571,13 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     func showMonsterGuide() {
         if overlayView != nil && !overlayView.goalImageView.hidden {
             guideView.goalImageView.image = UIImage(named: GoalImageFactory.get(endGoal.type, showTypeName: endGoal.showTypeName))
+            if endGoal.unionType == 1 {
+                guideView.roleLabel.text = NSString(format: NSLocalizedString("LEAGUE_RACE", comment: "%d race is enough"), endGoal.unionType) as String
+            } else if endGoal.unionType > 1{
+                 guideView.roleLabel.text = NSString(format: NSLocalizedString("LEAGUE_RACES", comment: "League of %d races"), endGoal.unionType) as String
+            }
             guideView.introductionLabel.text = endGoal!.introduction
+            guideView.rateView.initStar(endGoal.score)
             guideView.hidden = !guideView.hidden
         } else {
             if !guideView.hidden {
@@ -518,7 +602,18 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         print("angle: \(orientation)")
     }
     
+    func goToWarning() {
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        let viewController = storyboard.instantiateViewControllerWithIdentifier("Warning") as! WarningController
+        
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func hitMonster() {
+        if BaseInfoUtil.checkIfGoToLogin(self) {
+            return
+        }
+        
         let paramDict = NSMutableDictionary()
         let pkId: Int64 = (endGoal?.pkId)!
         let accountRole: Int = UserCache.instance.user.role.rawValue
@@ -534,7 +629,9 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                 if (result["score_sum"] != nil && !result.objectForKey("score_sum")!.isKindOfClass(NSNull)) {
                     HudToastFactory.showScore(self.endGoal.score, view: self.view)
                     if(UserCache.instance.ifLogin()) {
-                        UserCache.instance.user.record = (result["score_sum"] as! NSString).doubleValue
+                        UserCache.instance.user.record = result["score_sum"] is NSString ?
+                            (result["score_sum"] as! NSString).integerValue :
+                            (result["score_sum"] as! NSNumber).integerValue
                         self.updateEndGoal()
                     }
                 }
@@ -548,5 +645,46 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
             HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
         }
+    }
+    
+    func close() {
+        guideView.hidden = true
+    }
+    
+    func share() {
+        let shareParams = NSMutableDictionary()
+        shareParams.SSDKSetupShareParamsByText(NSLocalizedString("SHARE_MESSAGE", comment: "My God! A monster is watching at me, please help me!"),
+                                                images : UIImage(named: "ic_launcher"),
+                                                url : NSURL(string:"http://www.hideseek.cn"),
+                                                title : NSLocalizedString("SHARE_TITLE", comment: "Enter into the age of tribes"),
+                                                type : SSDKContentType.Auto)
+        
+        let platforms = [SSDKPlatformType.TypeWechat.rawValue, SSDKPlatformType.TypeQQ.rawValue]
+        
+        ShareSDK.showShareActionSheet(self.view,
+                                      items: platforms,
+                                      shareParams: shareParams) { (state, platformType, userData, contentEntity, error, end) in
+                                        switch state {
+                                        case SSDKResponseState.Success:
+                                            break;
+                                        case SSDKResponseState.Fail:
+                                            break;
+                                        default:
+                                            break;
+                                        }
+                                        
+        }
+        
+    }
+    
+    func arrivedAtGoal() {
+        distance = 0
+    }
+    
+    func refresh() {
+        markerDictionary.removeAllObjects()
+        goalDictionary.removeAllObjects()
+        GoalCache.instance.reset()
+        refreshMap()
     }
 }

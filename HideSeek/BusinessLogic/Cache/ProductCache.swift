@@ -13,11 +13,11 @@ class ProductCache : BaseCache<Product> {
     
     var productList: NSMutableArray {
         get {
-            if(super.cacheList.count > 0) {
-                return super.cacheList
+            if(super.cacheList.count == 0) {
+                super.cacheList = productTableManager.searchProducts()
             }
-            
-            return productTableManager.searchProducts()
+        
+            return super.cacheList
         }
     }
     

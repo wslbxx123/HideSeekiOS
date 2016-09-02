@@ -54,12 +54,4 @@ class ImageCache: NSObject {
         return fileName
         
     }
-    
-//    class func removeAllCache(){
-//        var chchePath=NSHomeDirectory().stringByAppendingString("/Library/Caches/MyCache")
-//        var fileManager:NSFileManager=NSFileManager.defaultManager()
-//        if fileManager.fileExistsAtPath(chchePath) {
-//            fileManager.removeItemAtPath(chchePath, error: nil)
-//        }
-//    }
 }

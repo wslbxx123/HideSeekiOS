@@ -25,6 +25,7 @@ class DomesticCityTableView: UITableView, UITableViewDataSource, UITableViewDele
     var selectRegionDelegate: SelectRegionDelegate!
     var isSearching: Bool = false
     var showToastDelegate: ShowToastDelegate!
+    var hideKeyboardDelegate: HideKeyboardDelegate!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -55,15 +56,17 @@ class DomesticCityTableView: UITableView, UITableViewDataSource, UITableViewDele
     
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         let toBeReturned = NSMutableArray()
-        toBeReturned.addObject("定位")
-        toBeReturned.addObject("最近")
-        toBeReturned.addObject("热门")
-        toBeReturned.addObject("全部")
-        
-        for index in 0...26 {
-            let randomNum = 65 + index
-            let char = Character(UnicodeScalar(randomNum))
-            toBeReturned.addObject(String(char))
+        if !isSearching {
+            toBeReturned.addObject("定位")
+            toBeReturned.addObject("最近")
+            toBeReturned.addObject("热门")
+            toBeReturned.addObject("全部")
+            
+            for index in 0...25 {
+                let randomNum = 65 + index
+                let char = Character(UnicodeScalar(randomNum))
+                toBeReturned.addObject(String(char))
+            }
         }
         
         return toBeReturned.copy() as? [String]
@@ -195,7 +198,7 @@ class DomesticCityTableView: UITableView, UITableViewDataSource, UITableViewDele
     func locationCityClicked(button: UIButton) {
         if button.currentTitle != NSLocalizedString("RE_LOCATE", comment: "re-locate")
             || !button.hidden {
-            let city = DomesticCity(name: button.currentTitle!, pinYin: PinYinUtil.converterToFirstSpell(button.currentTitle!))
+            let city = DomesticCity(name: button.currentTitle!, pinYin: PinYinUtil.converterToPinyin(button.currentTitle!))
             DomesticCityTableManager.instance.insertRecentCity(city)
             selectRegionDelegate?.regionSelected(city.name)
         }
@@ -225,6 +228,8 @@ class DomesticCityTableView: UITableView, UITableViewDataSource, UITableViewDele
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        hideKeyboardDelegate?.hideKeyboard()
+        
         let indexPath = self.indexPathForRowAtPoint(CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y))
         
         if indexPath != nil {

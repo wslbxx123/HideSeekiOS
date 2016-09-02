@@ -184,8 +184,9 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
                                 success: { (operation, responseObject) in
                                     let response = responseObject as! NSDictionary
                                     if(response["code"] as! NSString).integerValue == CodeParam.SUCCESS {
-                                        let record = (response["result"] as! NSNumber).doubleValue
-                                        UserCache.instance.user.record = record
+                                        UserCache.instance.user.record = response["result"] is NSString ?
+                                            (response["result"] as! NSString).integerValue :
+                                            (response["result"] as! NSNumber).integerValue
                                         self.close()
                                     }
             }, failure: { (operation, error) in

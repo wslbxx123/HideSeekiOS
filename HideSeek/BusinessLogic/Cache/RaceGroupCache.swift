@@ -12,11 +12,11 @@ class RaceGroupCache : BaseCache<RaceGroup> {
     var version: Int64 = 0
     
     var raceGroupList: NSMutableArray {
-        if(super.cacheList.count > 0) {
-            return super.cacheList
+        if(super.cacheList.count == 0) {
+            super.cacheList = raceGroupTableManager.searchRaceGroup()
         }
         
-        return raceGroupTableManager.searchRaceGroup()
+        return super.cacheList
     }
     
     private override init() {

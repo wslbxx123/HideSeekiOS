@@ -9,11 +9,14 @@
 class User: NSObject {
     var pkId : Int64
     var phone : NSString
-    var sessionId : NSString
+    var sessionId : NSString = ""
     var registerDate: NSDate
     var role: RoleEnum
     var version: Int64
     var pinyin: NSString
+    var isFriend: Bool = false
+    var addTime: NSString?
+    var message: NSString?
     
     var _nickname: NSString
     var nickname: NSString {
@@ -65,7 +68,7 @@ class User: NSObject {
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
-                userInfo["region"] = newValue!
+                userInfo["region"] = newValue
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
             }
@@ -110,8 +113,8 @@ class User: NSObject {
         }
     }
     
-    var _record: Double = 0
-    var record: Double {
+    var _record: Int = 0
+    var record: Int {
         get {
             return self._record
         }
@@ -122,7 +125,7 @@ class User: NSObject {
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
-                userInfo["record"] = NSString(format: "%f", newValue)
+                userInfo["record"] = NSString(format: "%d", newValue)
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
             }
@@ -219,8 +222,21 @@ class User: NSObject {
         }
     }
     
+    var sexImageName: String {
+        get{
+            switch sex {
+            case SexEnum.female:
+                return "female"
+            case SexEnum.male:
+                return "male"
+            default:
+                return ""
+            }
+        }
+    }
+    
     init(pkId: Int64, phone: NSString, sessionId: NSString, nickname: NSString,
-         registerDateStr: NSString, record: Double, role: RoleEnum, version: Int64,
+         registerDateStr: NSString, record: Int, role: RoleEnum, version: Int64,
          pinyin: NSString, bombNum: Int, hasGuide: Bool, friendNum: Int) {
         self.pkId = pkId
         self.phone = phone
@@ -235,6 +251,30 @@ class User: NSObject {
         self._bombNum = bombNum
         self.hasGuide = hasGuide
         self._friendNum = friendNum
+    }
+    
+    init(pkId: Int64, phone: NSString, nickname: NSString, registerDateStr: NSString,
+         photoUrl: NSString?, smallPhotoUrl: NSString?, sex: SexEnum, region: NSString?,
+         role: RoleEnum, version: Int64, pinyin: NSString) {
+        self.pkId = pkId
+        self.phone = phone
+        self._nickname = nickname
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        self.registerDate = dateFormatter.dateFromString(registerDateStr as String)!
+        
+        if photoUrl != nil {
+            self._photoUrl = photoUrl!
+        }
+        
+        if smallPhotoUrl != nil {
+            self._smallPhotoUrl = smallPhotoUrl!
+        }
+        
+        self._sex = sex
+        self._region = region
+        self.role = role
+        self.version = version
+        self.pinyin = pinyin
     }
     
     enum SexEnum : Int {

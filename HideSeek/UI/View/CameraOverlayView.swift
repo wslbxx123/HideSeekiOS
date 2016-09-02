@@ -21,12 +21,17 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     @IBOutlet weak var locationStackView: UIStackView!
     @IBOutlet weak var goalImageView: GoalImageView!
     @IBOutlet weak var swordImageView: SwordImageView!
+    @IBOutlet weak var warningBtn: UIButton!
+    @IBOutlet weak var shareBtn: UIButton!
     
+    var refreshMapDelegate: RefreshMapDelegate!
     var setBombDelegate: SetBombDelegate!
     var guideDelegate: GuideDelegate!
     var getGoalDelegate: GetGoalDelegate!
     var hitMonsterDelegate: HitMonsterDelegate!
     var guideMonsterDelegate: GuideMonsterDelegate!
+    var warningDelegate: WarningDelegate!
+    var shareDelegate: ShareDelegate!
     
     private var _endGoal: Goal! = nil
     var endGoal: Goal! {
@@ -55,6 +60,10 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
         }
     }
     
+    @IBAction func refreshBtnClicked(sender: AnyObject) {
+        refreshMapDelegate?.refresh()
+    }
+    
     @IBAction func setBombClicked(sender: AnyObject) {
         setBombDelegate?.setBomb()
     }
@@ -69,6 +78,14 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     
     @IBAction func bombNumClicked(sender: AnyObject) {
         setBombDelegate?.setBomb()
+    }
+    
+    @IBAction func warningBtnClicked(sender: AnyObject) {
+        warningDelegate?.goToWarning()
+    }
+    
+    @IBAction func shareBtnClicked(sender: AnyObject) {
+        shareDelegate?.share()
     }
     
     override init(frame: CGRect) {

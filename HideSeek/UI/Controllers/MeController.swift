@@ -21,6 +21,8 @@ class MeController: UIViewController, TouchDownDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var scoreView: MenuView!
     @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet var goToFriendGesture: UITapGestureRecognizer!
+    @IBOutlet weak var friendView: MenuView!
     
     var myProfileController: MyProfileController!
     var dateFormatter: NSDateFormatter = NSDateFormatter()
@@ -65,6 +67,10 @@ class MeController: UIViewController, TouchDownDelegate {
         self.tabBarController?.tabBar.hidden = true
         
         super.viewWillDisappear(animated)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        scrollView.contentSize = CGSizeMake(UIScreen.mainScreen().bounds.width, 700)
     }
 
     override func didReceiveMemoryWarning() {
@@ -114,11 +120,15 @@ class MeController: UIViewController, TouchDownDelegate {
             profileInfoStackView.hidden = false
             
             scoreNumLabel.text = "\(user.record)"
+            friendNumLabel.text = "\(user.friendNum)"
+            friendView.addGestureRecognizer(goToFriendGesture)
         } else {
             profileInfoStackView.hidden = true
             notLoginLabel.hidden = false
             photoUrl = ""
             scoreNumLabel.text = "0"
+            friendNumLabel.text = "0"
+            friendView.removeGestureRecognizer(goToFriendGesture)
         }
         
         photoImageView.setWebImage(photoUrl, defaultImage: "default_photo", isCache: true)

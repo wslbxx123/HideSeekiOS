@@ -38,6 +38,7 @@ class UpdateNicknameController: UIViewController {
     }
     
     func initView() {
+        nicknameTextField.text = value
         let leftBarButton = UIBarButtonItem(title: NSLocalizedString("CANCEL", comment: "Cancel"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(UpdateNicknameController.cancelBtnClicked))
         self.navigationItem.leftBarButtonItem = leftBarButton
         rightBarButton = UIBarButtonItem(title: NSLocalizedString("SAVE", comment: "Save"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(UpdateNicknameController.saveBtnClicked))

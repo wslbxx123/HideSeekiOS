@@ -20,6 +20,7 @@ class ForeignCityTableView: UITableView, UITableViewDataSource, UITableViewDeleg
     var region: String!
     var isSearching: Bool = false
     var showToastDelegate: ShowToastDelegate!
+    var hideKeyboardDelegate: HideKeyboardDelegate!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -41,7 +42,7 @@ class ForeignCityTableView: UITableView, UITableViewDataSource, UITableViewDeleg
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         let toBeReturned = NSMutableArray()
         
-        for index in 0...26 {
+        for index in 0...25 {
             let randomNum = 65 + index
             let char = Character(UnicodeScalar(randomNum))
             toBeReturned.addObject(String(char))
@@ -101,6 +102,8 @@ class ForeignCityTableView: UITableView, UITableViewDataSource, UITableViewDeleg
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        hideKeyboardDelegate?.hideKeyboard()
+        
         let indexPath = self.indexPathForRowAtPoint(CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y))
         
         if indexPath != nil {

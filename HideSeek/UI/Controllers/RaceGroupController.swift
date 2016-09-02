@@ -13,6 +13,7 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
     let HtmlType = "text/html"
     let TAG_LOADING_IMAGEVIEW = 1
     @IBOutlet weak var raceGroupTableView: RaceGroupTableView!
+    @IBOutlet weak var noResultStackView: UIStackView!
     var manager: CustomRequestManager!
     var refreshControl: UIRefreshControl!
     var customLoadingView: UIView!
@@ -89,6 +90,12 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
                         RaceGroupCache.instance.setRaceGroup(response["result"] as! NSDictionary)
                         self.raceGroupTableView.raceGroupList = RaceGroupCache.instance.cacheList
                         self.raceGroupTableView.reloadData()
+                        
+                        if self.raceGroupTableView.raceGroupList.count == 0 {
+                            self.noResultStackView.hidden = false
+                        } else {
+                            self.noResultStackView.hidden = true
+                        }
                         self.refreshControl.endRefreshing()
                         self.isLoading = false
                     }, failure: { (operation, error) in

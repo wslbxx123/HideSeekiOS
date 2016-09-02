@@ -17,11 +17,16 @@ class HomeView: UIControl {
         self.addTarget(self, action: #selector(HomeView.touchDown), forControlEvents: UIControlEvents.TouchDown)
         self.addTarget(self, action: #selector(HomeView.touchCancel), forControlEvents: UIControlEvents.TouchCancel)
         self.addTarget(self, action: #selector(HomeView.touchCancel), forControlEvents: UIControlEvents.TouchUpInside)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(HomeView.gestureTouchDown))
+        self.addGestureRecognizer(gesture)
+    }
+    
+    func gestureTouchDown() {
+        touchDownDelegate?.touchDown(self.tag)
     }
     
     func touchDown() {
         self.backgroundColor = UIColor.whiteColor()
-        touchDownDelegate?.touchDown(self.tag)
     }
     
     func touchCancel() {

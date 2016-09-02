@@ -12,11 +12,11 @@ class ExchangeOrderCache : BaseCache<PurchaseOrder> {
     var version: Int64 = 0
     
     var orderList: NSMutableArray {
-        if(super.cacheList.count > 0) {
-            return super.cacheList
+        if(super.cacheList.count == 0) {
+            super.cacheList = exchangeOrderTableManager.searchOrders()
         }
         
-        return exchangeOrderTableManager.searchOrders()
+        return super.cacheList
     }
     
     private override init() {

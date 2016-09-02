@@ -21,11 +21,11 @@ class RecordCache : BaseCache<Record> {
     }
     
     var recordList: NSMutableArray {
-        if(super.cacheList.count > 0) {
-            return super.cacheList
+        if(super.cacheList.count == 0) {
+            super.cacheList = recordTableManager.searchRecords()
         }
         
-        return recordTableManager.searchRecords()
+        return super.cacheList
     }
     
     private override init() {

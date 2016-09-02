@@ -13,11 +13,11 @@ class RewardCache : BaseCache<Reward> {
     
     var rewardList: NSMutableArray {
         get {
-            if(super.cacheList.count > 0) {
-                return super.cacheList
+            if(super.cacheList.count == 0) {
+                super.cacheList = rewardTableManager.searchRewards()
             }
             
-            return rewardTableManager.searchRewards()
+            return super.cacheList
         }
     }
     

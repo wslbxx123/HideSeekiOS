@@ -106,6 +106,7 @@ class MyProfileController: UIViewController, TouchDownDelegate {
     func updateNickname() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
         updateNicknameController = storyboard.instantiateViewControllerWithIdentifier("updateNickname") as! UpdateNicknameController
+        updateNicknameController.value = UserCache.instance.user.nickname as String
         self.navigationController?.pushViewController(updateNicknameController, animated: true)
     }
     

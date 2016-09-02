@@ -14,16 +14,103 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let AUDIO_KEY = "578cb259"
     let SMS_KEY = "156855918c1ab"
     let SMS_SECRET = "5a5efd0f24dbafa7647c7dd60fd99fed"
+    let SHARE_KEY = "wx35d7e379b7472410"
+    let SHARE_SECRET = "d54adfb1105f71be8099b5a803bbc92f"
+    let BAIDU_IM_KEY = "dWQ3yzejeKLcimqH3zHAvKUi"
     var window: UIWindow?
-
+    var isBackgroundActivateApplication: Bool = false
+    var tarBarController: ViewController!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        tarBarController = storyboard.instantiateViewControllerWithIdentifier("main") as! ViewController
+        self.window?.rootViewController = tarBarController
         
         AMapServices.sharedServices().apiKey = MAP_KEY
         let initString = NSString.init(format: "appid=%@", AUDIO_KEY)
         IFlySpeechUtility.createUtility(initString as String)
         SMSSDK.registerApp(SMS_KEY, withSecret: SMS_SECRET)
+        
+        let systemVersion: NSString = UIDevice.currentDevice().systemVersion
+        if systemVersion.floatValue >= 8.0 {
+            let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: nil)
+            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        } else {
+            UIApplication.sharedApplication().registerForRemoteNotificationTypes([.Badge, .Sound, .Alert])
+        }
+        
+        BPush.registerChannel(launchOptions, apiKey: BAIDU_IM_KEY, pushMode: BPushMode.Development, withFirstAction: "", withSecondAction: "", withCategory: "", useBehaviorTextInput: true, isDebug: true)
+        
+        BPush.disableLbs()
+        
+        let userInfo = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary
+        if userInfo != nil {
+            BPush.handleNotification(userInfo! as [NSObject : AnyObject])
+        }
+        
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        
+        ShareSDK.registerApp(SHARE_KEY, activePlatforms: [
+            SSDKPlatformType.TypeSinaWeibo.rawValue,
+            SSDKPlatformType.TypeMail.rawValue,
+            SSDKPlatformType.TypeSMS.rawValue,
+            SSDKPlatformType.TypeCopy.rawValue,
+            SSDKPlatformType.TypeWechat.rawValue,
+            SSDKPlatformType.TypeQQ.rawValue,
+            SSDKPlatformType.TypeRenren.rawValue,
+            SSDKPlatformType.TypeGooglePlus.rawValue],
+            onImport: { (platformType) in
+                switch(platformType) {
+                case SSDKPlatformType.TypeWechat:
+                    ShareSDKConnector.connectWeChat(WXApi.classForCoder())
+                    break;
+                case SSDKPlatformType.TypeQQ:
+                    ShareSDKConnector.connectQQ(QQApiInterface.self, tencentOAuthClass: TencentOAuth.classForCoder())
+                    break;
+                case SSDKPlatformType.TypeSinaWeibo:
+                    ShareSDKConnector.connectWeibo(WeiboSDK.classForCoder())
+                    break;
+                case SSDKPlatformType.TypeRenren:
+                    ShareSDKConnector.connectRenren(RennClient.classForCoder())
+                    break;
+                default:
+                    break;
+                }
+            }) { (platformType, appInfo) in
+                switch(platformType) {
+                case SSDKPlatformType.TypeSinaWeibo:
+                    appInfo
+                        .SSDKSetupSinaWeiboByAppKey("568898243",
+                                                       appSecret: "38a4f8204cc784f81f9f0daaf31e02e3",
+                                                       redirectUri: "http://www.sharesdk.cn",
+                                                       authType: SSDKAuthTypeBoth)
+                    break;
+                case SSDKPlatformType.TypeWechat:
+                    appInfo.SSDKSetupWeChatByAppId(self.SHARE_KEY,
+                                                   appSecret: self.SHARE_SECRET)
+                    break;
+                case SSDKPlatformType.TypeQQ:
+                    appInfo.SSDKSetupQQByAppId("100371282",
+                                               appKey: "aed9b0303e3ed1e27bae87c33761161d",
+                                               authType: SSDKAuthTypeBoth)
+                    break;
+                case SSDKPlatformType.TypeRenren:
+                    appInfo.SSDKSetupRenRenByAppId("226427",
+                                                   appKey: "fc5b8aed373c4c27a05b712acba0f8c3",
+                                                   secretKey: "f29df781abdd4f49beca5a2194676ca4",
+                                                   authType: SSDKAuthTypeBoth)
+                    break;
+                case SSDKPlatformType.TypeGooglePlus:
+                    appInfo.SSDKSetupGooglePlusByClientID("232554794995.apps.googleusercontent.com",
+                                                          clientSecret: "PEdFgtrMw97aCvf0joQj7EMk",
+                                                          redirectUri: "http://localhost")
+                    break;
+                default:
+                    break;
+                }
+        }
         
         return true
     }
@@ -48,6 +135,107 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        BPush.registerDeviceToken(deviceToken)
+        BPush.bindChannelWithCompleteHandler { (result, error) in
+            if (error != nil) {
+                return
+            }
+            
+            if result != nil {
+                let resultDic = result as! NSDictionary
+                if resultDic["error_code"] != nil
+                    && (resultDic["error_code"] as! NSString).integerValue != 0{
+                    return;
+                }
+
+                let myChannelId = BPush.getChannelId()
+                NSUserDefaults.standardUserDefaults().setObject(myChannelId, forKey: UserDefaultParam.CHANNEL_ID)
+                
+                BPush.listTagsWithCompleteHandler({ (result, error) in
+                    if result != nil {
+                        NSLog("result ======= %@", result.description)
+                    }
+                })
+                BPush.setTag("MyTag", withCompleteHandler: { (result, error) in
+                    if result != nil {
+                        NSLog("设置tag成功")
+                    }
+                })
+            }
+        }
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        NSLog("DeviceToken 获取失败，原因：％@", error)
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        BPush.handleNotification(userInfo)
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        let newFriendController = storyboard.instantiateViewControllerWithIdentifier("newFriend") as! NewFriendController
+        newFriendController.setFriendRequest(userInfo as NSDictionary)
+        
+        if application.applicationState == UIApplicationState.Active
+            || application.applicationState == UIApplicationState.Background{
+            NSLog("acitve or background")
+        } else {
+            (tarBarController.selectedViewController! as! UINavigationController).pushViewController(newFriendController, animated: true)
+        }
+        
+        NSLog("%@", userInfo)
+    }
+    
+    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        NSLog("接收本地通知啦")
+        BPush.showLocalNotificationAtFront(notification, identifierKey: nil)
+    }
+    
+    // 此方法是 用户点击了通知，应用在前台 或者开启后台并且应用在后台时调起
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        completionHandler(UIBackgroundFetchResult.NewData)
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        let newFriendController = storyboard.instantiateViewControllerWithIdentifier("newFriend") as! NewFriendController
+        newFriendController.setFriendRequest(userInfo as NSDictionary)
+        
+        if application.applicationState == UIApplicationState.Active {
+            let item = tarBarController.uiTabBar.items![3]
+            if item.badgeValue == nil {
+                item.badgeValue = "0"
+            }
+            let badgeValue = NSString(string: item.badgeValue!).integerValue
+            item.badgeValue = NSString(format: "%d", badgeValue + 1) as String
+        }
+        
+        if application.applicationState == UIApplicationState.Inactive && !isBackgroundActivateApplication {
+            (tarBarController.selectedViewController! as! UINavigationController).pushViewController(newFriendController, animated: true)
+        }
+        
+        if application.applicationState == UIApplicationState.Background {
+            NSLog("background is Activated Application ")
+            
+            isBackgroundActivateApplication = true
+        }
+        
+        NSLog("%@", userInfo);
+    }
+    
+    // 在 iOS8系统中，需要添加这个方法。通过新的 API 注册推送服务
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+        application.registerForRemoteNotifications()
+    }
+    
+    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+        if userActivity.webpageURL != nil {
+            
+        }
+        return true;
     }
 
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {

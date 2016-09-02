@@ -14,6 +14,7 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
     let TAG_GOAL_IMAGEVIEW = 3
     let TAG_MESSAGE_LABEL = 4
     let TAG_SCORE_LABEL = 5
+    let TAG_TIME_LABEL = 6
     let VISIBLE_REFRESH_COUNT = 3;
     
     var raceGroupList: NSMutableArray!
@@ -46,6 +47,7 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         let goalImageView = cell.viewWithTag(TAG_GOAL_IMAGEVIEW) as! UIImageView
         let messageLabel = cell.viewWithTag(TAG_MESSAGE_LABEL) as! UILabel
         let scoreLabel = cell.viewWithTag(TAG_SCORE_LABEL) as! UILabel
+        let timeLabel = cell.viewWithTag(TAG_TIME_LABEL) as! UILabel
         
         messageWidth = messageLabel.frame.width
         
@@ -56,9 +58,11 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         
         goalImageView.image = UIImage(named: GoalImageFactory.get(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName))
     
-        messageLabel.text = getMessage(raceGroup.recordItem.goalType)
-        scoreLabel.text = String.init(format: NSLocalizedString("SCORE_TITLE", comment: "Score：%d"),
-                                      raceGroup.recordItem.scoreSum)
+        messageLabel.text = getMessage(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName)
+        scoreLabel.text = String.init(format: NSLocalizedString("SCORE_TITLE", comment: "Score：%d"), raceGroup.recordItem.score)
+        
+        timeLabel.text = raceGroup.recordItem.time
+        cell.selectionStyle = UITableViewCellSelectionStyle.None
         return cell
     }
     
@@ -72,11 +76,11 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let raceGroup = raceGroupList.objectAtIndex(indexPath.row) as! RaceGroup
-        let message = getMessage(raceGroup.recordItem.goalType) as NSString
+        let message = getMessage(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName) as NSString
         
         let frame = UIScreen.mainScreen().bounds
         let labelHeight = BaseInfoUtil.getLabelHeight(15.0, width: frame.width - 130, message: message)
-        return labelHeight + 95
+        return labelHeight + 120
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -94,14 +98,31 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         }
     }
     
-    func getMessage(goalType: Goal.GoalTypeEnum)-> String {
+    func getMessage(goalType: Goal.GoalTypeEnum, showTypeName: String?)-> String {
         switch(goalType) {
         case .mushroom:
             return NSLocalizedString("MESSAGE_GET_MUSHROOM", comment: "Get a mushroom into a sack successfully")
         case .monster:
-            return NSLocalizedString("MESSAGE_GET_MONSTER", comment: "Beat a monster successfully")
+            return getMonsterMessage(showTypeName!)
         case .bomb:
             return NSLocalizedString("MESSAGE_GET_BOMB", comment: "A bomb went off, ouch")
+        }
+    }
+    
+    func getMonsterMessage(showTypeName: String) -> String {
+        switch(showTypeName) {
+            case "egg":
+                return NSLocalizedString("MESSAGE_GET_EGG", comment: "So excited! Beat an egg monster successfully")
+            case "cow":
+                return NSLocalizedString("MESSAGE_GET_COW", comment: "You are watched by a cow monster，how smart I am to beat it in time!")
+            case "bird":
+                return NSLocalizedString("MESSAGE_GET_BIRD", comment: "You are watched by a cow monster，how smart I am to beat it in time!")
+            case "giraffe":
+                return NSLocalizedString("MESSAGE_GET_GIRAFFE", comment: "Thanks to friends,lucky to get a giraffe monster!")
+            case "dragon":
+                return NSLocalizedString("MESSAGE_GET_DRAGON", comment: "It is a great satisfaction to get a dragon monster, so cool!")
+            default:
+                return ""
         }
     }
     

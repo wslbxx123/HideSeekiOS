@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ExternalController: UIViewController, UISearchBarDelegate {
+class ExternalController: UIViewController, UISearchBarDelegate, HideKeyboardDelegate {
     @IBOutlet weak var cityTableView: ForeignCityTableView!
     @IBOutlet weak var searchBar: UISearchBar!
     var selectRegionDelegate: SelectRegionDelegate!
@@ -24,6 +24,7 @@ class ExternalController: UIViewController, UISearchBarDelegate {
         cityTableView.separatorStyle = UITableViewCellSeparatorStyle.None;
         cityTableView.reloadData()
         cityTableView.showToastDelegate = showToastDelegate
+        cityTableView.hideKeyboardDelegate = self
         searchBar.delegate = self
     }
 
@@ -69,5 +70,9 @@ class ExternalController: UIViewController, UISearchBarDelegate {
             }
         }
         return alphaIndex
+    }
+    
+    func hideKeyboard() {
+        searchBar.resignFirstResponder()
     }
 }

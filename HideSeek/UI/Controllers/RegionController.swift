@@ -17,7 +17,7 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
     var externalController: ExternalController!
     
     @IBAction func backBtnClicked(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     @IBAction func internalBtnClicked(sender: AnyObject) {
@@ -75,7 +75,6 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
     }
     
     override func viewWillDisappear(animated: Bool) {
-        self.navigationController?.navigationBarHidden = true
         self.tabBarController?.tabBar.hidden = false
         
         super.viewWillDisappear(animated)
@@ -97,7 +96,7 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
     }
     
     func regionSelected(name: String) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.navigationController?.popViewControllerAnimated(true)
         self.closure(name: name)
     }
     

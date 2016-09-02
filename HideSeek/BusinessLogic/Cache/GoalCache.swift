@@ -46,11 +46,13 @@ class GoalCache : BaseCache<Goal> {
                             orientation: (goalInfo["orientation"] as! NSString).integerValue,
                             valid: (goalInfo["valid"] as! NSString).integerValue == 1,
                             type: Goal.GoalTypeEnum(rawValue: (goalInfo["type"] as! NSString).integerValue)!,
-                            isEnabled: (goalInfo["is_enabled"] as! NSString).integerValue == 1,
                             showTypeName: goalInfo["show_type_name"] as? String,
                             createBy: (goalInfo["create_by"] as! NSString).longLongValue,
                             introduction: goalInfo["introduction"] as? String,
-                            score: (goalInfo["create_by"] as! NSString).integerValue)
+                            score: goalInfo["score"] is NSString ?
+                                (goalInfo["score"] as! NSString).integerValue :
+                                (goalInfo["score"] as! NSNumber).integerValue,
+                            unionType: (goalInfo["union_type"] as! NSString).integerValue)
             updateList.addObject(goal)
             if(goal.valid) {
                 cacheList.addObject(goal)
@@ -78,5 +80,10 @@ class GoalCache : BaseCache<Goal> {
                 closestGoal = goal
             }
         }
+    }
+    
+    func reset() {
+        cacheList.removeAllObjects()
+        version = 0
     }
 }

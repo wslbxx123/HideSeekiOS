@@ -9,19 +9,17 @@
 import UIKit
 
 class MonsterGuideView: UIView {
-
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
-    }
-    */
     @IBOutlet weak var goalImageView: UIImageView!
     @IBOutlet weak var introductionLabel: UILabel!
     @IBOutlet weak var scoreView: UIView!
+    @IBOutlet weak var roleLabel: UILabel!
     var rateView: RateView!
+    var closeDelegate: CloseDelegate!
 
+    @IBAction func closeBtnClicked(sender: AnyObject) {
+        closeDelegate?.close()
+    }
+    
     func initView() {
         let rateViewContents = NSBundle.mainBundle().loadNibNamed("RateView",
                                                                    owner: self, options: nil)

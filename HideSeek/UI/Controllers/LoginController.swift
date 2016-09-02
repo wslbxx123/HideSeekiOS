@@ -22,7 +22,10 @@ class LoginController: UIViewController {
     var password: String = ""
     
     @IBAction func loginBtnClicked(sender: AnyObject) {
-        let paramDict = ["phone": phone, "password": password]
+        let channalId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.CHANNEL_ID) as! String
+        let paramDict = ["phone": phone,
+                         "password": password,
+                         "channel_id": channalId]
         manager = AFHTTPRequestOperationManager()
         manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
         

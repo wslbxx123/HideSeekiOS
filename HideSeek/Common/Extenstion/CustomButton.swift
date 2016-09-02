@@ -8,6 +8,13 @@
 
 extension UIButton {
     func setBackgroundColor(defaultColorStr: String, selectedColorStr: String, disabledColorStr: String) {
+        self.setImage(getImageWithColor(BaseInfoUtil.stringToRGB(defaultColorStr)),
+                                forState: UIControlState.Normal)
+        self.setImage(getImageWithColor(BaseInfoUtil.stringToRGB(selectedColorStr)),
+                                forState: UIControlState.Selected)
+        self.setImage(getImageWithColor(BaseInfoUtil.stringToRGB(disabledColorStr)),
+                                forState: UIControlState.Disabled)
+        
         self.setBackgroundImage(getImageWithColor(BaseInfoUtil.stringToRGB(defaultColorStr)),
                                 forState: UIControlState.Normal)
         self.setBackgroundImage(getImageWithColor(BaseInfoUtil.stringToRGB(selectedColorStr)),

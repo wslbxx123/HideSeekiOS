@@ -46,13 +46,34 @@
 "ME" = "我的";
 "CANCEL" = "取消";
 "SAVE" = "保存";
+"SEND" = "发送";
+"mushroom" = "蘑菇兽";
+"bomb" = "炸弹";
+"dragon" = "龙冠兽";
+"egg" = "怪诞兽";
+"WATCHED_BY_MONSTER" = "小心！你被一只%@盯上了";
+"LEAGUE_RACE" = "%d族可胜";
+"LEAGUE_RACES" = "%d族联盟";
+"SELF_INTRODUCTION" = "我是%@";
+"FRIEND_REQUEST_MESSAGE" = "你收到一个好友请求";
+"SUCCESS_COMMIT_FEEDBACK" = "提交反馈成功";
+"SHARE_MESSAGE" = "天啊，一只怪兽正在盯着我，快来救我。";
+"SHARE_TITLE" = "进入部落时代";
+"REFRESH_MAP_HINT" = "刷新地图中……";
 
 "ERROR_LOGIN_FAILED" = "用户名和密码不匹配";
 "ERROR_CONNECT_NETWORK_FAILED" = "网络连接失败";
 "ERROR_PASSWORD_NOT_SAME" = "两次输入的密码不一致";
 "ERROR_VERIFICATION_CODE" = "输入的验证码不正确";
 "ERROR_USER_ALREADY_EXIST" = "手机号已经被注册";
+"ERROR_FEEDBACK_EMPTY" = "反馈内容不能为空";
+"ERROR_PASSWORD_SHORT" = "密码太短";
+"ERROR_PASSWORD_LONG" = "密码不能超过45位";
 
-"MESSAGE_GET_MUSHROOM" = "成功收1枚蘑菇丢入囊中";
-"MESSAGE_GET_MONSTER" = "成功打败1个怪兽";
-"MESSAGE_GET_BOMB" = "不幸引爆1枚炸弹，吓晕";
+"MESSAGE_GET_MUSHROOM" = "成功丢入1枚蘑菇兽，有钱就是任性。";
+"MESSAGE_GET_EGG" = "鸡冻！秒碎1只怪诞兽，画面太美，我不敢看。";
+"MESSAGE_GET_COW" = "被1只呲牙兽盯上了，还好机智及时发现，快夸我！";
+"MESSAGE_GET_BIRD" = "偶遇飞魂兽1只，有惊无险，吓死本宝宝了。";
+"MESSAGE_GET_GIRAFFE" = "出门靠朋友，1只长悠兽说来就来，运气好怪我咯？！";
+"MESSAGE_GET_DRAGON" = "大快人心！龙冠兽霸气回收，让我高调嘚瑟下。";
+"MESSAGE_GET_BOMB" = "不幸引爆1只蹲点的诡诈兽，给跪了！";

@@ -46,10 +46,12 @@ class UserCache {
                          sessionId: userInfo["session_id"] as! String,
                          nickname: userInfo["nickname"] as! String,
                          registerDateStr: userInfo["register_date"] as! String,
-                         record: (userInfo["record"] as! NSString).doubleValue,
+                         record: userInfo["record"] is NSString ?
+                            (userInfo["record"] as! NSString).integerValue :
+                            (userInfo["record"] as! NSNumber).integerValue,
                          role: User.RoleEnum(rawValue: (userInfo["role"] as! NSString).integerValue)!,
                          version: (userInfo["version"] as! NSString).longLongValue,
-                         pinyin: PinYinUtil.converterToFirstSpell(userInfo["nickname"] as! String),
+                         pinyin: PinYinUtil.converterToPinyin(userInfo["nickname"] as! String),
                          bombNum: (userInfo["bomb_num"] as! NSString).integerValue,
                          hasGuide: (userInfo["has_guide"] as! NSString).integerValue == 1,
                          friendNum: (userInfo["friend_num"] as! NSString).integerValue)

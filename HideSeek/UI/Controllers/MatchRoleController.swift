@@ -44,16 +44,19 @@ class MatchRoleController: UIViewController {
         
         roleImageView.layer.addAnimation(animation, forKey: "role")
         self.navigationController?.navigationBarHidden = true
+        self.tabBarController?.tabBar.hidden = true
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         self.navigationController?.navigationBarHidden = true
+        self.tabBarController?.tabBar.hidden = true
     }
     
     override func viewWillDisappear(animated: Bool) {
         self.navigationController?.navigationBarHidden = false
+        self.tabBarController?.tabBar.hidden = false
         
         super.viewWillDisappear(animated)
     }

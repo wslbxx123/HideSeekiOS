@@ -35,15 +35,17 @@ class RegisterController: UIViewController {
     }
     
     @IBAction func sendCodeBtnClicked(sender: AnyObject) {
+        self.sendCodeBtn.enabled = false
+        self.countDownNum = 60
+        
+        self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(RegisterController.timeFireMethod), userInfo: nil, repeats: true)
+        
+        self.countDownTimer.fire()
+        
         SMSSDK.getVerificationCodeByMethod(SMSGetCodeMethodSMS, phoneNumber: phone, zone: "86",
                                            customIdentifier: nil) { (error) in
             if (error == nil) {
-                self.sendCodeBtn.enabled = false
-                self.countDownNum = 60
                 
-                self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(RegisterController.timeFireMethod), userInfo: nil, repeats: true)
-
-                self.countDownTimer.fire()
             } else {
                 NSLog("错误信息：%@", error)
             }
@@ -169,14 +171,32 @@ class RegisterController: UIViewController {
     func checkVerificationCode() {
 //        SMSSDK.commitVerificationCode(self.verificationCode, phoneNumber: phone, zone: "86") { (error) in
 //            if ((error == nil)) {
-//                if self.password != self.rePassword {
-//                    HudToastFactory.show(
-//                        NSLocalizedString("ERROR_PASSWORD_NOT_SAME",
-//                            comment: "Two passwords are not the same"),
-//                        view: self.view,
-//                        type: HudToastFactory.MessageType.ERROR)
-//                    return
-//                }
+                if self.password != self.rePassword {
+                    HudToastFactory.show(
+                        NSLocalizedString("ERROR_PASSWORD_NOT_SAME",
+                            comment: "Two passwords are not the same"),
+                        view: self.view,
+                        type: HudToastFactory.MessageType.ERROR)
+                    return
+                }
+                
+                if self.password.characters.count < 6 {
+                    HudToastFactory.show(
+                        NSLocalizedString("ERROR_PASSWORD_SHORT",
+                            comment: "The password is too short"),
+                        view: self.view,
+                        type: HudToastFactory.MessageType.ERROR)
+                    return
+                }
+                
+                if self.password.characters.count > 45 {
+                    HudToastFactory.show(
+                        NSLocalizedString("ERROR_PASSWORD_LONG",
+                            comment: "The length of password cannot be greater than 45"),
+                        view: self.view,
+                        type: HudToastFactory.MessageType.ERROR)
+                    return
+                }
         
                 let storyboard = UIStoryboard(name:"Main", bundle: nil)
                 let viewController = storyboard.instantiateViewControllerWithIdentifier("Upload") as! UploadPhotoController
@@ -192,6 +212,7 @@ class RegisterController: UIViewController {
 //                        comment: "The input verification code is wrong"),
 //                    view: self.view,
 //                    type: HudToastFactory.MessageType.ERROR)
+//                self.codeTextField.text = ""
 //            }
 //        }
     }

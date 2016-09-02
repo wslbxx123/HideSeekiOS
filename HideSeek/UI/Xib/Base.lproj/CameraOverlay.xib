@@ -15,20 +15,19 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bFr-RG-79B" userLabel="CameraView">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="392"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BNQ-eh-gqy" userLabel="MonsterGuideBtn">
-                            <rect key="frame" x="545" y="60" width="40" height="40"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PJm-1f-p9i" userLabel="RefreshBtn">
+                            <rect key="frame" x="545" y="15" width="40" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="40" id="HxJ-4n-7HG"/>
-                                <constraint firstAttribute="width" constant="40" id="Nqq-mf-4lR"/>
+                                <constraint firstAttribute="height" constant="40" id="UJy-1L-qYu"/>
+                                <constraint firstAttribute="width" constant="40" id="wxe-IL-h78"/>
                             </constraints>
-                            <state key="normal" backgroundImage="monster_guide"/>
-                            <state key="selected" backgroundImage="monster_guide_click"/>
+                            <state key="normal" image="refresh"/>
                             <connections>
-                                <action selector="monsterGuideClicked:" destination="iN0-l3-epB" eventType="touchDown" id="rHv-RH-Tet"/>
+                                <action selector="refreshBtnClicked:" destination="iN0-l3-epB" eventType="touchDown" id="nCE-YY-X9K"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9I-w2-uCC" userLabel="SetBombBtn">
-                            <rect key="frame" x="545" y="15" width="40" height="40"/>
+                            <rect key="frame" x="545" y="60" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="5Cf-FT-RPI"/>
                                 <constraint firstAttribute="height" constant="40" id="BBI-uC-SrZ"/>
@@ -39,8 +38,20 @@
                                 <action selector="setBombClicked:" destination="iN0-l3-epB" eventType="touchDown" id="jr1-Ox-4eL"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BNQ-eh-gqy" userLabel="MonsterGuideBtn">
+                            <rect key="frame" x="545" y="105" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="HxJ-4n-7HG"/>
+                                <constraint firstAttribute="width" constant="40" id="Nqq-mf-4lR"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="monster_guide"/>
+                            <state key="selected" backgroundImage="monster_guide_click"/>
+                            <connections>
+                                <action selector="monsterGuideClicked:" destination="iN0-l3-epB" eventType="touchDown" id="rHv-RH-Tet"/>
+                            </connections>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FHb-2i-GSr" userLabel="BombNumBtn">
-                            <rect key="frame" x="575" y="35" width="20" height="20"/>
+                            <rect key="frame" x="575" y="80" width="20" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="0V2-Wb-sVG"/>
                                 <constraint firstAttribute="width" constant="20" id="34Z-6O-PjZ"/>
@@ -51,6 +62,28 @@
                             </state>
                             <connections>
                                 <action selector="bombNumClicked:" destination="iN0-l3-epB" eventType="touchDown" id="rek-lI-raJ"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ESH-Dz-thK" userLabel="WarningBtn">
+                            <rect key="frame" x="545" y="150" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="O84-eR-aX1"/>
+                                <constraint firstAttribute="width" constant="40" id="WTB-zg-te3"/>
+                            </constraints>
+                            <state key="normal" image="warning"/>
+                            <connections>
+                                <action selector="warningBtnClicked:" destination="iN0-l3-epB" eventType="touchDown" id="4FI-Ns-Tte"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="02K-wu-j0g" userLabel="ShareBtn">
+                            <rect key="frame" x="545" y="195" width="40" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="Vsc-5e-v76"/>
+                                <constraint firstAttribute="height" constant="40" id="gtt-jL-l8p"/>
+                            </constraints>
+                            <state key="normal" image="share"/>
+                            <connections>
+                                <action selector="shareBtnClicked:" destination="iN0-l3-epB" eventType="touchDown" id="cEy-9x-F7G"/>
                             </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ssn-ak-qNT" userLabel="GoalImageView" customClass="GoalImageView" customModule="HideSeek" customModuleProvider="target">
@@ -69,13 +102,19 @@
                         </imageView>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="PJm-1f-p9i" firstAttribute="top" secondItem="bFr-RG-79B" secondAttribute="top" constant="15" id="1ka-7w-TEa"/>
+                        <constraint firstItem="02K-wu-j0g" firstAttribute="trailing" secondItem="ESH-Dz-thK" secondAttribute="trailing" id="5If-n1-5S4"/>
                         <constraint firstItem="FHb-2i-GSr" firstAttribute="leading" secondItem="M9I-w2-uCC" secondAttribute="trailing" constant="-10" id="7ay-2G-wo4"/>
+                        <constraint firstItem="M9I-w2-uCC" firstAttribute="top" secondItem="PJm-1f-p9i" secondAttribute="bottom" constant="5" id="BIC-BF-Tma"/>
+                        <constraint firstItem="PJm-1f-p9i" firstAttribute="trailing" secondItem="ESH-Dz-thK" secondAttribute="trailing" id="C1f-eq-ffS"/>
+                        <constraint firstItem="ESH-Dz-thK" firstAttribute="trailing" secondItem="BNQ-eh-gqy" secondAttribute="trailing" id="Crn-Da-wsn"/>
                         <constraint firstItem="Ssn-ak-qNT" firstAttribute="centerX" secondItem="bFr-RG-79B" secondAttribute="centerX" id="JN4-PJ-kHt"/>
                         <constraint firstItem="M9I-w2-uCC" firstAttribute="bottom" secondItem="BNQ-eh-gqy" secondAttribute="top" constant="-5" id="LY6-b6-XQu"/>
                         <constraint firstAttribute="trailing" secondItem="M9I-w2-uCC" secondAttribute="trailing" constant="15" id="YIv-0e-g1p"/>
                         <constraint firstItem="DGt-Et-Df3" firstAttribute="centerX" secondItem="bFr-RG-79B" secondAttribute="centerX" id="aqY-Xi-NX3"/>
                         <constraint firstItem="FHb-2i-GSr" firstAttribute="bottom" secondItem="M9I-w2-uCC" secondAttribute="bottom" id="cPO-pC-lfo"/>
-                        <constraint firstItem="M9I-w2-uCC" firstAttribute="top" secondItem="bFr-RG-79B" secondAttribute="top" constant="15" id="o4j-Xe-cnV"/>
+                        <constraint firstItem="02K-wu-j0g" firstAttribute="top" secondItem="ESH-Dz-thK" secondAttribute="bottom" constant="5" id="ewA-JX-cpy"/>
+                        <constraint firstItem="ESH-Dz-thK" firstAttribute="top" secondItem="BNQ-eh-gqy" secondAttribute="bottom" constant="5" id="fd4-Jb-ZzT"/>
                         <constraint firstItem="M9I-w2-uCC" firstAttribute="leading" secondItem="BNQ-eh-gqy" secondAttribute="leading" id="oJ0-XV-xft"/>
                         <constraint firstItem="DGt-Et-Df3" firstAttribute="bottom" secondItem="Ssn-ak-qNT" secondAttribute="bottom" id="uIU-Rz-CcN"/>
                     </constraints>
@@ -103,7 +142,7 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1fI-ub-an9" userLabel="HintView">
                                             <rect key="frame" x="0.0" y="0.0" width="298" height="39"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Boss, a goal there!" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89j-Ef-BxR" userLabel="HintLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Patriarch, a goal there!" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89j-Ef-BxR" userLabel="HintLabel">
                                                     <rect key="frame" x="0.0" y="0.0" width="283" height="39"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -295,7 +334,9 @@
                 <outlet property="mapUIView" destination="mjI-7t-vi7" id="fvM-Fb-ZXk"/>
                 <outlet property="monsterGuideBtn" destination="BNQ-eh-gqy" id="e5h-Vg-Md3"/>
                 <outlet property="setBombBtn" destination="M9I-w2-uCC" id="FT1-4c-Ac2"/>
+                <outlet property="shareBtn" destination="02K-wu-j0g" id="Pe4-bu-Pfg"/>
                 <outlet property="swordImageView" destination="DGt-Et-Df3" id="0Hi-nS-xFL"/>
+                <outlet property="warningBtn" destination="ESH-Dz-thK" id="Pxo-Re-MGg"/>
             </connections>
             <point key="canvasLocation" x="248.5" y="186"/>
         </view>
@@ -307,7 +348,10 @@
         <image name="introduce_icon" width="268" height="332"/>
         <image name="monster_guide" width="84" height="84"/>
         <image name="monster_guide_click" width="84" height="84"/>
+        <image name="refresh" width="84" height="84"/>
         <image name="set_bomb" width="84" height="84"/>
         <image name="set_bomb_click" width="84" height="84"/>
+        <image name="share" width="84" height="84"/>
+        <image name="warning" width="84" height="84"/>
     </resources>
 </document>

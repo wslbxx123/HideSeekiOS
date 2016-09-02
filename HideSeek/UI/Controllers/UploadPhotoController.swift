@@ -34,7 +34,12 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
         self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
+    @IBAction func cameraBtnClicked(sender: AnyObject) {
+        photoImageViewClicked()
+    }
+    
     @IBAction func matchRoleBtnClicked(sender: AnyObject) {
+        let channalId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.CHANNEL_ID) as! String
         let paramDict = NSMutableDictionary()
         let role = arc4random_uniform(5)
         paramDict["phone"] = phone
@@ -42,6 +47,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
         paramDict["password"] = password
         paramDict["role"] = "\(role)"
         paramDict["sex"] = "\(sex.rawValue)"
+        paramDict["channel_id"] = channalId
         
         if region != nil {
             paramDict["region"] = region
@@ -53,7 +59,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
         manager.POST(UrlParam.REGISTER_URL, parameters: paramDict, constructingBodyWithBlock: { (formData) in
 
             if self.croppedImage != nil {
-                let imgData = UIImageJPEGRepresentation(self.croppedImage!, 0.5);
+                let imgData = UIImageJPEGRepresentation(self.croppedImage!, 1);
                 formData.appendPartWithFileData(imgData!, name: "photo", fileName: "photo", mimeType: "image/jpeg")
             }}, success: { (operation, responseObject) in
                 let response = responseObject as! NSDictionary
@@ -182,7 +188,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
         if mediaType != nil && mediaType!.isEqualToString("public.image") {
             let originImage = info[UIImagePickerControllerOriginalImage] as! UIImage
             
-            let scaledImage = scaleImage(originImage, toScale: 0.3)
+            let scaledImage = scaleImage(originImage, toScale: 0.8)
             
             if (UIImagePNGRepresentation(scaledImage) == nil){
                 data = UIImageJPEGRepresentation(scaledImage, 1)!
@@ -222,7 +228,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
     }
     
     func cropViewControllerDidCancel(controller: PECropViewController!) {
-        
+        controller.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func cropViewController(controller: PECropViewController!, didFinishCroppingImage croppedImage: UIImage!) {

@@ -46,13 +46,34 @@
 "ME" = "Me";
 "CANCEL" = "Cancel";
 "SAVE" = "Save";
+"SEND" = "Send";
+"mushroom" = "Mushroom";
+"bomb" = "Bomb";
+"dragon" = "Dragon";
+"egg" = "Egg";
+"WATCHED_BY_MONSTER" = "Take care, you are watched by a %@";
+"LEAGUE_RACE" = "%d race is enough";
+"LEAGUE_RACES" = "League of %d races";
+"SELF_INTRODUCTION" = "I am %@";
+"FRIEND_REQUEST_MESSAGE" = "You got a friend request";
+"SUCCESS_COMMIT_FEEDBACK" = "Commit feedback successfully";
+"SHARE_MESSAGE" = "My God! A monster is watching at me, please help me!";
+"SHARE_TITLE" = "Enter into the age of Tribes";
+"REFRESH_MAP_HINT" = "Refreshing map...";
 
 "ERROR_LOGIN_FAILED" = "Phone or password error";
 "ERROR_CONNECT_NETWORK_FAILED" = "Failed to connect the network";
 "ERROR_PASSWORD_NOT_SAME" = "Two passwords are not the same";
 "ERROR_VERIFICATION_CODE" = "The input verification code is wrong";
 "ERROR_USER_ALREADY_EXIST" = "The phone is already registered";
+"ERROR_FEEDBACK_EMPTY" = "The content of feedback cannot be empty";
+"ERROR_PASSWORD_SHORT" = "The password is too short";
+"ERROR_PASSWORD_LONG" = "The length of password cannot be greater than 45";
 
-"MESSAGE_GET_MUSHROOM" = "Get a mushroom into a sack successfully";
-"MESSAGE_GET_MONSTER" = "Beat a monster successfully";
-"MESSAGE_GET_BOMB" = "A bomb went off, ouch";
+"MESSAGE_GET_MUSHROOM" = "Throw a mushroom monster into sack easily, Rich bitch!";
+"MESSAGE_GET_EGG" = "So excited! Beat an egg monster successfully!";
+"MESSAGE_GET_COW" = "You are watched by a cow monster，how smart I am to beat it in time!";
+"MESSAGE_GET_BIRD" = "Dodged a bullet! Caming across a bird monster scared me!";
+"MESSAGE_GET_GIRAFFE" = "Thanks to friends,lucky to get a giraffe monster!";
+"MESSAGE_GET_DRAGON" = "It is a great satisfaction to get a dragon monster, so cool!";
+"MESSAGE_GET_BOMB" = "Unfortunately detonated a crafty bomb monster, Give me a break!";

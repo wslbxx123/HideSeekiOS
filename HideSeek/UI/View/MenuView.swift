@@ -17,11 +17,16 @@ class MenuView: UIControl {
         self.addTarget(self, action: #selector(MenuView.touchDown), forControlEvents: UIControlEvents.TouchDown)
         self.addTarget(self, action: #selector(MenuView.touchCancel), forControlEvents: UIControlEvents.TouchCancel)
         self.addTarget(self, action: #selector(MenuView.touchCancel), forControlEvents: UIControlEvents.TouchUpInside)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(MenuView.gestureTouchDown))
+        self.addGestureRecognizer(gesture)
+    }
+    
+    func gestureTouchDown() {
+        touchDownDelegate?.touchDown(self.tag)
     }
     
     func touchDown() {
         self.backgroundColor = BaseInfoUtil.stringToRGB("#f1f0f0")
-        touchDownDelegate?.touchDown(self.tag)
     }
     
     func touchCancel() {
