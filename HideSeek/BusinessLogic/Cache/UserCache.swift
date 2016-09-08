@@ -32,6 +32,12 @@ class UserCache {
     func setUser(userInfo: NSDictionary) {
         user = from(userInfo)
         
+        if(userInfo.objectForKey("friend_requests") != nil) {
+            let friendRequests = userInfo["friend_requests"] as! NSArray
+            
+            NewFriendCache.instance.setFriends(friendRequests)
+        }
+        
         if(user.pkId > 0) {
             NSUserDefaults.standardUserDefaults().setObject(userInfo["session_id"], forKey: UserDefaultParam.SESSION_TOKEN)
             let tempUserInfo = BaseInfoUtil.removeNullFromDictionary(userInfo)
@@ -46,9 +52,7 @@ class UserCache {
                          sessionId: userInfo["session_id"] as! String,
                          nickname: userInfo["nickname"] as! String,
                          registerDateStr: userInfo["register_date"] as! String,
-                         record: userInfo["record"] is NSString ?
-                            (userInfo["record"] as! NSString).integerValue :
-                            (userInfo["record"] as! NSNumber).integerValue,
+                         record: BaseInfoUtil.getSignedIntegerFromAnyObject(userInfo["record"]!),
                          role: User.RoleEnum(rawValue: (userInfo["role"] as! NSString).integerValue)!,
                          version: (userInfo["version"] as! NSString).longLongValue,
                          pinyin: PinYinUtil.converterToPinyin(userInfo["nickname"] as! String),

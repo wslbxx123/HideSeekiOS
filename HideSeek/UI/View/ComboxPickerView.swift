@@ -37,7 +37,7 @@ class ComboxPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSour
         
         if pickerLabel == nil {
             pickerLabel = UILabel()
-            pickerLabel!.font = UIFont.systemFontOfSize(16)
+            pickerLabel!.font = UIFont.systemFontOfSize(20)
             pickerLabel?.textAlignment = NSTextAlignment.Center
         }
         

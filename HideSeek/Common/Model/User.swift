@@ -17,6 +17,7 @@ class User: NSObject {
     var isFriend: Bool = false
     var addTime: NSString?
     var message: NSString?
+    var alias: NSString?
     
     var _nickname: NSString
     var nickname: NSString {

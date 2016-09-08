@@ -63,7 +63,7 @@ class FriendCache : BaseCache<User> {
             let friendInfo = friend as! NSDictionary
             let friendIdStr = friendInfo["pk_id"] as! NSString
             let pinyinStr = PinYinUtil.converterToPinyin(friendInfo["nickname"] as! String)
-            list.addObject(User(
+            let user = User(
                 pkId: friendIdStr.longLongValue,
                 phone: friendInfo["phone"] as! NSString,
                 nickname: friendInfo["nickname"] as! NSString,
@@ -74,7 +74,10 @@ class FriendCache : BaseCache<User> {
                 region: friendInfo["region"] as? NSString,
                 role: User.RoleEnum(rawValue: (friendInfo["role"] as! NSString).integerValue)!,
                 version: (friendInfo["version"] as! NSString).longLongValue,
-                pinyin: NSString(string: pinyinStr)))
+                pinyin: NSString(string: pinyinStr))
+            
+            user.alias = friendInfo["remark"] as? NSString
+            list.addObject(user)
         }
         
         friendTableManager.updateFriends(version, friendList: list)

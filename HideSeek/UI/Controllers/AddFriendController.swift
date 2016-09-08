@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDelegate {
     let HtmlType = "text/html"
@@ -40,22 +41,31 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
     
     func refreshData() {
         let paramDict: NSMutableDictionary = ["search_word": searchBar.text!]
+        
+        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        hud.dimBackground = true
+        
         manager.POST(UrlParam.SEARCH_FRIENDS_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
                         print("JSON: " + responseObject.description!)
                         let response = responseObject as! NSDictionary
                         self.setInfoFromCallback(response)
+                        hud.removeFromSuperview()
+                        hud = nil
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
+                hud.removeFromSuperview()
+                hud = nil
         })
     }
     
     func setInfoFromCallback(response: NSDictionary) {
         let code = (response["code"] as! NSString).integerValue
-        let result = response["result"] as! NSArray
         
         if code == CodeParam.SUCCESS {
+            let result = response["result"] as! NSArray
             let userList = getUsers(result)
             
             if(userList.count > 1) {
@@ -95,7 +105,7 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
     
     func goToProfile(user: User) {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let profileController = storyboard.instantiateViewControllerWithIdentifier("profile") as! ProfileController
+        let profileController = storyboard.instantiateViewControllerWithIdentifier("Profile") as! ProfileController
         profileController.user = user
         self.navigationController?.pushViewController(profileController, animated: true)
     }

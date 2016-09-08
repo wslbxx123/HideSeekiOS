@@ -17,17 +17,19 @@
 class ExchangeCollectionView: UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     let VISIBLE_REFRESH_COUNT = 3
     var cellIdentifier: String = "exchangeCell"
-    var rewardList: NSArray!
+    var rewardList: NSMutableArray!
     var bound: CGRect!
     var screenHeight: CGFloat!
     var exchangeDelegate: ExchangeDelegate!
+    var loadMoreDelegate: LoadMoreDelegate!
+    var footer: UICollectionReusableView!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.delegate = self
         self.dataSource = self
         self.registerClass(ExchangeCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
-        self.rewardList = NSArray()
+        self.rewardList = NSMutableArray()
         self.bound = UIScreen.mainScreen().bounds
         self.screenHeight = bound.height
         self.delaysContentTouches = false
@@ -76,13 +78,23 @@ class ExchangeCollectionView: UICollectionView, UICollectionViewDelegateFlowLayo
         return edgeInsets
     }
     
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        var reusableView: UICollectionReusableView!
+        
+        if (kind == UICollectionElementKindSectionFooter)
+        {
+            footer = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "FooterView", forIndexPath: indexPath)
+            footer.backgroundColor = UIColor.whiteColor()
+            reusableView = footer;
+        }
+        return reusableView;
+    }
+    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let indexPath = self.indexPathForItemAtPoint(CGPointMake(scrollView.contentOffset.x + 30, scrollView.contentOffset.y + screenHeight - 104))
         
         if indexPath != nil && indexPath!.row >= self.rewardList.count / 2 - VISIBLE_REFRESH_COUNT && self.rewardList.count >= 10{
-            //            self.collectionvIEWfOOT = self.infiniteScrollingView
-            //
-            //            loadMoreDelegate?.loadMore()
+            loadMoreDelegate?.loadMore()
         }
     }
     

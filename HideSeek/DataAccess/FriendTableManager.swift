@@ -22,6 +22,7 @@ class FriendTableManager {
     let role = Expression<Int>("role")
     let pullVersion = Expression<Int64>("version")
     let pinyin = Expression<String?>("pinyin")
+    let alias = Expression<String?>("alias")
     
     var database: Connection!
     var friendTable: Table!
@@ -55,6 +56,7 @@ class FriendTableManager {
                 t.column(role)
                 t.column(pullVersion)
                 t.column(pinyin)
+                t.column(alias)
                 })
         } catch let error as NSError {
             print("SQLiteDB - failed to create table friend!")
@@ -67,7 +69,7 @@ class FriendTableManager {
         let friendList = NSMutableArray()
         do {
             for item in try database.prepare(friendTable.order(pinyin.asc)) {
-                friendList.addObject(User(
+                let user = User(
                     pkId: item[accountId],
                     phone: item[phone],
                     nickname: item[nickname],
@@ -78,7 +80,10 @@ class FriendTableManager {
                     region: (item[region] == nil ? nil : item[region]),
                     role: User.RoleEnum(rawValue: item[role])!,
                     version: item[pullVersion],
-                    pinyin: item[pinyin]!))
+                    pinyin: item[pinyin]!)
+                
+                user.alias = item[alias]
+                friendList.addObject(user)
             }
         }
         catch let error as NSError {
@@ -93,7 +98,7 @@ class FriendTableManager {
         let friendList = NSMutableArray()
         do {
             for item in try database.prepare(friendTable.filter(nickname.like("%\(keyword)%") || pinyin.like("%\(keyword)%")).order(pinyin.asc)) {
-                friendList.addObject(User(
+                let user = User(
                     pkId: item[accountId],
                     phone: item[phone],
                     nickname: item[nickname],
@@ -104,7 +109,10 @@ class FriendTableManager {
                     region: (item[region] == nil ? nil : item[region]),
                     role: User.RoleEnum(rawValue: item[role])!,
                     version: item[pullVersion],
-                    pinyin: item[pinyin]!))
+                    pinyin: item[pinyin]!)
+                
+                user.alias = item[alias]
+                friendList.addObject(user)
             }
         }
         catch let error as NSError {
@@ -135,7 +143,8 @@ class FriendTableManager {
                         region <- (friendInfo.region == nil ? nil : friendInfo.region! as String),
                         role <- friendInfo.role.rawValue,
                         pullVersion <- friendInfo.version,
-                        pinyin <- (friendInfo.pinyin as String)))
+                        pinyin <- (friendInfo.pinyin as String),
+                        alias <- (friendInfo.alias == nil ? nil : friendInfo.alias! as String)))
                 
                 if count == 0 {
                     let insert = friendTable.insert(
@@ -149,6 +158,7 @@ class FriendTableManager {
                         role <- friendInfo.role.rawValue,
                         pullVersion <- friendInfo.version,
                         pinyin <- (friendInfo.pinyin as String),
+                        alias <- (friendInfo.alias == nil ? nil : friendInfo.alias! as String),
                         accountId <- friendInfo.pkId)
                     
                     try database.run(insert)

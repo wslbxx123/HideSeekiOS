@@ -10,7 +10,7 @@ import UIKit
 import AFNetworking
 
 class ExchangeController: UIViewController, ExchangeDelegate,
-    ConfirmExchangeDelegate, CloseDelegate {
+    ConfirmExchangeDelegate, CloseDelegate, LoadMoreDelegate {
     let HtmlType = "text/html"
     let TAG_LOADING_IMAGEVIEW = 1
     
@@ -27,6 +27,7 @@ class ExchangeController: UIViewController, ExchangeDelegate,
     var exchangeHeight: CGFloat = 250
     var exchangeWidth: CGFloat!
     var grayView: UIView!
+    var isLoading: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,10 +69,11 @@ class ExchangeController: UIViewController, ExchangeDelegate,
     
     func initView() {
         rewardRefreshControl = UIRefreshControl()
-        rewardRefreshControl.addTarget(self, action: #selector(ExchangeController.refreshProductData), forControlEvents: UIControlEvents.ValueChanged)
+        rewardRefreshControl.addTarget(self, action: #selector(ExchangeController.refreshRewardData), forControlEvents: UIControlEvents.ValueChanged)
         collectionView.addSubview(rewardRefreshControl)
         collectionView.alwaysBounceVertical = true
         collectionView.exchangeDelegate = self
+        collectionView.loadMoreDelegate = self
         
         let refreshContents = NSBundle.mainBundle().loadNibNamed("RefreshView",
                                                                  owner: self, options: nil)
@@ -83,9 +85,10 @@ class ExchangeController: UIViewController, ExchangeDelegate,
         exchangeWidth = screenRect.width - 40
     }
     
-    func refreshProductData() {
+    func refreshRewardData() {
         let paramDict: NSMutableDictionary = ["version": "\(rewardTableManager.version)",
                                               "reward_min_id": "\(rewardTableManager.rewardMinId)"]
+        isLoading = true
         manager.POST(UrlParam.REFRESH_REWARD_URL,
                      parameters: paramDict,
                      success: { (operation, responseObject) in
@@ -96,9 +99,11 @@ class ExchangeController: UIViewController, ExchangeDelegate,
                         self.collectionView.rewardList = RewardCache.instance.cacheList
                         self.collectionView.reloadData()
                         self.rewardRefreshControl.endRefreshing()
+                        self.isLoading = false
             },
                      failure: { (operation, error) in
                         print("Error: " + error.localizedDescription)
+                        self.isLoading = false
         })
         playAnimateRefresh()
     }
@@ -152,4 +157,47 @@ class ExchangeController: UIViewController, ExchangeDelegate,
         exchangeDialogController.view.removeFromSuperview()
     }
 
+    func loadMore() {
+        if !isLoading {
+            isLoading = true
+            let hasData = RewardCache.instance.getMoreRewards(10, hasLoaded: false)
+            if self.collectionView.footer != nil {
+                self.collectionView.footer.hidden = false
+            }
+            
+            if(!hasData) {
+                let paramDict: NSMutableDictionary = ["version": String(rewardTableManager.version), "reward_min_id": String(rewardTableManager.rewardMinId)]
+                manager.POST(UrlParam.GET_REWARD_URL,
+                             parameters: paramDict,
+                             success: { (operation, responseObject) in
+                                print("JSON: " + responseObject.description!)
+                                let response = responseObject as! NSDictionary
+                                
+                                RewardCache.instance.addRewards(response["result"] as! NSDictionary)
+                                if self.collectionView.footer != nil {
+                                    self.collectionView.footer.hidden = true
+                                }
+                                self.collectionView.rewardList = RewardCache.instance.cacheList
+                                self.collectionView.reloadData()
+                                self.isLoading = false
+                    },
+                             failure: { (operation, error) in
+                                print("Error: " + error.localizedDescription)
+                                if self.collectionView.footer != nil {
+                                    self.collectionView.footer.hidden = true
+                                }
+                })
+            } else {
+            
+                self.collectionView.rewardList.addObjectsFromArray(
+                    RewardCache.instance.rewardList as [AnyObject])
+                if self.collectionView.footer != nil {
+                    self.collectionView.footer.hidden = true
+                }
+                self.collectionView.reloadData()
+                
+                isLoading = false
+            }
+        }
+    }
 }

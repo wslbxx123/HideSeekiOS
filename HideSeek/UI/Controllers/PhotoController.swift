@@ -21,7 +21,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         super.viewDidLoad()
 
         let user = UserCache.instance.user
-        photoImageView.setWebImage(user.photoUrl as String, defaultImage: "default_photo", isCache: true)
+        photoImageView.setWebImage(user.photoUrl as String, smallPhotoUrl: user.smallPhotoUrl as String, defaultImage: "default_photo", isCache: true)
         let rightBarButton = UIBarButtonItem(image: UIImage(named: "more"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PhotoController.moreBtnClicked))
         self.navigationItem.rightBarButtonItem = rightBarButton
         manager = CustomRequestManager()

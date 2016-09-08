@@ -48,6 +48,10 @@ class UpdateSexController: UIViewController, TouchDownDelegate, PickerViewDelega
         rightBarButton = UIBarButtonItem(title: NSLocalizedString("SAVE", comment: "Save"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(UpdateSexController.saveBtnClicked))
         rightBarButton.enabled = false
         self.navigationItem.rightBarButtonItem = rightBarButton
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UpdateSexController.cancelEditSex))
+        pickerView.userInteractionEnabled = true
+        pickerView.addGestureRecognizer(gestureRecognizer)
     }
     
     func cancelBtnClicked() {
@@ -96,6 +100,19 @@ class UpdateSexController: UIViewController, TouchDownDelegate, PickerViewDelega
 
     func touchDown(tag: Int) {
         pickerView.hidden = false
+    }
+    
+    func cancelEditSex() {
+        if sex == User.SexEnum.notSet {
+            sex = User.SexEnum.female
+        }
+        
+        sexLabel.text = sexPickerView.items.objectAtIndex(sex.rawValue - 1) as? String
+        pickerView.hidden = true
+        
+        if sexLabel.text != sexName {
+            self.rightBarButton.enabled = true
+        }
     }
     
     func pickerViewSelected(row: Int, item: AnyObject) {

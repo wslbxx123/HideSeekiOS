@@ -60,8 +60,10 @@
 "SHARE_MESSAGE" = "My God! A monster is watching at me, please help me!";
 "SHARE_TITLE" = "Enter into the age of Tribes";
 "REFRESH_MAP_HINT" = "Refreshing map...";
+"FRIEND_ACCEPT_MESSAGE" = "%@ accept you friend request";
 
-"ERROR_LOGIN_FAILED" = "Phone or password error";
+"ERROR_GOAL_DISAPPEAR" = "The monster is killed by others";
+"ERROR_PHONE_OR_PASSWORD_WRONG" = "Phone or password error";
 "ERROR_CONNECT_NETWORK_FAILED" = "Failed to connect the network";
 "ERROR_PASSWORD_NOT_SAME" = "Two passwords are not the same";
 "ERROR_VERIFICATION_CODE" = "The input verification code is wrong";
@@ -69,6 +71,7 @@
 "ERROR_FEEDBACK_EMPTY" = "The content of feedback cannot be empty";
 "ERROR_PASSWORD_SHORT" = "The password is too short";
 "ERROR_PASSWORD_LONG" = "The length of password cannot be greater than 45";
+"ERROR_SEARCH_MYSELF" = "Cannot add yourself as friend";
 
 "MESSAGE_GET_MUSHROOM" = "Throw a mushroom monster into sack easily, Rich bitch!";
 "MESSAGE_GET_EGG" = "So excited! Beat an egg monster successfully!";

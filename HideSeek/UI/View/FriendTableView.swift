@@ -23,6 +23,7 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     var alphaIndex: NSDictionary = NSDictionary()
     var isSearching: Bool = false
     var goToNewFriendDelegate: GoToNewFriendDelegate!
+    var goToProfileDelegate: GoToProfileDelegate!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -32,6 +33,7 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         self.friendList = NSMutableArray()
         self.screenHeight = UIScreen.mainScreen().bounds.height - 44
         self.separatorStyle = UITableViewCellSeparatorStyle.None;
+        self.tintColor = UIColor.blackColor()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -97,10 +99,15 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
             photoImageView.layer.masksToBounds = true
             photoImageView.setWebImage(friend.smallPhotoUrl as String, defaultImage: "default_photo", isCache: true)
             nameLabel.text = friend.nickname as String
+            
+            if friend.alias != nil && friend.alias != "" {
+                nameLabel.text = friend.alias! as String
+            }
             break;
         default:
             cell = UITableViewCell()
         }
+    
         return cell
     }
     
@@ -141,6 +148,10 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
             goToNewFriendDelegate?.goToNewFriend()
+        } else {
+            let friend = friendList.objectAtIndex(indexPath.row) as! User
+            friend.isFriend = true
+            goToProfileDelegate?.goToProfile(friend)
         }
     }
 }

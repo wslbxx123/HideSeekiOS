@@ -19,6 +19,7 @@ class WarningController: UIViewController {
     
     var manager: CustomRequestManager!
     var timer: NSTimer!
+    var updateGoalDelegate: UpdateGoalDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,7 @@ class WarningController: UIViewController {
         manager = CustomRequestManager()
         manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
         self.automaticallyAdjustsScrollViewInsets = false
+        warningTableView.updateGoalDelegate = updateGoalDelegate
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -128,7 +130,7 @@ class WarningController: UIViewController {
                 showTypeName: warningInfo["show_type_name"] as? String,
                 createBy: (warningInfo["create_by"] as! NSString).longLongValue,
                 introduction: warningInfo["introduction"] as? String,
-                score: (warningInfo["score"] as! NSString).integerValue,
+                score: BaseInfoUtil.getSignedIntegerFromAnyObject(warningInfo["score"]),
                 unionType: (warningInfo["union_type"] as! NSString).integerValue),
                 createTime: warningInfo["create_time"] as! String)
             

@@ -1,4 +1,4 @@
-//
+///
 //  NewFriendController.swift
 //  HideSeek
 //
@@ -27,9 +27,7 @@ class NewFriendController: UIViewController, AcceptDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        let tarBarController = BaseInfoUtil.getRootViewController() as! ViewController
-        let item = tarBarController.uiTabBar.items![3]
-        item.badgeValue = nil
+        BadgeUtil.clearMeBadge()
         newFriendTableView.newFriendList = NewFriendCache.instance.friendList
         newFriendTableView.reloadData()
     }
@@ -42,7 +40,7 @@ class NewFriendController: UIViewController, AcceptDelegate {
     func setFriendRequest(userInfo: NSDictionary) {
         let friendInfo = userInfo["object"] as! NSDictionary
         let message = userInfo["extra"] as! NSString
-        NewFriendCache.instance.saveFriend(friendInfo, message: message)
+        NewFriendCache.instance.setFriend(friendInfo, message: message)
     }
     
     func acceptFriend(friendId: Int64) {
@@ -72,11 +70,10 @@ class NewFriendController: UIViewController, AcceptDelegate {
         let code = (response["code"] as! NSString).integerValue
         
         if code == CodeParam.SUCCESS {
+            UserCache.instance.user.friendNum = (response["result"] as! NSNumber).integerValue
             NewFriendCache.instance.updateFriendStatus(friendId)
+            newFriendTableView.newFriendList = NewFriendCache.instance.friendList
             newFriendTableView.reloadData()
-        } else {
-            let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
         }
     }
 }

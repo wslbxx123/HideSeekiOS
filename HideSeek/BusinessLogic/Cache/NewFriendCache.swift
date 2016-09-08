@@ -24,8 +24,22 @@ class NewFriendCache : BaseCache<User> {
         newFriendTableManager.refreshTable(UserCache.instance.user.pkId)
     }
     
-    func setFriends(friendInfo: NSDictionary, message: NSString) {
+    func setFriend(friendInfo: NSDictionary, message: NSString) {
         saveFriend(friendInfo, message: message)
+        
+        cacheList = newFriendTableManager.searchFriends()
+    }
+    
+    func setFriends(friendRequests: NSArray) {
+        for friendRequest in friendRequests {
+            let friendInfo = friendRequest as! NSDictionary
+            NewFriendCache.instance.saveFriend(friendInfo,
+                                               message: friendInfo["message"] as! NSString)
+        }
+        
+        if friendRequests.count > 0 {
+            BadgeUtil.addMeBadge(friendRequests.count)
+        }
         
         cacheList = newFriendTableManager.searchFriends()
     }

@@ -14,7 +14,7 @@ class RewardTableManager {
     let rewardId = Expression<Int64>("reward_id")
     let name = Expression<String>("name")
     let imageUrl = Expression<String?>("image_url")
-    let record = Expression<Double>("record")
+    let record = Expression<Int>("record")
     let exchangeCount = Expression<Int>("exchange_count")
     let introduction = Expression<String?>("introduction")
     let pullVersion = Expression<Int64>("version")

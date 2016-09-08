@@ -9,14 +9,11 @@
 import UIKit
 
 class WarningTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
-    let TAG_GOAL_IMAGEVIEW = 1
-    let TAG_MESSAGE_LABEL = 2
-    let TAG_GET_BUTTON = 3
-    
     var warningList: NSMutableArray!
     var messageWidth: CGFloat!
     var infiniteScrollingView: UIView!
     var loadMoreDelegate: LoadMoreDelegate!
+    var updateGoalDelegate: UpdateGoalDelegate!
     var screenHeight: CGFloat!
     
     required init?(coder aDecoder: NSCoder) {
@@ -35,21 +32,10 @@ class WarningTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.dequeueReusableCellWithIdentifier("warningCell")! as UITableViewCell
+        let cell = self.dequeueReusableCellWithIdentifier("warningCell") as! WarningTableViewCell
         let warning = warningList.objectAtIndex(indexPath.row) as! Warning
         
-        let goalImageView = cell.viewWithTag(TAG_GOAL_IMAGEVIEW) as! UIImageView
-        let messageLabel = cell.viewWithTag(TAG_MESSAGE_LABEL) as! UILabel
-        let getBtn = cell.viewWithTag(TAG_GET_BUTTON) as! UIButton
-        getBtn.setBackgroundColor("#fccb05", selectedColorStr: "#ffa200", disabledColorStr: "#bab8b8")
-        getBtn.layer.cornerRadius = 5
-        getBtn.layer.masksToBounds = true
-        
-        let message = NSString(format: NSLocalizedString("WATCHED_BY_MONSTER", comment: "You are watched by a %@"), warning.goal.goalName)
-        messageLabel.text = message as String
-        
-        goalImageView.image = UIImage(named: GoalImageFactory.get(warning.goal.type, showTypeName: warning.goal.showTypeName))
-        
+        cell.initWarning(warning)
         BaseInfoUtil.cancelButtonDelay(cell)
         return cell
     }

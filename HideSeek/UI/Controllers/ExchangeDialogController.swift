@@ -14,8 +14,8 @@ class ExchangeDialogController: UIViewController {
     @IBOutlet weak var confirmBtn: UIButton!
     @IBOutlet weak var recordLabel: UILabel!
     var count: Int = 1
-    var record: Double!
-    var amount: Double = 0
+    var record: Int!
+    var amount: Int = 0
     var confirmExchangeDelegate: ConfirmExchangeDelegate!
     var closeDelegate: CloseDelegate!
     var reward: Reward!
@@ -60,7 +60,7 @@ class ExchangeDialogController: UIViewController {
     }
     
     func refreshAmount() {
-        amount = Double(count) * record
+        amount = count * record
         countTextField.text = "\(count)"
         recordLabel.text = "\(amount)"
     }

@@ -92,6 +92,11 @@ class GoalImageView: UIImageView {
         self.displayLink.paused = false
     }
     
+    override func stopAnimating() {
+        super.stopAnimating()
+        self.displayLink.paused = true
+    }
+    
     func setDuration() {
         switch(endGoal.type) {
         case .bomb:
@@ -119,7 +124,8 @@ class GoalImageView: UIImageView {
                 self.currentFrameIndex = 0;
                 setInterval()
                 
-                if(endGoal.type == Goal.GoalTypeEnum.bomb) {
+                if(endGoal.type == Goal.GoalTypeEnum.bomb && UserCache.instance.ifLogin() &&
+                    endGoal.createBy != UserCache.instance.user.pkId) {
                     getGoalDelegate?.getGoal()
                 }
             }

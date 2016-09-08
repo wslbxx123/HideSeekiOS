@@ -10,7 +10,7 @@ class GoalCache : BaseCache<Goal> {
     static let instance = GoalCache()
     var version: Int64 = 0
     var updateList = NSMutableArray()
-    var ifNeedClearMap = true
+    var ifNeedClearMap = false
     
     var closestGoal: Goal!
     var _selectedGoal: Goal!
@@ -18,6 +18,7 @@ class GoalCache : BaseCache<Goal> {
         get {
             if _selectedGoal == nil && closestGoal != nil {
                 closestGoal.isSelected = true
+                _selectedGoal = closestGoal
                 return closestGoal
             }
             
@@ -35,6 +36,18 @@ class GoalCache : BaseCache<Goal> {
         ifNeedClearMap = false
     }
     
+    func getGoal(goalId: Int64) -> Goal?{
+        for goalItem in cacheList {
+            let goal = goalItem as! Goal
+            
+            if goal.pkId == goalId {
+                return goal
+            }
+        }
+        
+        return nil
+    }
+    
     func saveGoals(result: NSDictionary!) {
         let goalArray = result["goals"] as! NSArray
         
@@ -49,9 +62,7 @@ class GoalCache : BaseCache<Goal> {
                             showTypeName: goalInfo["show_type_name"] as? String,
                             createBy: (goalInfo["create_by"] as! NSString).longLongValue,
                             introduction: goalInfo["introduction"] as? String,
-                            score: goalInfo["score"] is NSString ?
-                                (goalInfo["score"] as! NSString).integerValue :
-                                (goalInfo["score"] as! NSNumber).integerValue,
+                            score: BaseInfoUtil.getSignedIntegerFromAnyObject(goalInfo["score"]),
                             unionType: (goalInfo["union_type"] as! NSString).integerValue)
             updateList.addObject(goal)
             if(goal.valid) {
@@ -83,6 +94,7 @@ class GoalCache : BaseCache<Goal> {
     }
     
     func reset() {
+        _selectedGoal = nil
         cacheList.removeAllObjects()
         version = 0
     }

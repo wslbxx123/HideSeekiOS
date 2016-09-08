@@ -127,11 +127,24 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
         sexPickerView.pickerViewDelegate = self
         manager = AFHTTPRequestOperationManager()
         manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UploadPhotoController.cancelEditSex))
+        pickerView.userInteractionEnabled = true
+        pickerView.addGestureRecognizer(gestureRecognizer)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func cancelEditSex() {
+        if sex == User.SexEnum.notSet {
+            sex = User.SexEnum.female
+        }
+        
+        sexResultLabel.text = sexPickerView.items.objectAtIndex(sex.rawValue - 1) as? String
+        pickerView.hidden = true
     }
 
     func sexViewClicked() {

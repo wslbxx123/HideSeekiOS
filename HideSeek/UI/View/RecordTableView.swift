@@ -47,7 +47,13 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         timeLabel.text = record.time
         
         goalImageView.image = UIImage(named: GoalImageFactory.get(record.goalType, showTypeName: record.showTypeName))
-        scoreLabel.text = String(record.score)
+        
+        if record.score >= 0 {
+            scoreLabel.text = "+" + String(record.score)
+        } else {
+            scoreLabel.text = String(record.score)
+        }
+        
         dateLabel.text = String(record.date)
         
         if indexPath.row == 0 ||

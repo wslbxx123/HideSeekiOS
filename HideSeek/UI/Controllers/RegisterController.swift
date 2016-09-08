@@ -28,7 +28,7 @@ class RegisterController: UIViewController {
     var password: String = ""
     var rePassword: String = ""
     var countDownTimer: NSTimer!
-    var countDownNum = 60
+    var countDownNum = 30
     
     @IBAction func closeBtnClicked(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true)
@@ -36,7 +36,7 @@ class RegisterController: UIViewController {
     
     @IBAction func sendCodeBtnClicked(sender: AnyObject) {
         self.sendCodeBtn.enabled = false
-        self.countDownNum = 60
+        self.countDownNum = 30
         
         self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(RegisterController.timeFireMethod), userInfo: nil, repeats: true)
         

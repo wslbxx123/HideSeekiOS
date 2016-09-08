@@ -11,8 +11,8 @@ class RaceGroupTableManager {
     static let instance = RaceGroupTableManager()
     
     let recordId = Expression<Int64>("record_id")
-    let photoUrl = Expression<String>("photo_url")
-    let smallPhotoUrl = Expression<String>("small_photo_url")
+    let photoUrl = Expression<String?>("photo_url")
+    let smallPhotoUrl = Expression<String?>("small_photo_url")
     let nickname = Expression<String>("nickname")
     let time = Expression<String>("time")
     let goalType = Expression<Int>("goal_type")

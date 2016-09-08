@@ -9,7 +9,8 @@
 import UIKit
 import AFNetworking
 
-class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDelegate, CloseDelegate {
+class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDelegate,
+    CloseDelegate, LoadMoreDelegate {
     let HtmlType = "text/html"
     let TAG_LOADING_IMAGEVIEW = 1
     
@@ -26,6 +27,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
     var purchaseHeight: CGFloat = 250
     var purchaseWidth: CGFloat!
     var grayView: UIView!
+    var isLoading: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +72,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         collectionView.addSubview(productRefreshControl)
         collectionView.alwaysBounceVertical = true
         collectionView.purchaseDelegate = self
+        collectionView.loadMoreDelegate = self
         
         let refreshContents = NSBundle.mainBundle().loadNibNamed("RefreshView",
                                                                  owner: self, options: nil)
@@ -83,7 +86,8 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
     
     func refreshProductData() {
         let paramDict: NSMutableDictionary = ["version": "\(productTableManager.version)",
-                                              "product_min_id": "\(productTableManager.productMinId)"]
+                                               "product_min_id": "\(productTableManager.productMinId)"]
+        isLoading = true
         manager.POST(UrlParam.REFRESH_PRODUCT_URL,
                      parameters: paramDict,
                      success: { (operation, responseObject) in
@@ -94,9 +98,11 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
                         self.collectionView.productList = ProductCache.instance.cacheList
                         self.collectionView.reloadData()
                         self.productRefreshControl.endRefreshing()
+                        self.isLoading = false
             },
                      failure: { (operation, error) in
                         print("Error: " + error.localizedDescription)
+                        self.isLoading = false
         })
         playAnimateRefresh()
     }
@@ -155,5 +161,46 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
     
     func showMessage(message: String, type: HudToastFactory.MessageType) {
         HudToastFactory.show(message, view: self.view, type: type)
+    }
+    
+    func loadMore() {
+        if !isLoading {
+            isLoading = true
+            let hasData = ProductCache.instance.getMoreProducts(10, hasLoaded: false)
+            if self.collectionView.footer != nil {
+                self.collectionView.footer.hidden = false
+            }
+            
+            if(!hasData) {
+                let paramDict: NSMutableDictionary = ["version": String(productTableManager.version), "product_min_id": String(productTableManager.productMinId)]
+                manager.POST(UrlParam.GET_PRODUCT_URL,
+                             parameters: paramDict,
+                             success: { (operation, responseObject) in
+                                print("JSON: " + responseObject.description!)
+                                let response = responseObject as! NSDictionary
+                                ProductCache.instance.addProducts(response["result"] as! NSDictionary)
+                                if self.collectionView.footer != nil {
+                                    self.collectionView.footer.hidden = true
+                                }
+                                self.collectionView.productList = ProductCache.instance.cacheList
+                                self.collectionView.reloadData()
+                                self.isLoading = false
+                    },
+                             failure: { (operation, error) in
+                                print("Error: " + error.localizedDescription)
+                                if self.collectionView.footer != nil {
+                                    self.collectionView.footer.hidden = true
+                                }
+                })
+            } else {
+                self.collectionView.productList.addObjectsFromArray(ProductCache.instance.productList as [AnyObject])
+                if self.collectionView.footer != nil {
+                    self.collectionView.footer.hidden = true
+                }
+                self.collectionView.reloadData()
+                
+                isLoading = false
+            }
+        }
     }
 }

@@ -55,14 +55,14 @@ class RaceGroupCache : BaseCache<RaceGroup> {
             let recordIdStr = raceGroupInfo["pk_id"] as! NSString
             list.addObject(RaceGroup(recordId: recordIdStr.longLongValue,
                 nickname: raceGroupInfo["nickname"] as! String,
-                photoUrl: raceGroupInfo["photo_url"] as! String,
-                smallPhotoUrl: raceGroupInfo["small_photo_url"] as! String,
+                photoUrl: raceGroupInfo["photo_url"] as? String,
+                smallPhotoUrl: raceGroupInfo["small_photo_url"] as? String,
                 recordItem: RecordItem(
                     recordId: recordIdStr.longLongValue,
                     time: raceGroupInfo["time"] as! String,
                     goalType: Goal.GoalTypeEnum(rawValue: (raceGroupInfo["goal_type"] as! NSString).integerValue)!,
-                    score: (raceGroupInfo["score"] as! NSString).integerValue,
-                    scoreSum: (raceGroupInfo["score_sum"] as! NSString).integerValue,
+                    score: BaseInfoUtil.getSignedIntegerFromAnyObject(raceGroupInfo["score"]),
+                    scoreSum: BaseInfoUtil.getSignedIntegerFromAnyObject(raceGroupInfo["score_sum"]),
                     version: (raceGroupInfo["version"] as! NSString).longLongValue,
                     showTypeName: raceGroupInfo["show_type_name"] as? String)))
         }

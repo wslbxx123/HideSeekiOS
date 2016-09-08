@@ -106,7 +106,9 @@ class BaseInfoUtil {
             let value = dictionary.objectForKey(key);
             
             if (value != nil && !value!.isKindOfClass(NSNull)) {
-                mutableDictionary.setValue(dictionary.objectForKey(key) as! NSString, forKey: key as! String);
+                if value!.isKindOfClass(NSString) {
+                    mutableDictionary.setValue(dictionary.objectForKey(key) as! NSString, forKey: key as! String);
+                }
             }
         }
         
@@ -190,5 +192,11 @@ class BaseInfoUtil {
         }
         
         return result
+    }
+    
+    class func getSignedIntegerFromAnyObject(object: AnyObject?) -> Int {
+        return object is NSString ?
+            (object as! NSString).integerValue :
+            (object as! NSNumber).integerValue
     }
 }

@@ -32,10 +32,13 @@ class AnimationImageFactory {
             break;
         case .bomb:
             imageArray.addObject("bomb")
-            imageArray.addObject("bomb_a")
-            imageArray.addObject("bomb_b")
-            imageArray.addObject("bomb_c")
-            imageArray.addObject("bomb_d")
+            
+            if UserCache.instance.ifLogin() && goal.createBy != UserCache.instance.user.pkId {
+                imageArray.addObject("bomb_a")
+                imageArray.addObject("bomb_b")
+                imageArray.addObject("bomb_c")
+                imageArray.addObject("bomb_d")
+            }
             break;
         case .monster:
             imageArray = getMonsterArray(goal.showTypeName!)

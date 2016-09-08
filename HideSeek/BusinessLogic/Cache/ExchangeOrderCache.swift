@@ -61,7 +61,7 @@ class ExchangeOrderCache : BaseCache<PurchaseOrder> {
                 rewardId: (orderInfo["reward_id"] as! NSString).longLongValue,
                 rewardName: orderInfo["reward_name"] as! String,
                 imageUrl: orderInfo["reward_image_url"] as! String,
-                record: (orderInfo["record"] as! NSString).doubleValue,
+                record: (orderInfo["record"] as! NSString).integerValue,
                 exchangeCount: (orderInfo["exchange_count"] as! NSString).integerValue,
                 introduction: orderInfo["introduction"] as! String,
                 version: (orderInfo["version"] as! NSString).longLongValue))

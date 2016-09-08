@@ -40,6 +40,7 @@ class LoginController: UIViewController {
                         print("JSON: " + responseObject.description!)
                         
                         self.setInfoFromCallback(response)
+                        
                         hud.removeFromSuperview()
                         hud = nil
             },
@@ -114,6 +115,9 @@ class LoginController: UIViewController {
         
         if code == CodeParam.SUCCESS {
             UserCache.instance.setUser(response["result"] as! NSDictionary)
+            
+            PushManager.instance.register()
+            GoalCache.instance.ifNeedClearMap = true
             self.navigationController?.popViewControllerAnimated(true)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)

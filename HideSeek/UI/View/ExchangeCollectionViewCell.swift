@@ -61,7 +61,7 @@ class ExchangeCollectionViewCell: UICollectionViewCell {
         self.imageView.setWebImage(imageUrl, defaultImage: "default_photo", isCache: true)
     }
     
-    func setRecord(record: Double) {
+    func setRecord(record: Int) {
         self.recordImageView.contentMode = UIViewContentMode.ScaleAspectFit
         self.recordImageView.image = UIImage(named: "record_price")
         self.recordImageView.frame = CGRect(x: 10, y: self.imageView.frame.maxY, width: 18, height: 20)

@@ -15,14 +15,14 @@ class ExchangeOrder {
     var rewardId: Int64
     var rewardName: String
     var imageUrl: String
-    var record: Double
+    var record: Int
     var exchangeCount: Int
     var introduction: String
     var version: Int64
     
     init(orderId: Int64, status: Int, createTime: String, updateTime: String,
          count: Int, rewardId: Int64, rewardName: String, imageUrl: String,
-         record: Double, exchangeCount: Int, introduction: String, version: Int64) {
+         record: Int, exchangeCount: Int, introduction: String, version: Int64) {
         self.orderId = orderId
         self.status = status
         self.createTime = createTime

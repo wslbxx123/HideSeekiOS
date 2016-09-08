@@ -10,13 +10,15 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    let SEND_FRIEND_REQUEST = 1
+    let ACCEPT_FRIEND = 2
+    
     let MAP_KEY = "293ee05942de45f4f221656ca2faa5b9"
     let AUDIO_KEY = "578cb259"
     let SMS_KEY = "156855918c1ab"
     let SMS_SECRET = "5a5efd0f24dbafa7647c7dd60fd99fed"
     let SHARE_KEY = "wx35d7e379b7472410"
     let SHARE_SECRET = "d54adfb1105f71be8099b5a803bbc92f"
-    let BAIDU_IM_KEY = "dWQ3yzejeKLcimqH3zHAvKUi"
     var window: UIWindow?
     var isBackgroundActivateApplication: Bool = false
     var tarBarController: ViewController!
@@ -33,22 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IFlySpeechUtility.createUtility(initString as String)
         SMSSDK.registerApp(SMS_KEY, withSecret: SMS_SECRET)
         
-        let systemVersion: NSString = UIDevice.currentDevice().systemVersion
-        if systemVersion.floatValue >= 8.0 {
-            let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: nil)
-            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-        } else {
-            UIApplication.sharedApplication().registerForRemoteNotificationTypes([.Badge, .Sound, .Alert])
-        }
-        
-        BPush.registerChannel(launchOptions, apiKey: BAIDU_IM_KEY, pushMode: BPushMode.Development, withFirstAction: "", withSecondAction: "", withCategory: "", useBehaviorTextInput: true, isDebug: true)
-        
-        BPush.disableLbs()
-        
-        let userInfo = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? NSDictionary
-        if userInfo != nil {
-            BPush.handleNotification(userInfo! as [NSObject : AnyObject])
-        }
+        PushManager.instance.startApp(launchOptions)
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         
@@ -142,34 +129,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        BPush.registerDeviceToken(deviceToken)
-        BPush.bindChannelWithCompleteHandler { (result, error) in
-            if (error != nil) {
-                return
-            }
-            
-            if result != nil {
-                let resultDic = result as! NSDictionary
-                if resultDic["error_code"] != nil
-                    && (resultDic["error_code"] as! NSString).integerValue != 0{
-                    return;
-                }
-
-                let myChannelId = BPush.getChannelId()
-                NSUserDefaults.standardUserDefaults().setObject(myChannelId, forKey: UserDefaultParam.CHANNEL_ID)
-                
-                BPush.listTagsWithCompleteHandler({ (result, error) in
-                    if result != nil {
-                        NSLog("result ======= %@", result.description)
-                    }
-                })
-                BPush.setTag("MyTag", withCompleteHandler: { (result, error) in
-                    if result != nil {
-                        NSLog("设置tag成功")
-                    }
-                })
-            }
+        let deviceTokenstr = XGPush.registerDevice(deviceToken, successCallback: {
+            NSLog("[XGPush Demo]register successBlock");
+            }) { 
+            NSLog("[XGPush Demo]register errorBlock");
         }
+        
+        NSUserDefaults.standardUserDefaults().setObject(deviceTokenstr, forKey: UserDefaultParam.CHANNEL_ID)
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
@@ -177,16 +143,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        BPush.handleNotification(userInfo)
-        let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let newFriendController = storyboard.instantiateViewControllerWithIdentifier("newFriend") as! NewFriendController
-        newFriendController.setFriendRequest(userInfo as NSDictionary)
+        XGPush.handleReceiveNotification(userInfo)
         
-        if application.applicationState == UIApplicationState.Active
-            || application.applicationState == UIApplicationState.Background{
-            NSLog("acitve or background")
-        } else {
-            (tarBarController.selectedViewController! as! UINavigationController).pushViewController(newFriendController, animated: true)
+        let result = userInfo as NSDictionary
+        let type = (result["type"] as! NSString).integerValue
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        var viewController: UIViewController
+        
+        switch(type) {
+        case SEND_FRIEND_REQUEST:
+            let newFriendController = storyboard.instantiateViewControllerWithIdentifier("NewFriend") as! NewFriendController
+            newFriendController.setFriendRequest(result)
+            viewController = newFriendController
+            
+            BadgeUtil.updateMeBadge()
+            break;
+        default:
+            viewController = storyboard.instantiateViewControllerWithIdentifier("Friend") as! FriendController
+            break;
+        }
+        
+        if application.applicationState != UIApplicationState.Active
+            && application.applicationState == UIApplicationState.Background {
+            (tarBarController.selectedViewController! as! UINavigationController).pushViewController(viewController, animated: true)
         }
         
         NSLog("%@", userInfo)
@@ -194,27 +173,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
         NSLog("接收本地通知啦")
-        BPush.showLocalNotificationAtFront(notification, identifierKey: nil)
     }
     
     // 此方法是 用户点击了通知，应用在前台 或者开启后台并且应用在后台时调起
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         completionHandler(UIBackgroundFetchResult.NewData)
+        let result = userInfo as NSDictionary
+        let type = BaseInfoUtil.getSignedIntegerFromAnyObject(result["type"])
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let newFriendController = storyboard.instantiateViewControllerWithIdentifier("newFriend") as! NewFriendController
-        newFriendController.setFriendRequest(userInfo as NSDictionary)
+        var viewController: UIViewController
         
-        if application.applicationState == UIApplicationState.Active {
-            let item = tarBarController.uiTabBar.items![3]
-            if item.badgeValue == nil {
-                item.badgeValue = "0"
-            }
-            let badgeValue = NSString(string: item.badgeValue!).integerValue
-            item.badgeValue = NSString(format: "%d", badgeValue + 1) as String
+        switch(type) {
+        case SEND_FRIEND_REQUEST:
+            let newFriendController = storyboard.instantiateViewControllerWithIdentifier("NewFriend") as! NewFriendController
+            newFriendController.setFriendRequest(result)
+            viewController = newFriendController
+            
+            BadgeUtil.updateMeBadge()
+            break;
+        default:
+            viewController = storyboard.instantiateViewControllerWithIdentifier("Friend") as! FriendController
+            break;
         }
         
         if application.applicationState == UIApplicationState.Inactive && !isBackgroundActivateApplication {
-            (tarBarController.selectedViewController! as! UINavigationController).pushViewController(newFriendController, animated: true)
+            (tarBarController.selectedViewController! as! UINavigationController).pushViewController(viewController, animated: true)
         }
         
         if application.applicationState == UIApplicationState.Background {

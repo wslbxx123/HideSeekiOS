@@ -60,8 +60,10 @@
 "SHARE_MESSAGE" = "天啊，一只怪兽正在盯着我，快来救我。";
 "SHARE_TITLE" = "进入部落时代";
 "REFRESH_MAP_HINT" = "刷新地图中……";
+"FRIEND_ACCEPT_MESSAGE" = "%@接受你的好友请求";
 
-"ERROR_LOGIN_FAILED" = "用户名和密码不匹配";
+"ERROR_GOAL_DISAPPEAR" = "怪兽已经被其他人打死";
+"ERROR_PHONE_OR_PASSWORD_WRONG" = "用户名和密码不匹配";
 "ERROR_CONNECT_NETWORK_FAILED" = "网络连接失败";
 "ERROR_PASSWORD_NOT_SAME" = "两次输入的密码不一致";
 "ERROR_VERIFICATION_CODE" = "输入的验证码不正确";
@@ -69,6 +71,7 @@
 "ERROR_FEEDBACK_EMPTY" = "反馈内容不能为空";
 "ERROR_PASSWORD_SHORT" = "密码太短";
 "ERROR_PASSWORD_LONG" = "密码不能超过45位";
+"ERROR_SEARCH_MYSELF" = "不能加自己为好友";
 
 "MESSAGE_GET_MUSHROOM" = "成功丢入1枚蘑菇兽，有钱就是任性。";
 "MESSAGE_GET_EGG" = "鸡冻！秒碎1只怪诞兽，画面太美，我不敢看。";

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDelegate {
+class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDelegate, GoToProfileDelegate {
     let HtmlType = "text/html"
     @IBOutlet weak var friendTableView: FriendTableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -42,6 +42,7 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
         self.navigationItem.rightBarButtonItem = rightBarButton
         searchBar.delegate = self
         friendTableView.goToNewFriendDelegate = self
+        friendTableView.goToProfileDelegate = self
     }
     
     func refreshData() {
@@ -135,7 +136,14 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
     
     func goToNewFriend() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let newFriendController = storyboard.instantiateViewControllerWithIdentifier("newFriend") as! NewFriendController
+        let newFriendController = storyboard.instantiateViewControllerWithIdentifier("NewFriend") as! NewFriendController
         self.navigationController?.pushViewController(newFriendController, animated: true)
+    }
+    
+    func goToProfile(user: User) {
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        let profileController = storyboard.instantiateViewControllerWithIdentifier("Profile") as! ProfileController
+        profileController.user = user
+        self.navigationController?.pushViewController(profileController, animated: true)
     }
 }

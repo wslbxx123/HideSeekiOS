@@ -122,6 +122,14 @@
 		188658D81D77B8B00012912F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 188658D71D77B8B00012912F /* ImageIO.framework */; };
 		188658DA1D77B8BF0012912F /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 188658D91D77B8BF0012912F /* libsqlite3.tbd */; };
 		188658E41D77C5480012912F /* ShareDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188658E31D77C5480012912F /* ShareDelegate.swift */; };
+		18939FF01D7E6D21007CA861 /* libXG-SDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18939FED1D7E6D21007CA861 /* libXG-SDK.a */; };
+		18939FF11D7E6D21007CA861 /* XGPush.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 18939FEE1D7E6D21007CA861 /* XGPush.h */; };
+		18939FF21D7E6D21007CA861 /* XGSetting.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 18939FEF1D7E6D21007CA861 /* XGSetting.h */; };
+		18939FF41D7E8166007CA861 /* PushManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18939FF31D7E8166007CA861 /* PushManager.swift */; };
+		18939FF61D7F0B66007CA861 /* RemarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18939FF51D7F0B66007CA861 /* RemarkController.swift */; };
+		18939FF81D7FFB9D007CA861 /* BadgeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18939FF71D7FFB9C007CA861 /* BadgeUtil.swift */; };
+		18939FFA1D80169C007CA861 /* UpdateGoalDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18939FF91D80169C007CA861 /* UpdateGoalDelegate.swift */; };
+		18939FFC1D8017D2007CA861 /* WarningTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18939FFB1D8017D2007CA861 /* WarningTableViewCell.swift */; };
 		189CD4071D499347005983CB /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 189CD4061D499347005983CB /* PEPhotoCropEditor.bundle */; };
 		189CD4091D49A3AB005983CB /* RegionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189CD4081D49A3AB005983CB /* RegionController.swift */; };
 		189CD40B1D49B0A1005983CB /* InternalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189CD40A1D49B0A1005983CB /* InternalController.swift */; };
@@ -193,8 +201,6 @@
 		18D017031D3F3F5B00695BD4 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D017021D3F3F5B00695BD4 /* Product.swift */; };
 		18D017051D3F5A1300695BD4 /* PurchaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D017041D3F5A1300695BD4 /* PurchaseCollectionViewCell.swift */; };
 		18D0AB8D1D70183100B51E7A /* SetEndGoalDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D0AB8C1D70183100B51E7A /* SetEndGoalDelegate.swift */; };
-		18D0AB971D706F2D00B51E7A /* BPush.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 18D0AB951D706F2D00B51E7A /* BPush.h */; };
-		18D0AB981D706F2D00B51E7A /* libBPush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18D0AB961D706F2D00B51E7A /* libBPush.a */; };
 		18D0AB9A1D7080D100B51E7A /* NewFriendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D0AB991D7080D100B51E7A /* NewFriendController.swift */; };
 		18D7831F1D2DE20D0013FB3C /* LoadMoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D7831E1D2DE20D0013FB3C /* LoadMoreDelegate.swift */; };
 		18D783211D2F3FF50013FB3C /* RecordTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D783201D2F3FF50013FB3C /* RecordTableView.swift */; };
@@ -425,6 +431,14 @@
 		188658DF1D77BA8E0012912F /* WXApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WXApi.h; path = Frameworks/ShareSDK/Support/PlatformSDK/WeChatSDK/WXApi.h; sourceTree = "<group>"; };
 		188658E11D77BC5C0012912F /* RennSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RennSDK.framework; path = Frameworks/ShareSDK/Support/PlatformSDK/RenRenSDK/RennSDK.framework; sourceTree = "<group>"; };
 		188658E31D77C5480012912F /* ShareDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShareDelegate.swift; path = Common/Delegate/ShareDelegate.swift; sourceTree = "<group>"; };
+		18939FED1D7E6D21007CA861 /* libXG-SDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libXG-SDK.a"; path = "HideSeek/Sources/libXG-SDK.a"; sourceTree = "<group>"; };
+		18939FEE1D7E6D21007CA861 /* XGPush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = XGPush.h; path = HideSeek/Sources/XGPush.h; sourceTree = "<group>"; };
+		18939FEF1D7E6D21007CA861 /* XGSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = XGSetting.h; path = HideSeek/Sources/XGSetting.h; sourceTree = "<group>"; };
+		18939FF31D7E8166007CA861 /* PushManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushManager.swift; path = BusinessLogic/Network/PushManager.swift; sourceTree = "<group>"; };
+		18939FF51D7F0B66007CA861 /* RemarkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemarkController.swift; path = UI/Controllers/RemarkController.swift; sourceTree = "<group>"; };
+		18939FF71D7FFB9C007CA861 /* BadgeUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BadgeUtil.swift; path = Common/Util/BadgeUtil.swift; sourceTree = "<group>"; };
+		18939FF91D80169C007CA861 /* UpdateGoalDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UpdateGoalDelegate.swift; path = Common/Delegate/UpdateGoalDelegate.swift; sourceTree = "<group>"; };
+		18939FFB1D8017D2007CA861 /* WarningTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WarningTableViewCell.swift; path = UI/View/WarningTableViewCell.swift; sourceTree = "<group>"; };
 		189CD4061D499347005983CB /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = Pods/PEPhotoCropEditor/Resources/PEPhotoCropEditor.bundle; sourceTree = "<group>"; };
 		189CD4081D49A3AB005983CB /* RegionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegionController.swift; path = UI/Controllers/RegionController.swift; sourceTree = "<group>"; };
 		189CD40A1D49B0A1005983CB /* InternalController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InternalController.swift; path = UI/Controllers/InternalController.swift; sourceTree = "<group>"; };
@@ -499,8 +513,6 @@
 		18D017021D3F3F5B00695BD4 /* Product.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Product.swift; path = Common/Model/Product.swift; sourceTree = "<group>"; };
 		18D017041D3F5A1300695BD4 /* PurchaseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PurchaseCollectionViewCell.swift; path = UI/View/PurchaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		18D0AB8C1D70183100B51E7A /* SetEndGoalDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SetEndGoalDelegate.swift; path = Common/Delegate/SetEndGoalDelegate.swift; sourceTree = "<group>"; };
-		18D0AB951D706F2D00B51E7A /* BPush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BPush.h; path = HideSeek/Sources/BPush.h; sourceTree = "<group>"; };
-		18D0AB961D706F2D00B51E7A /* libBPush.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libBPush.a; path = HideSeek/Sources/libBPush.a; sourceTree = "<group>"; };
 		18D0AB991D7080D100B51E7A /* NewFriendController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewFriendController.swift; path = UI/Controllers/NewFriendController.swift; sourceTree = "<group>"; };
 		18D7831E1D2DE20D0013FB3C /* LoadMoreDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadMoreDelegate.swift; path = Common/Delegate/LoadMoreDelegate.swift; sourceTree = "<group>"; };
 		18D783201D2F3FF50013FB3C /* RecordTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecordTableView.swift; path = UI/View/RecordTableView.swift; sourceTree = "<group>"; };
@@ -582,13 +594,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18939FF01D7E6D21007CA861 /* libXG-SDK.a in Frameworks */,
+				18939FF11D7E6D21007CA861 /* XGPush.h in Frameworks */,
+				18939FF21D7E6D21007CA861 /* XGSetting.h in Frameworks */,
 				18EC9D941D4759E6005F88A5 /* MessageUI.framework in Frameworks */,
 				186DD1351D7834AD0098064E /* TencentOpenAPI.framework in Frameworks */,
 				188658DA1D77B8BF0012912F /* libsqlite3.tbd in Frameworks */,
 				188658D81D77B8B00012912F /* ImageIO.framework in Frameworks */,
 				18EC9D961D4759F5005F88A5 /* JavaScriptCore.framework in Frameworks */,
-				18D0AB971D706F2D00B51E7A /* BPush.h in Frameworks */,
-				18D0AB981D706F2D00B51E7A /* libBPush.a in Frameworks */,
 				186DD1401D7834AD0098064E /* ShareSDKConnector.framework in Frameworks */,
 				18857C261D52099B0049714B /* CoreMotion.framework in Frameworks */,
 				18857C251D5209840049714B /* CFNetwork.framework in Frameworks */,
@@ -646,7 +659,9 @@
 		180E970E1D29F00200481703 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				18857C291D520C4C0049714B /* AlipayManager.swift */,
 				180E970B1D29EFE900481703 /* CustomRequestManager.swift */,
+				18939FF31D7E8166007CA861 /* PushManager.swift */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -954,6 +969,7 @@
 				186DD1421D793F660098064E /* HideKeyboardDelegate.swift */,
 				186DD1441D798A070098064E /* ArriveDelegate.swift */,
 				186DD1461D798DCE0098064E /* RefreshMapDelegate.swift */,
+				18939FF91D80169C007CA861 /* UpdateGoalDelegate.swift */,
 			);
 			name = Delegate;
 			sourceTree = "<group>";
@@ -968,7 +984,6 @@
 				189CD40E1D49C36E005983CB /* DomesticCityTableManager.swift */,
 				18B9C8951D4B86DF000D5007 /* ForeignCityTableManager.swift */,
 				1845A95A1D50994A005271E4 /* RewardTableManager.swift */,
-				18857C291D520C4C0049714B /* AlipayManager.swift */,
 				18CF635A1D55CA2D00EABFC0 /* PurchaseOrderTableManager.swift */,
 				18EA6DF01D5C63EA00196E22 /* ExchangeOrderTableManager.swift */,
 				18670F331D6C412C0025E051 /* FriendTableManager.swift */,
@@ -1007,6 +1022,7 @@
 			children = (
 				18FD1A741D1A20D700225C92 /* BaseInfoUtil.swift */,
 				18EC94041D24C6D500559627 /* PinYinUtil.swift */,
+				18939FF71D7FFB9C007CA861 /* BadgeUtil.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -1061,6 +1077,7 @@
 				181499B71D713BDD00C5BBF5 /* FriendVerificationController.swift */,
 				188658A11D7573EE0012912F /* FeedbackController.swift */,
 				188658A31D7665840012912F /* AboutController.swift */,
+				18939FF51D7F0B66007CA861 /* RemarkController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1111,6 +1128,7 @@
 				18B57AD81D6EB63A00678658 /* WarningTableView.swift */,
 				18B0235A1D7423E500ACE203 /* NewFriendTableView.swift */,
 				18B0235E1D7443E700ACE203 /* NewFriendTableViewCell.swift */,
+				18939FFB1D8017D2007CA861 /* WarningTableViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1164,14 +1182,15 @@
 		BB17D2BFE1256B4CDF8F36F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				18939FED1D7E6D21007CA861 /* libXG-SDK.a */,
+				18939FEE1D7E6D21007CA861 /* XGPush.h */,
+				18939FEF1D7E6D21007CA861 /* XGSetting.h */,
 				188658E11D77BC5C0012912F /* RennSDK.framework */,
 				188658DF1D77BA8E0012912F /* WXApi.h */,
 				188658DD1D77BA710012912F /* WeiboSDK.h */,
 				188658DB1D77B9120012912F /* ShareSDK.framework */,
 				188658D91D77B8BF0012912F /* libsqlite3.tbd */,
 				188658D71D77B8B00012912F /* ImageIO.framework */,
-				18D0AB951D706F2D00B51E7A /* BPush.h */,
-				18D0AB961D706F2D00B51E7A /* libBPush.a */,
 				18857C241D5209840049714B /* CFNetwork.framework */,
 				18857C221D5209640049714B /* CoreText.framework */,
 				18857C1E1D52092E0049714B /* AlipaySDK.bundle */,
@@ -1498,6 +1517,7 @@
 				18EA6DEB1D5C0ACD00196E22 /* ExchangeDialogController.swift in Sources */,
 				181DB5621D291D1000E91100 /* RaceGroupController.swift in Sources */,
 				18670F2A1D6A04C20025E051 /* UpdateSexController.swift in Sources */,
+				18939FF41D7E8166007CA861 /* PushManager.swift in Sources */,
 				1845A95B1D50994A005271E4 /* RewardTableManager.swift in Sources */,
 				181499B61D71339A00C5BBF5 /* NewFriendTableManager.swift in Sources */,
 				18E382861D5DC9A800ED8523 /* GuideMonsterDelegate.swift in Sources */,
@@ -1533,9 +1553,11 @@
 				181499B81D713BDD00C5BBF5 /* FriendVerificationController.swift in Sources */,
 				181DB5601D291C4500E91100 /* RaceGroupTableView.swift in Sources */,
 				18EA6DE91D5C05C700196E22 /* ExchangeDelegate.swift in Sources */,
+				18939FFA1D80169C007CA861 /* UpdateGoalDelegate.swift in Sources */,
 				1824E37C1D3B16A8008A4E15 /* CustomTabBar.swift in Sources */,
 				184CBF371D65903700135C60 /* GoalImageFactory.swift in Sources */,
 				18FD1A701D1A201700225C92 /* UrlParam.swift in Sources */,
+				18939FF81D7FFB9D007CA861 /* BadgeUtil.swift in Sources */,
 				181DB5641D2922C600E91100 /* BaseCache.swift in Sources */,
 				18E382881D5DF7B100ED8523 /* MapDialogController.swift in Sources */,
 				181C09D71D675C3F00473D47 /* MyProfileController.swift in Sources */,
@@ -1591,6 +1613,7 @@
 				18BF177C1D5867BA006C80B6 /* PurchaseOrderTableViewCell.swift in Sources */,
 				18B57ADD1D6ED1C400678658 /* WarningDelegate.swift in Sources */,
 				18EA6DED1D5C0BFC00196E22 /* ConfirmExchangeDelegate.swift in Sources */,
+				18939FFC1D8017D2007CA861 /* WarningTableViewCell.swift in Sources */,
 				18F661971D62DC6800689AF0 /* SwordImageView.swift in Sources */,
 				18CF63591D55A57500EABFC0 /* MyOrderController.swift in Sources */,
 				18261CDB1D4788B1005ECD31 /* UploadPhotoController.swift in Sources */,
@@ -1614,6 +1637,7 @@
 				18EC94051D24C6D500559627 /* PinYinUtil.swift in Sources */,
 				18B9C8981D4B8832000D5007 /* ForeignCity.swift in Sources */,
 				1872B55B1D44FF5100416A49 /* MenuView.swift in Sources */,
+				18939FF61D7F0B66007CA861 /* RemarkController.swift in Sources */,
 				18DCE9901D2BDBEB009510FD /* DatabaseManager.swift in Sources */,
 				18C8D6381D2FF36300464394 /* RecordCache.swift in Sources */,
 				182002011D6D930B002E650F /* AddFriendTableView.swift in Sources */,

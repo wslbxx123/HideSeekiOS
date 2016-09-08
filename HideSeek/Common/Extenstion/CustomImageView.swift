@@ -33,6 +33,41 @@ extension UIImageView {
         }
     }
     
+    func setWebImage(url: String?, smallPhotoUrl: String?, defaultImage: String?, isCache: Bool){
+        var image: UIImage?
+        if url == nil {
+            return
+        }
+        
+        if defaultImage != nil {
+            self.image = UIImage(named: defaultImage!)
+        }
+        
+        if isCache {
+            let data: NSData? = ImageCache.readCacheFromUrl(smallPhotoUrl!)
+            if data != nil {
+                image = UIImage(data: data!)
+                self.image = image
+            } else {
+                refreshImage(smallPhotoUrl)
+            }
+        } else {
+            refreshImage(smallPhotoUrl)
+        }
+        
+        if isCache {
+            let data: NSData? = ImageCache.readCacheFromUrl(url!)
+            if data != nil {
+                image = UIImage(data: data!)
+                self.image = image
+            } else {
+                refreshImage(url)
+            }
+        } else {
+            refreshImage(url)
+        }
+    }
+    
     func refreshImage(url: String?) {
         var image: UIImage?
         let dispath = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)

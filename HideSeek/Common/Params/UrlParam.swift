@@ -17,6 +17,7 @@ class UrlParam {
     static let SET_BOMB_URL = "http://www.hideseek.cn/index.php/home/map/setBomb"
     static let GET_GOAL_URL = "http://www.hideseek.cn/index.php/home/map/getGoal"
     static let REFRESH_PRODUCT_URL = "http://www.hideseek.cn/index.php/home/store/refreshProducts"
+    static let GET_PRODUCT_URL = "http://www.hideseek.cn/index.php/home/store/getProducts"
     static let GET_REWARD_URL = "http://www.hideseek.cn/index.php/home/store/getReward"
     static let REFRESH_REWARD_URL = "http://www.hideseek.cn/index.php/home/store/refreshReward"
     static let CREATE_ORDER_URL = "http://www.hideseek.cn/index.php/home/store/createOrder"
@@ -39,6 +40,8 @@ class UrlParam {
     static let GET_DANGER_WARNING_URL = "http://www.hideseek.cn/index.php/home/map/getDangerWarnings"
     static let ACCEPT_FRIEND_URL = "http://www.hideseek.cn/index.php/home/friend/acceptFriend"
     static let ADD_FEEDBACK_URL = "http://www.hideseek.cn/index.php/home/setting/addFeedback"
+    static let LOGOUT_URL = "http://www.hideseek.cn/index.php/home/user/logout"
+    static let UPDATE_REMARK = "http://www.hideseek.cn/index.php/home/friend/updateRemark"
     
     static let APP_STORE_URL = ""
     static let IOS7_APP_STORE_URL = ""

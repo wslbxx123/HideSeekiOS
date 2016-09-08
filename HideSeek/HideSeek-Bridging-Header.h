@@ -11,7 +11,8 @@
 #import <CoreMotion/CMMotionManager.h>
 #import <SMS_SDK/SMSSDK.h>
 #import <AlipaySDK/AlipaySDK.h>
-#import "BPush.h"
+#import "XGPush.h"
+#import "XGSetting.h"
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKUI/ShareSDK+SSUI.h>
 #import <ShareSDKConnector/ShareSDKConnector.h>

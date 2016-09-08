@@ -17,8 +17,19 @@ class ProfileController: UIViewController {
     @IBOutlet weak var roleImageView: UIImageView!
     @IBOutlet weak var profileScrollView: UIScrollView!
     @IBOutlet weak var addFriendBtn: UIButton!
+    @IBOutlet weak var remarkLabel: UILabel!
+    @IBOutlet weak var rightArrowImageView: UIImageView!
     
     var user: User!
+    
+    @IBAction func goToRemark(sender: AnyObject) {
+        if user.isFriend {
+            let storyboard = UIStoryboard(name:"Main", bundle: nil)
+            let remarkController = storyboard.instantiateViewControllerWithIdentifier("Remark") as! RemarkController
+            remarkController.aliasValue = user.alias == nil ? "" : user.alias! as String
+            self.navigationController?.pushViewController(remarkController, animated: true)
+        }
+    }
     
     @IBAction func addFriendBtn(sender: AnyObject) {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
@@ -62,5 +73,17 @@ class ProfileController: UIViewController {
         regionLabel.text = user.region == nil ? "" : user.region! as String
         raceLabel.text = user.roleName
         roleImageView.image = UIImage(named: user.roleImageName)
+        
+        if user.isFriend {
+            remarkLabel.hidden = false
+            rightArrowImageView.hidden = false
+            
+            if user.alias != nil && user.alias != "" {
+                nameLabel.text = user.alias! as String
+            }
+        } else {
+            remarkLabel.hidden = true
+            rightArrowImageView.hidden = true
+        }
     }
 }

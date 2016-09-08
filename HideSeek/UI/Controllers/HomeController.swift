@@ -12,7 +12,7 @@ import AFNetworking
 import CoreMotion.CMMotionManager
 import MBProgressHUD
 
-class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, ArriveDelegate, RefreshMapDelegate {
+class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, ArriveDelegate, RefreshMapDelegate, UpdateGoalDelegate {
     let HtmlType = "text/html"
     let REFRESH_MAP_INTERVAL: Double = 5
     var manager: AFHTTPRequestOperationManager!
@@ -70,22 +70,23 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             mapDialogController.initView(mapWidth, mapHeight: mapHeight)
         }
         
-        self.tabBarController?.tabBar.hidden = false
         self.navigationController?.navigationBarHidden = true
         if CLLocationManager.headingAvailable() {
             locManager.startUpdatingHeading()
+        }
+        
+        if GoalCache.instance.ifNeedClearMap {
+            refresh()
         }
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.tabBarController?.tabBar.hidden = false
         self.navigationController?.navigationBarHidden = true
     }    
     
     override func viewWillDisappear(animated: Bool) {
-        self.tabBarController?.tabBar.hidden = true
         self.navigationController?.navigationBarHidden = false
         if CLLocationManager.headingAvailable() {
             locManager.stopUpdatingHeading()
@@ -233,7 +234,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     
     func refreshDistance() {
         if startPoint != nil && endPoint != nil {
-            distance = MAMetersBetweenMapPoints(startPoint, endPoint)
+            distance = MAMetersBetweenMapPoints(startPoint, endPoint) < 30 ? 0 : MAMetersBetweenMapPoints(startPoint, endPoint) - 30
             overlayView.distanceLabel.text = NSString(format: NSLocalizedString("M", comment: "%.0f m"), distance) as String
         }
     }
@@ -279,10 +280,22 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     }
     
     func updateEndGoal() {
+        overlayView.hideGoal()
         endGoal.valid = false
         GoalCache.instance.selectedGoal = nil
         GoalCache.instance.refreshClosestGoal(latitude, longitude: longitude)
         setEndGoal()
+    }
+    
+    func updateEndGoal(goalId: Int64) {
+        GoalCache.instance.selectedGoal?.isSelected = false
+        let goal = GoalCache.instance.getGoal(goalId)
+        
+        if goal != nil {
+            goal!.isSelected = true
+            GoalCache.instance.selectedGoal = goal!
+            setEndGoal()
+        }
     }
     
     func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
@@ -399,13 +412,6 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     }
     
     func setGoalsOnMap(goals: NSMutableArray) {
-        if GoalCache.instance.ifNeedClearMap{
-            for marker in markerDictionary.allValues {
-                let annotation = marker as! MAAnnotation
-                overlayView.mapView.removeAnnotation(annotation)
-            }
-        }
-        
         for goal in goals {
             let goalInfo = goal as! Goal
             
@@ -448,7 +454,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             list.addObject(endGoal)
             list.addObject(GoalCache.instance.selectedGoal!)
         }
-        distance = 100
+        
         endGoal = GoalCache.instance.selectedGoal
         
         if endGoal != nil {
@@ -605,7 +611,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     func goToWarning() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
         let viewController = storyboard.instantiateViewControllerWithIdentifier("Warning") as! WarningController
-        
+        viewController.updateGoalDelegate = self
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -629,9 +635,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                 if (result["score_sum"] != nil && !result.objectForKey("score_sum")!.isKindOfClass(NSNull)) {
                     HudToastFactory.showScore(self.endGoal.score, view: self.view)
                     if(UserCache.instance.ifLogin()) {
-                        UserCache.instance.user.record = result["score_sum"] is NSString ?
-                            (result["score_sum"] as! NSString).integerValue :
-                            (result["score_sum"] as! NSNumber).integerValue
+                        UserCache.instance.user.record = BaseInfoUtil.getSignedIntegerFromAnyObject(result["score_sum"])
                         self.updateEndGoal()
                     }
                 }
@@ -655,7 +659,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         let shareParams = NSMutableDictionary()
         shareParams.SSDKSetupShareParamsByText(NSLocalizedString("SHARE_MESSAGE", comment: "My God! A monster is watching at me, please help me!"),
                                                 images : UIImage(named: "ic_launcher"),
-                                                url : NSURL(string:"http://www.hideseek.cn"),
+                                                url : NSURL(string:"hideseek.cn"),
                                                 title : NSLocalizedString("SHARE_TITLE", comment: "Enter into the age of tribes"),
                                                 type : SSDKContentType.Auto)
         
@@ -682,6 +686,13 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     }
     
     func refresh() {
+        for marker in markerDictionary.allValues {
+            let annotation = marker as! MAAnnotation
+            overlayView.mapView.removeAnnotation(annotation)
+            overlayView.mapView.addAnnotation(annotation)
+            overlayView.mapView.removeAnnotation(annotation)
+        }
+        
         markerDictionary.removeAllObjects()
         goalDictionary.removeAllObjects()
         GoalCache.instance.reset()

@@ -12,7 +12,6 @@
 #import "MAOverlayRenderer.h"
 #import "MAAnnotationView.h"
 #import "MACircle.h"
-#import "MAMapKit.h"
 #import "MAUserLocation.h"
 #import "MAMapStatus.h"
 #import "MAIndoorInfo.h"
@@ -22,8 +21,10 @@
 typedef NS_ENUM(NSInteger, MAMapType)
 {
     MAMapTypeStandard = 0,  // 普通地图
-    MAMapTypeSatellite,  // 卫星地图
-    MAMapTypeStandardNight // 夜间视图
+    MAMapTypeSatellite,     // 卫星地图
+    MAMapTypeStandardNight, // 夜间视图
+    MAMapTypeNavi,          // 导航视图
+    MAMapTypeBus            // 公交视图
 };
 
 typedef NS_ENUM(NSInteger, MAUserTrackingMode)
@@ -31,6 +32,14 @@ typedef NS_ENUM(NSInteger, MAUserTrackingMode)
     MAUserTrackingModeNone              = 0,    // 不追踪用户的location更新
     MAUserTrackingModeFollow            = 1,    // 追踪用户的location更新
     MAUserTrackingModeFollowWithHeading = 2     // 追踪用户的location与heading更新
+};
+
+typedef NS_ENUM(NSInteger, MATrafficStatus)
+{
+    MATrafficStatusSmooth = 1,                  //!< 1 通畅
+    MATrafficStatusSlow,                        //!< 2 缓行
+    MATrafficStatusJam,                         //!< 3 阻塞
+    MATrafficStatusSeriousJam,                  //!< 4 严重阻塞
 };
 
 /**
@@ -103,6 +112,12 @@ extern NSString * const kMAMapLayerCameraDegreeKey;
  *  标识当前地图中心位置是否在中国范围外。此属性不是精确判断，不能用于边界区域。
  */
 @property (nonatomic, readonly) BOOL isAbroad;
+
+/**
+ *  设置实时交通颜色
+ *  key为 MATrafficStatus
+ */
+@property (nonatomic, copy) NSDictionary <NSNumber *, UIColor *> *trafficStatus;
 
 /**
  * @brief 当前地图的经纬度范围，设定的该范围可能会被调整为适合地图窗口显示的范围
@@ -539,6 +554,23 @@ extern NSString * const kMAMapLayerCameraDegreeKey;
  * @return 指定overlay对应的Renderer
  */
 - (MAOverlayRenderer *)rendererForOverlay:(id <MAOverlay>)overlay;
+
+/**
+ 设置地图使其可以显示数组中所有的overlay, 如果数组中只有一个则直接设置地图中心为overlay的位置。
+ * @param overlays    需要显示的overlays
+ * @param animated    是否执行动画
+ */
+- (void)showOverlays:(NSArray *)overlays animated:(BOOL)animated;
+
+/**
+ *  设置地图使其可以显示数组中所有的annotation, 如果数组中只有一个则直接设置地图中心为annotation的位置。
+ *
+ *  @param overlays    需要显示的overlays
+ *  @param insets      insets 嵌入边界
+ *  @param animated    是否执行动画
+ */
+- (void)showOverlays:(NSArray *)overlays edgePadding:(UIEdgeInsets)insets animated:(BOOL)animated;
+
 
 #pragma mark - Cache
 

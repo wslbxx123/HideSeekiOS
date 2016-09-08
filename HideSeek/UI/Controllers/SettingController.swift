@@ -9,11 +9,13 @@
 import UIKit
 
 class SettingController: UIViewController {
+    let HtmlType = "text/html"
     @IBOutlet weak var logOutView: MenuView!
     @IBOutlet weak var settingScrollView: UIScrollView!
     @IBOutlet weak var rateHideSeekView: MenuView!
     @IBOutlet weak var clearCacheView: MenuView!
     @IBOutlet weak var cacheSizeLabel: UILabel!
+    var manager: CustomRequestManager!
     
     @IBAction func settingBackBtnClicked(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -32,6 +34,8 @@ class SettingController: UIViewController {
         clearCacheView.userInteractionEnabled = true
         clearCacheView.addGestureRecognizer(clearCacheGesture)
         cacheSizeLabel.text = BaseInfoUtil.cachefileSize()
+        manager = CustomRequestManager()
+        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,7 +58,31 @@ class SettingController: UIViewController {
         cacheSizeLabel.text = BaseInfoUtil.cachefileSize()
     }
     
+    func setInfoFromCallback(response: NSDictionary) {
+        clearData()
+        GoalCache.instance.ifNeedClearMap = true
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
     func logOutClicked() {
+        let paramDict = NSMutableDictionary()
+
+        manager.POST(UrlParam.LOGOUT_URL,
+                     paramDict: paramDict,
+                     success: { (operation, responseObject) in
+                        print("JSON: " + responseObject.description!)
+                        let response = responseObject as! NSDictionary
+                        
+                        self.setInfoFromCallback(response)
+                        
+            }, failure: { (operation, error) in
+                print("Error: " + error.localizedDescription)
+                let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+        })
+    }
+    
+    func clearData() {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.SESSION_TOKEN)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.USER_INFO)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.RECORD_VERSION)
@@ -68,7 +96,7 @@ class SettingController: UIViewController {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.PURCHASE_ORDER_VERSION)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.PURCHASE_ORDER_MIN_ID)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.FRIEND_VERSION)
-
+        
         NSUserDefaults.standardUserDefaults().synchronize()
         
         RecordCache.instance.clearList()
@@ -84,7 +112,7 @@ class SettingController: UIViewController {
         PurchaseOrderTableManager.instance.clear()
         FriendTableManager.instance.clear()
         
-        self.navigationController?.popViewControllerAnimated(true)
+        PushManager.instance.unRegister()
     }
 
 }

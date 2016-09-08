@@ -49,14 +49,6 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
                     self.refreshControl.sendActionsForControlEvents(UIControlEvents.ValueChanged)
             })
         }
-        
-        self.tabBarController?.tabBar.hidden = false
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        self.tabBarController?.tabBar.hidden = true
-        
-        super.viewWillDisappear(animated)
     }
 
     override func didReceiveMemoryWarning() {

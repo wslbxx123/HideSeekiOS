@@ -23,9 +23,25 @@ class MeController: UIViewController, TouchDownDelegate {
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet var goToFriendGesture: UITapGestureRecognizer!
     @IBOutlet weak var friendView: MenuView!
+    @IBOutlet weak var pushNumView: UIView!
     
     var myProfileController: MyProfileController!
     var dateFormatter: NSDateFormatter = NSDateFormatter()
+    
+    @IBAction func goToFriends(sender: AnyObject) {
+        let tarBarController = BaseInfoUtil.getRootViewController() as! ViewController
+        let item = tarBarController.uiTabBar.items![3]
+        
+        if item.badgeValue == nil || item.badgeValue == "0"{
+            let storyboard = UIStoryboard(name:"Main", bundle: nil)
+            let friendController = storyboard.instantiateViewControllerWithIdentifier("Friend") as! FriendController
+            self.navigationController?.pushViewController(friendController, animated: true)
+        } else {
+            let storyboard = UIStoryboard(name:"Main", bundle: nil)
+            let newFriendController = storyboard.instantiateViewControllerWithIdentifier("NewFriend") as! NewFriendController
+            self.navigationController?.pushViewController(newFriendController, animated: true)
+        }
+    }
     
     @IBAction func unwindToSegue (segue : UIStoryboardSegue) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -52,20 +68,16 @@ class MeController: UIViewController, TouchDownDelegate {
         super.viewDidAppear(animated)
         
         setProfileInfo()
-        self.tabBarController?.tabBar.hidden = false
         self.navigationController?.navigationBarHidden = false
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.tabBarController?.tabBar.hidden = false
         self.navigationController?.navigationBarHidden = false
     }
     
     override func viewWillDisappear(animated: Bool) {
-        self.tabBarController?.tabBar.hidden = true
-        
         super.viewWillDisappear(animated)
     }
     
@@ -93,6 +105,9 @@ class MeController: UIViewController, TouchDownDelegate {
         gotoPhotoGestureRecognizer.numberOfTapsRequired = 1
         photoImageView.userInteractionEnabled = true
         photoImageView.addGestureRecognizer(gotoPhotoGestureRecognizer)
+        
+        pushNumView.layer.cornerRadius = pushNumView.frame.height / 2
+        pushNumView.layer.masksToBounds = true
         
         self.automaticallyAdjustsScrollViewInsets = false
     }
@@ -132,9 +147,32 @@ class MeController: UIViewController, TouchDownDelegate {
         }
         
         photoImageView.setWebImage(photoUrl, defaultImage: "default_photo", isCache: true)
+        
+        setBadgeValue()
     }
     
     func touchDown(tag: Int) {
         goToRecord()
+    }
+    
+    func setBadgeValue() {
+        let tarBarController = BaseInfoUtil.getRootViewController() as! ViewController
+        let item = tarBarController.uiTabBar.items![3]
+        
+        if pushNumView == nil {
+            return;
+        }
+        
+        if item.badgeValue == nil || item.badgeValue == "0"{
+            pushNumView.hidden = true
+        } else {
+            pushNumView.hidden = false
+        }
+    }
+    
+    func clearBadgeValue() {
+        if pushNumView != nil {
+            pushNumView.hidden = true
+        }
     }
 }
