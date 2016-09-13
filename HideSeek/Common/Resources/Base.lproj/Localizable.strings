@@ -76,6 +76,8 @@
 "ERROR_PASSWORD_LONG" = "The length of password cannot be greater than 45";
 "ERROR_SEARCH_MYSELF" = "Cannot add yourself as friend";
 "ERROR_RECORD_NOT_ENOUGH" = "You record is not enough";
+"ERROR_NO_GOAL" = "There is no goal for you";
+"ERROR_GOAL_INVALID" = "The goal has disappeared";
 
 "MESSAGE_GET_MUSHROOM" = "Throw a mushroom monster into sack easily, Rich bitch!";
 "MESSAGE_GET_EGG" = "So excited! Beat an egg monster successfully!";

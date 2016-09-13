@@ -65,6 +65,7 @@
 		184955FB1D0959DC001A20DC /* HideSeekTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184955FA1D0959DC001A20DC /* HideSeekTests.swift */; };
 		184956061D0959DC001A20DC /* HideSeekUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184956051D0959DC001A20DC /* HideSeekUITests.swift */; };
 		184CB7411D86C4F90086B559 /* UpdatePasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184CB7401D86C4F90086B559 /* UpdatePasswordController.swift */; };
+		184CB7471D88633E0086B559 /* UrlUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184CB7461D88633E0086B559 /* UrlUtil.swift */; };
 		184CBF311D65893E00135C60 /* guide_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 184CBF301D65893E00135C60 /* guide_back.png */; };
 		184CBF351D658B8400135C60 /* MonsterGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184CBF341D658B8300135C60 /* MonsterGuideView.swift */; };
 		184CBF371D65903700135C60 /* GoalImageFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184CBF361D65903700135C60 /* GoalImageFactory.swift */; };
@@ -365,6 +366,7 @@
 		184CB7401D86C4F90086B559 /* UpdatePasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UpdatePasswordController.swift; path = UI/Controllers/UpdatePasswordController.swift; sourceTree = "<group>"; };
 		184CB7431D86F5D10086B559 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = UI/Storyboard/en.lproj/Main.strings; sourceTree = "<group>"; };
 		184CB7451D86F5E30086B559 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "UI/Storyboard/zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		184CB7461D88633E0086B559 /* UrlUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UrlUtil.swift; path = Common/Util/UrlUtil.swift; sourceTree = "<group>"; };
 		184CBF301D65893E00135C60 /* guide_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = guide_back.png; path = Images/guide_back.png; sourceTree = "<group>"; };
 		184CBF341D658B8300135C60 /* MonsterGuideView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MonsterGuideView.swift; path = UI/View/MonsterGuideView.swift; sourceTree = "<group>"; };
 		184CBF361D65903700135C60 /* GoalImageFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GoalImageFactory.swift; path = Common/Factory/GoalImageFactory.swift; sourceTree = "<group>"; };
@@ -1056,6 +1058,7 @@
 				18FD1A741D1A20D700225C92 /* BaseInfoUtil.swift */,
 				18EC94041D24C6D500559627 /* PinYinUtil.swift */,
 				18939FF71D7FFB9C007CA861 /* BadgeUtil.swift */,
+				184CB7461D88633E0086B559 /* UrlUtil.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -1651,6 +1654,7 @@
 				18172A061D68332D00C6AD2C /* UpdateNicknameController.swift in Sources */,
 				18B0235B1D7423E500ACE203 /* NewFriendTableView.swift in Sources */,
 				184955E61D0959DC001A20DC /* AppDelegate.swift in Sources */,
+				184CB7471D88633E0086B559 /* UrlUtil.swift in Sources */,
 				18EA6DF51D5C79D600196E22 /* ExchangeOrderCache.swift in Sources */,
 				184CBF351D658B8400135C60 /* MonsterGuideView.swift in Sources */,
 				18EBFBDF1D5D70F0004659C8 /* HideSeekWindow.swift in Sources */,

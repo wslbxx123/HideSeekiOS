@@ -303,6 +303,9 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             goal!.isSelected = true
             GoalCache.instance.selectedGoal = goal!
             setEndGoal()
+        } else {
+            let errorMessage = NSLocalizedString("ERROR_GOAL_INVALID", comment: "The goal has disappeared")
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
         }
     }
     
@@ -711,10 +714,17 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     }
     
     func share() {
+        if endGoal == nil {
+            let errorMessage = NSLocalizedString("ERROR_NO_GOAL", comment: "There is no goal for you")
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: nil)
+            return
+        }
+        
         let shareParams = NSMutableDictionary()
+        let shareUrl = "m.hideseek.cn/?goal_id=\(endGoal.pkId)"
         shareParams.SSDKSetupShareParamsByText(NSLocalizedString("SHARE_MESSAGE", comment: "My God! A monster is watching at me, please help me!"),
                                                 images : UIImage(named: "ic_launcher"),
-                                                url : NSURL(string:"https://m.hideseek.cn"),
+                                                url : NSURL(string: shareUrl),
                                                 title : NSLocalizedString("SHARE_TITLE", comment: "Enter into the age of tribes"),
                                                 type : SSDKContentType.Auto)
         

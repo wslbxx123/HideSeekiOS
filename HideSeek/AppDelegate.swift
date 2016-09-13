@@ -21,14 +21,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let SHARE_SECRET = "d54adfb1105f71be8099b5a803bbc92f"
     var window: UIWindow?
     var isBackgroundActivateApplication: Bool = false
-    var tarBarController: ViewController!
+    var tabBarController: ViewController!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        tarBarController = storyboard.instantiateViewControllerWithIdentifier("main") as! ViewController
-        self.window?.rootViewController = tarBarController
+        tabBarController = storyboard.instantiateViewControllerWithIdentifier("main") as! ViewController
+        self.window?.rootViewController = tabBarController
         
         AMapServices.sharedServices().apiKey = MAP_KEY
         let initString = NSString.init(format: "appid=%@", AUDIO_KEY)
@@ -170,7 +170,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if application.applicationState != UIApplicationState.Active
             && application.applicationState == UIApplicationState.Background {
-            (tarBarController.selectedViewController! as! UINavigationController).pushViewController(viewController, animated: true)
+            (tabBarController.selectedViewController! as! UINavigationController).pushViewController(viewController, animated: true)
         }
         
         NSLog("%@", userInfo)
@@ -207,7 +207,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         if application.applicationState == UIApplicationState.Inactive && !isBackgroundActivateApplication {
-            (tarBarController.selectedViewController! as! UINavigationController).pushViewController(viewController, animated: true)
+            (tabBarController.selectedViewController! as! UINavigationController).pushViewController(viewController, animated: true)
         }
         
         if application.applicationState == UIApplicationState.Background {
@@ -226,7 +226,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
         if userActivity.webpageURL != nil {
+            let query = userActivity.webpageURL?.query
+            let params = UrlUtil.getDictionaryFromQuery(query!)
             
+            let navigationController = tabBarController.viewControllers![0] as!UINavigationController
+            let homeController = navigationController.viewControllers[0] as! HomeController
+            homeController.updateEndGoal((params.valueForKey("goal_id") as! NSString).longLongValue)
         }
         return true;
     }
