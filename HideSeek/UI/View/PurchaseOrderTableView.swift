@@ -42,6 +42,10 @@ class PurchaseOrderTableView: UITableView, UITableViewDataSource, UITableViewDel
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.dequeueReusableCellWithIdentifier("orderCell")! as! PurchaseOrderTableViewCell
+        if orderList.count < indexPath.row + 1 {
+            return cell
+        }
+        
         let purchaseOrder = orderList.objectAtIndex(indexPath.row) as! PurchaseOrder
         cell.purchaseDelegate = purchaseDelegate
         cell.initOrder(purchaseOrder)

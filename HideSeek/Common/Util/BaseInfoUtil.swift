@@ -131,19 +131,6 @@ class BaseInfoUtil {
         return controller
     }
     
-    class func checkIfGoToLogin(viewController: UIViewController) -> Bool {
-        if UserCache.instance.ifLogin() {
-            return false
-        }
-        
-        let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let loginController = storyboard.instantiateViewControllerWithIdentifier("Login") as! WarningController
-        
-        viewController.navigationController?.pushViewController(loginController, animated: true)
-        
-        return true
-    }
-    
     class func getCachesPath() -> String {
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, .UserDomainMask, true)
         var cachePath = paths[0]

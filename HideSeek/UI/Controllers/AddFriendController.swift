@@ -56,6 +56,8 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
                         hud = nil
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
+                let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
                 hud.removeFromSuperview()
                 hud = nil
         })
@@ -76,7 +78,12 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
             }
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
         }
     }
     

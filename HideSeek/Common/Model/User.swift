@@ -15,9 +15,9 @@ class User: NSObject {
     var version: Int64
     var pinyin: NSString
     var isFriend: Bool = false
-    var addTime: NSString?
-    var message: NSString?
-    var alias: NSString?
+    var addTime: NSString = ""
+    var requestMessage: NSString = ""
+    var alias: NSString = ""
     
     var _nickname: NSString
     var nickname: NSString {
@@ -171,7 +171,25 @@ class User: NSObject {
         }
     }
     
-    var hasGuide: Bool = false
+    var _hasGuide: Bool = false
+    var hasGuide: Bool {
+        get {
+            return self._hasGuide
+        }
+        set {
+            self._hasGuide = newValue
+            
+            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            
+            if tempUserInfo != nil {
+                let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
+                userInfo["has_guide"] = NSString(format: "%d", newValue ? 1 : 0)
+                
+                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+            }
+        }
+    }
+    
     var dateFormatter: NSDateFormatter = NSDateFormatter()
     
     var roleImageName: String {
@@ -250,7 +268,7 @@ class User: NSObject {
         self.version = version
         self.pinyin = pinyin
         self._bombNum = bombNum
-        self.hasGuide = hasGuide
+        self._hasGuide = hasGuide
         self._friendNum = friendNum
     }
     

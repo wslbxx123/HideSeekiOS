@@ -42,6 +42,9 @@ class AnimationImageFactory {
             break;
         case .monster:
             imageArray = getMonsterArray(goal.showTypeName!)
+            break;
+        default:
+            break;
         }
         
         return imageArray
@@ -94,6 +97,8 @@ class AnimationImageFactory {
             return 5
         case .monster:
             return 5
+        default:
+            return 0
         }
     }
     

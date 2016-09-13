@@ -43,10 +43,6 @@ class MeController: UIViewController, TouchDownDelegate {
         }
     }
     
-    @IBAction func unwindToSegue (segue : UIStoryboardSegue) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-    
     @IBAction func goToLogin(sender: AnyObject) {
         if(UserCache.instance.ifLogin()) {
             let storyboard = UIStoryboard(name:"Main", bundle: nil)

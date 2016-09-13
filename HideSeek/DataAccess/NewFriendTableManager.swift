@@ -41,6 +41,12 @@ class NewFriendTableManager {
         }
     }
     
+    init() {
+        if UserCache.instance.ifLogin() {
+            refreshTable(UserCache.instance.user.pkId)
+        }
+    }
+    
     func refreshTable (userId: Int64) {
         do {
             database = DatabaseManager.instance.database
@@ -88,7 +94,7 @@ class NewFriendTableManager {
                     pinyin: item[pinyin]!)
                 
                 user.addTime = item[addTime]
-                user.message = item[message]
+                user.requestMessage = item[message]
                 user.isFriend = item[isFriend]
                 friendList.addObject(user)
             }
@@ -120,7 +126,7 @@ class NewFriendTableManager {
                     pullVersion <- friendInfo.version,
                     pinyin <- (friendInfo.pinyin as String),
                     addTime <- timeStr,
-                    message <- (friendInfo.message! as String),
+                    message <- (friendInfo.requestMessage as String),
                     isFriend <- friendInfo.isFriend))
             
             if count == 0 {
@@ -136,7 +142,7 @@ class NewFriendTableManager {
                     pullVersion <- friendInfo.version,
                     pinyin <- (friendInfo.pinyin as String),
                     addTime <- timeStr,
-                    message <- (friendInfo.message! as String),
+                    message <- (friendInfo.requestMessage as String),
                     isFriend <- friendInfo.isFriend,
                     accountId <- friendInfo.pkId)
                 

@@ -37,6 +37,11 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.dequeueReusableCellWithIdentifier("recordCell")! as UITableViewCell
+        
+        if recordList.count < indexPath.row + 1 {
+            return cell
+        }
+        
         let record = recordList.objectAtIndex(indexPath.row) as! Record
         
         let dateLabel = cell.viewWithTag(TAG_DATE_LABEL) as! UILabel
@@ -75,6 +80,10 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if recordList.count < indexPath.row + 1 {
+            return 0
+        }
+        
         let record = recordList.objectAtIndex(indexPath.row) as! Record
         
         if indexPath.row == 0 ||
@@ -108,6 +117,8 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
             return NSLocalizedString("MESSAGE_GET_MONSTER", comment: "Beat a monster successfully")
         case .bomb:
             return NSLocalizedString("MESSAGE_GET_BOMB", comment: "A bomb went off, ouch")
+        default:
+            return ""
         }
     }
     

@@ -35,6 +35,7 @@ class Goal{
         self.unionType = unionType
     }
     enum GoalTypeEnum : Int{
+        case reward = 0
         case mushroom = 1
         case monster = 2
         case bomb = 3
@@ -49,6 +50,8 @@ class Goal{
                 return NSLocalizedString("bomb", comment: "bomb")
             case .monster:
                 return NSLocalizedString(showTypeName!, comment: "dragon")
+            default:
+                return ""
             }
         }
     }

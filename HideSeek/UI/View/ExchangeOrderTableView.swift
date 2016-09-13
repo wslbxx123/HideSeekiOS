@@ -42,6 +42,10 @@ class ExchangeOrderTableView: UITableView, UITableViewDataSource, UITableViewDel
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.dequeueReusableCellWithIdentifier("orderCell")! as! ExchangeOrderTableViewCell
+        if orderList.count < indexPath.row + 1 {
+            return cell
+        }
+        
         let exchangeOrder = orderList.objectAtIndex(indexPath.row) as! ExchangeOrder
         cell.exchangeDelegate = exchangeDelegate
         cell.initOrder(exchangeOrder)

@@ -104,6 +104,8 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
             return 2
         case .monster:
             return 2
+        default:
+            return 0
         }
     }
     

@@ -76,10 +76,10 @@ class MapDialogController: UIViewController, MAMapViewDelegate {
                 if UserCache.instance.ifLogin() && goal.createBy == UserCache.instance.user.pkId
                     && goal.type == Goal.GoalTypeEnum.bomb {
                     if goal.isSelected {
-                        annotationView.image = UIImage(named: "big_box_selected_marker")
+                        annotationView.image = UIImage(named: "big_bomb_selected_marker")
                         annotationView.frame = CGRect(x: 0, y: 0, width: 25, height: 50)
                     } else {
-                        annotationView.image = UIImage(named: "big_box_marker")
+                        annotationView.image = UIImage(named: "big_bomb_marker")
                         annotationView.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
                     }
                 } else {

@@ -34,6 +34,7 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        self.scoreSumLabel.text = String(RecordCache.instance.scoreSum)
         self.recordTableView.recordList = RecordCache.instance.recordList
         self.recordTableView.reloadData()
         
@@ -85,21 +86,39 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
                      success: { (operation, responseObject) in
                         print("JSON: " + responseObject.description!)
                         let response = responseObject as! NSDictionary
-                        RecordCache.instance.setRecords(response["result"] as! NSDictionary)
-                        self.scoreSumLabel.text = String(RecordCache.instance.scoreSum)
-                        self.recordTableView.recordList = RecordCache.instance.cacheList
-                        if self.recordTableView.recordList.count == 0 {
-                            self.noResultStackView.hidden = false
-                        } else {
-                            self.noResultStackView.hidden = true
-                        }
-                        self.recordTableView.reloadData()
-                        self.refreshControl.endRefreshing()
+                        
+                        self.setInfoFromRefreshCallback(response)
+                        
             },
                      failure: { (operation, error) in
                         print("Error: " + error.localizedDescription)
         })
         playAnimateRefresh()
+    }
+    
+    func setInfoFromRefreshCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            RecordCache.instance.setRecords(response["result"] as! NSDictionary)
+            self.scoreSumLabel.text = String(RecordCache.instance.scoreSum)
+            self.recordTableView.recordList = RecordCache.instance.cacheList
+            if self.recordTableView.recordList.count == 0 {
+                self.noResultStackView.hidden = false
+            } else {
+                self.noResultStackView.hidden = true
+            }
+            self.recordTableView.reloadData()
+            self.refreshControl.endRefreshing()
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+            self.refreshControl.endRefreshing()
+        }
     }
     
     func playAnimateRefresh() {
@@ -131,16 +150,11 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
                              success: { (operation, responseObject) in
                                 print("JSON: " + responseObject.description!)
                                 let response = responseObject as! NSDictionary
-                                RecordCache.instance.addRecords(response["result"] as! NSDictionary)
                                 
-                                self.recordTableView.recordList = RecordCache.instance.cacheList
-                                self.recordTableView.reloadData()
-                                self.isLoading = false
-                                self.recordTableView.tableFooterView?.hidden = true
+                                self.setInfoFromGetCallback(response)
                     },
                              failure: { (operation, error) in
                                 print("Error: " + error.localizedDescription)
-                                self.recordTableView.tableFooterView?.hidden = true
                 })
             } else {
                 self.recordTableView.recordList.removeAllObjects()
@@ -150,6 +164,26 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
                 isLoading = false
                 self.recordTableView.tableFooterView?.hidden = true
             }
+        }
+    }
+    
+    func setInfoFromGetCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            RecordCache.instance.addRecords(response["result"] as! NSDictionary)
+            
+            self.recordTableView.recordList = RecordCache.instance.cacheList
+            self.recordTableView.reloadData()
+            self.isLoading = false
+            self.recordTableView.tableFooterView?.hidden = true
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
         }
     }
 }

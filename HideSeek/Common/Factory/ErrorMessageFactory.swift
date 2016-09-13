@@ -11,6 +11,8 @@ class ErrorMessageFactory {
         switch errorCode {
         case CodeParam.ERROR_VOLLEY_CODE:
             return NSLocalizedString("ERROR_CONNECT_NETWORK_FAILED", comment: "Failed to connect the network")
+        case CodeParam.ERROR_SESSION_INVALID:
+            return NSLocalizedString("ERROR_SESSION_INVALID", comment: "You are kicked out by others")
         case CodeParam.ERROR_PHONE_OR_PASSWORD_WRONG:
             return NSLocalizedString("ERROR_PHONE_OR_PASSWORD_WRONG", comment: "Phone or password error")
         case CodeParam.ERROR_USER_ALREADY_EXIST:

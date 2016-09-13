@@ -168,6 +168,10 @@ class DomesticCityTableView: UITableView, UITableViewDataSource, UITableViewDele
             break;
         case 4:
             cell = self.dequeueReusableCellWithIdentifier("domesticCityCell")! as UITableViewCell
+            if cityList.count < indexPath.row + 1 {
+                return cell
+            }
+            
             let city = cityList.objectAtIndex(indexPath.row) as! DomesticCity
             
             let showAlpha = alphaIndex.allValues.contains({ value in
@@ -219,6 +223,10 @@ class DomesticCityTableView: UITableView, UITableViewDataSource, UITableViewDele
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 4 {
+            if cityList.count < indexPath.row + 1 {
+                return
+            }
+            
             let city = cityList.objectAtIndex(indexPath.row) as! DomesticCity
             
             DomesticCityTableManager.instance.insertRecentCity(city)

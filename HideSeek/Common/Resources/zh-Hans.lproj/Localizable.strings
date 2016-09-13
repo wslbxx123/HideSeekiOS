@@ -9,7 +9,7 @@
 "CFBundleDisplayName" = "寻宝部落";
 "LOADING_HINT" = "请等待……";
 "JOIN" = "加入";
-"SCORE_TITLE" = " 积分：%d ";
+"SCORE_TITLE" = "积分：";
 "LOADING" = "加载中……";
 "M" = "%.0f 米";
 "PURCHASE" = "购买";
@@ -34,7 +34,7 @@
 "STONE_MONSTER" = "岩石兽族";
 "LIGHTNING_GIANT" = "闪电巨人";
 "AMOUNT_TITLE" = "总价: %.2f 元";
-"EXCHANGE_AMOUNT_TITLE" = "总价: %.2f 积分";
+"EXCHANGE_AMOUNT_TITLE" = "总价: %d 积分";
 "TRANSACTION_COMPLETE" = "交易成功";
 "ORDER_PROCESSING" = "订单正在处理";
 "FALIED_PAY_ORDER" = "订单支付失败";
@@ -43,6 +43,7 @@
 "OK" = "好的";
 "NOT_HAS_GUIDE" = "你没有怪兽图鉴。去商城购买吗？";
 "NOT_HAS_BOMB" = "你没有炸弹，去商城购买吗？";
+"NOT_LOGIN" = "你还没有登录，去登录吗？";
 "ME" = "我的";
 "CANCEL" = "取消";
 "SAVE" = "保存";
@@ -57,11 +58,13 @@
 "SELF_INTRODUCTION" = "我是%@";
 "FRIEND_REQUEST_MESSAGE" = "你收到一个好友请求";
 "SUCCESS_COMMIT_FEEDBACK" = "提交反馈成功";
+"SUCCESS_UPDATE_PASSWORD" = "更新密码成功";
 "SHARE_MESSAGE" = "天啊，一只怪兽正在盯着我，快来救我。";
 "SHARE_TITLE" = "进入部落时代";
 "REFRESH_MAP_HINT" = "刷新地图中……";
 "FRIEND_ACCEPT_MESSAGE" = "%@接受你的好友请求";
 
+"ERROR_SESSION_INVALID" = "你已经被迫掉线";
 "ERROR_GOAL_DISAPPEAR" = "怪兽已经被其他人打死";
 "ERROR_PHONE_OR_PASSWORD_WRONG" = "用户名和密码不匹配";
 "ERROR_CONNECT_NETWORK_FAILED" = "网络连接失败";
@@ -72,6 +75,7 @@
 "ERROR_PASSWORD_SHORT" = "密码太短";
 "ERROR_PASSWORD_LONG" = "密码不能超过45位";
 "ERROR_SEARCH_MYSELF" = "不能加自己为好友";
+"ERROR_RECORD_NOT_ENOUGH" = "你的积分不足";
 
 "MESSAGE_GET_MUSHROOM" = "成功丢入1枚蘑菇兽，有钱就是任性。";
 "MESSAGE_GET_EGG" = "鸡冻！秒碎1只怪诞兽，画面太美，我不敢看。";

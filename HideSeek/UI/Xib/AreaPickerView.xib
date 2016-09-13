@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="AreaPickerView" customModule="HideSeek" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zL2-eW-JPl" userLabel="GrayView">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="45"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FMJ-bH-cRd" userLabel="CancelBtn">
+                            <rect key="frame" x="15" y="9" width="42" height="28"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="cancelBtnClicked:" destination="iN0-l3-epB" eventType="touchDown" id="B97-xU-aOU"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jhb-9V-Kcj" userLabel="OKBtn">
+                            <rect key="frame" x="555" y="9" width="30" height="28"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="OK">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="okBtnClicked:" destination="iN0-l3-epB" eventType="touchDown" id="T7D-Nv-fMo"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.92549019610000005" green="0.92549019610000005" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="jhb-9V-Kcj" firstAttribute="centerY" secondItem="zL2-eW-JPl" secondAttribute="centerY" id="E2B-kn-3dV"/>
+                        <constraint firstItem="FMJ-bH-cRd" firstAttribute="centerY" secondItem="zL2-eW-JPl" secondAttribute="centerY" id="e7i-8P-WbE"/>
+                        <constraint firstItem="FMJ-bH-cRd" firstAttribute="leading" secondItem="zL2-eW-JPl" secondAttribute="leading" constant="15" id="eSe-2V-8CK"/>
+                        <constraint firstAttribute="trailing" secondItem="jhb-9V-Kcj" secondAttribute="trailing" constant="15" id="svi-P1-uah"/>
+                        <constraint firstAttribute="height" constant="45" id="ucK-0N-Tbv"/>
+                    </constraints>
+                </view>
+                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zAf-Pp-qNc">
+                    <rect key="frame" x="0.0" y="45" width="600" height="555"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                </pickerView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="zAf-Pp-qNc" secondAttribute="bottom" id="KQF-gC-2im"/>
+                <constraint firstItem="zAf-Pp-qNc" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="axQ-iz-OOd"/>
+                <constraint firstItem="zAf-Pp-qNc" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="eQT-7C-5im"/>
+                <constraint firstItem="zL2-eW-JPl" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="gZ2-Cp-f8F"/>
+                <constraint firstItem="zL2-eW-JPl" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="gfm-8U-CDX"/>
+                <constraint firstItem="zL2-eW-JPl" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="mV3-jf-1qO"/>
+                <constraint firstItem="zAf-Pp-qNc" firstAttribute="top" secondItem="zL2-eW-JPl" secondAttribute="bottom" id="rvm-0d-myt"/>
+            </constraints>
+            <connections>
+                <outlet property="locatePicker" destination="zAf-Pp-qNc" id="1Zq-Mx-zFr"/>
+            </connections>
+        </view>
+    </objects>
+</document>

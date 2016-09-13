@@ -51,6 +51,9 @@ class HotCityCollectionView: UICollectionView, UICollectionViewDelegateFlowLayou
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if hotCityList.count < indexPath.row + 1 {
+            return
+        }
         
         let city = hotCityList.objectAtIndex(indexPath.row) as! DomesticCity
         

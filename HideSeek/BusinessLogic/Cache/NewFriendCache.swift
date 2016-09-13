@@ -21,7 +21,6 @@ class NewFriendCache : BaseCache<User> {
     private override init() {
         super.init()
         newFriendTableManager = NewFriendTableManager.instance
-        newFriendTableManager.refreshTable(UserCache.instance.user.pkId)
     }
     
     func setFriend(friendInfo: NSDictionary, message: NSString) {
@@ -60,7 +59,7 @@ class NewFriendCache : BaseCache<User> {
             version: (friendInfo["version"] as! NSString).longLongValue,
             pinyin: NSString(string: pinyinStr))
         
-        friend.message = message
+        friend.requestMessage = message
         friend.isFriend = false
         
         newFriendTableManager.updateFriends(friend)

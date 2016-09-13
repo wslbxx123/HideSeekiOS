@@ -93,18 +93,31 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
                         print("JSON: " + responseObject.description!)
                         let response = responseObject as! NSDictionary
                         
-                        if (response["code"] as! NSString).integerValue == CodeParam.SUCCESS {
-                            ExchangeOrderCache.instance.setOrders(response["result"] as! NSDictionary)
-                            self.orderTableView.orderList = ExchangeOrderCache.instance.cacheList
-                            self.orderTableView.reloadData()
-                            self.refreshControl.endRefreshing()
-                        }
+                        self.setRefreshInfoFromCallback(response)
                         self.isLoading = false
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 self.isLoading = false
         })
         playAnimateRefresh()
+    }
+    
+    func setRefreshInfoFromCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            ExchangeOrderCache.instance.setOrders(response["result"] as! NSDictionary)
+            self.orderTableView.orderList = ExchangeOrderCache.instance.cacheList
+            self.orderTableView.reloadData()
+            self.refreshControl.endRefreshing()
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+        }
     }
     
     func playAnimateRefresh() {
@@ -136,14 +149,7 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
                                 print("JSON: " + responseObject.description!)
                                 let response = responseObject as! NSDictionary
                                 
-                                if (response["code"] as! NSString).integerValue == CodeParam.SUCCESS {
-                                    PurchaseOrderCache.instance.addOrders(response["result"] as! NSDictionary)
-                                    
-                                    self.orderTableView.orderList = PurchaseOrderCache.instance.cacheList
-                                    self.orderTableView.reloadData()
-                                    self.isLoading = false
-                                    self.orderTableView.tableFooterView?.hidden = true
-                                }
+                                self.setInfoFromGetCallback(response)
                     },
                              failure: { (operation, error) in
                                 print("Error: " + error.localizedDescription)
@@ -157,6 +163,26 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
                 isLoading = false
                 self.orderTableView.tableFooterView?.hidden = true
             }
+        }
+    }
+    
+    func setInfoFromGetCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            PurchaseOrderCache.instance.addOrders(response["result"] as! NSDictionary)
+            
+            self.orderTableView.orderList = PurchaseOrderCache.instance.cacheList
+            self.orderTableView.reloadData()
+            self.isLoading = false
+            self.orderTableView.tableFooterView?.hidden = true
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
         }
     }
     
@@ -183,15 +209,28 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
                                 paramDict: paramDict,
                                 success: { (operation, responseObject) in
                                     let response = responseObject as! NSDictionary
-                                    if(response["code"] as! NSString).integerValue == CodeParam.SUCCESS {
-                                        UserCache.instance.user.record = response["result"] is NSString ?
-                                            (response["result"] as! NSString).integerValue :
-                                            (response["result"] as! NSNumber).integerValue
-                                        self.close()
-                                    }
+                                    self.setCreateInfoFromCallback(response);
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
         })
+    }
+    
+    func setCreateInfoFromCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            UserCache.instance.user.record = response["result"] is NSString ?
+                (response["result"] as! NSString).integerValue :
+                (response["result"] as! NSNumber).integerValue
+            self.close()
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+        }
     }
     
     func close() {

@@ -9,6 +9,8 @@
 class GoalImageFactory {
     class func get(goalType: Goal.GoalTypeEnum, showTypeName: String?) -> String {
         switch goalType {
+        case .reward:
+            return "reward_exchange"
         case .mushroom:
             return "mushroom"
         case .bomb:

@@ -10,7 +10,7 @@ import UIKit
 import AFNetworking
 
 class ExchangeController: UIViewController, ExchangeDelegate,
-    ConfirmExchangeDelegate, CloseDelegate, LoadMoreDelegate {
+    ConfirmExchangeDelegate, CloseDelegate, LoadMoreDelegate, ShowAreaDelegate, AreaPickerDelegate {
     let HtmlType = "text/html"
     let TAG_LOADING_IMAGEVIEW = 1
     
@@ -23,8 +23,9 @@ class ExchangeController: UIViewController, ExchangeDelegate,
     var rewardTableManager: RewardTableManager!
     var createOrderManager: CustomRequestManager!
     var exchangeDialogController: ExchangeDialogController!
+    var areaPickerView: AreaPickerView!
     var screenRect: CGRect!
-    var exchangeHeight: CGFloat = 250
+    var exchangeHeight: CGFloat = 350
     var exchangeWidth: CGFloat!
     var grayView: UIView!
     var isLoading: Bool = true
@@ -49,11 +50,6 @@ class ExchangeController: UIViewController, ExchangeDelegate,
     override func viewDidAppear(animated: Bool) {
         self.collectionView.rewardList = RewardCache.instance.rewardList
         self.collectionView.reloadData()
-        let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        exchangeDialogController = storyboard.instantiateViewControllerWithIdentifier("exchangeDialog") as! ExchangeDialogController
-        exchangeDialogController.confirmExchangeDelegate = self
-        exchangeDialogController.closeDelegate = self
-
         
         UIView.animateWithDuration(0.25,
                                    delay: 0,
@@ -83,6 +79,21 @@ class ExchangeController: UIViewController, ExchangeDelegate,
         rewardRefreshControl.addSubview(customLoadingView)
         screenRect = UIScreen.mainScreen().bounds
         exchangeWidth = screenRect.width - 40
+        
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        exchangeDialogController = storyboard.instantiateViewControllerWithIdentifier("exchangeDialog") as! ExchangeDialogController
+        exchangeDialogController.confirmExchangeDelegate = self
+        exchangeDialogController.closeDelegate = self
+        exchangeDialogController.showAreaDelegate = self
+        
+        areaPickerView = NSBundle.mainBundle().loadNibNamed("AreaPickerView", owner: nil, options: nil).first as! AreaPickerView
+        areaPickerView.initWithStyle(AreaPickerView.AreaPickerStyle.AreaPickerWithStateAndCityAndDistrict, delegate: self)
+    
+        areaPickerView.layer.frame = CGRectMake(
+            0,
+            self.view.frame.height - 310,
+            self.view.frame.width,
+            180)
     }
     
     func refreshRewardData() {
@@ -134,27 +145,52 @@ class ExchangeController: UIViewController, ExchangeDelegate,
     }
     
     func confirmExchange(reward: Reward, count: Int) {
+        if reward.exchangeCount * reward.record > UserCache.instance.user.record {
+            let errorMessage = NSLocalizedString("ERROR_RECORD_NOT_ENOUGH", comment: "You record is not enough")
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: nil)
+            return;
+        }
+        
+        let setDefault = exchangeDialogController.setDefaultSwitch.on ? "1" : "0"
+        
         let paramDict: NSMutableDictionary = ["reward_id": "\(reward.pkId)",
-                                              "count": "\(count)"]
+                                              "count": "\(count)",
+                                              "area": exchangeDialogController.area,
+                                              "address": exchangeDialogController.address,
+                                              "set_default": setDefault]
         
         createOrderManager.POST(UrlParam.CREATE_EXCHANGE_ORDER_URL,
                                 paramDict: paramDict,
                                 success: { (operation, responseObject) in
                                     let response = responseObject as! NSDictionary
-                                    if(response["code"] as! NSString).integerValue == CodeParam.SUCCESS {
-                                        UserCache.instance.user.record = response["result"] is NSString ?
-                                            (response["result"] as! NSString).integerValue :
-                                            (response["result"] as! NSNumber).integerValue
-                                        self.close()
-                                    }
+                                    self.setInfoFromCallback(response)
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
         })
     }
     
+    func setInfoFromCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            UserCache.instance.user.record = response["result"] is NSString ?
+                (response["result"] as! NSString).integerValue :
+                (response["result"] as! NSNumber).integerValue
+            self.close()
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+        }
+    }
+    
     func close() {
         grayView.removeFromSuperview()
         exchangeDialogController.view.removeFromSuperview()
+        areaPickerView.removeFromSuperview()
     }
 
     func loadMore() {
@@ -199,5 +235,32 @@ class ExchangeController: UIViewController, ExchangeDelegate,
                 isLoading = false
             }
         }
+    }
+    
+    func showAreaPickerView() {
+        self.view.addSubview(areaPickerView)
+    }
+    
+    func pickerDidChange() {
+        let location = areaPickerView.location
+        if location.district == "" {
+            exchangeDialogController.area = NSString(format: "%@-%@", location.state, location.city) as String
+        } else {
+            exchangeDialogController.area = NSString(format: "%@-%@-%@", location.state, location.city, location.district) as String
+        }
+        
+        exchangeDialogController.checkIfConfirmEnabled()
+        areaPickerView.removeFromSuperview()
+    }
+    
+    func cancelChange() {
+        exchangeDialogController.checkIfConfirmEnabled()
+        areaPickerView.removeFromSuperview()
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        exchangeDialogController.dismissKeyboard()
+        exchangeDialogController.checkIfConfirmEnabled()
+        areaPickerView.removeFromSuperview()
     }
 }

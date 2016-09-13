@@ -160,6 +160,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             break;
         default:
             viewController = storyboard.instantiateViewControllerWithIdentifier("Friend") as! FriendController
+            
+            let friendNum = BaseInfoUtil.getSignedIntegerFromAnyObject(result["extra"])
+            if UserCache.instance.ifLogin() {
+                UserCache.instance.user.friendNum = friendNum
+            }
             break;
         }
         
@@ -193,6 +198,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             break;
         default:
             viewController = storyboard.instantiateViewControllerWithIdentifier("Friend") as! FriendController
+            
+            let friendNum = BaseInfoUtil.getSignedIntegerFromAnyObject(result["extra"])
+            if UserCache.instance.ifLogin() {
+                UserCache.instance.user.friendNum = friendNum
+            }
             break;
         }
         
@@ -237,6 +247,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     let storeController = controller as! StoreController
                     if(resultStatus == 9000) {
                         storeController.purchaseController.showMessage(message as String, type: HudToastFactory.MessageType.SUCCESS)
+                        storeController.purchaseController.purchase()
                         storeController.purchaseController.close()
                     } else {
                         storeController.purchaseController.showMessage(message as String, type: HudToastFactory.MessageType.ERROR)
@@ -245,9 +256,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     let myOrderController = controller as! MyOrderController
                     if(resultStatus == 9000) {
                         myOrderController.purchaseOrderController.showMessage(message as String, type: HudToastFactory.MessageType.SUCCESS)
-                         myOrderController.purchaseOrderController.close()
+                        myOrderController.purchaseOrderController.purchase()
+                        myOrderController.purchaseOrderController.close()
+                    } else {
+                        myOrderController.purchaseOrderController.showMessage(message as String, type: HudToastFactory.MessageType.ERROR)
                     }
-                    myOrderController.purchaseOrderController.showMessage(message as String, type: HudToastFactory.MessageType.ERROR)
                 }
             })
         }

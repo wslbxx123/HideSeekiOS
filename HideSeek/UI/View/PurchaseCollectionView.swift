@@ -56,6 +56,10 @@ class PurchaseCollectionView: UICollectionView, UICollectionViewDelegateFlowLayo
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        if productList.count < indexPath.row + 1 {
+            return CGSizeMake(0, 0)
+        }
+        
         let product = productList.objectAtIndex(indexPath.row) as! Product
         
         let nameheight = BaseInfoUtil.getLabelHeight(15,

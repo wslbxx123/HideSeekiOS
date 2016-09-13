@@ -62,6 +62,7 @@ class RecordCache : BaseCache<Record> {
         
         if result["score_sum"] != nil {
             _scoreSum = BaseInfoUtil.getSignedIntegerFromAnyObject(result["score_sum"])
+            UserCache.instance.user.record = _scoreSum
         }
         
         let recordArray = result["scores"] as! NSArray

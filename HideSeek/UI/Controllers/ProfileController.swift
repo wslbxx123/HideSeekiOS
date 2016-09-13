@@ -26,7 +26,7 @@ class ProfileController: UIViewController {
         if user.isFriend {
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
             let remarkController = storyboard.instantiateViewControllerWithIdentifier("Remark") as! RemarkController
-            remarkController.aliasValue = user.alias == nil ? "" : user.alias! as String
+            remarkController.aliasValue = user.alias as String
             self.navigationController?.pushViewController(remarkController, animated: true)
         }
     }
@@ -78,8 +78,8 @@ class ProfileController: UIViewController {
             remarkLabel.hidden = false
             rightArrowImageView.hidden = false
             
-            if user.alias != nil && user.alias != "" {
-                nameLabel.text = user.alias! as String
+            if user.alias != "" {
+                nameLabel.text = user.alias as String
             }
         } else {
             remarkLabel.hidden = true

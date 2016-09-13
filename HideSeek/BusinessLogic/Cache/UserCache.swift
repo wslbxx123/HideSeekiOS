@@ -32,6 +32,8 @@ class UserCache {
     func setUser(userInfo: NSDictionary) {
         user = from(userInfo)
         
+        NewFriendTableManager.instance.refreshTable(user.pkId)
+        
         if(userInfo.objectForKey("friend_requests") != nil) {
             let friendRequests = userInfo["friend_requests"] as! NSArray
             

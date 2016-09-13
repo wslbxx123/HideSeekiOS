@@ -52,6 +52,9 @@ class RecentCityCollectionView: UICollectionView, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if recentCityList.count < indexPath.row + 1 {
+            return
+        }
         
         let city = recentCityList.objectAtIndex(indexPath.row) as! DomesticCity
         

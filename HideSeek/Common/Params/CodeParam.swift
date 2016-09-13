@@ -8,6 +8,7 @@
 
 class CodeParam {
     static let ERROR_VOLLEY_CODE = 1
+    static let ERROR_SESSION_INVALID = 11000
     static let SUCCESS = 10000
     static let ERROR_PHONE_OR_PASSWORD_WRONG = 10001
     static let ERROR_PHONE_OR_PASSWORD_EMPTY = 10002

@@ -59,7 +59,7 @@ class SettingController: UIViewController {
     }
     
     func setInfoFromCallback(response: NSDictionary) {
-        clearData()
+        UserInfoManager.instance.clearData()
         GoalCache.instance.ifNeedClearMap = true
         self.navigationController?.popViewControllerAnimated(true)
     }
@@ -81,38 +81,4 @@ class SettingController: UIViewController {
                 HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
         })
     }
-    
-    func clearData() {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.SESSION_TOKEN)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.USER_INFO)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.RECORD_VERSION)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.RECORD_MIN_ID)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.RACE_GROUP_VERSION)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.RACE_GROUP_RECORD_MIN_ID)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.PRODUCT_VERSION)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.PRODUCT_MIN_ID)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.REWARD_VERSION)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.REWARD_MIN_ID)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.PURCHASE_ORDER_VERSION)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.PURCHASE_ORDER_MIN_ID)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.FRIEND_VERSION)
-        
-        NSUserDefaults.standardUserDefaults().synchronize()
-        
-        RecordCache.instance.clearList()
-        RaceGroupCache.instance.clearList()
-        ProductCache.instance.clearList()
-        RewardCache.instance.clearList()
-        PurchaseOrderCache.instance.clearList()
-        
-        RecordTableManager.instance.clear()
-        RaceGroupTableManager.instance.clear()
-        ProductTableManager.instance.clear()
-        RewardTableManager.instance.clear()
-        PurchaseOrderTableManager.instance.clear()
-        FriendTableManager.instance.clear()
-        
-        PushManager.instance.unRegister()
-    }
-
 }

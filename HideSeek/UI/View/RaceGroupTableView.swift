@@ -40,6 +40,11 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.dequeueReusableCellWithIdentifier("raceGroupCell")! as UITableViewCell
+        
+        if raceGroupList.count < indexPath.row + 1 {
+            return cell
+        }
+        
         let raceGroup = raceGroupList.objectAtIndex(indexPath.row) as! RaceGroup
         
         let photoImageView = cell.viewWithTag(TAG_PHOTO_IMAGEVIEW) as! UIImageView
@@ -59,7 +64,10 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         goalImageView.image = UIImage(named: GoalImageFactory.get(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName))
     
         messageLabel.text = getMessage(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName)
-        scoreLabel.text = String.init(format: NSLocalizedString("SCORE_TITLE", comment: "Score：%d"), raceGroup.recordItem.score)
+        
+        let scoreStr = raceGroup.recordItem.score >= 0 ? "+" + String(raceGroup.recordItem.score) : String(raceGroup.recordItem.score)
+        
+        scoreLabel.text =  NSLocalizedString("SCORE_TITLE", comment: "Score: ") + scoreStr
         
         timeLabel.text = raceGroup.recordItem.time
         cell.selectionStyle = UITableViewCellSelectionStyle.None
@@ -75,6 +83,10 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if raceGroupList.count < indexPath.row + 1 {
+            return 0
+        }
+        
         let raceGroup = raceGroupList.objectAtIndex(indexPath.row) as! RaceGroup
         let message = getMessage(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName) as NSString
         
@@ -106,6 +118,8 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
             return getMonsterMessage(showTypeName!)
         case .bomb:
             return NSLocalizedString("MESSAGE_GET_BOMB", comment: "A bomb went off, ouch")
+        default:
+            return ""
         }
     }
     

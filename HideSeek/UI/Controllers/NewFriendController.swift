@@ -74,6 +74,13 @@ class NewFriendController: UIViewController, AcceptDelegate {
             NewFriendCache.instance.updateFriendStatus(friendId)
             newFriendTableView.newFriendList = NewFriendCache.instance.friendList
             newFriendTableView.reloadData()
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
         }
     }
 }

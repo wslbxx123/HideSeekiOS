@@ -63,6 +63,10 @@ class ExchangeCollectionView: UICollectionView, UICollectionViewDelegateFlowLayo
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        if rewardList.count < indexPath.row + 1 {
+            return CGSizeMake(0, 0)
+        }
+        
         let reward = rewardList.objectAtIndex(indexPath.row) as! Reward
         
         let nameheight = BaseInfoUtil.getLabelHeight(15,

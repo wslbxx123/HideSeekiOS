@@ -101,10 +101,16 @@ class GoalImageView: UIImageView {
         switch(endGoal.type) {
         case .bomb:
             duration = 0.2
+            break;
         case .mushroom:
             duration = 0.1
+            break;
         case .monster:
             duration = 0.4
+            break;
+        default:
+            duration = 0
+            break;
         }
     }
     
@@ -177,10 +183,16 @@ class GoalImageView: UIImageView {
         switch(endGoal.type) {
         case .bomb:
             interval = 0
+            break;
         case .mushroom:
             interval = 20
+            break;
         case .monster:
             interval = 0
+            break;
+        default:
+            interval = 0
+            break;
         }
     }
     

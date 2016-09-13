@@ -78,6 +78,10 @@ class ForeignCityTableView: UITableView, UITableViewDataSource, UITableViewDeleg
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.dequeueReusableCellWithIdentifier("foreignCityCell")! as UITableViewCell
+        if cityList.count < indexPath.row + 1 {
+            return cell
+        }
+        
         let city = cityList.objectAtIndex(indexPath.row) as! ForeignCity
         
         let showAlpha = alphaIndex.allValues.contains({ value in
@@ -124,6 +128,10 @@ class ForeignCityTableView: UITableView, UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if cityList.count < indexPath.row + 1 {
+            return
+        }
+        
         let city = cityList.objectAtIndex(indexPath.row) as! ForeignCity
         
         self.selectRegionDelegate?.regionSelected(city.name)

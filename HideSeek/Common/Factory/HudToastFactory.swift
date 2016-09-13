@@ -9,6 +9,10 @@ import MBProgressHUD
 
 class HudToastFactory {
     class func show(message: String, view: UIView, type: MessageType) {
+        show(message, view: view, type: type, callback: nil)
+    }
+    
+    class func show(message: String, view: UIView, type: MessageType, callback: (() -> Void)?) {
         var hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
         hud.labelText = message;
         hud.mode = MBProgressHUDMode.Text;
@@ -20,6 +24,7 @@ class HudToastFactory {
         hud.showAnimated(true, whileExecutingBlock: {
             sleep(3)
         }) {
+            callback?()
             hud.removeFromSuperview()
             hud = nil
         }

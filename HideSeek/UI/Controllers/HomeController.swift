@@ -63,6 +63,10 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        if CameraUtil.isAvailable() {
+            self.sourceType = UIImagePickerControllerSourceType.Camera
+        }
+        
         time = NSTimer.scheduledTimerWithTimeInterval(REFRESH_MAP_INTERVAL, target: self, selector: #selector(HomeController.refreshMap), userInfo: nil, repeats: true)
         if overlayView != nil {
             initMenuBtn()
@@ -269,7 +273,11 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             
             if code != CodeParam.SUCCESS {
                 let errorMessage = ErrorMessageFactory.get(code)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                    if code == CodeParam.ERROR_SESSION_INVALID {
+                        UserInfoManager.instance.logout(self)
+                    }
+                })
                 self.ifSeeGoal = false
             }
         }) { (operation, error) in
@@ -322,10 +330,10 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                 if UserCache.instance.ifLogin() && goal.createBy == UserCache.instance.user.pkId
                     && goal.type == Goal.GoalTypeEnum.bomb {
                     if goal.isSelected {
-                        annotationView.image = UIImage(named: "box_selected_marker")
+                        annotationView.image = UIImage(named: "bomb_selected_marker")
                         annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 30)
                     } else {
-                        annotationView.image = UIImage(named: "box_marker")
+                        annotationView.image = UIImage(named: "bomb_marker")
                         annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
                     }
                 } else {
@@ -378,8 +386,8 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         
         startPoint = MAMapPointForCoordinate(CLLocationCoordinate2DMake(latitude, longitude));
         
-        let user = UserCache.instance.user
-        if user != nil {
+        if UserCache.instance.ifLogin() {
+            let user = UserCache.instance.user
             paramDict["account_role"] = String(user.role.rawValue)
         }
         
@@ -474,6 +482,10 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                 return
             }
             
+            var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+            hud.dimBackground = true
+            
             let paramDict = NSMutableDictionary()
             paramDict["latitude"] = "\(latitude)"
             paramDict["longitude"] = "\(longitude)"
@@ -482,12 +494,14 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             setBombManager.POST(UrlParam.SET_BOMB_URL, paramDict: paramDict, success: { (operation, responseObject) in
                 let response = responseObject as! NSDictionary
                 print("JSON: " + responseObject.description!)
+                hud.removeFromSuperview()
+                hud = nil
                 
-                let bombNum = (response["result"] as! NSNumber).integerValue
-                UserCache.instance.user.bombNum = bombNum
-                self.overlayView.bombNumBtn.setTitle("\(bombNum)", forState: UIControlState.Normal)
+                self.setInfoFromSetBombCallback(response)
             }) { (operation, error) in
                 print("Error: " + error.localizedDescription)
+                hud.removeFromSuperview()
+                hud = nil
             }
         } else {
             let alertController = UIAlertController(title: nil,
@@ -500,6 +514,24 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             alertController.addAction(cancelAction)
             alertController.addAction(okAction)
             self.presentViewController(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    func setInfoFromSetBombCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            let bombNum = (response["result"] as! NSNumber).integerValue
+            UserCache.instance.user.bombNum = bombNum
+            self.overlayView.bombNumBtn.setTitle("\(bombNum)", forState: UIControlState.Normal)
+            refreshMap()
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
         }
     }
     
@@ -522,7 +554,8 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     }
     
     func getGoal() {
-        if BaseInfoUtil.checkIfGoToLogin(self) {
+        if !UserCache.instance.ifLogin() {
+            UserInfoManager.instance.checkIfGoToLogin(self)
             return
         }
         
@@ -534,26 +567,35 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         
         getGoalManager.POST(UrlParam.GET_GOAL_URL, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
-            let code = (response["code"] as! NSString).integerValue
             
-            if code == CodeParam.SUCCESS {
-                if self.endGoal.type == Goal.GoalTypeEnum.bomb {
-                    HudToastFactory.showScore(self.endGoal.score, view: self.view)
-                } else {
-                    HudToastFactory.showScore(self.endGoal.score, view: self.view)
-                }
-                
-                UserCache.instance.user.record = response["result"] is NSString ?
-                    (response["result"] as! NSString).integerValue :
-                    (response["result"] as! NSNumber).integerValue
-                self.updateEndGoal()
-            } else {
-                let errorMessage = ErrorMessageFactory.get(code)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
-            }
+            self.setInfoFromGetGoalCallback(response)
         }) { (operation, error) in
             let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
             HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+        }
+    }
+    
+    func setInfoFromGetGoalCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            if self.endGoal.type == Goal.GoalTypeEnum.bomb {
+                HudToastFactory.showScore(self.endGoal.score, view: self.view)
+            } else {
+                HudToastFactory.showScore(self.endGoal.score, view: self.view)
+            }
+            
+            UserCache.instance.user.record = response["result"] is NSString ?
+                (response["result"] as! NSString).integerValue :
+                (response["result"] as! NSNumber).integerValue
+            self.updateEndGoal()
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
         }
     }
     
@@ -616,9 +658,11 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     }
     
     func hitMonster() {
-        if BaseInfoUtil.checkIfGoToLogin(self) {
+        if !UserCache.instance.ifLogin() {
+            UserInfoManager.instance.checkIfGoToLogin(self)
             return
         }
+
         
         let paramDict = NSMutableDictionary()
         let pkId: Int64 = (endGoal?.pkId)!
@@ -628,26 +672,37 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         
         getGoalManager.POST(UrlParam.HIT_MONSTER_URL, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
-            let code = (response["code"] as! NSString).integerValue
             
-            if code == CodeParam.SUCCESS {
-                let result = response["result"] as! NSDictionary
-                if (result["score_sum"] != nil && !result.objectForKey("score_sum")!.isKindOfClass(NSNull)) {
-                    HudToastFactory.showScore(self.endGoal.score, view: self.view)
-                    if(UserCache.instance.ifLogin()) {
-                        UserCache.instance.user.record = BaseInfoUtil.getSignedIntegerFromAnyObject(result["score_sum"])
-                        self.updateEndGoal()
-                    }
-                }
-            } else {
-                let errorMessage = ErrorMessageFactory.get(code)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
-                
-                self.updateEndGoal()
-            }
+            self.setInfoFromHitMonsterCallback(response)
         }) { (operation, error) in
             let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
             HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+        }
+    }
+    
+    func setInfoFromHitMonsterCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            let result = response["result"] as! NSDictionary
+            if (result["score_sum"] != nil && !result.objectForKey("score_sum")!.isKindOfClass(NSNull)) {
+                HudToastFactory.showScore(self.endGoal.score, view: self.view)
+                if(UserCache.instance.ifLogin()) {
+                    UserCache.instance.user.record = BaseInfoUtil.getSignedIntegerFromAnyObject(result["score_sum"])
+                    self.updateEndGoal()
+                }
+            }
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+            
+            if code == CodeParam.ERROR_GOAL_DISAPPEAR {
+                self.updateEndGoal()
+            }
         }
     }
     
@@ -659,7 +714,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         let shareParams = NSMutableDictionary()
         shareParams.SSDKSetupShareParamsByText(NSLocalizedString("SHARE_MESSAGE", comment: "My God! A monster is watching at me, please help me!"),
                                                 images : UIImage(named: "ic_launcher"),
-                                                url : NSURL(string:"hideseek.cn"),
+                                                url : NSURL(string:"https://m.hideseek.cn"),
                                                 title : NSLocalizedString("SHARE_TITLE", comment: "Enter into the age of tribes"),
                                                 type : SSDKContentType.Auto)
         
@@ -686,12 +741,8 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     }
     
     func refresh() {
-        for marker in markerDictionary.allValues {
-            let annotation = marker as! MAAnnotation
-            overlayView.mapView.removeAnnotation(annotation)
-            overlayView.mapView.addAnnotation(annotation)
-            overlayView.mapView.removeAnnotation(annotation)
-        }
+        overlayView.mapView.removeAnnotations(markerDictionary.allValues)
+        mapDialogController.mapView.removeAnnotations(markerDictionary.allValues)
         
         markerDictionary.removeAllObjects()
         goalDictionary.removeAllObjects()

@@ -18,6 +18,8 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
     
     @IBAction func backBtnClicked(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true)
+        self.internalController = nil
+        self.externalController = nil
     }
     
     @IBAction func internalBtnClicked(sender: AnyObject) {
@@ -97,6 +99,8 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
     
     func regionSelected(name: String) {
         self.navigationController?.popViewControllerAnimated(true)
+        self.internalController = nil
+        self.externalController = nil
         self.closure(name: name)
     }
     

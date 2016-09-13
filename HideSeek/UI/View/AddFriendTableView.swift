@@ -31,6 +31,10 @@ class AddFriendTableView: UITableView, UITableViewDataSource, UITableViewDelegat
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.dequeueReusableCellWithIdentifier("addFriendCell")! as UITableViewCell
+        
+        if addFriendList.count < indexPath.row + 1 {
+            return cell
+        }
         let friend = addFriendList.objectAtIndex(indexPath.row) as! User
         
         let photoImageView = cell.viewWithTag(TAG_PHOTO_IMAGEVIEW) as! UIImageView
@@ -56,6 +60,10 @@ class AddFriendTableView: UITableView, UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if addFriendList.count < indexPath.row + 1 {
+            return
+        }
+        
         let friend = addFriendList.objectAtIndex(indexPath.row) as! User
         
         self.goToProfileDelegate?.goToProfile(friend)

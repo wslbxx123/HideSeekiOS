@@ -40,7 +40,8 @@ class ExchangeOrderTableViewCell: UITableViewCell {
     func initOrder(order: ExchangeOrder) {
         rewardImageView.setWebImage(order.imageUrl, defaultImage: "default_photo", isCache: true)
         nameLabel.text = order.rewardName
-        amountLabel.text = NSString(format: NSLocalizedString("EXCHANGE_AMOUNT_TITLE", comment: "Amount: %d score"), order.record * order.count) as String
+        let score: Int = order.record * order.count
+        amountLabel.text = NSString(format: NSLocalizedString("EXCHANGE_AMOUNT_TITLE", comment: "Amount: %d score"), score) as String
         exchangeBtn.setBackgroundColor("#fccb05", selectedColorStr: "#ffa200", disabledColorStr: "#bab8b8")
         exchangeBtn.layer.cornerRadius = 5
         exchangeBtn.layer.masksToBounds = true

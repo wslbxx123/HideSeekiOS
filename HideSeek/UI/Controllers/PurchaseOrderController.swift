@@ -95,18 +95,32 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
                         print("JSON: " + responseObject.description!)
                         let response = responseObject as! NSDictionary
                         
-                        if (response["code"] as! NSString).integerValue == CodeParam.SUCCESS {
-                            PurchaseOrderCache.instance.setOrders(response["result"] as! NSDictionary)
-                            self.orderTableView.orderList = PurchaseOrderCache.instance.cacheList
-                            self.orderTableView.reloadData()
-                            self.refreshControl.endRefreshing()
-                        }
+                        self.setInfoFromRefreshCallback(response)
+                        
                         self.isLoading = false
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 self.isLoading = false
         })
         playAnimateRefresh()
+    }
+    
+    func setInfoFromRefreshCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            PurchaseOrderCache.instance.setOrders(response["result"] as! NSDictionary)
+            self.orderTableView.orderList = PurchaseOrderCache.instance.cacheList
+            self.orderTableView.reloadData()
+            self.refreshControl.endRefreshing()
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+        }
     }
     
     func playAnimateRefresh() {
@@ -138,14 +152,7 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
                                 print("JSON: " + responseObject.description!)
                                 let response = responseObject as! NSDictionary
                                 
-                                if (response["code"] as! NSString).integerValue == CodeParam.SUCCESS {
-                                    PurchaseOrderCache.instance.addOrders(response["result"] as! NSDictionary)
-                                    
-                                    self.orderTableView.orderList = PurchaseOrderCache.instance.cacheList
-                                    self.orderTableView.reloadData()
-                                    self.isLoading = false
-                                    self.orderTableView.tableFooterView?.hidden = true
-                                }
+                                self.setInfoFromGetCallback(response)
                     },
                              failure: { (operation, error) in
                                 print("Error: " + error.localizedDescription)
@@ -159,6 +166,27 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
                 isLoading = false
                 self.orderTableView.tableFooterView?.hidden = true
             }
+        }
+    }
+    
+    func setInfoFromGetCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            PurchaseOrderCache.instance.addOrders(response["result"] as! NSDictionary)
+            
+            self.orderTableView.orderList = PurchaseOrderCache.instance.cacheList
+            self.orderTableView.reloadData()
+            self.isLoading = false
+            self.orderTableView.tableFooterView?.hidden = true
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+
         }
     }
     
@@ -188,17 +216,32 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
                                 paramDict: paramDict,
                                 success: { (operation, responseObject) in
                                     let response = responseObject as! NSDictionary
-                                    if(response["code"] as! NSString).integerValue == CodeParam.SUCCESS {
-                                        let result = response["result"] as! NSDictionary
-                                        AlipayManager.instance.purchase(
-                                            result["sign"] as! NSString,
-                                            tradeNo: result["trade_no"] as! NSString,
-                                            product: product,
-                                            count: count)
-                                    }
+                                    
+                                    self.setInfoFromGetOrderCallback(response, product: product, count: count)
+                                    
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
         })
+    }
+    
+    func setInfoFromGetOrderCallback(response: NSDictionary, product: Product, count: Int) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            let result = response["result"] as! NSDictionary
+            AlipayManager.instance.purchase(
+                result["sign"] as! NSString,
+                tradeNo: result["trade_no"] as! NSString,
+                product: product,
+                count: count)
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+        }
     }
     
     func close() {
@@ -208,5 +251,42 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
     
     func showMessage(message: String, type: HudToastFactory.MessageType) {
         HudToastFactory.show(message, view: self.view, type: type)
+    }
+    
+    func purchase() {
+        let paramDict: NSMutableDictionary = ["order_id": "\(purchaseDialogController.orderId)"]
+        manager.POST(UrlParam.PURCHASE_URL,
+                             paramDict: paramDict,
+                             success: { (operation, responseObject) in
+                                let response = responseObject as! NSDictionary
+                                print("JSON: " + responseObject.description!)
+                                
+                                self.setInfoFromPurchaseCallback(response)
+                                
+            }, failure: { (operation, error) in
+                print("Error: " + error.localizedDescription)
+        })
+    }
+    
+    func setInfoFromPurchaseCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            let result = response["result"] as! NSDictionary
+            let bombNum = (result["bomb_num"] as! NSString).integerValue
+            let hasGuide = (result["has_guide"] as! NSString).integerValue
+            
+            UserCache.instance.user.bombNum = bombNum
+            UserCache.instance.user.hasGuide = hasGuide == 1
+            
+            self.refreshData()
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+        }
     }
 }

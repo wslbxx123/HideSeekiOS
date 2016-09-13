@@ -21,6 +21,10 @@ class LoginController: UIViewController {
     var phone: String = ""
     var password: String = ""
     
+    @IBAction func closeBtnClicked(sender: AnyObject) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
     @IBAction func loginBtnClicked(sender: AnyObject) {
         let channalId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.CHANNEL_ID) as! String
         let paramDict = ["phone": phone,

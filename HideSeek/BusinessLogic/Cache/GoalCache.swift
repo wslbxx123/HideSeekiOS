@@ -53,6 +53,8 @@ class GoalCache : BaseCache<Goal> {
         
         for goalItem in goalArray {
             let goalInfo = goalItem as! NSDictionary
+            let type = goalInfo["type"] as? NSString
+            let typeName = goalInfo["type"] as? NSNumber
             let goal = Goal(pkId: (goalInfo["pk_id"] as! NSString).longLongValue,
                             latitude: (goalInfo["latitude"] as! NSString).doubleValue,
                             longitude: (goalInfo["longitude"] as! NSString).doubleValue,

@@ -76,7 +76,9 @@ class FriendCache : BaseCache<User> {
                 version: (friendInfo["version"] as! NSString).longLongValue,
                 pinyin: NSString(string: pinyinStr))
             
-            user.alias = friendInfo["remark"] as? NSString
+            if (friendInfo.objectForKey("remark") != nil && !friendInfo.objectForKey("remark")!.isKindOfClass(NSNull)) {
+                user.alias = friendInfo["remark"] as! NSString
+            }
             list.addObject(user)
         }
         

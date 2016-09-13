@@ -79,17 +79,8 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
                      success: { (operation, responseObject) in
                         print("JSON: " + responseObject.description!)
                         let response = responseObject as! NSDictionary
-                        RaceGroupCache.instance.setRaceGroup(response["result"] as! NSDictionary)
-                        self.raceGroupTableView.raceGroupList = RaceGroupCache.instance.cacheList
-                        self.raceGroupTableView.reloadData()
+                        self.setInfoFromRefreshCallback(response)
                         
-                        if self.raceGroupTableView.raceGroupList.count == 0 {
-                            self.noResultStackView.hidden = false
-                        } else {
-                            self.noResultStackView.hidden = true
-                        }
-                        self.refreshControl.endRefreshing()
-                        self.isLoading = false
                     }, failure: { (operation, error) in
                         print("Error: " + error.localizedDescription)
                         self.isLoading = false
@@ -113,6 +104,32 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
         }
     }
     
+    func setInfoFromRefreshCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            RaceGroupCache.instance.setRaceGroup(response["result"] as! NSDictionary)
+            self.raceGroupTableView.raceGroupList = RaceGroupCache.instance.cacheList
+            self.raceGroupTableView.reloadData()
+            
+            if self.raceGroupTableView.raceGroupList.count == 0 {
+                self.noResultStackView.hidden = false
+            } else {
+                self.noResultStackView.hidden = true
+            }
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+        }
+        
+        self.refreshControl.endRefreshing()
+        self.isLoading = false
+    }
+    
     func loadMore() {
         if !isLoading {
             isLoading = true
@@ -125,16 +142,11 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
                              success: { (operation, responseObject) in
                                 print("JSON: " + responseObject.description!)
                                 let response = responseObject as! NSDictionary
-                                RaceGroupCache.instance.addRaceGroup(response["result"] as! NSDictionary)
                                 
-                                self.raceGroupTableView.raceGroupList = RaceGroupCache.instance.cacheList
-                                self.raceGroupTableView.reloadData()
-                                self.isLoading = false
-                                self.raceGroupTableView.tableFooterView?.hidden = true
+                                self.setInfoFromGetCallback(response)
                     },
                              failure: { (operation, error) in
                                 print("Error: " + error.localizedDescription)
-                                self.raceGroupTableView.tableFooterView?.hidden = true
                 })
             } else {
                 self.raceGroupTableView.raceGroupList.removeAllObjects();
@@ -144,6 +156,26 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
                 isLoading = false
                 self.raceGroupTableView.tableFooterView?.hidden = true
             }
+        }
+    }
+    
+    func setInfoFromGetCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            RaceGroupCache.instance.addRaceGroup(response["result"] as! NSDictionary)
+            
+            self.raceGroupTableView.raceGroupList = RaceGroupCache.instance.cacheList
+            self.raceGroupTableView.reloadData()
+            self.isLoading = false
+            self.raceGroupTableView.tableFooterView?.hidden = true
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
         }
     }
 }

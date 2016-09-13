@@ -111,7 +111,11 @@ class WarningController: UIViewController {
             timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(WarningController.callEverySecond), userInfo: nil, repeats: true)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
         }
     }
     

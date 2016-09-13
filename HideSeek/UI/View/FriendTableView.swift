@@ -77,6 +77,11 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
             break;
         case 1:
             cell = self.dequeueReusableCellWithIdentifier("friendCell")! as UITableViewCell
+            
+            if friendList.count < indexPath.row + 1 {
+                return cell
+            }
+            
             let friend = friendList.objectAtIndex(indexPath.row) as! User
             
             let showAlpha = alphaIndex.allValues.contains({ value in
@@ -100,8 +105,8 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
             photoImageView.setWebImage(friend.smallPhotoUrl as String, defaultImage: "default_photo", isCache: true)
             nameLabel.text = friend.nickname as String
             
-            if friend.alias != nil && friend.alias != "" {
-                nameLabel.text = friend.alias! as String
+            if friend.alias != "" {
+                nameLabel.text = friend.alias as String
             }
             break;
         default:
@@ -149,6 +154,10 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 0 {
             goToNewFriendDelegate?.goToNewFriend()
         } else {
+            if friendList.count < indexPath.row + 1 {
+                return
+            }
+            
             let friend = friendList.objectAtIndex(indexPath.row) as! User
             friend.isFriend = true
             goToProfileDelegate?.goToProfile(friend)

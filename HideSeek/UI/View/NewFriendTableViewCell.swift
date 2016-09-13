@@ -42,7 +42,7 @@ class NewFriendTableViewCell: UITableViewCell {
         friendId = friend.pkId
         photoImageView.setWebImage(friend.smallPhotoUrl as String, defaultImage: "default_photo", isCache: true)
         nameLabel.text = friend.nickname as String
-        messageLabel.text = friend.message as? String
+        messageLabel.text = friend.requestMessage as String
         acceptBtn.setBackgroundColor("#fccb05", selectedColorStr: "#ffa200", disabledColorStr: "#bab8b8")
         acceptBtn.layer.cornerRadius = 5
         acceptBtn.layer.masksToBounds = true

@@ -33,6 +33,10 @@ class WarningTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.dequeueReusableCellWithIdentifier("warningCell") as! WarningTableViewCell
+        
+        if warningList.count < indexPath.row + 1 {
+            return cell
+        }
         let warning = warningList.objectAtIndex(indexPath.row) as! Warning
         
         cell.initWarning(warning)

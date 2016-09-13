@@ -44,10 +44,6 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
     override func viewDidAppear(animated: Bool) {
         self.collectionView.productList = ProductCache.instance.productList
         self.collectionView.reloadData()
-        let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        purchaseDialogController = storyboard.instantiateViewControllerWithIdentifier("purchaseDialog") as! PurchaseDialogController
-        purchaseDialogController.confirmPurchaseDelegate = self
-        purchaseDialogController.closeDelegate = self
         
         UIView.animateWithDuration(0.25,
                                    delay: 0,
@@ -82,6 +78,11 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         productRefreshControl.addSubview(customLoadingView)
         screenRect = UIScreen.mainScreen().bounds
         purchaseWidth = screenRect.width - 40
+        
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        purchaseDialogController = storyboard.instantiateViewControllerWithIdentifier("purchaseDialog") as! PurchaseDialogController
+        purchaseDialogController.confirmPurchaseDelegate = self
+        purchaseDialogController.closeDelegate = self
     }
     
     func refreshProductData() {
@@ -141,17 +142,33 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
                                 paramDict: paramDict,
                                 success: { (operation, responseObject) in
                                         let response = responseObject as! NSDictionary
-                                        if(response["code"] as! NSString).integerValue == CodeParam.SUCCESS {
-                                        let result = response["result"] as! NSDictionary
-                                        AlipayManager.instance.purchase(
-                                            result["sign"] as! NSString,
-                                            tradeNo: result["trade_no"] as! NSString,
-                                            product: product,
-                                            count: count)
-                                        }
+                                    
+                                    self.setInfoFromCreateOrderCallback(response, product: product, count: count)
+                                    
                                 }, failure: { (operation, error) in
                                     print("Error: " + error.localizedDescription)
                                 })
+    }
+    
+    func setInfoFromCreateOrderCallback(response: NSDictionary, product: Product, count: Int) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            let result = response["result"] as! NSDictionary
+            self.purchaseDialogController.orderId = (result["order_id"] as! NSString).longLongValue
+            AlipayManager.instance.purchase(
+                result["sign"] as! NSString,
+                tradeNo: result["trade_no"] as! NSString,
+                product: product,
+                count: count)
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+        }
     }
     
     func close() {
@@ -201,6 +218,42 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
                 
                 isLoading = false
             }
+        }
+    }
+    
+    func purchase() {
+        let paramDict: NSMutableDictionary = ["order_id": "\(purchaseDialogController.orderId)"]
+        createOrderManager.POST(UrlParam.PURCHASE_URL,
+                                paramDict: paramDict,
+                                success: { (operation, responseObject) in
+                                    let response = responseObject as! NSDictionary
+                                    print("JSON: " + responseObject.description!)
+                                    
+                                    self.setInfoFromPurchaseCallback(response)
+                                    
+            }, failure: { (operation, error) in
+                print("Error: " + error.localizedDescription)
+        })
+    }
+    
+    func setInfoFromPurchaseCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            let result = response["result"] as! NSDictionary
+            let bombNum = (result["bomb_num"] as! NSString).integerValue
+            let hasGuide = (result["has_guide"] as! NSString).integerValue
+            
+            UserCache.instance.user.bombNum = bombNum
+            UserCache.instance.user.hasGuide = hasGuide == 1
+            self.refreshProductData()
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
         }
     }
 }

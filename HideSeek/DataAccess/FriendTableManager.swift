@@ -82,7 +82,9 @@ class FriendTableManager {
                     version: item[pullVersion],
                     pinyin: item[pinyin]!)
                 
-                user.alias = item[alias]
+                if item[alias] != nil {
+                    user.alias = item[alias]!
+                }
                 friendList.addObject(user)
             }
         }
@@ -111,7 +113,9 @@ class FriendTableManager {
                     version: item[pullVersion],
                     pinyin: item[pinyin]!)
                 
-                user.alias = item[alias]
+                if item[alias] != nil {
+                    user.alias = item[alias]!
+                }
                 friendList.addObject(user)
             }
         }
@@ -144,7 +148,7 @@ class FriendTableManager {
                         role <- friendInfo.role.rawValue,
                         pullVersion <- friendInfo.version,
                         pinyin <- (friendInfo.pinyin as String),
-                        alias <- (friendInfo.alias == nil ? nil : friendInfo.alias! as String)))
+                        alias <- (friendInfo.alias as String)))
                 
                 if count == 0 {
                     let insert = friendTable.insert(
@@ -158,7 +162,7 @@ class FriendTableManager {
                         role <- friendInfo.role.rawValue,
                         pullVersion <- friendInfo.version,
                         pinyin <- (friendInfo.pinyin as String),
-                        alias <- (friendInfo.alias == nil ? nil : friendInfo.alias! as String),
+                        alias <- (friendInfo.alias as String),
                         accountId <- friendInfo.pkId)
                     
                     try database.run(insert)

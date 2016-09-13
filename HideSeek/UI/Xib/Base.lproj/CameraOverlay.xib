@@ -143,7 +143,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="298" height="39"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Patriarch, a goal there!" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89j-Ef-BxR" userLabel="HintLabel">
-                                                    <rect key="frame" x="0.0" y="0.0" width="283" height="39"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="288" height="39"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -152,7 +152,7 @@
                                             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstItem="89j-Ef-BxR" firstAttribute="top" secondItem="1fI-ub-an9" secondAttribute="top" id="5hP-a4-mAu"/>
-                                                <constraint firstAttribute="trailing" secondItem="89j-Ef-BxR" secondAttribute="trailing" constant="15" id="Hp9-vb-8Fh"/>
+                                                <constraint firstAttribute="trailing" secondItem="89j-Ef-BxR" secondAttribute="trailing" constant="10" id="Hp9-vb-8Fh"/>
                                                 <constraint firstItem="89j-Ef-BxR" firstAttribute="centerY" secondItem="1fI-ub-an9" secondAttribute="centerY" id="XQw-sN-uvk"/>
                                                 <constraint firstItem="89j-Ef-BxR" firstAttribute="leading" secondItem="1fI-ub-an9" secondAttribute="leading" id="Ysh-r1-GRv"/>
                                             </constraints>

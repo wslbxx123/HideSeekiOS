@@ -31,6 +31,10 @@ class NewFriendTableView: UITableView, UITableViewDataSource, UITableViewDelegat
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.dequeueReusableCellWithIdentifier("newFriendCell")! as! NewFriendTableViewCell
+        
+        if newFriendList.count < indexPath.row + 1 {
+            return cell
+        }
         let friend = newFriendList.objectAtIndex(indexPath.row) as! User
         cell.initNewFriend(friend)
         cell.acceptDelegate = acceptDelegate
@@ -59,6 +63,10 @@ class NewFriendTableView: UITableView, UITableViewDataSource, UITableViewDelegat
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete {
+            if newFriendList.count < indexPath.row + 1 {
+                return
+            }
+            
             let friend = newFriendList.objectAtIndex(indexPath.row) as! User
             NewFriendCache.instance.removeFriend(friend)
             self.reloadData()
