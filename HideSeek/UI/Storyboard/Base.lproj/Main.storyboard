@@ -3506,7 +3506,7 @@
                                                         <state key="normal" title="Complain">
                                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
-                                                        <state key="selected" title="Compain"/>
+                                                        <state key="selected" title="Complain"/>
                                                         <connections>
                                                             <action selector="complainBtnClicked:" destination="QMF-fa-Ceb" eventType="touchDown" id="AV8-gc-uyD"/>
                                                         </connections>
@@ -3995,7 +3995,7 @@
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2B304877-F328-4CE9-AB73-4CA652471D99" translatesAutoresizingMaskIntoConstraints="NO" id="GgJ-b0-kJC" userLabel="ProductImageView">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3F66603A-CD00-4A5A-96B1-9154178033FC" translatesAutoresizingMaskIntoConstraints="NO" id="GgJ-b0-kJC" userLabel="ProductImageView">
                                                             <rect key="frame" x="-28" y="31" width="300" height="150"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="150" id="3OQ-AA-dqS"/>
@@ -4246,7 +4246,7 @@
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0734E19B-C69B-4D77-AB8F-300FEB6B36A8" translatesAutoresizingMaskIntoConstraints="NO" id="2NN-FD-tGk" userLabel="RewardImageView">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="696BA758-BD1B-43C5-8DC1-773627C812F5" translatesAutoresizingMaskIntoConstraints="NO" id="2NN-FD-tGk" userLabel="RewardImageView">
                                                             <rect key="frame" x="-28" y="31" width="300" height="150"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="150" id="okg-RQ-OJA"/>
@@ -5231,7 +5231,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="0734E19B-C69B-4D77-AB8F-300FEB6B36A8" width="300" height="308">
+        <image name="3F66603A-CD00-4A5A-96B1-9154178033FC" width="300" height="308">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11445,7 +11445,7 @@ AAWt6gAFrewABa3xAAWt+QAFrfwABa4BAAWuCQAFrgwABa4eAAWuIQAFriYAAAAAAAAEAQAAAAAAAABB
 AAAAAAAAAAAAAAAAAAWuKA
 </mutableData>
         </image>
-        <image name="2B304877-F328-4CE9-AB73-4CA652471D99" width="300" height="308">
+        <image name="696BA758-BD1B-43C5-8DC1-773627C812F5" width="300" height="308">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

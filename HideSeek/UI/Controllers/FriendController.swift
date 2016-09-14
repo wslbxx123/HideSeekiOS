@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MBProgressHUD
 
-class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDelegate, GoToProfileDelegate {
+class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDelegate, GoToProfileDelegate, RemoveFriendDelegate {
     let HtmlType = "text/html"
     @IBOutlet weak var friendTableView: FriendTableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -43,6 +44,7 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
         searchBar.delegate = self
         friendTableView.goToNewFriendDelegate = self
         friendTableView.goToProfileDelegate = self
+        friendTableView.removeFriendDelegate = self
     }
     
     func refreshData() {
@@ -149,5 +151,31 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
         let profileController = storyboard.instantiateViewControllerWithIdentifier("Profile") as! ProfileController
         profileController.user = user
         self.navigationController?.pushViewController(profileController, animated: true)
+    }
+    
+    func removeFriend(friend: User) {
+        let paramDict: NSMutableDictionary = ["friend_id": "\(friend.pkId)"]
+        
+        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        hud.dimBackground = true
+        
+        manager.POST(UrlParam.REMOVE_FRIEND_URL,
+                     paramDict: paramDict,
+                     success: { (operation, responseObject) in
+                        print("JSON: " + responseObject.description!)
+                        FriendCache.instance.removeFriend(friend)
+                        self.friendTableView.alphaIndex = self.getAlphaIndexFromList(FriendCache.instance.friendList)
+                        self.friendTableView.friendList = FriendCache.instance.friendList
+                        self.friendTableView.reloadData()
+                        hud.removeFromSuperview()
+                        hud = nil
+            }, failure: { (operation, error) in
+                print("Error: " + error.localizedDescription)
+                let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                hud.removeFromSuperview()
+                hud = nil
+        })
     }
 }

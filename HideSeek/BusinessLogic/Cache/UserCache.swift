@@ -60,19 +60,13 @@ class UserCache {
                          pinyin: PinYinUtil.converterToPinyin(userInfo["nickname"] as! String),
                          bombNum: (userInfo["bomb_num"] as! NSString).integerValue,
                          hasGuide: (userInfo["has_guide"] as! NSString).integerValue == 1,
-                         friendNum: (userInfo["friend_num"] as! NSString).integerValue)
-        
-        if(userInfo.objectForKey("photo_url") != nil && !userInfo.objectForKey("photo_url")!.isKindOfClass(NSNull)) {
-            user.photoUrl = userInfo["photo_url"] as! NSString
-        }
-        
-        if(userInfo.objectForKey("small_photo_url") != nil && !userInfo.objectForKey("small_photo_url")!.isKindOfClass(NSNull)) {
-            user.smallPhotoUrl = userInfo["small_photo_url"] as! NSString
-        }
-        
-        user.sex = User.SexEnum(rawValue: (userInfo["sex"] as! NSString).integerValue)!
-        
-        user.region = userInfo["region"] as? String
+                         friendNum: (userInfo["friend_num"] as! NSString).integerValue,
+                         sex: User.SexEnum(rawValue: (userInfo["sex"] as! NSString).integerValue)!,
+                         photoUrl: userInfo["photo_url"] as? NSString,
+                         smallPhotoUrl: userInfo["small_photo_url"] as? NSString,
+                         region: userInfo["region"] as? NSString,
+                         defaultArea: userInfo["default_area"] as? NSString,
+                         defaultAddress: userInfo["default_address"] as? NSString)
         
         return user
     }

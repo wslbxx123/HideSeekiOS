@@ -66,6 +66,7 @@
 		184956061D0959DC001A20DC /* HideSeekUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184956051D0959DC001A20DC /* HideSeekUITests.swift */; };
 		184CB7411D86C4F90086B559 /* UpdatePasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184CB7401D86C4F90086B559 /* UpdatePasswordController.swift */; };
 		184CB7471D88633E0086B559 /* UrlUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184CB7461D88633E0086B559 /* UrlUtil.swift */; };
+		184CB7491D8880B40086B559 /* RemoveFriendDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184CB7481D8880B40086B559 /* RemoveFriendDelegate.swift */; };
 		184CBF311D65893E00135C60 /* guide_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 184CBF301D65893E00135C60 /* guide_back.png */; };
 		184CBF351D658B8400135C60 /* MonsterGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184CBF341D658B8300135C60 /* MonsterGuideView.swift */; };
 		184CBF371D65903700135C60 /* GoalImageFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184CBF361D65903700135C60 /* GoalImageFactory.swift */; };
@@ -364,9 +365,10 @@
 		184956051D0959DC001A20DC /* HideSeekUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideSeekUITests.swift; sourceTree = "<group>"; };
 		184956071D0959DC001A20DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		184CB7401D86C4F90086B559 /* UpdatePasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UpdatePasswordController.swift; path = UI/Controllers/UpdatePasswordController.swift; sourceTree = "<group>"; };
-		184CB7431D86F5D10086B559 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = UI/Storyboard/en.lproj/Main.strings; sourceTree = "<group>"; };
-		184CB7451D86F5E30086B559 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "UI/Storyboard/zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		184CB7461D88633E0086B559 /* UrlUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UrlUtil.swift; path = Common/Util/UrlUtil.swift; sourceTree = "<group>"; };
+		184CB7481D8880B40086B559 /* RemoveFriendDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoveFriendDelegate.swift; path = Common/Delegate/RemoveFriendDelegate.swift; sourceTree = "<group>"; };
+		184CB74B1D890EDC0086B559 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = UI/Storyboard/en.lproj/Main.strings; sourceTree = "<group>"; };
+		184CB74D1D890EFA0086B559 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "UI/Storyboard/zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		184CBF301D65893E00135C60 /* guide_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = guide_back.png; path = Images/guide_back.png; sourceTree = "<group>"; };
 		184CBF341D658B8300135C60 /* MonsterGuideView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MonsterGuideView.swift; path = UI/View/MonsterGuideView.swift; sourceTree = "<group>"; };
 		184CBF361D65903700135C60 /* GoalImageFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GoalImageFactory.swift; path = Common/Factory/GoalImageFactory.swift; sourceTree = "<group>"; };
@@ -1005,6 +1007,7 @@
 				18939FF91D80169C007CA861 /* UpdateGoalDelegate.swift */,
 				1893A0041D8409EF007CA861 /* AreaPickerDelegate.swift */,
 				1893A00C1D841CCE007CA861 /* ShowAreaDelegate.swift */,
+				184CB7481D8880B40086B559 /* RemoveFriendDelegate.swift */,
 			);
 			name = Delegate;
 			sourceTree = "<group>";
@@ -1619,6 +1622,7 @@
 				186DD1451D798A070098064E /* ArriveDelegate.swift in Sources */,
 				18EA6DF11D5C63EA00196E22 /* ExchangeOrderTableManager.swift in Sources */,
 				18670F2C1D6C109C0025E051 /* FriendTableView.swift in Sources */,
+				184CB7491D8880B40086B559 /* RemoveFriendDelegate.swift in Sources */,
 				184573D01D2BF0C20012C2B9 /* RaceGroupTableManager.swift in Sources */,
 				18B96E471D519F41002718D1 /* ConfirmPurchaseDelegate.swift in Sources */,
 				18FD1AAC1D1B7F4200225C92 /* MeController.swift in Sources */,
@@ -1748,8 +1752,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				1845A9501D506DAE005271E4 /* Base */,
-				184CB7431D86F5D10086B559 /* en */,
-				184CB7451D86F5E30086B559 /* zh-Hans */,
+				184CB74B1D890EDC0086B559 /* en */,
+				184CB74D1D890EFA0086B559 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

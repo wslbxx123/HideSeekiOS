@@ -70,7 +70,7 @@ class ProfileController: UIViewController {
             sexImageView.image = UIImage(named: user.sexImageName)
             sexImageView.hidden = false
         }
-        regionLabel.text = user.region == nil ? "" : user.region! as String
+        regionLabel.text = user.region as String
         raceLabel.text = user.roleName
         roleImageView.image = UIImage(named: user.roleImageName)
         

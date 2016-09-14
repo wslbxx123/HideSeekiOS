@@ -9,7 +9,7 @@
 import UIKit
 
 class ExchangeOrderController: UIViewController, LoadMoreDelegate,
-    ExchangeDelegate, ConfirmExchangeDelegate, CloseDelegate{
+    ExchangeDelegate, ConfirmExchangeDelegate, CloseDelegate, ShowAreaDelegate, AreaPickerDelegate{
     let HtmlType = "text/html"
     let TAG_LOADING_IMAGEVIEW = 1
     
@@ -27,6 +27,7 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
     var exchangeHeight: CGFloat = 250
     var exchangeWidth: CGFloat!
     var createOrderManager: CustomRequestManager!
+    var areaPickerView: AreaPickerView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,6 +83,16 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
         exchangeDialogController = storyboard.instantiateViewControllerWithIdentifier("exchangeDialog") as! ExchangeDialogController
         exchangeDialogController.confirmExchangeDelegate = self
         exchangeDialogController.closeDelegate = self
+        exchangeDialogController.showAreaDelegate = self
+        
+        areaPickerView = NSBundle.mainBundle().loadNibNamed("AreaPickerView", owner: nil, options: nil).first as! AreaPickerView
+        areaPickerView.initWithStyle(AreaPickerView.AreaPickerStyle.AreaPickerWithStateAndCityAndDistrict, delegate: self)
+        
+        areaPickerView.layer.frame = CGRectMake(
+            0,
+            self.view.frame.height - 310,
+            self.view.frame.width,
+            180)
     }
     
     func refreshData() {
@@ -236,5 +247,33 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
     func close() {
         grayView.removeFromSuperview()
         exchangeDialogController.view.removeFromSuperview()
+        areaPickerView.removeFromSuperview()
+    }
+    
+    func showAreaPickerView() {
+        self.view.addSubview(areaPickerView)
+    }
+    
+    func pickerDidChange() {
+        let location = areaPickerView.location
+        if location.district == "" {
+            exchangeDialogController.area = NSString(format: "%@-%@", location.state, location.city) as String
+        } else {
+            exchangeDialogController.area = NSString(format: "%@-%@-%@", location.state, location.city, location.district) as String
+        }
+        
+        exchangeDialogController.checkIfConfirmEnabled()
+        areaPickerView.removeFromSuperview()
+    }
+    
+    func cancelChange() {
+        exchangeDialogController.checkIfConfirmEnabled()
+        areaPickerView.removeFromSuperview()
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        exchangeDialogController.dismissKeyboard()
+        exchangeDialogController.checkIfConfirmEnabled()
+        areaPickerView.removeFromSuperview()
     }
 }

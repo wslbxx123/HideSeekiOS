@@ -19,6 +19,44 @@ class User: NSObject {
     var requestMessage: NSString = ""
     var alias: NSString = ""
     
+    var _defaultArea: NSString = ""
+    var defaultArea: NSString {
+        get {
+            return self._defaultArea
+        }
+        set {
+            self._defaultArea = newValue
+            
+            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            
+            if tempUserInfo != nil {
+                let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
+                userInfo["default_area"] = newValue
+                
+                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+            }
+        }
+    }
+    
+    var _defaultAddress: NSString = ""
+    var defaultAddress: NSString {
+        get {
+            return self._defaultAddress
+        }
+        set {
+            self._defaultAddress = newValue
+            
+            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            
+            if tempUserInfo != nil {
+                let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
+                userInfo["default_address"] = newValue
+                
+                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+            }
+        }
+    }
+    
     var _nickname: NSString
     var nickname: NSString {
         get {
@@ -57,8 +95,8 @@ class User: NSObject {
         }
     }
 
-    var _region: NSString?
-    var region: NSString? {
+    var _region: NSString = ""
+    var region: NSString {
         get {
             return self._region
         }
@@ -248,6 +286,8 @@ class User: NSObject {
                 return "female"
             case SexEnum.male:
                 return "male"
+            case SexEnum.secret:
+                return "secret"
             default:
                 return ""
             }
@@ -256,7 +296,9 @@ class User: NSObject {
     
     init(pkId: Int64, phone: NSString, sessionId: NSString, nickname: NSString,
          registerDateStr: NSString, record: Int, role: RoleEnum, version: Int64,
-         pinyin: NSString, bombNum: Int, hasGuide: Bool, friendNum: Int) {
+         pinyin: NSString, bombNum: Int, hasGuide: Bool, friendNum: Int, sex: SexEnum,
+         photoUrl: NSString?, smallPhotoUrl: NSString?, region: NSString?,
+         defaultArea: NSString?, defaultAddress: NSString?) {
         self.pkId = pkId
         self.phone = phone
         self.sessionId = sessionId
@@ -270,6 +312,27 @@ class User: NSObject {
         self._bombNum = bombNum
         self._hasGuide = hasGuide
         self._friendNum = friendNum
+        self._sex = sex
+        
+        if photoUrl != nil {
+            self._photoUrl = photoUrl!
+        }
+        
+        if smallPhotoUrl != nil {
+            self._smallPhotoUrl = smallPhotoUrl!
+        }
+        
+        if region != nil {
+            self._region = region!
+        }
+        
+        if defaultArea != nil {
+            self._defaultArea = defaultArea!
+        }
+        
+        if defaultAddress != nil {
+            self._defaultAddress = defaultAddress!
+        }
     }
     
     init(pkId: Int64, phone: NSString, nickname: NSString, registerDateStr: NSString,
@@ -289,8 +352,11 @@ class User: NSObject {
             self._smallPhotoUrl = smallPhotoUrl!
         }
         
+        if region != nil {
+            self._region = region!
+        }
+        
         self._sex = sex
-        self._region = region
         self.role = role
         self.version = version
         self.pinyin = pinyin

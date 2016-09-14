@@ -80,6 +80,12 @@ class ExchangeDialogController: UIViewController, UITextFieldDelegate {
         addressTextField.tintColor = BaseInfoUtil.stringToRGB("#0088ff")
         areaTextField.delegate = self
         addressTextField.exclusiveTouch = true
+        
+        if UserCache.instance.ifLogin() {
+            let user = UserCache.instance.user
+            areaTextField.text = user.defaultArea as String
+            addressTextField.text = user.defaultAddress as String
+        }
     }
     
     override func viewDidAppear(animated: Bool) {

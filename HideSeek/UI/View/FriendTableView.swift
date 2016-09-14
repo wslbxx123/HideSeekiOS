@@ -24,6 +24,7 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     var isSearching: Bool = false
     var goToNewFriendDelegate: GoToNewFriendDelegate!
     var goToProfileDelegate: GoToProfileDelegate!
+    var removeFriendDelegate: RemoveFriendDelegate!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -44,12 +45,13 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         let toBeReturned = NSMutableArray()
         
         if !isSearching {
-            for index in 0...25 {
-                let randomNum = 65 + index
-                let char = Character(UnicodeScalar(randomNum))
-                toBeReturned.addObject(String(char))
-            }
-            toBeReturned.addObject("#")
+            toBeReturned.addObjectsFromArray(alphaIndex.allKeys)
+//            for index in 0...25 {
+//                let randomNum = 65 + index
+//                let char = Character(UnicodeScalar(randomNum))
+//                toBeReturned.addObject(String(char))
+//            }
+//            toBeReturned.addObject("#")
         }
         
         return toBeReturned.copy() as? [String]
@@ -161,6 +163,18 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
             let friend = friendList.objectAtIndex(indexPath.row) as! User
             friend.isFriend = true
             goToProfileDelegate?.goToProfile(friend)
+        }
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            if friendList.count < indexPath.row + 1 {
+                return
+            }
+            
+            let friend = friendList.objectAtIndex(indexPath.row) as! User
+            
+            removeFriendDelegate?.removeFriend(friend)
         }
     }
 }

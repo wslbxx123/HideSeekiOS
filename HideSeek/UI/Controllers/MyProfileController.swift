@@ -71,10 +71,10 @@ class MyProfileController: UIViewController, TouchDownDelegate {
         roleLabel.text = user.roleName
         sexLabel.text = user.sexName
         
-        if user.region == nil {
+        if user.region == "" {
             regionLabel.text = NSLocalizedString("NOT_SET", comment: "Not Set")
         } else {
-            regionLabel.text = user.region! as String
+            regionLabel.text = user.region as String
         }
     }
     

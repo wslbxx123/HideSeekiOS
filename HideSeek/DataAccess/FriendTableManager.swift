@@ -144,7 +144,7 @@ class FriendTableManager {
                         photoUrl <- (friendInfo.photoUrl as String),
                         smallPhotoUrl <- (friendInfo.smallPhotoUrl as String),
                         sex <- friendInfo.sex.rawValue,
-                        region <- (friendInfo.region == nil ? nil : friendInfo.region! as String),
+                        region <- (friendInfo.region as String),
                         role <- friendInfo.role.rawValue,
                         pullVersion <- friendInfo.version,
                         pinyin <- (friendInfo.pinyin as String),
@@ -158,7 +158,7 @@ class FriendTableManager {
                         photoUrl <- (friendInfo.photoUrl as String),
                         smallPhotoUrl <- (friendInfo.smallPhotoUrl as String),
                         sex <- friendInfo.sex.rawValue,
-                        region <- (friendInfo.region == nil ? nil : friendInfo.region! as String),
+                        region <- (friendInfo.region as String),
                         role <- friendInfo.role.rawValue,
                         pullVersion <- friendInfo.version,
                         pinyin <- (friendInfo.pinyin as String),
@@ -168,6 +168,18 @@ class FriendTableManager {
                     try database.run(insert)
                 }
             }
+        }
+        catch let error as NSError {
+            print("SQLiteDB - failed to update table friend!")
+            print("Error - \(error.localizedDescription)")
+            return
+        }
+    }
+    
+    func removeFriend(friendId: Int64) {
+        do {
+            try database.run(friendTable.filter(accountId == friendId)
+                .delete())
         }
         catch let error as NSError {
             print("SQLiteDB - failed to update table friend!")

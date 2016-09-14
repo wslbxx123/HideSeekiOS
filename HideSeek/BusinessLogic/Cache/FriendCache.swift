@@ -84,4 +84,10 @@ class FriendCache : BaseCache<User> {
         
         friendTableManager.updateFriends(version, friendList: list)
     }
+    
+    func removeFriend(friend: User) {
+        friendTableManager.removeFriend(friend.pkId)
+        
+        cacheList = friendTableManager.searchFriends()
+    }
 }

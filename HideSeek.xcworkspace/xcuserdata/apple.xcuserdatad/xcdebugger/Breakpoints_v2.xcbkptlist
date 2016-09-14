@@ -817,11 +817,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/BusinessLogic/Cache/UserCache.swift"
-            timestampString = "495014850.034155"
+            timestampString = "495527479.706885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
             landmarkName = "ifLogin()"
             landmarkType = "5">
          </BreakpointContent>
@@ -833,11 +833,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/BusinessLogic/Cache/UserCache.swift"
-            timestampString = "495014850.034155"
+            timestampString = "495527479.706885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
             landmarkName = "ifLogin()"
             landmarkType = "5">
          </BreakpointContent>
@@ -943,11 +943,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/Common/Model/User.swift"
-            timestampString = "495188679.396139"
+            timestampString = "495524855.911479"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "216"
-            endingLineNumber = "216"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
             landmarkName = "User"
             landmarkType = "3">
          </BreakpointContent>
@@ -991,7 +991,7 @@
                   moduleName = "HideSeek"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/apple/Documents/Project/iOS/HideSeek/HideSeek/BusinessLogic/Cache/BaseCache.swift"
-                  timestampString = "495482961.830817"
+                  timestampString = "495527915.573445"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
@@ -1006,7 +1006,7 @@
                   moduleName = "HideSeek"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/apple/Documents/Project/iOS/HideSeek/HideSeek/BusinessLogic/Cache/BaseCache.swift"
-                  timestampString = "495482961.831129"
+                  timestampString = "495527915.573787"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
@@ -2938,11 +2938,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/Common/Model/User.swift"
-            timestampString = "494910565.156657"
+            timestampString = "495524855.911479"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
             landmarkName = "User"
             landmarkType = "3">
          </BreakpointContent>
@@ -2954,11 +2954,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/Common/Model/User.swift"
-            timestampString = "494910565.156657"
+            timestampString = "495524855.911479"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
             landmarkName = "User"
             landmarkType = "3">
          </BreakpointContent>
@@ -5032,28 +5032,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HideSeek/BusinessLogic/Cache/UserCache.swift"
-            timestampString = "495014850.034155"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
-            landmarkName = "from(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "HideSeek/Common/Model/User.swift"
-            timestampString = "495188679.396139"
+            timestampString = "495527479.706885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "280"
-            endingLineNumber = "280"
+            startingLineNumber = "343"
+            endingLineNumber = "343"
             landmarkName = "init(pkId:phone:nickname:registerDateStr:photoUrl:smallPhotoUrl:sex:region:role:version:pinyin:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5065,11 +5049,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/BusinessLogic/Cache/UserCache.swift"
-            timestampString = "495014850.034155"
+            timestampString = "495527479.706885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
             landmarkName = "from(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5081,11 +5065,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/Common/Model/User.swift"
-            timestampString = "495188679.396139"
+            timestampString = "495527479.706885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "294"
-            endingLineNumber = "294"
+            startingLineNumber = "360"
+            endingLineNumber = "360"
             landmarkName = "init(pkId:phone:nickname:registerDateStr:photoUrl:smallPhotoUrl:sex:region:role:version:pinyin:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5769,11 +5753,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/BusinessLogic/Cache/UserCache.swift"
-            timestampString = "495014850.034155"
+            timestampString = "495527479.706885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
             landmarkName = "ifLogin()"
             landmarkType = "5">
          </BreakpointContent>
@@ -6201,11 +6185,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/ExchangeController.swift"
-            timestampString = "495292944.831803"
+            timestampString = "495527913.048117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
             landmarkName = "exchange(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6217,11 +6201,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/ExchangeController.swift"
-            timestampString = "495342324.862792"
+            timestampString = "495527913.048117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
             landmarkName = "confirmExchange(_:count:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6233,11 +6217,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/ExchangeController.swift"
-            timestampString = "495342324.862792"
+            timestampString = "495527913.048117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "166"
-            endingLineNumber = "166"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
             landmarkName = "confirmExchange(_:count:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6249,11 +6233,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/ExchangeController.swift"
-            timestampString = "495342324.862792"
+            timestampString = "495527913.048117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
             landmarkName = "confirmExchange(_:count:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6265,11 +6249,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/ExchangeController.swift"
-            timestampString = "495342324.862792"
+            timestampString = "495527913.048117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
             landmarkName = "confirmExchange(_:count:)"
             landmarkType = "5">
             <Locations>
@@ -6313,11 +6297,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/ExchangeOrderController.swift"
-            timestampString = "492603006.951811"
+            timestampString = "495527479.706885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
             landmarkName = "refreshData()"
             landmarkType = "5">
          </BreakpointContent>
@@ -7675,11 +7659,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/Common/Model/User.swift"
-            timestampString = "494910565.156657"
+            timestampString = "495524855.911479"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
             landmarkName = "User"
             landmarkType = "3">
          </BreakpointContent>
@@ -7691,11 +7675,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/Common/Model/User.swift"
-            timestampString = "494910565.156657"
+            timestampString = "495524855.911479"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
             landmarkName = "User"
             landmarkType = "3">
          </BreakpointContent>
@@ -7707,11 +7691,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/BusinessLogic/Cache/UserCache.swift"
-            timestampString = "495014850.034155"
+            timestampString = "495527479.706885"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
             landmarkName = "from(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -7787,11 +7771,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/FriendController.swift"
-            timestampString = "494869359.842756"
+            timestampString = "495486114.895797"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
             landmarkName = "refreshData()"
             landmarkType = "5">
          </BreakpointContent>
@@ -7819,11 +7803,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/FriendController.swift"
-            timestampString = "494869359.842756"
+            timestampString = "495486114.895797"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
             landmarkName = "refreshData()"
             landmarkType = "5">
          </BreakpointContent>
@@ -8027,11 +8011,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/FriendController.swift"
-            timestampString = "493783562.009022"
+            timestampString = "495485934.535711"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "32"
-            endingLineNumber = "32"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
             landmarkName = "viewDidAppear(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -8059,11 +8043,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/FriendController.swift"
-            timestampString = "495094078.396846"
+            timestampString = "495486114.895797"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "getAlphaIndexFromList(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -8075,11 +8059,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/FriendController.swift"
-            timestampString = "495094078.396846"
+            timestampString = "495486114.895797"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
             landmarkName = "getAlphaIndexFromList(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -8091,11 +8075,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/FriendController.swift"
-            timestampString = "495094078.396846"
+            timestampString = "495486114.895797"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "111"
-            endingLineNumber = "111"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "getAlphaIndexFromList(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -8171,11 +8155,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/FriendController.swift"
-            timestampString = "495094078.396846"
+            timestampString = "495486114.895797"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
             landmarkName = "searchBar(_:textDidChange:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -9770,11 +9754,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/ExchangeController.swift"
-            timestampString = "495342324.862792"
+            timestampString = "495527913.048117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "197"
-            endingLineNumber = "197"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
             landmarkName = "loadMore()"
             landmarkType = "5">
          </BreakpointContent>
@@ -9786,11 +9770,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/ExchangeController.swift"
-            timestampString = "495342324.862792"
+            timestampString = "495527913.048117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "loadMore()"
             landmarkType = "5">
          </BreakpointContent>
@@ -10118,7 +10102,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/RemarkController.swift"
@@ -10618,11 +10602,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/ExchangeController.swift"
-            timestampString = "495342324.862792"
+            timestampString = "495527913.048117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
             landmarkName = "confirmExchange(_:count:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -10730,11 +10714,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/Common/Model/User.swift"
-            timestampString = "495188679.396139"
+            timestampString = "495524855.911479"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
+            startingLineNumber = "252"
+            endingLineNumber = "252"
             landmarkName = "User"
             landmarkType = "3">
          </BreakpointContent>
@@ -10746,11 +10730,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/Common/Model/User.swift"
-            timestampString = "495188679.396139"
+            timestampString = "495524855.911479"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "232"
-            endingLineNumber = "232"
+            startingLineNumber = "270"
+            endingLineNumber = "270"
             landmarkName = "User"
             landmarkType = "3">
          </BreakpointContent>
@@ -10826,11 +10810,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/ExchangeController.swift"
-            timestampString = "495342324.862792"
+            timestampString = "495527913.048117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "241"
-            endingLineNumber = "241"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
             landmarkName = "showAreaPickerView()"
             landmarkType = "5">
          </BreakpointContent>
@@ -10906,11 +10890,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/ExchangeController.swift"
-            timestampString = "495342324.862792"
+            timestampString = "495527913.048117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "262"
-            endingLineNumber = "262"
+            startingLineNumber = "267"
+            endingLineNumber = "267"
             landmarkName = "touchesEnded(_:withEvent:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -10922,11 +10906,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/ExchangeDialogController.swift"
-            timestampString = "495307315.64182"
+            timestampString = "495527664.952053"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
             landmarkName = "dismissKeyboard()"
             landmarkType = "5">
          </BreakpointContent>
@@ -10986,11 +10970,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/FriendController.swift"
-            timestampString = "495442249.324676"
+            timestampString = "495486114.895797"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
             landmarkName = "setInfoFromCallback(_:)"
             landmarkType = "5">
          </BreakpointContent>

@@ -129,6 +129,11 @@ class ExchangeController: UIViewController, ExchangeDelegate,
     }
     
     func exchange(reward: Reward) {
+        if !UserCache.instance.ifLogin() {
+            UserInfoManager.instance.checkIfGoToLogin(self)
+            return
+        }
+        
         grayView = UIView(frame: screenRect)
         grayView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
         
