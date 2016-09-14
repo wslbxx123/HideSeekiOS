@@ -338,8 +338,8 @@
 /* Class = "UIButton"; normalTitle = "Next Step"; ObjectID = "nWT-vc-RT9"; */
 "nWT-vc-RT9.normalTitle" = "Next Step";
 
-/* Class = "UILabel"; text = "The records are empty."; ObjectID = "pq8-XG-v6Q"; */
-"pq8-XG-v6Q.text" = "The records are empty.";
+/* Class = "UILabel"; text = "The records are empty"; ObjectID = "pq8-XG-v6Q"; */
+"pq8-XG-v6Q.text" = "The records are empty";
 
 /* Class = "UIButton"; normalTitle = "Internal"; ObjectID = "qO2-fC-3xM"; */
 "qO2-fC-3xM.normalTitle" = "Internal";
@@ -356,8 +356,8 @@
 /* Class = "UILabel"; text = "Not Pay"; ObjectID = "tze-St-Y5f"; */
 "tze-St-Y5f.text" = "Not Pay";
 
-/* Class = "UILabel"; text = "The update of friends is empty."; ObjectID = "ue9-LO-iJE"; */
-"ue9-LO-iJE.text" = "The update of friends is empty.";
+/* Class = "UILabel"; text = "The update of friends is empty"; ObjectID = "ue9-LO-iJE"; */
+"ue9-LO-iJE.text" = "The update of friends is empty";
 
 /* Class = "UITextField"; placeholder = "Register Phone"; ObjectID = "ugL-Cg-TKE"; */
 "ugL-Cg-TKE.placeholder" = "Register Phone";

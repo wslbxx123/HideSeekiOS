@@ -335,8 +335,8 @@
 /* Class = "UIButton"; normalTitle = "Next Step"; ObjectID = "nWT-vc-RT9"; */
 "nWT-vc-RT9.normalTitle" = "下一步";
 
-/* Class = "UILabel"; text = "The records are empty."; ObjectID = "pq8-XG-v6Q"; */
-"pq8-XG-v6Q.text" = "积分为空。";
+/* Class = "UILabel"; text = "The records are empty"; ObjectID = "pq8-XG-v6Q"; */
+"pq8-XG-v6Q.text" = "积分为空";
 
 /* Class = "UIButton"; normalTitle = "Internal"; ObjectID = "qO2-fC-3xM"; */
 "qO2-fC-3xM.normalTitle" = "国内";
@@ -350,8 +350,8 @@
 /* Class = "UILabel"; text = "Not Pay"; ObjectID = "tze-St-Y5f"; */
 "tze-St-Y5f.text" = "未付款";
 
-/* Class = "UILabel"; text = "The update of friends is empty."; ObjectID = "ue9-LO-iJE"; */
-"ue9-LO-iJE.text" = "没有好友动态.";
+/* Class = "UILabel"; text = "The update of friends is empty"; ObjectID = "ue9-LO-iJE"; */
+"ue9-LO-iJE.text" = "没有好友动态";
 
 /* Class = "UITextField"; placeholder = "Register Phone"; ObjectID = "ugL-Cg-TKE"; */
 "ugL-Cg-TKE.placeholder" = "注册手机";
