@@ -150,7 +150,7 @@ class ExchangeController: UIViewController, ExchangeDelegate,
     }
     
     func confirmExchange(reward: Reward, count: Int) {
-        if reward.exchangeCount * reward.record > UserCache.instance.user.record {
+        if count * reward.record > UserCache.instance.user.record {
             let errorMessage = NSLocalizedString("ERROR_RECORD_NOT_ENOUGH", comment: "You record is not enough")
             HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: nil)
             return;
@@ -182,6 +182,7 @@ class ExchangeController: UIViewController, ExchangeDelegate,
                 (response["result"] as! NSString).integerValue :
                 (response["result"] as! NSNumber).integerValue
             self.close()
+            self.refreshRewardData()
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
             HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {

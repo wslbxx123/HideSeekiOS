@@ -13,6 +13,8 @@ class MonsterGuideView: UIView {
     @IBOutlet weak var introductionLabel: UILabel!
     @IBOutlet weak var scoreView: UIView!
     @IBOutlet weak var roleLabel: UILabel!
+    @IBOutlet weak var winScoreTitle: UILabel!
+    
     var rateView: RateView!
     var closeDelegate: CloseDelegate!
 

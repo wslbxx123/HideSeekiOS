@@ -57,12 +57,13 @@ class RaceGroupCache : BaseCache<RaceGroup> {
                 nickname: raceGroupInfo["nickname"] as! String,
                 photoUrl: raceGroupInfo["photo_url"] as? String,
                 smallPhotoUrl: raceGroupInfo["small_photo_url"] as? String,
+                remark: raceGroupInfo["remark"] as? String,
                 recordItem: RecordItem(
                     recordId: recordIdStr.longLongValue,
                     time: raceGroupInfo["time"] as! String,
                     goalType: Goal.GoalTypeEnum(rawValue: (raceGroupInfo["goal_type"] as! NSString).integerValue)!,
-                    score: BaseInfoUtil.getSignedIntegerFromAnyObject(raceGroupInfo["score"]),
-                    scoreSum: BaseInfoUtil.getSignedIntegerFromAnyObject(raceGroupInfo["score_sum"]),
+                    score: BaseInfoUtil.getIntegerFromAnyObject(raceGroupInfo["score"]),
+                    scoreSum: BaseInfoUtil.getIntegerFromAnyObject(raceGroupInfo["score_sum"]),
                     version: (raceGroupInfo["version"] as! NSString).longLongValue,
                     showTypeName: raceGroupInfo["show_type_name"] as? String)))
         }

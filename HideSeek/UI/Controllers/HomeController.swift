@@ -12,7 +12,7 @@ import AFNetworking
 import CoreMotion.CMMotionManager
 import MBProgressHUD
 
-class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, ArriveDelegate, RefreshMapDelegate, UpdateGoalDelegate {
+class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, RefreshMapDelegate, UpdateGoalDelegate {
     let HtmlType = "text/html"
     let REFRESH_MAP_INTERVAL: Double = 5
     var manager: AFHTTPRequestOperationManager!
@@ -64,7 +64,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         super.viewDidAppear(animated)
         
         if CameraUtil.isAvailable() {
-            self.sourceType = UIImagePickerControllerSourceType.Camera
+            self.startVideoCapture()
         }
         
         time = NSTimer.scheduledTimerWithTimeInterval(REFRESH_MAP_INTERVAL, target: self, selector: #selector(HomeController.refreshMap), userInfo: nil, repeats: true)
@@ -101,6 +101,10 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+        
+        if CameraUtil.isAvailable() {
+            self.stopVideoCapture()
+        }
         
         time.invalidate()
         time = nil
@@ -182,9 +186,9 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         guideView = guideViewContents[0] as! MonsterGuideView
         guideView.layer.frame = CGRectMake(
             20,
-            (screenRect.height - 250) / 2 - 50,
+            (screenRect.height - 300) / 2 - 50,
             screenRect.width - 40,
-            250)
+            300)
         self.view.addSubview(guideView)
         guideView.initView()
         guideView.hidden = true
@@ -401,7 +405,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                         print("JSON: " + responseObject.description!)
                         GoalCache.instance.setGoals(response["result"] as! NSDictionary, latitude: self.latitude, longitude: self.longitude)
                         
-                        if GoalCache.instance.updateList.count > 0 {
+                        if hud != nil {
                             self.setEndGoal()
                         }
 
@@ -465,7 +469,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             list.addObject(endGoal)
             list.addObject(GoalCache.instance.selectedGoal!)
         }
-        
+        setGoalsOnMap(list)
         endGoal = GoalCache.instance.selectedGoal
         
         if endGoal != nil {
@@ -476,7 +480,6 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         
         refreshDistance()
         self.ifSeeGoal = false;
-        setGoalsOnMap(list)
     }
     
     func setBomb() {
@@ -546,10 +549,14 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     }
     
     func guideMe() {
+        if !UserCache.instance.ifLogin() {
+            UserInfoManager.instance.checkIfGoToLogin(self)
+            return
+        }
+        
         if endGoal != nil {
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
             let viewController = storyboard.instantiateViewControllerWithIdentifier("Navigation") as! NavigationController
-            viewController.arriveDelegate = self
             viewController.startPoint = AMapNaviPoint.locationWithLatitude(CGFloat(latitude), longitude: CGFloat(longitude))
             viewController.endPoint = AMapNaviPoint.locationWithLatitude(CGFloat(endGoal!.latitude), longitude: CGFloat(endGoal!.longitude))
             self.presentViewController(viewController, animated: true, completion: nil)
@@ -570,7 +577,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         
         getGoalManager.POST(UrlParam.GET_GOAL_URL, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
-            
+            print("JSON: " + responseObject.description!)
             self.setInfoFromGetGoalCallback(response)
         }) { (operation, error) in
             let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
@@ -623,9 +630,20 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         if overlayView != nil && !overlayView.goalImageView.hidden {
             guideView.goalImageView.image = UIImage(named: GoalImageFactory.get(endGoal.type, showTypeName: endGoal.showTypeName))
             if endGoal.unionType == 1 {
-                guideView.roleLabel.text = NSString(format: NSLocalizedString("LEAGUE_RACE", comment: "%d race is enough"), endGoal.unionType) as String
+                if endGoal.score < 0 {
+                    guideView.roleLabel.text = NSLocalizedString("NONE", comment: "None") as String
+                } else {
+                    guideView.roleLabel.text = NSString(format: NSLocalizedString("LEAGUE_RACE", comment: "%d race is enough"), endGoal.unionType) as String
+                }
             } else if endGoal.unionType > 1{
                  guideView.roleLabel.text = NSString(format: NSLocalizedString("LEAGUE_RACES", comment: "League of %d races"), endGoal.unionType) as String
+            }
+            
+            if endGoal.score > 0 {
+                guideView.winScoreTitle.text = NSLocalizedString("WIN_SCORE", comment: "Win Score: ")
+            } else {
+                guideView.winScoreTitle.text = NSLocalizedString("BEAT_SCORE", comment: "Beat Score: ")
+
             }
             guideView.introductionLabel.text = endGoal!.introduction
             guideView.rateView.initStar(endGoal.score)
@@ -691,7 +709,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             if (result["score_sum"] != nil && !result.objectForKey("score_sum")!.isKindOfClass(NSNull)) {
                 HudToastFactory.showScore(self.endGoal.score, view: self.view)
                 if(UserCache.instance.ifLogin()) {
-                    UserCache.instance.user.record = BaseInfoUtil.getSignedIntegerFromAnyObject(result["score_sum"])
+                    UserCache.instance.user.record = BaseInfoUtil.getIntegerFromAnyObject(result["score_sum"])
                     self.updateEndGoal()
                 }
             }
@@ -744,10 +762,6 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                                         
         }
         
-    }
-    
-    func arrivedAtGoal() {
-        distance = 0
     }
     
     func refresh() {

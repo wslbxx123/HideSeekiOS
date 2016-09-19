@@ -9,8 +9,9 @@
 import UIKit
 
 class ViewController: UITabBarController {
-    
+    let HtmlType = "text/html"
     @IBOutlet weak var uiTabBar: UITabBar!
+    var manager: CustomRequestManager!
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,10 +22,33 @@ class ViewController: UITabBarController {
             item.image = item.image?.imageWithRenderingMode(.AlwaysOriginal)
             item.selectedImage = item.selectedImage?.imageWithRenderingMode(.AlwaysOriginal)
         }
+        manager = CustomRequestManager()
+        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func updateChannelId(channelId: String) {
+        let tempChannelId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.CHANNEL_ID) as? NSString
+        
+        if (tempChannelId == nil || tempChannelId! != channelId) {
+            NSUserDefaults.standardUserDefaults().setObject(channelId, forKey: UserDefaultParam.CHANNEL_ID)
+            NSUserDefaults.standardUserDefaults().synchronize()
+            
+            if(UserCache.instance.ifLogin()) {
+                let paramDict: NSMutableDictionary = ["channel_id": channelId]
+                manager.POST(UrlParam.UPDATE_CHANNEL_URL,
+                             paramDict: paramDict,
+                             success: { (operation, responseObject) in
+                                print("JSON: " + responseObject.description!)
+                    },
+                             failure: { (operation, error) in
+                                print("Error: " + error.localizedDescription)
+                })
+            }
+        }
     }
 }

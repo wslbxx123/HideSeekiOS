@@ -59,7 +59,7 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         photoImageView.layer.cornerRadius = 5
         photoImageView.layer.masksToBounds = true
         photoImageView.setWebImage(raceGroup.smallPhotoUrl, defaultImage: "default_photo", isCache: true)
-        nameLabel.text = raceGroup.nickname
+        nameLabel.text = raceGroup.remark == nil ? raceGroup.nickname : raceGroup.remark
         
         goalImageView.image = UIImage(named: GoalImageFactory.get(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName))
     

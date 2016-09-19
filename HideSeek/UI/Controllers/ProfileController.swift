@@ -27,6 +27,7 @@ class ProfileController: UIViewController {
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
             let remarkController = storyboard.instantiateViewControllerWithIdentifier("Remark") as! RemarkController
             remarkController.aliasValue = user.alias as String
+            remarkController.friend = user
             self.navigationController?.pushViewController(remarkController, animated: true)
         }
     }

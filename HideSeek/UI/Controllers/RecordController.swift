@@ -76,7 +76,7 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
         customLoadingView.frame = refreshControl.bounds
         refreshControl.addSubview(customLoadingView)
         recordTableView.layoutMargins = UIEdgeInsetsZero
-        self.automaticallyAdjustsScrollViewInsets = false
+//        self.automaticallyAdjustsScrollViewInsets = false
     }
     
     func refreshData() {

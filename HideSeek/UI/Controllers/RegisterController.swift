@@ -169,8 +169,8 @@ class RegisterController: UIViewController {
     }
     
     func checkVerificationCode() {
-//        SMSSDK.commitVerificationCode(self.verificationCode, phoneNumber: phone, zone: "86") { (error) in
-//            if ((error == nil)) {
+        SMSSDK.commitVerificationCode(self.verificationCode, phoneNumber: phone, zone: "86") { (error) in
+            if ((error == nil)) {
                 if self.password != self.rePassword {
                     HudToastFactory.show(
                         NSLocalizedString("ERROR_PASSWORD_NOT_SAME",
@@ -204,17 +204,17 @@ class RegisterController: UIViewController {
                 viewController.nickname = self.nickname
                 viewController.password = self.password
                 self.navigationController?.pushViewController(viewController, animated: true)
-//            }
-//            else
-//            {
-//                HudToastFactory.show(
-//                    NSLocalizedString("ERROR_VERIFICATION_CODE",
-//                        comment: "The input verification code is wrong"),
-//                    view: self.view,
-//                    type: HudToastFactory.MessageType.ERROR)
-//                self.codeTextField.text = ""
-//            }
-//        }
+            }
+            else
+            {
+                HudToastFactory.show(
+                    NSLocalizedString("ERROR_VERIFICATION_CODE",
+                        comment: "The input verification code is wrong"),
+                    view: self.view,
+                    type: HudToastFactory.MessageType.ERROR)
+                self.codeTextField.text = ""
+            }
+        }
     }
     
     func checkIfCodeEnabled() {

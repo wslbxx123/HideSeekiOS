@@ -15,7 +15,6 @@ class NavigationController: UIViewController, AMapNaviWalkManagerDelegate, AMapN
     var walkManager: AMapNaviWalkManager!
     var walkView: AMapNaviWalkView!
     var speechSynthesizer: IFlySpeechSynthesizer!
-    var arriveDelegate: ArriveDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,8 +92,6 @@ class NavigationController: UIViewController, AMapNaviWalkManagerDelegate, AMapN
     
     func walkManagerOnArrivedDestination(walkManager: AMapNaviWalkManager) {
         NSLog("arrived at the goal!")
-        
-        arriveDelegate?.arrivedAtGoal()
     }
     
     func walkViewCloseButtonClicked(walkView: AMapNaviWalkView) {

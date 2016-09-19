@@ -8,6 +8,7 @@
 
 class UserCache {
     static let instance = UserCache()
+    var ifNeedRefresh: Bool = false
     
     private var _user: User! = nil
     var user: User! {
@@ -54,7 +55,7 @@ class UserCache {
                          sessionId: userInfo["session_id"] as! String,
                          nickname: userInfo["nickname"] as! String,
                          registerDateStr: userInfo["register_date"] as! String,
-                         record: BaseInfoUtil.getSignedIntegerFromAnyObject(userInfo["record"]!),
+                         record: BaseInfoUtil.getIntegerFromAnyObject(userInfo["record"]!),
                          role: User.RoleEnum(rawValue: (userInfo["role"] as! NSString).integerValue)!,
                          version: (userInfo["version"] as! NSString).longLongValue,
                          pinyin: PinYinUtil.converterToPinyin(userInfo["nickname"] as! String),

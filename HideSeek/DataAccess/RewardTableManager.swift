@@ -104,6 +104,7 @@ class RewardTableManager {
         do {
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:version), forKey: UserDefaultParam.REWARD_VERSION)
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:rewardMinId), forKey: UserDefaultParam.REWARD_MIN_ID)
+            NSUserDefaults.standardUserDefaults().synchronize()
             
             for rewardItem in rewardList {
                 let rewardInfo = rewardItem as! Reward

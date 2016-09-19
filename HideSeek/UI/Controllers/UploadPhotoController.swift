@@ -99,6 +99,9 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
         
         if code == CodeParam.SUCCESS {
             UserCache.instance.setUser(response["result"] as! NSDictionary)
+            
+            PushManager.instance.register()
+            GoalCache.instance.ifNeedClearMap = true
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
             let viewController = storyboard.instantiateViewControllerWithIdentifier("matchRole") as! MatchRoleController
             self.navigationController?.pushViewController(viewController, animated: true)

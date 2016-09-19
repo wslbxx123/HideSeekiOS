@@ -28,6 +28,7 @@ class NewFriendController: UIViewController, AcceptDelegate {
         super.viewDidAppear(animated)
         
         BadgeUtil.clearMeBadge()
+        
         newFriendTableView.newFriendList = NewFriendCache.instance.friendList
         newFriendTableView.reloadData()
     }
@@ -37,10 +38,20 @@ class NewFriendController: UIViewController, AcceptDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func setFriendRequest(userInfo: NSDictionary) {
+    func setFriendRequest(userInfo: NSDictionary, isFriend: Bool) {
         let friendInfo = userInfo["object"] as! NSDictionary
-        let message = userInfo["extra"] as! NSString
-        NewFriendCache.instance.setFriend(friendInfo, message: message)
+        var message: NSString = ""
+        
+        if isFriend {
+            let friendNum = BaseInfoUtil.getIntegerFromAnyObject(userInfo["extra"])
+            if UserCache.instance.ifLogin() {
+                UserCache.instance.user.friendNum = friendNum
+            }
+        } else {
+            message = userInfo["extra"] as! NSString
+        }
+        
+        NewFriendCache.instance.setFriend(friendInfo, message: message, isFriend: isFriend)
     }
     
     func acceptFriend(friendId: Int64) {
@@ -70,7 +81,7 @@ class NewFriendController: UIViewController, AcceptDelegate {
         let code = (response["code"] as! NSString).integerValue
         
         if code == CodeParam.SUCCESS {
-            UserCache.instance.user.friendNum = (response["result"] as! NSNumber).integerValue
+            UserCache.instance.user.friendNum = BaseInfoUtil.getIntegerFromAnyObject(response["result"])
             NewFriendCache.instance.updateFriendStatus(friendId)
             newFriendTableView.newFriendList = NewFriendCache.instance.friendList
             newFriendTableView.reloadData()

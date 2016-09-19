@@ -13,6 +13,7 @@ class RaceGroupTableManager {
     let recordId = Expression<Int64>("record_id")
     let photoUrl = Expression<String?>("photo_url")
     let smallPhotoUrl = Expression<String?>("small_photo_url")
+    let remark = Expression<String?>("remark")
     let nickname = Expression<String>("nickname")
     let time = Expression<String>("time")
     let goalType = Expression<Int>("goal_type")
@@ -57,6 +58,7 @@ class RaceGroupTableManager {
                 t.column(recordId, primaryKey: true)
                 t.column(photoUrl)
                 t.column(smallPhotoUrl)
+                t.column(remark)
                 t.column(nickname)
                 t.column(time)
                 t.column(goalType)
@@ -88,6 +90,7 @@ class RaceGroupTableManager {
                     nickname: item[nickname],
                     photoUrl: item[photoUrl],
                     smallPhotoUrl: item[smallPhotoUrl],
+                    remark: item[remark],
                     recordItem: RecordItem(recordId: item[recordId],
                         time: item[time],
                         goalType: Goal.GoalTypeEnum(rawValue: item[goalType])!,
@@ -113,6 +116,7 @@ class RaceGroupTableManager {
         do {
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:version), forKey: UserDefaultParam.RACE_GROUP_VERSION)
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:recordMinId), forKey: UserDefaultParam.RACE_GROUP_RECORD_MIN_ID)
+            NSUserDefaults.standardUserDefaults().synchronize()
             
             for raceGroupItem in raceGroupList {
                 let raceGroupInfo = raceGroupItem as! RaceGroup
@@ -121,6 +125,7 @@ class RaceGroupTableManager {
                     .update(
                         photoUrl <- raceGroupInfo.photoUrl,
                         smallPhotoUrl <- raceGroupInfo.smallPhotoUrl,
+                        remark <- raceGroupInfo.remark,
                         nickname <- raceGroupInfo.nickname,
                         time <- raceGroupInfo.recordItem.time,
                         goalType <- raceGroupInfo.recordItem.goalType.rawValue,
@@ -133,6 +138,7 @@ class RaceGroupTableManager {
                     let insert = raceGroupTable.insert(
                         photoUrl <- raceGroupInfo.photoUrl,
                         smallPhotoUrl <- raceGroupInfo.smallPhotoUrl,
+                        remark <- raceGroupInfo.remark,
                         nickname <- raceGroupInfo.nickname,
                         time <- raceGroupInfo.recordItem.time,
                         goalType <- raceGroupInfo.recordItem.goalType.rawValue,
@@ -167,6 +173,7 @@ class RaceGroupTableManager {
                         nickname: item[nickname],
                         photoUrl: item[photoUrl],
                         smallPhotoUrl: item[smallPhotoUrl],
+                        remark: item[remark],
                         recordItem: RecordItem(recordId: item[recordId],
                             time: item[time],
                             goalType: Goal.GoalTypeEnum(rawValue: item[goalType])!,

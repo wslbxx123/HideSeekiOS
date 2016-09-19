@@ -46,12 +46,6 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         
         if !isSearching {
             toBeReturned.addObjectsFromArray(alphaIndex.allKeys)
-//            for index in 0...25 {
-//                let randomNum = 65 + index
-//                let char = Character(UnicodeScalar(randomNum))
-//                toBeReturned.addObject(String(char))
-//            }
-//            toBeReturned.addObject("#")
         }
         
         return toBeReturned.copy() as? [String]
@@ -174,7 +168,7 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
             
             let friend = friendList.objectAtIndex(indexPath.row) as! User
             
-            removeFriendDelegate?.removeFriend(friend)
+            removeFriendDelegate?.checkRemoveFriend(friend)
         }
     }
 }

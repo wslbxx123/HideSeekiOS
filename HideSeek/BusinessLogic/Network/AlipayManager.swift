@@ -16,7 +16,7 @@ class AlipayManager {
         let order = AlipayOrder(service: "mobile.securitypay.pay",
                                 partner: PARTNER,
                                 inputCharset: "utf-8",
-                                notifyURL: "https://www.hideseek.cn/index.php/home/store/notifyUrl",
+                                notifyURL: "http://www.hideseek.cn/index.php/home/store/notifyUrl",
                                 outTradeNo: tradeNo,
                                 subject: product.name,
                                 paymentType: "1",

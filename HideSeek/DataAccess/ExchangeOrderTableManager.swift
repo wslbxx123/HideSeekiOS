@@ -119,6 +119,7 @@ class ExchangeOrderTableManager {
         do {
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:version), forKey: UserDefaultParam.EXCHANGE_ORDER_VERSION)
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:orderMinId), forKey: UserDefaultParam.EXCHANGE_ORDER_MIN_ID)
+            NSUserDefaults.standardUserDefaults().synchronize()
             
             for orderItem in orderList {
                 let orderInfo = orderItem as! ExchangeOrder

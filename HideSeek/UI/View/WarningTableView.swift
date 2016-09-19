@@ -40,6 +40,7 @@ class WarningTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
         let warning = warningList.objectAtIndex(indexPath.row) as! Warning
         
         cell.initWarning(warning)
+        cell.updateGoalDelegate = updateGoalDelegate
         BaseInfoUtil.cancelButtonDelay(cell)
         return cell
     }

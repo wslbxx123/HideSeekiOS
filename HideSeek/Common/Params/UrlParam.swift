@@ -45,6 +45,7 @@ class UrlParam {
     static let PURCHASE_URL = "http://www.hideseek.cn/index.php/home/store/purchase"
     static let UPDATE_PASSWORD_URL = "http://www.hideseek.cn/index.php/home/user/updatePassword"
     static let REMOVE_FRIEND_URL = "http://www.hideseek.cn/index.php/home/friend/removeFriend"
+    static let UPDATE_CHANNEL_URL = "http://www.hideseek.cn/index.php/home/user/updateChannelId"
     
     static let APP_STORE_URL = ""
     static let IOS7_APP_STORE_URL = ""

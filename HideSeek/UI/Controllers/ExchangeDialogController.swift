@@ -85,7 +85,11 @@ class ExchangeDialogController: UIViewController, UITextFieldDelegate {
             let user = UserCache.instance.user
             areaTextField.text = user.defaultArea as String
             addressTextField.text = user.defaultAddress as String
+            _area = user.defaultArea as String
+            address = user.defaultAddress as String
         }
+        
+        checkIfConfirmEnabled()
     }
     
     override func viewDidAppear(animated: Bool) {

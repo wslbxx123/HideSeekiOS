@@ -135,7 +135,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSLog("[XGPush Demo]register errorBlock");
         }
         
-        NSUserDefaults.standardUserDefaults().setObject(deviceTokenstr, forKey: UserDefaultParam.CHANNEL_ID)
+        tabBarController.updateChannelId(deviceTokenstr)
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
@@ -148,29 +148,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let result = userInfo as NSDictionary
         let type = (result["type"] as! NSString).integerValue
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        var viewController: UIViewController
+        let newFriendController = storyboard.instantiateViewControllerWithIdentifier("NewFriend") as! NewFriendController
         
         switch(type) {
         case SEND_FRIEND_REQUEST:
-            let newFriendController = storyboard.instantiateViewControllerWithIdentifier("NewFriend") as! NewFriendController
-            newFriendController.setFriendRequest(result)
-            viewController = newFriendController
+            newFriendController.setFriendRequest(result, isFriend: false)
             
             BadgeUtil.updateMeBadge()
             break;
         default:
-            viewController = storyboard.instantiateViewControllerWithIdentifier("Friend") as! FriendController
+            newFriendController.setFriendRequest(result, isFriend: true)
             
-            let friendNum = BaseInfoUtil.getSignedIntegerFromAnyObject(result["extra"])
-            if UserCache.instance.ifLogin() {
-                UserCache.instance.user.friendNum = friendNum
-            }
+            BadgeUtil.updateMeBadge()
             break;
         }
         
         if application.applicationState != UIApplicationState.Active
             && application.applicationState == UIApplicationState.Background {
-            (tabBarController.selectedViewController! as! UINavigationController).pushViewController(viewController, animated: true)
+            (tabBarController.selectedViewController! as! UINavigationController).pushViewController(newFriendController, animated: true)
         }
         
         NSLog("%@", userInfo)
@@ -184,30 +179,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         completionHandler(UIBackgroundFetchResult.NewData)
         let result = userInfo as NSDictionary
-        let type = BaseInfoUtil.getSignedIntegerFromAnyObject(result["type"])
+        let type = BaseInfoUtil.getIntegerFromAnyObject(result["type"])
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        var viewController: UIViewController
+        let newFriendController = storyboard.instantiateViewControllerWithIdentifier("NewFriend") as! NewFriendController
         
         switch(type) {
         case SEND_FRIEND_REQUEST:
-            let newFriendController = storyboard.instantiateViewControllerWithIdentifier("NewFriend") as! NewFriendController
-            newFriendController.setFriendRequest(result)
-            viewController = newFriendController
+            newFriendController.setFriendRequest(result, isFriend: false)
             
             BadgeUtil.updateMeBadge()
             break;
         default:
-            viewController = storyboard.instantiateViewControllerWithIdentifier("Friend") as! FriendController
+            newFriendController.setFriendRequest(result, isFriend: true)
             
-            let friendNum = BaseInfoUtil.getSignedIntegerFromAnyObject(result["extra"])
-            if UserCache.instance.ifLogin() {
-                UserCache.instance.user.friendNum = friendNum
-            }
+            BadgeUtil.updateMeBadge()
             break;
         }
         
         if application.applicationState == UIApplicationState.Inactive && !isBackgroundActivateApplication {
-            (tabBarController.selectedViewController! as! UINavigationController).pushViewController(viewController, animated: true)
+            (tabBarController.selectedViewController! as! UINavigationController).pushViewController(newFriendController, animated: true)
         }
         
         if application.applicationState == UIApplicationState.Background {

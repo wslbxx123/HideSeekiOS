@@ -181,7 +181,7 @@ class BaseInfoUtil {
         return result
     }
     
-    class func getSignedIntegerFromAnyObject(object: AnyObject?) -> Int {
+    class func getIntegerFromAnyObject(object: AnyObject?) -> Int {
         return object is NSString ?
             (object as! NSString).integerValue :
             (object as! NSNumber).integerValue

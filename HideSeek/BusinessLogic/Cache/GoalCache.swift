@@ -53,8 +53,7 @@ class GoalCache : BaseCache<Goal> {
         
         for goalItem in goalArray {
             let goalInfo = goalItem as! NSDictionary
-            let type = goalInfo["type"] as? NSString
-            let typeName = goalInfo["type"] as? NSNumber
+            
             let goal = Goal(pkId: (goalInfo["pk_id"] as! NSString).longLongValue,
                             latitude: (goalInfo["latitude"] as! NSString).doubleValue,
                             longitude: (goalInfo["longitude"] as! NSString).doubleValue,
@@ -64,7 +63,7 @@ class GoalCache : BaseCache<Goal> {
                             showTypeName: goalInfo["show_type_name"] as? String,
                             createBy: (goalInfo["create_by"] as! NSString).longLongValue,
                             introduction: goalInfo["introduction"] as? String,
-                            score: BaseInfoUtil.getSignedIntegerFromAnyObject(goalInfo["score"]),
+                            score: BaseInfoUtil.getIntegerFromAnyObject(goalInfo["score"]),
                             unionType: (goalInfo["union_type"] as! NSString).integerValue)
             updateList.addObject(goal)
             if(goal.valid) {
@@ -96,7 +95,9 @@ class GoalCache : BaseCache<Goal> {
     }
     
     func reset() {
+        _selectedGoal.isSelected = false
         _selectedGoal = nil
+        closestGoal = nil
         cacheList.removeAllObjects()
         version = 0
     }

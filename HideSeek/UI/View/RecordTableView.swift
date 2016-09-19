@@ -124,7 +124,7 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     
     func setupInfiniteScrollingView() {
         let screenWidth = UIScreen.mainScreen().bounds.width
-        self.infiniteScrollingView = UIView(frame: CGRectMake(0, self.contentSize.height, screenWidth, 25))
+        self.infiniteScrollingView = UIView(frame: CGRectMake(0, self.contentSize.height, screenWidth, 40))
         self.infiniteScrollingView!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
         self.infiniteScrollingView!.backgroundColor = UIColor.whiteColor()
         

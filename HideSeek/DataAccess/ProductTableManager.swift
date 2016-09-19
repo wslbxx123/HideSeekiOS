@@ -102,8 +102,11 @@ class ProductTableManager {
     
     func updateProducts(productMinId: Int64, version: Int64, productList: NSArray) {
         do {
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:version), forKey: UserDefaultParam.PRODUCT_VERSION)
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:productMinId), forKey: UserDefaultParam.PRODUCT_MIN_ID)
+            NSUserDefaults.standardUserDefaults().setObject(
+                NSNumber(longLong:version), forKey: UserDefaultParam.PRODUCT_VERSION)
+            NSUserDefaults.standardUserDefaults().setObject(
+                NSNumber(longLong:productMinId), forKey: UserDefaultParam.PRODUCT_MIN_ID)
+            NSUserDefaults.standardUserDefaults().synchronize()
             
             for productItem in productList {
                 let productInfo = productItem as! Product

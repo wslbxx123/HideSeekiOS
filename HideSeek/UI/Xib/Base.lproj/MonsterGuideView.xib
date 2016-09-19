@@ -24,15 +24,15 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5zV-WA-TRs" userLabel="LeftView">
                     <rect key="frame" x="0.0" y="0.0" width="300" height="600"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="09a-0c-b7x" userLabel="GoalImageView">
-                            <rect key="frame" x="15" y="165" width="270" height="270"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="09a-0c-b7x" userLabel="GoalImageView">
+                            <rect key="frame" x="90" y="240" width="120" height="120"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="09a-0c-b7x" secondAttribute="height" multiplier="1:1" id="7tT-Dm-rFd"/>
+                                <constraint firstAttribute="width" constant="120" id="HIH-3O-eTG"/>
                             </constraints>
                         </imageView>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="09a-0c-b7x" firstAttribute="leading" secondItem="5zV-WA-TRs" secondAttribute="leading" constant="15" id="45X-pU-nrw"/>
                         <constraint firstItem="09a-0c-b7x" firstAttribute="centerY" secondItem="5zV-WA-TRs" secondAttribute="centerY" id="7d2-5t-Tam"/>
                         <constraint firstItem="09a-0c-b7x" firstAttribute="centerX" secondItem="5zV-WA-TRs" secondAttribute="centerX" id="MPv-G6-mcv"/>
                     </constraints>
@@ -164,6 +164,7 @@
                 <outlet property="introductionLabel" destination="YbZ-RO-IXw" id="hzF-LQ-BaT"/>
                 <outlet property="roleLabel" destination="bNP-NN-bSC" id="Tte-nk-ZMw"/>
                 <outlet property="scoreView" destination="374-fZ-3VG" id="LnS-yQ-bga"/>
+                <outlet property="winScoreTitle" destination="KEi-GE-SNF" id="qb7-Iy-Oaw"/>
             </connections>
         </view>
     </objects>

@@ -121,6 +121,7 @@ class PurchaseOrderTableManager {
         do {
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:version), forKey: UserDefaultParam.PURCHASE_ORDER_VERSION)
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:orderMinId), forKey: UserDefaultParam.PURCHASE_ORDER_MIN_ID)
+            NSUserDefaults.standardUserDefaults().synchronize()
             
             for orderItem in orderList {
                 let orderInfo = orderItem as! PurchaseOrder

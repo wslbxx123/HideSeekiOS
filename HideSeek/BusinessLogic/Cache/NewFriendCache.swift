@@ -23,8 +23,8 @@ class NewFriendCache : BaseCache<User> {
         newFriendTableManager = NewFriendTableManager.instance
     }
     
-    func setFriend(friendInfo: NSDictionary, message: NSString) {
-        saveFriend(friendInfo, message: message)
+    func setFriend(friendInfo: NSDictionary, message: NSString, isFriend: Bool) {
+        saveFriend(friendInfo, message: message, isFriend: isFriend)
         
         cacheList = newFriendTableManager.searchFriends()
     }
@@ -32,8 +32,18 @@ class NewFriendCache : BaseCache<User> {
     func setFriends(friendRequests: NSArray) {
         for friendRequest in friendRequests {
             let friendInfo = friendRequest as! NSDictionary
+            let isFriend = BaseInfoUtil.getIntegerFromAnyObject(friendInfo["status"]) == 1
+            
+            var message: NSString
+            if isFriend {
+                message = NSLocalizedString("ACCEPT_FRIEND_REQUEST", comment: "Accepted your friend request")
+            } else {
+                message = friendInfo["message"] as! NSString
+            }
+            
             NewFriendCache.instance.saveFriend(friendInfo,
-                                               message: friendInfo["message"] as! NSString)
+                                               message: message,
+                                               isFriend: isFriend)
         }
         
         if friendRequests.count > 0 {
@@ -43,7 +53,7 @@ class NewFriendCache : BaseCache<User> {
         cacheList = newFriendTableManager.searchFriends()
     }
     
-    func saveFriend(friendInfo: NSDictionary, message: NSString) {
+    func saveFriend(friendInfo: NSDictionary, message: NSString, isFriend: Bool) {
         let friendIdStr = friendInfo["pk_id"] as! NSString
         let pinyinStr = PinYinUtil.converterToPinyin(friendInfo["nickname"] as! String)
         let friend = User(
@@ -60,7 +70,7 @@ class NewFriendCache : BaseCache<User> {
             pinyin: NSString(string: pinyinStr))
         
         friend.requestMessage = message
-        friend.isFriend = false
+        friend.isFriend = isFriend
         
         newFriendTableManager.updateFriends(friend)
     }

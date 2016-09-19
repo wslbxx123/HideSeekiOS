@@ -130,6 +130,8 @@ class FriendTableManager {
     func updateFriends(version: Int64, friendList: NSArray) {
         do {
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:version), forKey: UserDefaultParam.FRIEND_VERSION)
+            NSUserDefaults.standardUserDefaults().synchronize()
+            
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             

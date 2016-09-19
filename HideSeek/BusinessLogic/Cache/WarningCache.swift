@@ -38,7 +38,7 @@ class WarningCache : BaseCache<Warning> {
                 showTypeName: warningInfo["show_type_name"] as? String,
                 createBy: (warningInfo["create_by"] as! NSString).longLongValue,
                 introduction: warningInfo["introduction"] as? String,
-                score: BaseInfoUtil.getSignedIntegerFromAnyObject(warningInfo["score"]),
+                score: BaseInfoUtil.getIntegerFromAnyObject(warningInfo["score"]),
                 unionType: (warningInfo["union_type"] as! NSString).integerValue),
                                   createTime: warningInfo["create_time"] as! String)
             

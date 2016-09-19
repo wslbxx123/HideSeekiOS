@@ -7,5 +7,5 @@
 //
 
 protocol RemoveFriendDelegate {
-    func removeFriend(friend: User)
+    func checkRemoveFriend(friend: User)
 }

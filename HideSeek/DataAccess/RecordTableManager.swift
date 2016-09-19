@@ -85,6 +85,7 @@ class RecordTableManager {
             NSUserDefaults.standardUserDefaults().setObject(sum, forKey: UserDefaultParam.SCORE_SUM)
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:version), forKey: UserDefaultParam.RECORD_VERSION)
             NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:recordMinId), forKey: UserDefaultParam.RECORD_MIN_ID)
+            NSUserDefaults.standardUserDefaults().synchronize()
             
             for record in recordList {
                 let recordInfo = record as! Record

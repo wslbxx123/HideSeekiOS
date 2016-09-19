@@ -153,6 +153,19 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
         self.navigationController?.pushViewController(profileController, animated: true)
     }
     
+    func checkRemoveFriend(friend: User) {
+        let alertController = UIAlertController(title: nil,
+                                                message: NSLocalizedString("CONFIRM_REMOVE_FRIEND", comment: "Are you sure to remove this friend?"), preferredStyle: UIAlertControllerStyle.Alert)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: "Cancel"),
+                                         style: UIAlertActionStyle.Cancel, handler: nil)
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Default, handler: { (action) in
+            self.removeFriend(friend)
+        })
+        alertController.addAction(cancelAction)
+        alertController.addAction(okAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
     func removeFriend(friend: User) {
         let paramDict: NSMutableDictionary = ["friend_id": "\(friend.pkId)"]
         
@@ -164,10 +177,9 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
                         print("JSON: " + responseObject.description!)
-                        FriendCache.instance.removeFriend(friend)
-                        self.friendTableView.alphaIndex = self.getAlphaIndexFromList(FriendCache.instance.friendList)
-                        self.friendTableView.friendList = FriendCache.instance.friendList
-                        self.friendTableView.reloadData()
+                        let response = responseObject as! NSDictionary
+                        self.setInfoFromRemoveFriendCallback(response, friend: friend)
+                        
                         hud.removeFromSuperview()
                         hud = nil
             }, failure: { (operation, error) in
@@ -177,5 +189,25 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
                 hud.removeFromSuperview()
                 hud = nil
         })
+    }
+    
+    func setInfoFromRemoveFriendCallback(response: NSDictionary, friend: User) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            let friendNum = BaseInfoUtil.getIntegerFromAnyObject(response["result"])
+            UserCache.instance.user.friendNum = friendNum
+            FriendCache.instance.removeFriend(friend)
+            self.friendTableView.alphaIndex = self.getAlphaIndexFromList(FriendCache.instance.friendList)
+            self.friendTableView.friendList = FriendCache.instance.friendList
+            self.friendTableView.reloadData()
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+        }
     }
 }

@@ -61,7 +61,7 @@ class RecordCache : BaseCache<Record> {
         let recordMinId = (result["record_min_id"] as! NSString).longLongValue
         
         if result["score_sum"] != nil {
-            _scoreSum = BaseInfoUtil.getSignedIntegerFromAnyObject(result["score_sum"])
+            _scoreSum = BaseInfoUtil.getIntegerFromAnyObject(result["score_sum"])
             UserCache.instance.user.record = _scoreSum
         }
         
@@ -76,8 +76,8 @@ class RecordCache : BaseCache<Record> {
                 recordId: (recordInfo["pk_id"] as! NSString).longLongValue,
                 time: timeFormatter.stringFromDate(date!),
                 goalType: Goal.GoalTypeEnum(rawValue: (recordInfo["goal_type"] as! NSString).integerValue)!,
-                score: BaseInfoUtil.getSignedIntegerFromAnyObject(recordInfo["score"]),
-                scoreSum: BaseInfoUtil.getSignedIntegerFromAnyObject(recordInfo["score_sum"]),
+                score: BaseInfoUtil.getIntegerFromAnyObject(recordInfo["score"]),
+                scoreSum: BaseInfoUtil.getIntegerFromAnyObject(recordInfo["score_sum"]),
                 version: (recordInfo["version"] as! NSString).longLongValue,
                 showTypeName: recordInfo["show_type_name"] as? String))
         }

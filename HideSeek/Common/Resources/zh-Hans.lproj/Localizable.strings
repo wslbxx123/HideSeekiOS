@@ -59,10 +59,16 @@
 "FRIEND_REQUEST_MESSAGE" = "你收到一个好友请求";
 "SUCCESS_COMMIT_FEEDBACK" = "提交反馈成功";
 "SUCCESS_UPDATE_PASSWORD" = "更新密码成功";
+"SUCCESS_PURCHASE" = "购买商品成功";
 "SHARE_MESSAGE" = "天啊，一只怪兽正在盯着我，快来救我。";
 "SHARE_TITLE" = "进入部落时代";
 "REFRESH_MAP_HINT" = "刷新地图中……";
 "FRIEND_ACCEPT_MESSAGE" = "%@接受你的好友请求";
+"CONFIRM_REMOVE_FRIEND" = "确认要删除这个好友吗？";
+"ACCEPT_FRIEND_REQUEST" = "已接受你的请求";
+"NONE" = "无";
+"WIN_SCORE" = "战胜积分: ";
+"BEAT_SCORE" = "战败积分: ";
 
 "ERROR_SESSION_INVALID" = "你已经被迫掉线";
 "ERROR_GOAL_DISAPPEAR" = "怪兽已经被其他人打死";

@@ -10,7 +10,7 @@ class User: NSObject {
     var pkId : Int64
     var phone : NSString
     var sessionId : NSString = ""
-    var registerDate: NSDate
+    var registerDate: NSDate = NSDate()
     var role: RoleEnum
     var version: Int64
     var pinyin: NSString
@@ -34,6 +34,7 @@ class User: NSObject {
                 userInfo["default_area"] = newValue
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+                NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
     }
@@ -53,6 +54,7 @@ class User: NSObject {
                 userInfo["default_address"] = newValue
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+                NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
     }
@@ -72,6 +74,7 @@ class User: NSObject {
                 userInfo["nickname"] = newValue
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+                NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
     }
@@ -91,6 +94,7 @@ class User: NSObject {
                 userInfo["sex"] = NSString(format: "%d", newValue.rawValue)
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+                NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
     }
@@ -110,6 +114,7 @@ class User: NSObject {
                 userInfo["region"] = newValue
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+                NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
     }
@@ -129,6 +134,7 @@ class User: NSObject {
                 userInfo["photo_url"] = newValue
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+                NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
     }
@@ -148,6 +154,7 @@ class User: NSObject {
                 userInfo["small_photo_url"] = newValue
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+                NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
     }
@@ -167,6 +174,7 @@ class User: NSObject {
                 userInfo["record"] = NSString(format: "%d", newValue)
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+                NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
     }
@@ -186,6 +194,7 @@ class User: NSObject {
                 userInfo["friend_num"] = NSString(format: "%d", newValue)
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+                NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
     }
@@ -205,6 +214,7 @@ class User: NSObject {
                 userInfo["bomb_num"] = NSString(format: "%d", newValue)
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+                NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
     }
@@ -224,6 +234,7 @@ class User: NSObject {
                 userInfo["has_guide"] = NSString(format: "%d", newValue ? 1 : 0)
                 
                 NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
+                NSUserDefaults.standardUserDefaults().synchronize()
             }
         }
     }
@@ -341,8 +352,6 @@ class User: NSObject {
         self.pkId = pkId
         self.phone = phone
         self._nickname = nickname
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        self.registerDate = dateFormatter.dateFromString(registerDateStr as String)!
         
         if photoUrl != nil {
             self._photoUrl = photoUrl!

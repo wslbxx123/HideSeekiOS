@@ -8,6 +8,7 @@
 
 import UIKit
 import AFNetworking
+import MBProgressHUD
 
 class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDelegate,
     CloseDelegate, LoadMoreDelegate {
@@ -222,6 +223,9 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
     }
     
     func purchase() {
+        let errorMessage = NSLocalizedString("SUCCESS_PURCHASE", comment: "Purchase the product successfully")
+        HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+        
         let paramDict: NSMutableDictionary = ["order_id": "\(purchaseDialogController.orderId)"]
         createOrderManager.POST(UrlParam.PURCHASE_URL,
                                 paramDict: paramDict,
@@ -233,6 +237,8 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
                                     
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
+                let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
         })
     }
     

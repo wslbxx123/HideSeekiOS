@@ -13,6 +13,7 @@ class RemarkController: UIViewController {
     let HtmlType = "text/html"
     @IBOutlet weak var aliasTextField: UITextField!
     var aliasValue: String?
+    var friend: User!
     var rightBarButton: UIBarButtonItem!
     var manager: CustomRequestManager!
 
@@ -46,6 +47,7 @@ class RemarkController: UIViewController {
         hud.dimBackground = true
         let paramDict = NSMutableDictionary()
         paramDict["remark"] = aliasValue
+        paramDict["friend_id"] = "\(friend.pkId)"
         manager.POST(UrlParam.UPDATE_REMARK, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
             print("JSON: " + responseObject.description!)
