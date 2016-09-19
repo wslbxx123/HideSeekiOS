@@ -37,6 +37,9 @@
 		182527661D0E9C29007FB54B /* CameraUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182527651D0E9C29007FB54B /* CameraUtil.swift */; };
 		18261CDB1D4788B1005ECD31 /* UploadPhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18261CDA1D4788B1005ECD31 /* UploadPhotoController.swift */; };
 		18261CE21D47A940005ECD31 /* ComboxPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18261CE11D47A940005ECD31 /* ComboxPickerView.swift */; };
+		182A08FF1D8FD33100E71C29 /* RaceGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182A08FE1D8FD33100E71C29 /* RaceGroupTableViewCell.swift */; };
+		182A09011D8FD52400E71C29 /* RaceGroupMessageFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182A09001D8FD52400E71C29 /* RaceGroupMessageFactory.swift */; };
+		182A09031D8FD81800E71C29 /* GoToPhotoDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182A09021D8FD81800E71C29 /* GoToPhotoDelegate.swift */; };
 		182BBF1C1D3A369C0095DE4A /* CameraOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 182BBF1E1D3A369C0095DE4A /* CameraOverlay.xib */; };
 		182BBF241D3A7AB00095DE4A /* SetBombDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182BBF231D3A7AB00095DE4A /* SetBombDelegate.swift */; };
 		1836EF5F1D56D16500D95B12 /* PurchaseOrderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1836EF5E1D56D16500D95B12 /* PurchaseOrderController.swift */; };
@@ -329,6 +332,9 @@
 		182527651D0E9C29007FB54B /* CameraUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraUtil.swift; path = Hardware/CameraUtil.swift; sourceTree = "<group>"; };
 		18261CDA1D4788B1005ECD31 /* UploadPhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UploadPhotoController.swift; path = UI/Controllers/UploadPhotoController.swift; sourceTree = "<group>"; };
 		18261CE11D47A940005ECD31 /* ComboxPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComboxPickerView.swift; path = UI/View/ComboxPickerView.swift; sourceTree = "<group>"; };
+		182A08FE1D8FD33100E71C29 /* RaceGroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RaceGroupTableViewCell.swift; path = UI/View/RaceGroupTableViewCell.swift; sourceTree = "<group>"; };
+		182A09001D8FD52400E71C29 /* RaceGroupMessageFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RaceGroupMessageFactory.swift; path = Common/Factory/RaceGroupMessageFactory.swift; sourceTree = "<group>"; };
+		182A09021D8FD81800E71C29 /* GoToPhotoDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GoToPhotoDelegate.swift; path = Common/Delegate/GoToPhotoDelegate.swift; sourceTree = "<group>"; };
 		182BBF1D1D3A369C0095DE4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CameraOverlay.xib; sourceTree = "<group>"; };
 		182BBF201D3A36A00095DE4A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/CameraOverlay.strings; sourceTree = "<group>"; };
 		182BBF221D3A36A40095DE4A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/CameraOverlay.strings"; sourceTree = "<group>"; };
@@ -718,6 +724,7 @@
 				18C0D6E31D234EB400905910 /* HudToastFactory.swift */,
 				18C788EE1D3DB55E003123F8 /* AnimationImageFactory.swift */,
 				184CBF361D65903700135C60 /* GoalImageFactory.swift */,
+				182A09001D8FD52400E71C29 /* RaceGroupMessageFactory.swift */,
 			);
 			name = Factory;
 			sourceTree = "<group>";
@@ -1008,6 +1015,7 @@
 				1893A0041D8409EF007CA861 /* AreaPickerDelegate.swift */,
 				1893A00C1D841CCE007CA861 /* ShowAreaDelegate.swift */,
 				184CB7481D8880B40086B559 /* RemoveFriendDelegate.swift */,
+				182A09021D8FD81800E71C29 /* GoToPhotoDelegate.swift */,
 			);
 			name = Delegate;
 			sourceTree = "<group>";
@@ -1172,6 +1180,7 @@
 				18B0235E1D7443E700ACE203 /* NewFriendTableViewCell.swift */,
 				18939FFB1D8017D2007CA861 /* WarningTableViewCell.swift */,
 				1893A0021D8408FA007CA861 /* AreaPickerView.swift */,
+				182A08FE1D8FD33100E71C29 /* RaceGroupTableViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1563,6 +1572,7 @@
 				18CF635B1D55CA2D00EABFC0 /* PurchaseOrderTableManager.swift in Sources */,
 				18C8D6361D2F6A4C00464394 /* Record.swift in Sources */,
 				18EA6DEB1D5C0ACD00196E22 /* ExchangeDialogController.swift in Sources */,
+				182A09031D8FD81800E71C29 /* GoToPhotoDelegate.swift in Sources */,
 				181DB5621D291D1000E91100 /* RaceGroupController.swift in Sources */,
 				18670F2A1D6A04C20025E051 /* UpdateSexController.swift in Sources */,
 				18939FF41D7E8166007CA861 /* PushManager.swift in Sources */,
@@ -1603,6 +1613,7 @@
 				181DB5601D291C4500E91100 /* RaceGroupTableView.swift in Sources */,
 				18EA6DE91D5C05C700196E22 /* ExchangeDelegate.swift in Sources */,
 				18939FFA1D80169C007CA861 /* UpdateGoalDelegate.swift in Sources */,
+				182A08FF1D8FD33100E71C29 /* RaceGroupTableViewCell.swift in Sources */,
 				1824E37C1D3B16A8008A4E15 /* CustomTabBar.swift in Sources */,
 				184CBF371D65903700135C60 /* GoalImageFactory.swift in Sources */,
 				18FD1A701D1A201700225C92 /* UrlParam.swift in Sources */,
@@ -1624,6 +1635,7 @@
 				18670F2C1D6C109C0025E051 /* FriendTableView.swift in Sources */,
 				184CB7491D8880B40086B559 /* RemoveFriendDelegate.swift in Sources */,
 				184573D01D2BF0C20012C2B9 /* RaceGroupTableManager.swift in Sources */,
+				182A09011D8FD52400E71C29 /* RaceGroupMessageFactory.swift in Sources */,
 				18B96E471D519F41002718D1 /* ConfirmPurchaseDelegate.swift in Sources */,
 				18FD1AAC1D1B7F4200225C92 /* MeController.swift in Sources */,
 				18261CE21D47A940005ECD31 /* ComboxPickerView.swift in Sources */,

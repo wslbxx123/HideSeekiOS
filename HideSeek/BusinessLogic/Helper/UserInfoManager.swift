@@ -22,6 +22,8 @@ class UserInfoManager {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.REWARD_MIN_ID)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.PURCHASE_ORDER_VERSION)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.PURCHASE_ORDER_MIN_ID)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.EXCHANGE_ORDER_VERSION)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.EXCHANGE_ORDER_MIN_ID)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.FRIEND_VERSION)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.SCORE_SUM)
         
@@ -39,6 +41,7 @@ class UserInfoManager {
         ProductTableManager.instance.clear()
         RewardTableManager.instance.clear()
         PurchaseOrderTableManager.instance.clear()
+        ExchangeOrderTableManager.instance.clear()
         FriendTableManager.instance.clear()
         
         PushManager.instance.unRegister()

@@ -74,6 +74,7 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
         self.purchaseWidth = self.screenRect.width - 40
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(PurchaseOrderController.refreshData), forControlEvents: UIControlEvents.ValueChanged)
+        orderTableView.separatorStyle = UITableViewCellSeparatorStyle.None;
         orderTableView.addSubview(refreshControl)
         orderTableView.loadMoreDelegate = self
         orderTableView.purchaseDelegate = self

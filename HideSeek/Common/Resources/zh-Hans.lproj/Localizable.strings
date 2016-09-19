@@ -13,6 +13,7 @@
 "LOADING" = "加载中……";
 "M" = "%.0f 米";
 "PURCHASE" = "购买";
+"EXCHANGE" = "兑换";
 "PURCHASE_COUNT" = "%d人购买";
 "EXCHAGNE_COUNT" = "%d人兑换";
 "SEND_VERIFICATION_CODE" = "发送验证码";

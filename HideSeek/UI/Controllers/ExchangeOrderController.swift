@@ -68,6 +68,7 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
         self.exchangeWidth = self.screenRect.width - 40
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(ExchangeOrderController.refreshData), forControlEvents: UIControlEvents.ValueChanged)
+        orderTableView.separatorStyle = UITableViewCellSeparatorStyle.None;
         orderTableView.addSubview(refreshControl)
         orderTableView.loadMoreDelegate = self
         orderTableView.exchangeDelegate = self

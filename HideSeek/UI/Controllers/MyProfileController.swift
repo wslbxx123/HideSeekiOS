@@ -100,6 +100,10 @@ class MyProfileController: UIViewController, TouchDownDelegate {
     func updatePhoto() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
         photoController = storyboard.instantiateViewControllerWithIdentifier("photo") as! PhotoController
+        let user = UserCache.instance.user
+        photoController.photoUrl = user.photoUrl as String
+        photoController.smallPhotoUrl = user.smallPhotoUrl as String
+        photoController.ifEdit = true
         self.navigationController?.pushViewController(photoController, animated: true)
     }
     

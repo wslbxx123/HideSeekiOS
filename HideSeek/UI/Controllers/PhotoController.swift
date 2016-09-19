@@ -16,14 +16,21 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
     @IBOutlet weak var photoImageView: UIImageView!
     var croppedImage: UIImage!
     var manager: CustomRequestManager!
+    
+    var photoUrl: String!
+    var smallPhotoUrl: String!
+    var ifEdit: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let user = UserCache.instance.user
-        photoImageView.setWebImage(user.photoUrl as String, smallPhotoUrl: user.smallPhotoUrl as String, defaultImage: "default_photo", isCache: true)
-        let rightBarButton = UIBarButtonItem(image: UIImage(named: "more"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PhotoController.moreBtnClicked))
-        self.navigationItem.rightBarButtonItem = rightBarButton
+        photoImageView.setWebImage(photoUrl, smallPhotoUrl: smallPhotoUrl, defaultImage: "default_photo", isCache: true)
+        
+        if ifEdit {
+            let rightBarButton = UIBarButtonItem(image: UIImage(named: "more"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PhotoController.moreBtnClicked))
+            self.navigationItem.rightBarButtonItem = rightBarButton
+        }
+        
         manager = CustomRequestManager()
         manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
     }

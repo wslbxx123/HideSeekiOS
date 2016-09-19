@@ -116,7 +116,7 @@ class ExchangeCollectionViewCell: UICollectionViewCell {
     }
     
     func setExchangeBtn() {
-        self.exchangeBtn.setTitle(NSLocalizedString("PURCHASE", comment: "Purchase"), forState: UIControlState.Normal)
+        self.exchangeBtn.setTitle(NSLocalizedString("EXCHANGE", comment: "Exchange"), forState: UIControlState.Normal)
         self.exchangeBtn.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
         self.exchangeBtn.titleLabel?.font = UIFont.systemFontOfSize(15)
         self.exchangeBtn.setBackgroundColor("#fccb05", selectedColorStr: "#ffa200", disabledColorStr: "#bab8b8")

@@ -12,7 +12,7 @@ import AFNetworking
 import CoreMotion.CMMotionManager
 import MBProgressHUD
 
-class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, RefreshMapDelegate, UpdateGoalDelegate {
+class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, ArriveDelegate, RefreshMapDelegate, UpdateGoalDelegate {
     let HtmlType = "text/html"
     let REFRESH_MAP_INTERVAL: Double = 5
     var manager: AFHTTPRequestOperationManager!
@@ -557,6 +557,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         if endGoal != nil {
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
             let viewController = storyboard.instantiateViewControllerWithIdentifier("Navigation") as! NavigationController
+            viewController.arriveDelegate = self
             viewController.startPoint = AMapNaviPoint.locationWithLatitude(CGFloat(latitude), longitude: CGFloat(longitude))
             viewController.endPoint = AMapNaviPoint.locationWithLatitude(CGFloat(endGoal!.latitude), longitude: CGFloat(endGoal!.longitude))
             self.presentViewController(viewController, animated: true, completion: nil)
@@ -762,6 +763,10 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                                         
         }
         
+    }
+    
+    func arrivedAtGoal() {
+        refreshDistance()
     }
     
     func refresh() {

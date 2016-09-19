@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WarningController: UIViewController {
+class WarningController: UIViewController, UpdateGoalDelegate {
     let HtmlType = "text/html"
     @IBOutlet weak var warningTableView: WarningTableView!
     @IBOutlet weak var hourLabel: UILabel!
@@ -27,7 +27,7 @@ class WarningController: UIViewController {
         manager = CustomRequestManager()
         manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
         self.automaticallyAdjustsScrollViewInsets = false
-        warningTableView.updateGoalDelegate = updateGoalDelegate
+        warningTableView.updateGoalDelegate = self
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -142,5 +142,11 @@ class WarningController: UIViewController {
         }
         
         return list
+    }
+    
+    func updateEndGoal(goalId: Int64) {
+        updateGoalDelegate?.updateEndGoal(goalId)
+        
+        self.navigationController?.popViewControllerAnimated(true)
     }
 }

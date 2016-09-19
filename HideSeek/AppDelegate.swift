@@ -217,11 +217,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
         if userActivity.webpageURL != nil {
             let query = userActivity.webpageURL?.query
-            let params = UrlUtil.getDictionaryFromQuery(query!)
-            
-            let navigationController = tabBarController.viewControllers![0] as!UINavigationController
-            let homeController = navigationController.viewControllers[0] as! HomeController
-            homeController.updateEndGoal((params.valueForKey("goal_id") as! NSString).longLongValue)
+            if query != nil {
+                let params = UrlUtil.getDictionaryFromQuery(query!)
+                
+                let goalIdStr = params.valueForKey("goal_id") as? NSString
+                if goalIdStr != nil {
+                    let navigationController = tabBarController.viewControllers![0] as!UINavigationController
+                    let homeController = navigationController.viewControllers[0] as! HomeController
+                    homeController.updateEndGoal(goalIdStr!.longLongValue)
+                }
+            }
         }
         return true;
     }

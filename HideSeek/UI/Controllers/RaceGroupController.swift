@@ -9,7 +9,7 @@
 import UIKit
 import AFNetworking
 
-class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate{
+class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate, GoToPhotoDelegate{
     let HtmlType = "text/html"
     let TAG_LOADING_IMAGEVIEW = 1
     @IBOutlet weak var raceGroupTableView: RaceGroupTableView!
@@ -60,6 +60,7 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
         refreshControl.addTarget(self, action: #selector(RaceGroupController.refreshData), forControlEvents: UIControlEvents.ValueChanged)
         raceGroupTableView.addSubview(refreshControl)
         raceGroupTableView.loadMoreDelegate = self
+        raceGroupTableView.goToPhotoDelegate = self
         raceGroupTableView.separatorStyle = UITableViewCellSeparatorStyle.None;
         
         let refreshContents = NSBundle.mainBundle().loadNibNamed("RefreshView",
@@ -177,5 +178,13 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
                 }
             })
         }
+    }
+    
+    func goToPhoto(raceGroup: RaceGroup) {
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        let photoController = storyboard.instantiateViewControllerWithIdentifier("photo") as! PhotoController
+        photoController.photoUrl = raceGroup.photoUrl == nil ? "" : raceGroup.photoUrl
+        photoController.smallPhotoUrl = raceGroup.smallPhotoUrl == nil ? "" : raceGroup.smallPhotoUrl
+        self.navigationController?.pushViewController(photoController, animated: true)
     }
 }

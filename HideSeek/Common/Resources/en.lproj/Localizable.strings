@@ -13,6 +13,7 @@
 "LOADING" = "Loading...";
 "M" = "%.0f m";
 "PURCHASE" = "Purchase";
+"EXCHANGE" = "Exchange";
 "PURCHASE_COUNT" = "%d purchased";
 "EXCHAGNE_COUNT" = "%d exchanged";
 "SEND_VERIFICATION_CODE" = "Send Verification Code";

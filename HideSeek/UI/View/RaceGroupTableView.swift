@@ -9,19 +9,13 @@
 import UIKit
 
 class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
-    let TAG_PHOTO_IMAGEVIEW = 1
-    let TAG_NAME_LABEL = 2
-    let TAG_GOAL_IMAGEVIEW = 3
-    let TAG_MESSAGE_LABEL = 4
-    let TAG_SCORE_LABEL = 5
-    let TAG_TIME_LABEL = 6
-    let VISIBLE_REFRESH_COUNT = 3;
+    let VISIBLE_REFRESH_COUNT = 3
     
     var raceGroupList: NSMutableArray!
     var tabelViewCell: UITableViewCell!
-    var messageWidth: CGFloat!
     var infiniteScrollingView: UIView!
     var loadMoreDelegate: LoadMoreDelegate!
+    var goToPhotoDelegate: GoToPhotoDelegate!
     var screenHeight: CGFloat!
 
     required init?(coder aDecoder: NSCoder) {
@@ -39,38 +33,18 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.dequeueReusableCellWithIdentifier("raceGroupCell")! as UITableViewCell
+        let cell = self.dequeueReusableCellWithIdentifier("raceGroupCell") as! RaceGroupTableViewCell
         
         if raceGroupList.count < indexPath.row + 1 {
             return cell
         }
         
         let raceGroup = raceGroupList.objectAtIndex(indexPath.row) as! RaceGroup
+        cell.goToPhotoDelegate = goToPhotoDelegate
+        cell.initRaceGroup(raceGroup)
         
-        let photoImageView = cell.viewWithTag(TAG_PHOTO_IMAGEVIEW) as! UIImageView
-        let nameLabel = cell.viewWithTag(TAG_NAME_LABEL) as! UILabel
-        let goalImageView = cell.viewWithTag(TAG_GOAL_IMAGEVIEW) as! UIImageView
-        let messageLabel = cell.viewWithTag(TAG_MESSAGE_LABEL) as! UILabel
-        let scoreLabel = cell.viewWithTag(TAG_SCORE_LABEL) as! UILabel
-        let timeLabel = cell.viewWithTag(TAG_TIME_LABEL) as! UILabel
-        
-        messageWidth = messageLabel.frame.width
-        
-        photoImageView.layer.cornerRadius = 5
-        photoImageView.layer.masksToBounds = true
-        photoImageView.setWebImage(raceGroup.smallPhotoUrl, defaultImage: "default_photo", isCache: true)
-        nameLabel.text = raceGroup.remark == nil ? raceGroup.nickname : raceGroup.remark
-        
-        goalImageView.image = UIImage(named: GoalImageFactory.get(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName))
-    
-        messageLabel.text = getMessage(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName)
-        
-        let scoreStr = raceGroup.recordItem.score >= 0 ? "+" + String(raceGroup.recordItem.score) : String(raceGroup.recordItem.score)
-        
-        scoreLabel.text =  NSLocalizedString("SCORE_TITLE", comment: "Score: ") + scoreStr
-        
-        timeLabel.text = raceGroup.recordItem.time
         cell.selectionStyle = UITableViewCellSelectionStyle.None
+        BaseInfoUtil.cancelButtonDelay(cell)
         return cell
     }
     
@@ -88,7 +62,7 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         }
         
         let raceGroup = raceGroupList.objectAtIndex(indexPath.row) as! RaceGroup
-        let message = getMessage(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName) as NSString
+        let message = RaceGroupMessageFactory.get(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName) as NSString
         
         let frame = UIScreen.mainScreen().bounds
         let labelHeight = BaseInfoUtil.getLabelHeight(15.0, width: frame.width - 130, message: message)
@@ -107,36 +81,6 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
             self.tableFooterView?.hidden = false
             
             loadMoreDelegate?.loadMore()
-        }
-    }
-    
-    func getMessage(goalType: Goal.GoalTypeEnum, showTypeName: String?)-> String {
-        switch(goalType) {
-        case .mushroom:
-            return NSLocalizedString("MESSAGE_GET_MUSHROOM", comment: "Get a mushroom into a sack successfully")
-        case .monster:
-            return getMonsterMessage(showTypeName!)
-        case .bomb:
-            return NSLocalizedString("MESSAGE_GET_BOMB", comment: "A bomb went off, ouch")
-        default:
-            return ""
-        }
-    }
-    
-    func getMonsterMessage(showTypeName: String) -> String {
-        switch(showTypeName) {
-            case "egg":
-                return NSLocalizedString("MESSAGE_GET_EGG", comment: "So excited! Beat an egg monster successfully")
-            case "cow":
-                return NSLocalizedString("MESSAGE_GET_COW", comment: "You are watched by a cow monster，how smart I am to beat it in time!")
-            case "bird":
-                return NSLocalizedString("MESSAGE_GET_BIRD", comment: "You are watched by a cow monster，how smart I am to beat it in time!")
-            case "giraffe":
-                return NSLocalizedString("MESSAGE_GET_GIRAFFE", comment: "Thanks to friends,lucky to get a giraffe monster!")
-            case "dragon":
-                return NSLocalizedString("MESSAGE_GET_DRAGON", comment: "It is a great satisfaction to get a dragon monster, so cool!")
-            default:
-                return ""
         }
     }
     
