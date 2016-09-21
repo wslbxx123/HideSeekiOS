@@ -61,6 +61,7 @@
 "SUCCESS_COMMIT_FEEDBACK" = "Commit feedback successfully";
 "SUCCESS_UPDATE_PASSWORD" = "Update Password successfully";
 "SUCCESS_PURCHASE" = "Purchase the product successfully";
+"SUCCESS_EXCHANGE" = "Exchange successfully! please wait for the reward notice. ";
 "SHARE_MESSAGE" = "My God! A monster is watching at me, please help me!";
 "SHARE_TITLE" = "Enter into the age of Tribes";
 "REFRESH_MAP_HINT" = "Refreshing map...";
@@ -71,6 +72,8 @@
 "WIN_SCORE" = "Win Score: ";
 "BEAT_SCORE" = "Beat Score: ";
 
+"ERROR_NOT_LOGIN" = "Please login first";
+"ERROR_NOT_SEE_MONSTER" = "You can only share the goal when you see it";
 "ERROR_SESSION_INVALID" = "You are kicked out by others";
 "ERROR_GOAL_DISAPPEAR" = "The monster is killed by others";
 "ERROR_PHONE_OR_PASSWORD_WRONG" = "Phone or password error";

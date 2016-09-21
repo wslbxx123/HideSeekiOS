@@ -61,6 +61,7 @@
 "SUCCESS_COMMIT_FEEDBACK" = "提交反馈成功";
 "SUCCESS_UPDATE_PASSWORD" = "更新密码成功";
 "SUCCESS_PURCHASE" = "购买商品成功";
+"SUCCESS_EXCHANGE" = "兑换成功！请等待发货通知。";
 "SHARE_MESSAGE" = "天啊，一只怪兽正在盯着我，快来救我。";
 "SHARE_TITLE" = "进入部落时代";
 "REFRESH_MAP_HINT" = "刷新地图中……";
@@ -71,6 +72,8 @@
 "WIN_SCORE" = "战胜积分: ";
 "BEAT_SCORE" = "战败积分: ";
 
+"ERROR_NOT_LOGIN" = "请先登录";
+"ERROR_NOT_SEE_MONSTER" = "你只有看到目标才能分享";
 "ERROR_SESSION_INVALID" = "你已经被迫掉线";
 "ERROR_GOAL_DISAPPEAR" = "怪兽已经被其他人打死";
 "ERROR_PHONE_OR_PASSWORD_WRONG" = "用户名和密码不匹配";

@@ -66,7 +66,7 @@ class UserInfoManager {
                                          style: UIAlertActionStyle.Cancel, handler: nil)
         let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Default, handler: { (action) in
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
-            let loginController = storyboard.instantiateViewControllerWithIdentifier("Login") as! WarningController
+            let loginController = storyboard.instantiateViewControllerWithIdentifier("Login") as! LoginController
             
             viewController.navigationController?.pushViewController(loginController, animated: true)
         })

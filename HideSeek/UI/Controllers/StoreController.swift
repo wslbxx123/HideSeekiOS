@@ -24,6 +24,7 @@ class StoreController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        self.segmentControl.selectedSegmentIndex = 0
         showPurchaseArea()
     }
 

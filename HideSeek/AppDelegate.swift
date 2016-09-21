@@ -215,6 +215,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+        if !UserCache.instance.ifLogin() {
+            let errorMessage = NSLocalizedString("ERROR_NOT_LOGIN", comment: "Please login first")
+            HudToastFactory.show(errorMessage, view: tabBarController.view, type: HudToastFactory.MessageType.ERROR)
+            return true
+        }
+        
         if userActivity.webpageURL != nil {
             let query = userActivity.webpageURL?.query
             if query != nil {
@@ -224,6 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if goalIdStr != nil {
                     let navigationController = tabBarController.viewControllers![0] as!UINavigationController
                     let homeController = navigationController.viewControllers[0] as! HomeController
+                    tabBarController.selectedIndex = 0
                     homeController.updateEndGoal(goalIdStr!.longLongValue)
                 }
             }

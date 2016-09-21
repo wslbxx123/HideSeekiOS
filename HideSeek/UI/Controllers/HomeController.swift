@@ -39,6 +39,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     var locManager: CLLocationManager!
     var guideView: MonsterGuideView!
     var ifSeeGoal: Bool = false
+    var ifRefreshing: Bool = false
     
     override func viewDidLoad() {
         openCamera()
@@ -294,6 +295,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     func updateEndGoal() {
         overlayView.hideGoal()
         endGoal.valid = false
+        endGoal.isSelected = false
         GoalCache.instance.selectedGoal = nil
         GoalCache.instance.refreshClosestGoal(latitude, longitude: longitude)
         setEndGoal()
@@ -375,10 +377,15 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     }
     
     func refreshMap() {
+        if ifRefreshing {
+            return
+        }
+        
         if latitude == nil || longitude == nil {
             return
         }
         
+        ifRefreshing = true
         let paramDict = NSMutableDictionary()
         paramDict["latitude"] = "\(latitude)"
         paramDict["longitude"] = "\(longitude)"
@@ -406,6 +413,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                         GoalCache.instance.setGoals(response["result"] as! NSDictionary, latitude: self.latitude, longitude: self.longitude)
                         
                         if hud != nil {
+                            GoalCache.instance.refreshClosestGoal(self.latitude, longitude: self.longitude)
                             self.setEndGoal()
                         }
 
@@ -415,6 +423,8 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                             hud.removeFromSuperview()
                             hud = nil
                         }
+                        
+                        self.ifRefreshing = false
             },
                     failure: { (operation, error) in
                         print("Error: " + error.localizedDescription)
@@ -422,6 +432,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                             hud.removeFromSuperview()
                             hud = nil
                         }
+                        self.ifRefreshing = false
         })
 
     }
@@ -739,8 +750,18 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             return
         }
         
+        if !ifSeeGoal {
+            let errorMessage = NSLocalizedString("ERROR_NOT_SEE_MONSTER", comment: "You can only share the goal when you see it")
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: nil)
+            return
+        }
+        
         let shareParams = NSMutableDictionary()
-        let shareUrl = "m.hideseek.cn/?goal_id=\(endGoal.pkId)"
+        var shareUrl = "https://m.hideseek.cn/home/mindex/sharePage?goal_id=\(endGoal.pkId)" +
+                "&nickname=" + (UserCache.instance.user.nickname as String) +
+                "&role=\(UserCache.instance.user.role.rawValue)"
+        shareUrl = shareUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        
         shareParams.SSDKSetupShareParamsByText(NSLocalizedString("SHARE_MESSAGE", comment: "My God! A monster is watching at me, please help me!"),
                                                 images : UIImage(named: "ic_launcher"),
                                                 url : NSURL(string: shareUrl),
@@ -772,7 +793,7 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     func refresh() {
         overlayView.mapView.removeAnnotations(markerDictionary.allValues)
         mapDialogController.mapView.removeAnnotations(markerDictionary.allValues)
-        
+        endGoal = nil
         markerDictionary.removeAllObjects()
         goalDictionary.removeAllObjects()
         GoalCache.instance.reset()

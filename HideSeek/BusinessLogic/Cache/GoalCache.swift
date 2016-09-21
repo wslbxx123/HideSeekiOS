@@ -32,7 +32,6 @@ class GoalCache : BaseCache<Goal> {
         updateList.removeAllObjects()
         saveGoals(goalInfo)
         
-        refreshClosestGoal(latitude, longitude: longitude)
         ifNeedClearMap = false
     }
     
@@ -69,6 +68,7 @@ class GoalCache : BaseCache<Goal> {
             if(goal.valid) {
                 cacheList.addObject(goal)
             }
+            NSLog("cachelist count: \(cacheList.count)")
         }
         
         version = (result["version"] as! NSString).longLongValue
@@ -76,11 +76,14 @@ class GoalCache : BaseCache<Goal> {
     
     func refreshClosestGoal(latitude: Double, longitude: Double) {
         var minDistance: Double = -1
+        NSLog("\(cacheList.count)")
         
         for item in cacheList {
             let goal = item as! Goal
             if(!goal.valid) {
+                NSLog("goalId = \(goal.pkId)")
                 cacheList.removeObject(goal)
+                NSLog("\(cacheList.count)")
                 continue
             }
             
@@ -95,10 +98,13 @@ class GoalCache : BaseCache<Goal> {
     }
     
     func reset() {
-        _selectedGoal.isSelected = false
-        _selectedGoal = nil
+        if _selectedGoal != nil {
+            _selectedGoal.isSelected = false
+            _selectedGoal = nil
+        }
         closestGoal = nil
         cacheList.removeAllObjects()
+        NSLog("cachelist count: \(cacheList.count)")
         version = 0
     }
 }

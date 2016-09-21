@@ -4,6 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
+		<string>applinks:m.hideseek.cn</string>
 		<string>applinks:www.hideseek.cn</string>
 	</array>
 </dict>

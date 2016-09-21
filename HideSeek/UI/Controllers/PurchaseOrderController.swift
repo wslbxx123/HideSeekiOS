@@ -192,6 +192,23 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
     }
     
     func purchase(product: Product, orderId: Int64) {
+        if product.pkId == 2 && UserCache.instance.user.hasGuide {
+            let alertController = UIAlertController(title: nil,
+                                                    message: NSLocalizedString("ALREADY_HAS_GUIDE", comment: "You already have monster guide. Continue to buy?"), preferredStyle: UIAlertControllerStyle.Alert)
+            let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: "Cancel"),
+                                             style: UIAlertActionStyle.Cancel, handler: nil)
+            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Default, handler: { (action) in
+                self.openPurchaseDialog(product, orderId: orderId)
+            })
+            alertController.addAction(cancelAction)
+            alertController.addAction(okAction)
+            self.presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            self.openPurchaseDialog(product, orderId: orderId)
+        }
+    }
+    
+    func openPurchaseDialog(product: Product, orderId: Int64) {
         grayView = UIView(frame: screenRect)
         grayView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
         
@@ -204,7 +221,7 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
         purchaseDialogController.price = product.price
         purchaseDialogController.orderId = orderId
         purchaseDialogController.product = product
-
+        
         self.view.addSubview(grayView)
         self.view.addSubview(purchaseDialogController.view)
     }
@@ -255,6 +272,9 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
     }
     
     func purchase() {
+        let successMessage = NSLocalizedString("SUCCESS_PURCHASE", comment: "Purchase the product successfully")
+        HudToastFactory.show(successMessage, view: self.view, type: HudToastFactory.MessageType.SUCCESS)
+        
         let paramDict: NSMutableDictionary = ["order_id": "\(purchaseDialogController.orderId)"]
         manager.POST(UrlParam.PURCHASE_URL,
                              paramDict: paramDict,

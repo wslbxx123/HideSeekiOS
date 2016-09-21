@@ -234,7 +234,15 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
             UserCache.instance.user.record = response["result"] is NSString ?
                 (response["result"] as! NSString).integerValue :
                 (response["result"] as! NSNumber).integerValue
-            self.close()
+            self.refreshData()
+            
+            let alertController = UIAlertController(title: nil,
+                                                    message: NSLocalizedString("SUCCESS_EXCHANGE", comment: "Exchange successfully! please wait for the reward notice. "), preferredStyle: UIAlertControllerStyle.Alert)
+            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Default, handler: { (action) in
+                self.close()
+            })
+            alertController.addAction(okAction)
+            self.presentViewController(alertController, animated: true, completion: nil)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
             HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
