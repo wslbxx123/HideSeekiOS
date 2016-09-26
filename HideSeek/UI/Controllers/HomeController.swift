@@ -46,15 +46,15 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         
         super.viewDidLoad()
         
-        manager = AFHTTPRequestOperationManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
-        setBombManager = CustomRequestManager()
-        setBombManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
-        getGoalManager = CustomRequestManager()
-        getGoalManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
-        
-        locManager = CLLocationManager()
-        locManager.delegate = self
+//        manager = AFHTTPRequestOperationManager()
+//        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+//        setBombManager = CustomRequestManager()
+//        setBombManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+//        getGoalManager = CustomRequestManager()
+//        getGoalManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+//        
+//        locManager = CLLocationManager()
+//        locManager.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -64,25 +64,25 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if CameraUtil.isAvailable() {
-            self.startVideoCapture()
-        }
-        
-        time = NSTimer.scheduledTimerWithTimeInterval(REFRESH_MAP_INTERVAL, target: self, selector: #selector(HomeController.refreshMap), userInfo: nil, repeats: true)
-        if overlayView != nil {
-            initMenuBtn()
-            overlayView.addMapView(self)
-            mapDialogController.initView(mapWidth, mapHeight: mapHeight)
-        }
-        
-        self.navigationController?.navigationBarHidden = true
-        if CLLocationManager.headingAvailable() {
-            locManager.startUpdatingHeading()
-        }
-        
-        if GoalCache.instance.ifNeedClearMap {
-            refresh()
-        }
+//        if CameraUtil.isAvailable() {
+//            self.startVideoCapture()
+//        }
+//        
+//        time = NSTimer.scheduledTimerWithTimeInterval(REFRESH_MAP_INTERVAL, target: self, selector: #selector(HomeController.refreshMap), userInfo: nil, repeats: true)
+//        if overlayView != nil {
+//            initMenuBtn()
+//            overlayView.addMapView(self)
+//            mapDialogController.initView(mapWidth, mapHeight: mapHeight)
+//        }
+//        
+//        self.navigationController?.navigationBarHidden = true
+//        if CLLocationManager.headingAvailable() {
+//            locManager.startUpdatingHeading()
+//        }
+//        
+//        if GoalCache.instance.ifNeedClearMap {
+//            refresh()
+//        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -164,17 +164,17 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
                 self.showsCameraControls = false
                 self.allowsEditing = false
                 
-                overlayView = NSBundle.mainBundle().loadNibNamed("CameraOverlay", owner: nil, options: nil).first as? CameraOverlayView
-                if overlayView != nil {
-                    let frame = UIScreen.mainScreen().bounds
-                    overlayView?.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
-                    overlayView?.addMapView(self)
-                    initMapDialog()
-                    initMonsterGuide()
-                }
-                
-                self.cameraOverlayView = overlayView
-                initOverlayView()
+//                overlayView = NSBundle.mainBundle().loadNibNamed("CameraOverlay", owner: nil, options: nil).first as? CameraOverlayView
+//                if overlayView != nil {
+//                    let frame = UIScreen.mainScreen().bounds
+//                    overlayView?.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
+//                    overlayView?.addMapView(self)
+//                    initMapDialog()
+//                    initMonsterGuide()
+//                }
+//                
+//                self.cameraOverlayView = overlayView
+//                initOverlayView()
             }
         } else {
             
@@ -486,10 +486,10 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
         if endGoal != nil {
             endPoint = MAMapPointForCoordinate(CLLocationCoordinate2DMake(endGoal.latitude, endGoal.longitude));
             
+            refreshDistance()
             overlayView.endGoal = endGoal
         }
         
-        refreshDistance()
         self.ifSeeGoal = false;
     }
     

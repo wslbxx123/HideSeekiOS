@@ -119,7 +119,7 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
         mapView.showsUserLocation = true
         mapView.setUserTrackingMode(MAUserTrackingMode.Follow, animated: false)
         mapView.showsScale = true
-        mapView.delegate = mapViewDelegate
+//        mapView.delegate = mapViewDelegate
         mapView.pausesLocationUpdatesAutomatically = false
         mapView.allowsBackgroundLocationUpdates = true
         mapView.showsCompass = false

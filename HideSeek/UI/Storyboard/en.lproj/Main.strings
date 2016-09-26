@@ -394,3 +394,6 @@
 
 /* Class = "UILabel"; text = "Score"; ObjectID = "yHU-Rb-fXR"; */
 "yHU-Rb-fXR.text" = "Score";
+
+/* Class = "UILabel"; text = "Manual"; ObjectID = "vj4-ml-Ya2"; */
+"vj4-ml-Ya2.text" = "Manual";

@@ -563,7 +563,7 @@ extern NSString * const kMAMapLayerCameraDegreeKey;
 - (void)showOverlays:(NSArray *)overlays animated:(BOOL)animated;
 
 /**
- *  设置地图使其可以显示数组中所有的annotation, 如果数组中只有一个则直接设置地图中心为annotation的位置。
+ *  设置地图使其可以显示数组中所有的overlay, 如果数组中只有一个则直接设置地图中心为overlay的位置。
  *
  *  @param overlays    需要显示的overlays
  *  @param insets      insets 嵌入边界

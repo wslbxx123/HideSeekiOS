@@ -14,6 +14,7 @@ class SettingController: UIViewController {
     @IBOutlet weak var settingScrollView: UIScrollView!
     @IBOutlet weak var rateHideSeekView: MenuView!
     @IBOutlet weak var clearCacheView: MenuView!
+    @IBOutlet weak var manualView: MenuView!
     @IBOutlet weak var cacheSizeLabel: UILabel!
     var manager: CustomRequestManager!
     
@@ -34,6 +35,9 @@ class SettingController: UIViewController {
         clearCacheView.userInteractionEnabled = true
         clearCacheView.addGestureRecognizer(clearCacheGesture)
         cacheSizeLabel.text = BaseInfoUtil.cachefileSize()
+        let goToManualGesture = UITapGestureRecognizer(target: self, action: #selector(SettingController.goToManual))
+        manualView.userInteractionEnabled = true
+        manualView.addGestureRecognizer(goToManualGesture)
         manager = CustomRequestManager()
         manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
     }
@@ -41,6 +45,10 @@ class SettingController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
+    }
+    
+    func goToManual() {
+        UIApplication.sharedApplication().openURL(NSURL(string: UrlParam.MANUAL_URL)!)
     }
     
     func rateHideSeek() {

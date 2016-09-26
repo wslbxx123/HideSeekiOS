@@ -81,7 +81,7 @@ typedef NS_ENUM(NSInteger, MAAnnotationViewDragState)
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 
 /**
- *  是否允许弹出callout
+ *  是否允许弹出默认callout
  */
 @property (nonatomic) BOOL canShowCallout;
 
