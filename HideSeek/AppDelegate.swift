@@ -19,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let SMS_SECRET = "5a5efd0f24dbafa7647c7dd60fd99fed"
     let SHARE_KEY = "wx35d7e379b7472410"
     let SHARE_SECRET = "d54adfb1105f71be8099b5a803bbc92f"
+    let QQ_SHARE_ID = "1105718948"
+    let QQ_SHARE_KEY = "ZDFy7JnidJqj1G2a"
     var window: UIWindow?
     var isBackgroundActivateApplication: Bool = false
     var tabBarController: ViewController!
@@ -79,8 +81,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                    appSecret: self.SHARE_SECRET)
                     break;
                 case SSDKPlatformType.TypeQQ:
-                    appInfo.SSDKSetupQQByAppId("1105718948",
-                                               appKey: "ZDFy7JnidJqj1G2a",
+                    appInfo.SSDKSetupQQByAppId(self.QQ_SHARE_ID,
+                                               appKey: self.QQ_SHARE_KEY,
                                                authType: SSDKAuthTypeBoth)
                     break;
                 case SSDKPlatformType.TypeRenren:
