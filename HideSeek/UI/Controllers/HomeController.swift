@@ -11,8 +11,9 @@ import MobileCoreServices
 import AFNetworking
 import CoreMotion.CMMotionManager
 import MBProgressHUD
+import AVFoundation
 
-class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, ArriveDelegate, RefreshMapDelegate, UpdateGoalDelegate {
+class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, ArriveDelegate, RefreshMapDelegate, UpdateGoalDelegate {
     let HtmlType = "text/html"
     let REFRESH_MAP_INTERVAL: Double = 5
     var manager: AFHTTPRequestOperationManager!
@@ -40,21 +41,27 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     var guideView: MonsterGuideView!
     var ifSeeGoal: Bool = false
     var ifRefreshing: Bool = false
+    var device: AVCaptureDevice!
+    var input: AVCaptureDeviceInput!
+    var imageOutput: AVCaptureStillImageOutput!
+    var session: AVCaptureSession!
+    var previewLayer: AVCaptureVideoPreviewLayer!
     
     override func viewDidLoad() {
-        openCamera()
-        
         super.viewDidLoad()
         
-//        manager = AFHTTPRequestOperationManager()
-//        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
-//        setBombManager = CustomRequestManager()
-//        setBombManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
-//        getGoalManager = CustomRequestManager()
-//        getGoalManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
-//        
-//        locManager = CLLocationManager()
-//        locManager.delegate = self
+        initCamera()
+        initView()
+
+        manager = AFHTTPRequestOperationManager()
+        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        setBombManager = CustomRequestManager()
+        setBombManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        getGoalManager = CustomRequestManager()
+        getGoalManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        
+        locManager = CLLocationManager()
+        locManager.delegate = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -64,25 +71,25 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-//        if CameraUtil.isAvailable() {
-//            self.startVideoCapture()
-//        }
-//        
-//        time = NSTimer.scheduledTimerWithTimeInterval(REFRESH_MAP_INTERVAL, target: self, selector: #selector(HomeController.refreshMap), userInfo: nil, repeats: true)
-//        if overlayView != nil {
-//            initMenuBtn()
-//            overlayView.addMapView(self)
-//            mapDialogController.initView(mapWidth, mapHeight: mapHeight)
-//        }
-//        
-//        self.navigationController?.navigationBarHidden = true
-//        if CLLocationManager.headingAvailable() {
-//            locManager.startUpdatingHeading()
-//        }
-//        
-//        if GoalCache.instance.ifNeedClearMap {
-//            refresh()
-//        }
+        if (self.session != nil) {
+            self.session.startRunning()
+        }
+        
+        time = NSTimer.scheduledTimerWithTimeInterval(REFRESH_MAP_INTERVAL, target: self, selector: #selector(HomeController.refreshMap), userInfo: nil, repeats: true)
+        if overlayView != nil {
+            initMenuBtn()
+            overlayView.addMapView(self)
+            mapDialogController.initView(mapWidth, mapHeight: mapHeight)
+        }
+        
+        self.navigationController?.navigationBarHidden = true
+        if CLLocationManager.headingAvailable() {
+            locManager.startUpdatingHeading()
+        }
+        
+        if GoalCache.instance.ifNeedClearMap {
+            refresh()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -103,12 +110,69 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
-        if CameraUtil.isAvailable() {
-            self.stopVideoCapture()
+        if (self.session != nil) {
+            self.session.stopRunning()
         }
         
         time.invalidate()
         time = nil
+    }
+    
+    func initView() {
+        if self.previewLayer == nil {
+            self.previewLayer = AVCaptureVideoPreviewLayer.init(session: self.session)
+            
+            let bounds = self.view.bounds
+            self.previewLayer.frame = bounds
+            self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspect
+            
+            self.view.layer.addSublayer(previewLayer)
+        }
+        
+        overlayView = NSBundle.mainBundle().loadNibNamed("CameraOverlay", owner: nil, options: nil).first as? CameraOverlayView
+        if overlayView != nil {
+            let frame = UIScreen.mainScreen().bounds
+            overlayView?.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
+            overlayView?.addMapView(self)
+            overlayView.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(overlayView)
+            let widthConstraint = NSLayoutConstraint(item: overlayView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: 0)
+            let heightConstraint = NSLayoutConstraint(item: overlayView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
+            let centerXConstraint = NSLayoutConstraint(item: overlayView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
+            let centerYConstraint = NSLayoutConstraint(item: overlayView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0)
+            self.view.addConstraints([widthConstraint, heightConstraint, centerXConstraint, centerYConstraint])
+            initOverlayView()
+            initMapDialog()
+            initMonsterGuide()
+        }
+    }
+    
+    func initCamera() {
+        do {
+            self.device = self.cameraWithPosition(AVCaptureDevicePosition.Back)
+            self.input = try AVCaptureDeviceInput(device: self.device)
+            self.imageOutput = AVCaptureStillImageOutput()
+            self.session = AVCaptureSession()
+            
+            if self.session.canAddInput(self.input) {
+                self.session.addInput(self.input)
+            }
+        } catch {
+            let errorMessage = NSLocalizedString("ERROR_INIT_CAMERA", comment: "Failed to initialize camera")
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+        }
+    }
+    
+    func cameraWithPosition(position: AVCaptureDevicePosition) -> AVCaptureDevice? {
+        let devices: NSArray = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
+        
+        for device in devices as! [AVCaptureDevice]{
+            if device.position == position {
+                return device
+            }
+        }
+        
+        return nil
     }
     
     func initOverlayView() {
@@ -152,32 +216,6 @@ class HomeController: UIImagePickerController, MAMapViewDelegate, SetBombDelegat
             overlayView.monsterGuideBtn.hidden = true
             overlayView.warningBtn.hidden = true
             overlayView.shareBtn.hidden = true
-        }
-    }
-    
-    func openCamera() {
-        if CameraUtil.isAvailable() {
-            let mediaTypeArr:NSArray = UIImagePickerController.availableMediaTypesForSourceType(UIImagePickerControllerSourceType.Camera)!
-            
-            if mediaTypeArr.containsObject(kUTTypeMovie) && mediaTypeArr.containsObject(kUTTypeImage) {
-                self.sourceType = UIImagePickerControllerSourceType.Camera
-                self.showsCameraControls = false
-                self.allowsEditing = false
-                
-//                overlayView = NSBundle.mainBundle().loadNibNamed("CameraOverlay", owner: nil, options: nil).first as? CameraOverlayView
-//                if overlayView != nil {
-//                    let frame = UIScreen.mainScreen().bounds
-//                    overlayView?.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
-//                    overlayView?.addMapView(self)
-//                    initMapDialog()
-//                    initMonsterGuide()
-//                }
-//                
-//                self.cameraOverlayView = overlayView
-//                initOverlayView()
-            }
-        } else {
-            
         }
     }
     

@@ -4015,7 +4015,7 @@
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2AC05E6D-7D69-45A6-AD46-340206CA7913" translatesAutoresizingMaskIntoConstraints="NO" id="GgJ-b0-kJC" userLabel="ProductImageView">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="5AB3B9BA-7DBA-48E6-8126-ACBF07E2504F" translatesAutoresizingMaskIntoConstraints="NO" id="GgJ-b0-kJC" userLabel="ProductImageView">
                                                             <rect key="frame" x="-28" y="31" width="300" height="150"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="150" id="3OQ-AA-dqS"/>
@@ -4272,7 +4272,7 @@
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0F5AF025-8BE9-4E07-B385-3BB97014DAA3" translatesAutoresizingMaskIntoConstraints="NO" id="2NN-FD-tGk" userLabel="RewardImageView">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="B4604067-1D4F-46A9-A011-17664B7C10A9" translatesAutoresizingMaskIntoConstraints="NO" id="2NN-FD-tGk" userLabel="RewardImageView">
                                                             <rect key="frame" x="-28" y="31" width="300" height="150"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="150" id="okg-RQ-OJA"/>
@@ -4684,6 +4684,7 @@
                             <constraint firstItem="Fo6-D7-Fa0" firstAttribute="top" secondItem="Zdz-WO-o6k" secondAttribute="bottom" constant="100" id="xwo-No-rlF"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="About" id="t64-oN-7dA"/>
                     <connections>
                         <outlet property="versionLabel" destination="PnM-Oz-bjb" id="6rN-jd-2Hj"/>
                     </connections>
@@ -4708,10 +4709,10 @@
                     </tabBar>
                     <connections>
                         <outlet property="uiTabBar" destination="zhJ-Dg-DNh" id="i8K-HU-s32"/>
-                        <segue destination="eDn-LE-OnT" kind="relationship" relationship="viewControllers" id="4ai-GO-KLW"/>
-                        <segue destination="Snd-pr-EEo" kind="relationship" relationship="viewControllers" id="QrQ-rI-xlF"/>
-                        <segue destination="lgg-4i-HLv" kind="relationship" relationship="viewControllers" id="Ue2-0U-AhZ"/>
-                        <segue destination="PyI-kv-Rev" kind="relationship" relationship="viewControllers" id="7cf-Wq-mXz"/>
+                        <segue destination="hHI-cZ-LGS" kind="relationship" relationship="viewControllers" id="OC7-Cf-pBh"/>
+                        <segue destination="Snd-pr-EEo" kind="relationship" relationship="viewControllers" id="e8K-pj-Bd3"/>
+                        <segue destination="lgg-4i-HLv" kind="relationship" relationship="viewControllers" id="znA-3y-Uoi"/>
+                        <segue destination="PyI-kv-Rev" kind="relationship" relationship="viewControllers" id="UQE-0a-39s"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="law-Je-o3f" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4894,24 +4895,23 @@
             <point key="canvasLocation" x="1691" y="-1441"/>
         </scene>
         <!--Home-->
-        <scene sceneID="ic2-Yy-reb">
+        <scene sceneID="oCA-yE-R9w">
             <objects>
-                <viewController title="Me" id="VwS-pt-H5C" userLabel="Home" customClass="HomeController" customModule="HideSeek" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="7VZ-Gl-FO7" userLabel="Home" customClass="HomeController" customModule="HideSeek" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ycv-L9-XdV"/>
-                        <viewControllerLayoutGuide type="bottom" id="Nks-vR-YHr"/>
+                        <viewControllerLayoutGuide type="top" id="8FI-BO-SoU"/>
+                        <viewControllerLayoutGuide type="bottom" id="AP0-ud-epU"/>
                     </layoutGuides>
-                    <view key="view" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="32R-fB-VRQ">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                    <view key="view" contentMode="scaleToFill" id="URP-Bh-70C">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.92549019610000005" green="0.92549019610000005" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
-                    <navigationItem key="navigationItem" title="Home" id="Q2g-uO-zwc"/>
+                    <navigationItem key="navigationItem" title="Home" id="kRW-AM-Vc0"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mtD-Zp-4rb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="11h-pA-D3g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1698" y="-723"/>
+            <point key="canvasLocation" x="2494" y="-716"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dwD-0R-fqU">
@@ -4929,7 +4929,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cfJ-CJ-p6d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2342" y="-723"/>
+            <point key="canvasLocation" x="3154" y="-723"/>
         </scene>
         <!--ExchangeOrder-->
         <scene sceneID="YCv-aw-TkR">
@@ -5250,32 +5250,27 @@
             <point key="canvasLocation" x="886" y="-47"/>
         </scene>
         <!--Home-->
-        <scene sceneID="nRR-zD-pJE">
+        <scene sceneID="RVH-tU-b2n">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eDn-LE-OnT" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="3" title="Home" image="home" selectedImage="home_selected" id="N9F-hm-NrH"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hHI-cZ-LGS" userLabel="Home" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Home" image="home" selectedImage="home_selected" id="Sn6-XV-AG3"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0yK-xx-eLW">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LQc-Vk-Acn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="barTintColor" red="0.96078431369999995" green="0.76470588240000004" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
-                        <textAttributes key="titleTextAttributes">
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="VwS-pt-H5C" kind="relationship" relationship="rootViewController" id="1gN-70-jgR"/>
+                        <segue destination="7VZ-Gl-FO7" kind="relationship" relationship="rootViewController" id="urg-R2-7mH"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Y4O-7x-X4V" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fWG-SF-WZP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="886" y="-723"/>
+            <point key="canvasLocation" x="1682" y="-716"/>
         </scene>
     </scenes>
     <resources>
-        <image name="0F5AF025-8BE9-4E07-B385-3BB97014DAA3" width="300" height="308">
+        <image name="5AB3B9BA-7DBA-48E6-8126-ACBF07E2504F" width="300" height="308">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11489,7 +11484,7 @@ AAWt6gAFrewABa3xAAWt+QAFrfwABa4BAAWuCQAFrgwABa4eAAWuIQAFriYAAAAAAAAEAQAAAAAAAABB
 AAAAAAAAAAAAAAAAAAWuKA
 </mutableData>
         </image>
-        <image name="2AC05E6D-7D69-45A6-AD46-340206CA7913" width="300" height="308">
+        <image name="B4604067-1D4F-46A9-A011-17664B7C10A9" width="300" height="308">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

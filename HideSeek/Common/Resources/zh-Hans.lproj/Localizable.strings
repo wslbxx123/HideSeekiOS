@@ -71,7 +71,9 @@
 "NONE" = "无";
 "WIN_SCORE" = "战胜积分: ";
 "BEAT_SCORE" = "战败积分: ";
+"VERSION_FORMAT" = "寻宝部落 %@.%@";
 
+"ERROR_INIT_CAMERA" = "初始化相机失败";
 "ERROR_NOT_LOGIN" = "请先登录";
 "ERROR_NOT_SEE_MONSTER" = "你只有看到目标才能分享";
 "ERROR_SESSION_INVALID" = "你已经被迫掉线";

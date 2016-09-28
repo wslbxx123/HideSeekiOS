@@ -16,7 +16,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="392"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PJm-1f-p9i" userLabel="RefreshBtn">
-                            <rect key="frame" x="545" y="15" width="40" height="40"/>
+                            <rect key="frame" x="545" y="25" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="UJy-1L-qYu"/>
                                 <constraint firstAttribute="width" constant="40" id="wxe-IL-h78"/>
@@ -27,7 +27,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9I-w2-uCC" userLabel="SetBombBtn">
-                            <rect key="frame" x="545" y="60" width="40" height="40"/>
+                            <rect key="frame" x="545" y="70" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="5Cf-FT-RPI"/>
                                 <constraint firstAttribute="height" constant="40" id="BBI-uC-SrZ"/>
@@ -39,7 +39,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BNQ-eh-gqy" userLabel="MonsterGuideBtn">
-                            <rect key="frame" x="545" y="105" width="40" height="40"/>
+                            <rect key="frame" x="545" y="115" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="HxJ-4n-7HG"/>
                                 <constraint firstAttribute="width" constant="40" id="Nqq-mf-4lR"/>
@@ -51,7 +51,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FHb-2i-GSr" userLabel="BombNumBtn">
-                            <rect key="frame" x="575" y="80" width="20" height="20"/>
+                            <rect key="frame" x="575" y="90" width="20" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="0V2-Wb-sVG"/>
                                 <constraint firstAttribute="width" constant="20" id="34Z-6O-PjZ"/>
@@ -65,7 +65,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ESH-Dz-thK" userLabel="WarningBtn">
-                            <rect key="frame" x="545" y="150" width="40" height="40"/>
+                            <rect key="frame" x="545" y="160" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="O84-eR-aX1"/>
                                 <constraint firstAttribute="width" constant="40" id="WTB-zg-te3"/>
@@ -76,7 +76,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="02K-wu-j0g" userLabel="ShareBtn">
-                            <rect key="frame" x="545" y="195" width="40" height="40"/>
+                            <rect key="frame" x="545" y="205" width="40" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="Vsc-5e-v76"/>
                                 <constraint firstAttribute="height" constant="40" id="gtt-jL-l8p"/>
@@ -102,7 +102,7 @@
                         </imageView>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="PJm-1f-p9i" firstAttribute="top" secondItem="bFr-RG-79B" secondAttribute="top" constant="15" id="1ka-7w-TEa"/>
+                        <constraint firstItem="PJm-1f-p9i" firstAttribute="top" secondItem="bFr-RG-79B" secondAttribute="top" constant="25" id="1ka-7w-TEa"/>
                         <constraint firstItem="02K-wu-j0g" firstAttribute="trailing" secondItem="ESH-Dz-thK" secondAttribute="trailing" id="5If-n1-5S4"/>
                         <constraint firstItem="FHb-2i-GSr" firstAttribute="leading" secondItem="M9I-w2-uCC" secondAttribute="trailing" constant="-10" id="7ay-2G-wo4"/>
                         <constraint firstItem="M9I-w2-uCC" firstAttribute="top" secondItem="PJm-1f-p9i" secondAttribute="bottom" constant="5" id="BIC-BF-Tma"/>

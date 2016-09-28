@@ -170,8 +170,8 @@
 /* Class = "UIButton"; normalTitle = "Confirm Payment"; ObjectID = "MX3-87-E48"; */
 "MX3-87-E48.normalTitle" = "Confirm Payment";
 
-/* Class = "UITabBarItem"; title = "Home"; ObjectID = "N9F-hm-NrH"; */
-"N9F-hm-NrH.title" = "Home";
+/* Class = "UITabBarItem"; title = "Home"; ObjectID = "Sn6-XV-AG3"; */
+"Sn6-XV-AG3.title" = "Home";
 
 /* Class = "UITextField"; placeholder = "My Phone"; ObjectID = "Nob-a6-Zxh"; */
 "Nob-a6-Zxh.placeholder" = "My Phone";
@@ -188,11 +188,14 @@
 /* Class = "UINavigationItem"; title = "Me"; ObjectID = "Ptk-2v-As5"; */
 "Ptk-2v-As5.title" = "Me";
 
+/* Class = "UINavigationItem"; title = "About"; ObjectID = "t64-oN-7dA"; */
+"t64-oN-7dA.title" = "About";
+
 /* Class = "UINavigationController"; title = "Me"; ObjectID = "PyI-kv-Rev"; */
 "PyI-kv-Rev.title" = "Me";
 
-/* Class = "UINavigationItem"; title = "Home"; ObjectID = "Q2g-uO-zwc"; */
-"Q2g-uO-zwc.title" = "Home";
+/* Class = "UINavigationItem"; title = "Home"; ObjectID = "kRW-AM-Vc0"; */
+"kRW-AM-Vc0.title" = "Home";
 
 /* Class = "UITextField"; placeholder = "My Password"; ObjectID = "Q6r-qk-NsA"; */
 "Q6r-qk-NsA.placeholder" = "My Password";

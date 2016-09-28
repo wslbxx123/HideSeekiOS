@@ -167,8 +167,8 @@
 /* Class = "UIButton"; normalTitle = "Confirm Payment"; ObjectID = "MX3-87-E48"; */
 "MX3-87-E48.normalTitle" = "确认付款";
 
-/* Class = "UITabBarItem"; title = "Home"; ObjectID = "N9F-hm-NrH"; */
-"N9F-hm-NrH.title" = "主页";
+/* Class = "UITabBarItem"; title = "Home"; ObjectID = "Sn6-XV-AG3"; */
+"Sn6-XV-AG3.title" = "主页";
 
 /* Class = "UITextField"; placeholder = "My Phone"; ObjectID = "Nob-a6-Zxh"; */
 "Nob-a6-Zxh.placeholder" = "我的手机";
@@ -185,11 +185,14 @@
 /* Class = "UINavigationItem"; title = "Me"; ObjectID = "Ptk-2v-As5"; */
 "Ptk-2v-As5.title" = "我的";
 
+/* Class = "UINavigationItem"; title = "About"; ObjectID = "t64-oN-7dA"; */
+"t64-oN-7dA.title" = "关于";
+
 /* Class = "UINavigationController"; title = "Me"; ObjectID = "PyI-kv-Rev"; */
 "PyI-kv-Rev.title" = "我的";
 
-/* Class = "UINavigationItem"; title = "Home"; ObjectID = "Q2g-uO-zwc"; */
-"Q2g-uO-zwc.title" = "主页";
+/* Class = "UINavigationItem"; title = "Home"; ObjectID = "kRW-AM-Vc0"; */
+"kRW-AM-Vc0.title" = "主页";
 
 /* Class = "UITextField"; placeholder = "My Password"; ObjectID = "Q6r-qk-NsA"; */
 "Q6r-qk-NsA.placeholder" = "我的密码";

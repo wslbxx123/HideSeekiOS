@@ -71,7 +71,9 @@
 "NONE" = "None";
 "WIN_SCORE" = "Win Score: ";
 "BEAT_SCORE" = "Beat Score: ";
+"VERSION_FORMAT" = "HideSeek %@.%@";
 
+"ERROR_INIT_CAMERA" = "Failed to initiailize the camera";
 "ERROR_NOT_LOGIN" = "Please login first";
 "ERROR_NOT_SEE_MONSTER" = "You can only share the goal when you see it";
 "ERROR_SESSION_INVALID" = "You are kicked out by others";
