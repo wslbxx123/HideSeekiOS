@@ -7,6 +7,7 @@
 //
 
 class UrlParam {
+    static let GET_SETTINGS = "https://www.hideseek.cn/home/user/getSettings"
     static let LOGIN_URL = "https://www.hideseek.cn/home/user/login"
     static let REGISTER_URL = "https://www.hideseek.cn/home/user/register"
     static let REFRESH_MAP_URL = "https://www.hideseek.cn/home/map/refresh"

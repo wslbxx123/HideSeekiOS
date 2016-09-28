@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import AFNetworking
 
 class ViewController: UITabBarController {
     let HtmlType = "text/html"
     @IBOutlet weak var uiTabBar: UITabBar!
     var manager: CustomRequestManager!
+    var httpManager: AFHTTPRequestOperationManager!
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +24,8 @@ class ViewController: UITabBarController {
             item.image = item.image?.imageWithRenderingMode(.AlwaysOriginal)
             item.selectedImage = item.selectedImage?.imageWithRenderingMode(.AlwaysOriginal)
         }
+        httpManager = AFHTTPRequestOperationManager()
+        httpManager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
         manager = CustomRequestManager()
         manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
     }
@@ -49,6 +53,29 @@ class ViewController: UITabBarController {
                                 print("Error: " + error.localizedDescription)
                 })
             }
+        }
+    }
+    
+    func updateSetting() {
+        httpManager.POST(UrlParam.GET_SETTINGS, parameters: [],
+                         success: { (operation, responseObject) in
+                            let response = responseObject as! NSDictionary
+                            print("JSON: " + responseObject.description!)
+            
+                            self.setInfoFromCallback(response)
+                },
+                         failure: { (operation, error) in
+                            print("Error: " + error.localizedDescription)
+            })
+    }
+    
+    func setInfoFromCallback(response: NSDictionary) {
+        let code = (response["code"] as! NSString).integerValue
+        
+        if code == CodeParam.SUCCESS {
+            let result = response["result"] as! NSDictionary
+            
+            Setting.IF_STORE_HIDDEN = BaseInfoUtil.getIntegerFromAnyObject(result["if_store_hidden"]) == 1
         }
     }
 }

@@ -525,6 +525,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             endPoint = MAMapPointForCoordinate(CLLocationCoordinate2DMake(endGoal.latitude, endGoal.longitude));
             
             refreshDistance()
+            checkIfGoalDisplayed()
             overlayView.endGoal = endGoal
         }
         
@@ -614,6 +615,10 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     }
     
     func getGoal() {
+        if GoalCache.instance.ifNeedClearMap {
+            return
+        }
+        
         if !UserCache.instance.ifLogin() {
             UserInfoManager.instance.checkIfGoToLogin(self)
             return
@@ -826,6 +831,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     
     func arrivedAtGoal() {
         refreshDistance()
+        
+        checkIfGoalDisplayed()
     }
     
     func refresh() {

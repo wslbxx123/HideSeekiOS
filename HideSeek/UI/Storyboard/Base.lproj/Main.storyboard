@@ -1523,19 +1523,25 @@
                     <navigationItem key="navigationItem" title="Me" id="Ptk-2v-As5"/>
                     <connections>
                         <outlet property="friendNumLabel" destination="oUB-8D-KC1" id="Due-wZ-2IN"/>
+                        <outlet property="friendScoreView" destination="cPz-Rz-xCf" id="oYa-1o-0gh"/>
                         <outlet property="friendView" destination="Qgj-jR-5z8" id="cf2-s5-2cC"/>
                         <outlet property="goToFriendGesture" destination="5fK-Mm-ens" id="MS7-FJ-lb0"/>
+                        <outlet property="meView" destination="xJf-pX-cVK" id="71l-nn-YgR"/>
+                        <outlet property="myOrderView" destination="OFB-MX-8Nc" id="X1Q-BP-iu5"/>
                         <outlet property="nameLabel" destination="QCA-Fe-RDe" id="dMW-a3-bmK"/>
                         <outlet property="notLoginLabel" destination="Wmo-fC-vpE" id="vpk-Pc-L2A"/>
                         <outlet property="photoImageView" destination="f66-ld-sWK" id="IW3-Cl-oTC"/>
                         <outlet property="profileInfoStackView" destination="XMi-7K-11U" id="GnA-9Y-Ndq"/>
                         <outlet property="pushNumView" destination="5g4-Vh-8BV" id="dyJ-C3-APN"/>
                         <outlet property="registerDateLabel" destination="zdW-7E-3SI" id="mtJ-DQ-2LY"/>
+                        <outlet property="rewardExchangeView" destination="742-Mv-7tH" id="m2L-pf-VjH"/>
                         <outlet property="roleImageView" destination="ATQ-4J-LsU" id="Rdo-gu-xuy"/>
                         <outlet property="scoreLabel" destination="HQ1-a2-0h6" id="hiP-Vk-aog"/>
                         <outlet property="scoreNumLabel" destination="A2F-Yn-lLi" id="9WZ-wS-zAd"/>
                         <outlet property="scoreView" destination="cHq-7K-NLj" id="3p6-0l-7BQ"/>
                         <outlet property="scrollView" destination="aEd-WV-KxR" id="vfX-jx-I4D"/>
+                        <outlet property="settingView" destination="fcy-2I-LSP" id="Z1D-WL-oma"/>
+                        <outlet property="topConstraint" destination="gLo-NX-79T" id="S6u-bE-bs4"/>
                         <segue destination="crP-Jd-pBp" kind="show" identifier="GoToLogin" id="pZf-Pa-eXT"/>
                     </connections>
                 </viewController>
@@ -4015,7 +4021,7 @@
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BC9489CB-63D8-4413-8EF0-3907529BF264" translatesAutoresizingMaskIntoConstraints="NO" id="GgJ-b0-kJC" userLabel="ProductImageView">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="A9E33BD2-D101-4522-BE5B-09880C38616F" translatesAutoresizingMaskIntoConstraints="NO" id="GgJ-b0-kJC" userLabel="ProductImageView">
                                                             <rect key="frame" x="-28" y="31" width="300" height="150"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="150" id="3OQ-AA-dqS"/>
@@ -4272,7 +4278,7 @@
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="53D5C020-E474-4E5E-AD82-7C1B4FDE6D02" translatesAutoresizingMaskIntoConstraints="NO" id="2NN-FD-tGk" userLabel="RewardImageView">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="38BDEB2D-62CF-4B1F-A026-23DE5CE0DC41" translatesAutoresizingMaskIntoConstraints="NO" id="2NN-FD-tGk" userLabel="RewardImageView">
                                                             <rect key="frame" x="-28" y="31" width="300" height="150"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="150" id="okg-RQ-OJA"/>
@@ -5258,6 +5264,11 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="LQc-Vk-Acn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" red="0.96078431369999995" green="0.76470588240000004" blue="0.16862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -5270,7 +5281,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="53D5C020-E474-4E5E-AD82-7C1B4FDE6D02" width="300" height="308">
+        <image name="38BDEB2D-62CF-4B1F-A026-23DE5CE0DC41" width="300" height="308">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11484,7 +11495,7 @@ AAWt6gAFrewABa3xAAWt+QAFrfwABa4BAAWuCQAFrgwABa4eAAWuIQAFriYAAAAAAAAEAQAAAAAAAABB
 AAAAAAAAAAAAAAAAAAWuKA
 </mutableData>
         </image>
-        <image name="BC9489CB-63D8-4413-8EF0-3907529BF264" width="300" height="308">
+        <image name="A9E33BD2-D101-4522-BE5B-09880C38616F" width="300" height="308">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

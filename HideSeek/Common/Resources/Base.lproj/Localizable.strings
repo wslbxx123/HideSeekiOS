@@ -72,6 +72,7 @@
 "WIN_SCORE" = "Win Score: ";
 "BEAT_SCORE" = "Beat Score: ";
 "VERSION_FORMAT" = "HideSeek %@.%@";
+"ALREADY_HAS_GUIDE" = "You already have a monster guide. Continue to buy?";
 
 "ERROR_INIT_CAMERA" = "Failed to initiailize the camera";
 "ERROR_NOT_LOGIN" = "Please login first";

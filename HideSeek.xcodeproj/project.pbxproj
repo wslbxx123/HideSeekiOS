@@ -77,6 +77,7 @@
 		184CBF491D65A31100135C60 /* RateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 184CBF481D65A31100135C60 /* RateView.xib */; };
 		184CBF4B1D65A4B900135C60 /* RateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184CBF4A1D65A4B900135C60 /* RateView.swift */; };
 		184CBF4E1D662C7900135C60 /* kai.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 184CBF4D1D66259E00135C60 /* kai.ttf */; };
+		18508E501D9B6F04008AF03B /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18508E4F1D9B6F04008AF03B /* Setting.swift */; };
 		1857C5EC1D1E719C00D1101C /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1857C5EB1D1E719C00D1101C /* CustomButton.swift */; };
 		185E16881D4C28B200212714 /* HotCityCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185E16871D4C28B200212714 /* HotCityCollectionView.swift */; };
 		185E3DB81D3E2AE800898FED /* GetGoalDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185E3DB71D3E2AE800898FED /* GetGoalDelegate.swift */; };
@@ -384,6 +385,7 @@
 		184CBF481D65A31100135C60 /* RateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RateView.xib; path = UI/Xib/RateView.xib; sourceTree = "<group>"; };
 		184CBF4A1D65A4B900135C60 /* RateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RateView.swift; path = UI/View/RateView.swift; sourceTree = "<group>"; };
 		184CBF4D1D66259E00135C60 /* kai.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = kai.ttf; path = Fonts/kai.ttf; sourceTree = "<group>"; };
+		18508E4F1D9B6F04008AF03B /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Setting.swift; path = Common/Util/Setting.swift; sourceTree = "<group>"; };
 		1857C5EB1D1E719C00D1101C /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomButton.swift; path = Common/Extenstion/CustomButton.swift; sourceTree = "<group>"; };
 		185E16871D4C28B200212714 /* HotCityCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HotCityCollectionView.swift; path = UI/View/HotCityCollectionView.swift; sourceTree = "<group>"; };
 		185E3DB71D3E2AE800898FED /* GetGoalDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetGoalDelegate.swift; path = Common/Delegate/GetGoalDelegate.swift; sourceTree = "<group>"; };
@@ -1070,6 +1072,7 @@
 				18EC94041D24C6D500559627 /* PinYinUtil.swift */,
 				18939FF71D7FFB9C007CA861 /* BadgeUtil.swift */,
 				184CB7461D88633E0086B559 /* UrlUtil.swift */,
+				18508E4F1D9B6F04008AF03B /* Setting.swift */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -1685,6 +1688,7 @@
 				18CF63591D55A57500EABFC0 /* MyOrderController.swift in Sources */,
 				18261CDB1D4788B1005ECD31 /* UploadPhotoController.swift in Sources */,
 				183EC7941D309A7E0009B2A3 /* RecordTableManager.swift in Sources */,
+				18508E501D9B6F04008AF03B /* Setting.swift in Sources */,
 				18CF63611D55E0F500EABFC0 /* PurchaseOrderCache.swift in Sources */,
 				186BC2801D3C99A5002A0BFE /* GuideDelegate.swift in Sources */,
 				189CD4091D49A3AB005983CB /* RegionController.swift in Sources */,

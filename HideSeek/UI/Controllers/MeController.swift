@@ -24,6 +24,12 @@ class MeController: UIViewController, TouchDownDelegate {
     @IBOutlet var goToFriendGesture: UITapGestureRecognizer!
     @IBOutlet weak var friendView: MenuView!
     @IBOutlet weak var pushNumView: UIView!
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
+    @IBOutlet weak var meView: UIView!
+    @IBOutlet weak var friendScoreView: UIView!
+    @IBOutlet weak var myOrderView: MenuView!
+    @IBOutlet weak var settingView: MenuView!
+    @IBOutlet weak var rewardExchangeView: MenuView!
     
     var myProfileController: MyProfileController!
     var dateFormatter: NSDateFormatter = NSDateFormatter()
@@ -106,6 +112,15 @@ class MeController: UIViewController, TouchDownDelegate {
         pushNumView.layer.masksToBounds = true
         
         self.automaticallyAdjustsScrollViewInsets = false
+        
+        if Setting.IF_STORE_HIDDEN {
+            rewardExchangeView.hidden = true
+            myOrderView.hidden = true
+            meView.removeConstraint(topConstraint)
+            
+            let constraint = NSLayoutConstraint(item: settingView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: friendScoreView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 10)
+            meView.addConstraint(constraint)
+        }
     }
     
     func showPhoto() {

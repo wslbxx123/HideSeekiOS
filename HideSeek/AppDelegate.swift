@@ -137,6 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSLog("[XGPush Demo]register errorBlock");
         }
         
+        tabBarController.updateSetting()
         tabBarController.updateChannelId(deviceTokenstr)
     }
     

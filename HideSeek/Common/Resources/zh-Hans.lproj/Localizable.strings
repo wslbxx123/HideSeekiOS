@@ -72,6 +72,7 @@
 "WIN_SCORE" = "战胜积分: ";
 "BEAT_SCORE" = "战败积分: ";
 "VERSION_FORMAT" = "寻宝部落 %@.%@";
+"ALREADY_HAS_GUIDE" = "你已经有怪兽图鉴了，继续购买吗？";
 
 "ERROR_INIT_CAMERA" = "初始化相机失败";
 "ERROR_NOT_LOGIN" = "请先登录";

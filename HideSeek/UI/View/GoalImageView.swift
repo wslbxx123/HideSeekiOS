@@ -73,6 +73,7 @@ class GoalImageView: UIImageView {
             }
             
             setDuration()
+            stopAnimating()
         }
     }
     
@@ -168,15 +169,15 @@ class GoalImageView: UIImageView {
     
     override func didMoveToWindow() {
         super.didMoveToWindow()
-        if self.window != nil {
-            self.startAnimating()
-        } else {
-            dispatch_async(dispatch_get_main_queue(), {
-                if self.window == nil {
-                    self.stopAnimating()
-                }
-            })
-        }
+//        if self.window != nil {
+//            self.startAnimating()
+//        } else {
+//            dispatch_async(dispatch_get_main_queue(), {
+//                if self.window == nil {
+//                    self.stopAnimating()
+//                }
+//            })
+//        }
     }
     
     func setInterval() {

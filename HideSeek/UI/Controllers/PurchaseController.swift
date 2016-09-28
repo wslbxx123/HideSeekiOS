@@ -126,7 +126,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         
         if product.pkId == 2 && UserCache.instance.user.hasGuide {
             let alertController = UIAlertController(title: nil,
-                                                    message: NSLocalizedString("ALREADY_HAS_GUIDE", comment: "You already have monster guide. Continue to buy?"), preferredStyle: UIAlertControllerStyle.Alert)
+                                                    message: NSLocalizedString("ALREADY_HAS_GUIDE", comment: "You already have a monster guide. Continue to buy?"), preferredStyle: UIAlertControllerStyle.Alert)
             let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: "Cancel"),
                                              style: UIAlertActionStyle.Cancel, handler: nil)
             let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Default, handler: { (action) in
