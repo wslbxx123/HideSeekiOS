@@ -107,7 +107,7 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
     }
     
     func setInfoFromRefreshCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             PurchaseOrderCache.instance.setOrders(response["result"] as! NSDictionary)
@@ -171,7 +171,7 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
     }
     
     func setInfoFromGetCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             PurchaseOrderCache.instance.addOrders(response["result"] as! NSDictionary)
@@ -243,7 +243,7 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
     }
     
     func setInfoFromGetOrderCallback(response: NSDictionary, product: Product, count: Int) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary
@@ -290,12 +290,12 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
     }
     
     func setInfoFromPurchaseCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary
-            let bombNum = (result["bomb_num"] as! NSString).integerValue
-            let hasGuide = (result["has_guide"] as! NSString).integerValue
+            let bombNum = BaseInfoUtil.getIntegerFromAnyObject(result["bomb_num"])
+            let hasGuide = BaseInfoUtil.getIntegerFromAnyObject(result["has_guide"])
             
             UserCache.instance.user.bombNum = bombNum
             UserCache.instance.user.hasGuide = hasGuide == 1

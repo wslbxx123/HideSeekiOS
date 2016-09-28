@@ -75,7 +75,7 @@ class RecordCache : BaseCache<Record> {
             list.addObject(Record(date: dateFormatter.stringFromDate(date!),
                 recordId: (recordInfo["pk_id"] as! NSString).longLongValue,
                 time: timeFormatter.stringFromDate(date!),
-                goalType: Goal.GoalTypeEnum(rawValue: (recordInfo["goal_type"] as! NSString).integerValue)!,
+                goalType: Goal.GoalTypeEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(recordInfo["goal_type"]))!,
                 score: BaseInfoUtil.getIntegerFromAnyObject(recordInfo["score"]),
                 scoreSum: BaseInfoUtil.getIntegerFromAnyObject(recordInfo["score_sum"]),
                 version: (recordInfo["version"] as! NSString).longLongValue,

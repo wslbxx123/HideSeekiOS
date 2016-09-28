@@ -58,7 +58,7 @@ class ProductCache : BaseCache<Product> {
                 name: productInfo["product_name"] as! String,
                 imageUrl: productInfo["product_image_url"] as? String,
                 price: (productInfo["price"] as! NSString).doubleValue,
-                purchaseCount: (productInfo["purchase_count"] as! NSString).integerValue,
+                purchaseCount: BaseInfoUtil.getIntegerFromAnyObject(productInfo["purchase_count"]),
                 introduction: productInfo["introduction"] as? String,
                 version: (productInfo["version"] as! NSString).longLongValue))
         }

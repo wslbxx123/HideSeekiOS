@@ -30,6 +30,10 @@ class ViewController: UITabBarController {
         manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -70,7 +74,7 @@ class ViewController: UITabBarController {
     }
     
     func setInfoFromCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary

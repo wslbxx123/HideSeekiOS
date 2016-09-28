@@ -61,7 +61,7 @@ class RaceGroupCache : BaseCache<RaceGroup> {
                 recordItem: RecordItem(
                     recordId: recordIdStr.longLongValue,
                     time: raceGroupInfo["time"] as! String,
-                    goalType: Goal.GoalTypeEnum(rawValue: (raceGroupInfo["goal_type"] as! NSString).integerValue)!,
+                    goalType: Goal.GoalTypeEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(raceGroupInfo["goal_type"]))!,
                     score: BaseInfoUtil.getIntegerFromAnyObject(raceGroupInfo["score"]),
                     scoreSum: BaseInfoUtil.getIntegerFromAnyObject(raceGroupInfo["score_sum"]),
                     version: (raceGroupInfo["version"] as! NSString).longLongValue,

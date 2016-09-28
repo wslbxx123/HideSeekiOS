@@ -312,7 +312,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         getGoalManager.POST(UrlParam.SEE_MONSTER_URL, paramDict: paramDict, success: { (operation, responseObject) in
             print("JSON: " + responseObject.description!)
             let response = responseObject as! NSDictionary
-            let code = (response["code"] as! NSString).integerValue
+            let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
             
             if code != CodeParam.SUCCESS {
                 let errorMessage = ErrorMessageFactory.get(code)
@@ -574,7 +574,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     }
     
     func setInfoFromSetBombCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let bombNum = (response["result"] as! NSNumber).integerValue
@@ -641,7 +641,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     }
     
     func setInfoFromGetGoalCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             if self.endGoal.type == Goal.GoalTypeEnum.bomb {
@@ -650,9 +650,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                 HudToastFactory.showScore(self.endGoal.score, view: self.view)
             }
             
-            UserCache.instance.user.record = response["result"] is NSString ?
-                (response["result"] as! NSString).integerValue :
-                (response["result"] as! NSNumber).integerValue
+            UserCache.instance.user.record = BaseInfoUtil.getIntegerFromAnyObject(response["result"])
             self.updateEndGoal()
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
@@ -757,7 +755,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     }
     
     func setInfoFromHitMonsterCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary

@@ -56,14 +56,14 @@ class GoalCache : BaseCache<Goal> {
             let goal = Goal(pkId: (goalInfo["pk_id"] as! NSString).longLongValue,
                             latitude: (goalInfo["latitude"] as! NSString).doubleValue,
                             longitude: (goalInfo["longitude"] as! NSString).doubleValue,
-                            orientation: (goalInfo["orientation"] as! NSString).integerValue,
-                            valid: (goalInfo["valid"] as! NSString).integerValue == 1,
-                            type: Goal.GoalTypeEnum(rawValue: (goalInfo["type"] as! NSString).integerValue)!,
+                            orientation: BaseInfoUtil.getIntegerFromAnyObject(goalInfo["orientation"]),
+                            valid: BaseInfoUtil.getIntegerFromAnyObject(goalInfo["valid"]) == 1,
+                            type: Goal.GoalTypeEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(goalInfo["type"]))!,
                             showTypeName: goalInfo["show_type_name"] as? String,
                             createBy: (goalInfo["create_by"] as! NSString).longLongValue,
                             introduction: goalInfo["introduction"] as? String,
                             score: BaseInfoUtil.getIntegerFromAnyObject(goalInfo["score"]),
-                            unionType: (goalInfo["union_type"] as! NSString).integerValue)
+                            unionType: BaseInfoUtil.getIntegerFromAnyObject(goalInfo["union_type"]))
             updateList.addObject(goal)
             if(goal.valid) {
                 cacheList.addObject(goal)

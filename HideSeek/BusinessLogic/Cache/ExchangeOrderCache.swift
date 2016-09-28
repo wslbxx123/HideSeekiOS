@@ -54,15 +54,15 @@ class ExchangeOrderCache : BaseCache<PurchaseOrder> {
             let orderInfo = order as! NSDictionary
             list.addObject(ExchangeOrder(
                 orderId: (orderInfo["pk_id"] as! NSString).longLongValue,
-                status: (orderInfo["status"] as! NSString).integerValue,
+                status: BaseInfoUtil.getIntegerFromAnyObject(orderInfo["status"]),
                 createTime: orderInfo["create_time"] as! String,
                 updateTime: orderInfo["update_time"] as! String,
-                count: (orderInfo["count"] as! NSString).integerValue,
+                count: BaseInfoUtil.getIntegerFromAnyObject(orderInfo["count"]),
                 rewardId: (orderInfo["reward_id"] as! NSString).longLongValue,
                 rewardName: orderInfo["reward_name"] as! String,
                 imageUrl: orderInfo["reward_image_url"] as! String,
-                record: (orderInfo["record"] as! NSString).integerValue,
-                exchangeCount: (orderInfo["exchange_count"] as! NSString).integerValue,
+                record: BaseInfoUtil.getIntegerFromAnyObject(orderInfo["record"]),
+                exchangeCount: BaseInfoUtil.getIntegerFromAnyObject(orderInfo["exchange_count"]),
                 introduction: orderInfo["introduction"] as! String,
                 version: (orderInfo["version"] as! NSString).longLongValue))
         }

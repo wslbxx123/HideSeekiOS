@@ -73,7 +73,7 @@ class UpdateNicknameController: UIViewController {
     }
     
     func setInfoFromCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary

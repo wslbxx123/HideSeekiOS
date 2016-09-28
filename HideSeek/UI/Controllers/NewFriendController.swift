@@ -78,7 +78,7 @@ class NewFriendController: UIViewController, AcceptDelegate {
     }
     
     func setInfoFromCallback(response: NSDictionary, friendId: Int64) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             UserCache.instance.user.friendNum = BaseInfoUtil.getIntegerFromAnyObject(response["result"])

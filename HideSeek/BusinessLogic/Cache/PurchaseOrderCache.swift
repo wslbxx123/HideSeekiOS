@@ -54,16 +54,16 @@ class PurchaseOrderCache : BaseCache<PurchaseOrder> {
             let orderInfo = order as! NSDictionary
             list.addObject(PurchaseOrder(
                 orderId: (orderInfo["pk_id"] as! NSString).longLongValue,
-                status: (orderInfo["status"] as! NSString).integerValue,
+                status: BaseInfoUtil.getIntegerFromAnyObject(orderInfo["status"]),
                 createTime: orderInfo["create_time"] as! String,
                 updateTime: orderInfo["update_time"] as! String,
-                count: (orderInfo["count"] as! NSString).integerValue,
+                count: BaseInfoUtil.getIntegerFromAnyObject(orderInfo["count"]),
                 tradeNo: orderInfo["trade_no"] as! String,
                 productId: (orderInfo["store_id"] as! NSString).longLongValue,
                 productName: orderInfo["product_name"] as! String,
                 imageUrl: orderInfo["product_image_url"] as! String,
                 price: (orderInfo["price"] as! NSString).doubleValue,
-                purchaseCount: (orderInfo["purchase_count"] as! NSString).integerValue,
+                purchaseCount: BaseInfoUtil.getIntegerFromAnyObject(orderInfo["purchase_count"]),
                 introduction: orderInfo["introduction"] as! String,
                 version: (orderInfo["version"] as! NSString).longLongValue))
         }

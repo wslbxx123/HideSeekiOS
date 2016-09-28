@@ -174,7 +174,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
     }
     
     func setInfoFromCreateOrderCallback(response: NSDictionary, product: Product, count: Int) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary
@@ -265,12 +265,12 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
     }
     
     func setInfoFromPurchaseCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary
-            let bombNum = (result["bomb_num"] as! NSString).integerValue
-            let hasGuide = (result["has_guide"] as! NSString).integerValue
+            let bombNum = BaseInfoUtil.getIntegerFromAnyObject(result["bomb_num"])
+            let hasGuide = BaseInfoUtil.getIntegerFromAnyObject(result["has_guide"])
             
             UserCache.instance.user.bombNum = bombNum
             UserCache.instance.user.hasGuide = hasGuide == 1

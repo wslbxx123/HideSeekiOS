@@ -62,7 +62,7 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
     }
     
     func setInfoFromCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             FriendCache.instance.setFriends(response["result"] as! NSDictionary)
@@ -192,7 +192,7 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
     }
     
     func setInfoFromRemoveFriendCallback(response: NSDictionary, friend: User) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let friendNum = BaseInfoUtil.getIntegerFromAnyObject(response["result"])

@@ -64,7 +64,7 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
     }
     
     func setInfoFromCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSArray
@@ -98,12 +98,12 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
                             registerDateStr: userInfo["register_date"] as! String,
                             photoUrl: userInfo["photo_url"] as? NSString,
                             smallPhotoUrl: userInfo["small_photo_url"] as? NSString,
-                            sex: User.SexEnum(rawValue: (userInfo["sex"] as! NSString).integerValue)!,
+                            sex: User.SexEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(userInfo["sex"]))!,
                             region: userInfo["region"] as? NSString,
-                            role: User.RoleEnum(rawValue: (userInfo["role"] as! NSString).integerValue)!,
+                            role: User.RoleEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(userInfo["role"]))!,
                             version: (userInfo["version"] as! NSString).longLongValue,
                             pinyin: PinYinUtil.converterToPinyin(userInfo["nickname"] as! String))
-            user.isFriend = (userInfo["is_friend"] as! NSString).integerValue == 1
+            user.isFriend = BaseInfoUtil.getIntegerFromAnyObject(userInfo["is_friend"]) == 1
             list.addObject(user)
         }
         

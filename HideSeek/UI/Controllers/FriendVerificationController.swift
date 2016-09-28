@@ -74,7 +74,7 @@ class FriendVerificationController: UIViewController {
     }
     
     func setInfoFromCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             self.dismissViewControllerAnimated(true, completion: nil)

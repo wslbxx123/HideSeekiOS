@@ -115,7 +115,7 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
     }
     
     func setRefreshInfoFromCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             ExchangeOrderCache.instance.setOrders(response["result"] as! NSDictionary)
@@ -179,7 +179,7 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
     }
     
     func setInfoFromGetCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             PurchaseOrderCache.instance.addOrders(response["result"] as! NSDictionary)
@@ -228,12 +228,10 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
     }
     
     func setCreateInfoFromCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
-            UserCache.instance.user.record = response["result"] is NSString ?
-                (response["result"] as! NSString).integerValue :
-                (response["result"] as! NSNumber).integerValue
+            UserCache.instance.user.record = BaseInfoUtil.getIntegerFromAnyObject(response["result"])
             self.refreshData()
             
             let alertController = UIAlertController(title: nil,

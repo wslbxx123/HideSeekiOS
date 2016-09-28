@@ -95,7 +95,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
     }
     
     func setInfoFromCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             UserCache.instance.setUser(response["result"] as! NSDictionary)

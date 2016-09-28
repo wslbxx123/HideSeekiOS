@@ -116,8 +116,7 @@ class FeedbackController: UIViewController, UIScrollViewDelegate {
     }
     
     func setInfoFromCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
-        
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])        
         if code == CodeParam.SUCCESS {
             let alertController = UIAlertController(title: nil,
                                                     message: NSLocalizedString("SUCCESS_COMMIT_FEEDBACK", comment: "Commit feedback successfully"), preferredStyle: UIAlertControllerStyle.Alert)

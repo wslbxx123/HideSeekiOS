@@ -106,7 +106,7 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
     }
     
     func setInfoFromRefreshCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             RaceGroupCache.instance.setRaceGroup(response["result"] as! NSDictionary)
@@ -161,7 +161,7 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
     }
     
     func setInfoFromGetCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             RaceGroupCache.instance.addRaceGroup(response["result"] as! NSDictionary)

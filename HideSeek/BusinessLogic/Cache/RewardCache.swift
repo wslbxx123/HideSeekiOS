@@ -57,8 +57,8 @@ class RewardCache : BaseCache<Reward> {
             list.addObject(Reward(pkId: (rewardInfo["pk_id"] as! NSString).longLongValue,
                 name: rewardInfo["reward_name"] as! String,
                 imageUrl: rewardInfo["reward_image_url"] as? String,
-                record: (rewardInfo["record"] as! NSString).integerValue,
-                exchangeCount: (rewardInfo["exchange_count"] as! NSString).integerValue,
+                record: BaseInfoUtil.getIntegerFromAnyObject(rewardInfo["record"]),
+                exchangeCount: BaseInfoUtil.getIntegerFromAnyObject(rewardInfo["exchange_count"]),
                 introduction: rewardInfo["introduction"] as? String,
                 version: (rewardInfo["version"] as! NSString).longLongValue))
         }

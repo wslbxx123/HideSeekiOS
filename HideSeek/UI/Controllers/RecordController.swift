@@ -97,7 +97,7 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
     }
     
     func setInfoFromRefreshCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             RecordCache.instance.setRecords(response["result"] as! NSDictionary)
@@ -168,7 +168,7 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
     }
     
     func setInfoFromGetCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             RecordCache.instance.addRecords(response["result"] as! NSDictionary)

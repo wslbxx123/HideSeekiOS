@@ -81,7 +81,7 @@ class UpdateSexController: UIViewController, TouchDownDelegate, PickerViewDelega
     }
     
     func setInfoFromCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary
@@ -99,7 +99,7 @@ class UpdateSexController: UIViewController, TouchDownDelegate, PickerViewDelega
     func updateUser(profileInfo: NSDictionary) {
         let user = UserCache.instance.user
         
-        user.sex = User.SexEnum(rawValue: (profileInfo["sex"] as! NSString).integerValue)!
+        user.sex = User.SexEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(profileInfo["sex"]))!
     }
 
     func touchDown(tag: Int) {

@@ -175,12 +175,10 @@ class ExchangeController: UIViewController, ExchangeDelegate,
     }
     
     func setInfoFromCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
-            UserCache.instance.user.record = response["result"] is NSString ?
-                (response["result"] as! NSString).integerValue :
-                (response["result"] as! NSNumber).integerValue
+            UserCache.instance.user.record = BaseInfoUtil.getIntegerFromAnyObject(response["result"])
             self.refreshRewardData()
             
             let alertController = UIAlertController(title: nil,

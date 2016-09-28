@@ -63,9 +63,9 @@ class NewFriendCache : BaseCache<User> {
             registerDateStr: friendInfo["register_date"] as! NSString,
             photoUrl: friendInfo["photo_url"] as? NSString,
             smallPhotoUrl: friendInfo["small_photo_url"] as? NSString,
-            sex: User.SexEnum(rawValue: (friendInfo["sex"] as! NSString).integerValue)!,
+            sex: User.SexEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(friendInfo["sex"]))!,
             region: friendInfo["region"] as? NSString,
-            role: User.RoleEnum(rawValue: (friendInfo["role"] as! NSString).integerValue)!,
+            role: User.RoleEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(friendInfo["role"]))!,
             version: (friendInfo["version"] as! NSString).longLongValue,
             pinyin: NSString(string: pinyinStr))
         

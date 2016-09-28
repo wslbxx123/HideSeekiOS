@@ -102,7 +102,7 @@ class WarningController: UIViewController, UpdateGoalDelegate {
     }
     
     func setInfoFromCallback(response: NSDictionary) {
-        let code = (response["code"] as! NSString).integerValue
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             WarningCache.instance.setWarnings(response["result"] as! NSDictionary)
@@ -128,14 +128,14 @@ class WarningController: UIViewController, UpdateGoalDelegate {
                 pkId: (warningInfo["pk_id"] as! NSString).longLongValue,
                 latitude: (warningInfo["latitude"] as! NSString).doubleValue,
                 longitude: (warningInfo["longitude"] as! NSString).doubleValue,
-                orientation: (warningInfo["orientation"] as! NSString).integerValue,
-                valid: (warningInfo["valid"] as! NSString).integerValue == 1,
-                type: Goal.GoalTypeEnum(rawValue: (warningInfo["type"] as! NSString).integerValue)!,
+                orientation: BaseInfoUtil.getIntegerFromAnyObject(warningInfo["orientation"]),
+                valid: BaseInfoUtil.getIntegerFromAnyObject(warningInfo["valid"]) == 1,
+                type: Goal.GoalTypeEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(warningInfo["type"]))!,
                 showTypeName: warningInfo["show_type_name"] as? String,
                 createBy: (warningInfo["create_by"] as! NSString).longLongValue,
                 introduction: warningInfo["introduction"] as? String,
                 score: BaseInfoUtil.getIntegerFromAnyObject(warningInfo["score"]),
-                unionType: (warningInfo["union_type"] as! NSString).integerValue),
+                unionType: BaseInfoUtil.getIntegerFromAnyObject(warningInfo["union_type"])),
                 createTime: warningInfo["create_time"] as! String)
             
             list.addObject(warning)
