@@ -79,8 +79,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                    appSecret: self.SHARE_SECRET)
                     break;
                 case SSDKPlatformType.TypeQQ:
-                    appInfo.SSDKSetupQQByAppId("100371282",
-                                               appKey: "aed9b0303e3ed1e27bae87c33761161d",
+                    appInfo.SSDKSetupQQByAppId("1105718948",
+                                               appKey: "ZDFy7JnidJqj1G2a",
                                                authType: SSDKAuthTypeBoth)
                     break;
                 case SSDKPlatformType.TypeRenren:
