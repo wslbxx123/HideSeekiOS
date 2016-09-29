@@ -116,6 +116,7 @@
 		186DD1431D793F660098064E /* HideKeyboardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186DD1421D793F660098064E /* HideKeyboardDelegate.swift */; };
 		186DD1451D798A070098064E /* ArriveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186DD1441D798A070098064E /* ArriveDelegate.swift */; };
 		186DD1471D798DCE0098064E /* RefreshMapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186DD1461D798DCE0098064E /* RefreshMapDelegate.swift */; };
+		186F5ECF1D9C92AF0066617D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 186F5ED11D9C92AF0066617D /* InfoPlist.strings */; };
 		1872B55B1D44FF5100416A49 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1872B55A1D44FF5100416A49 /* MenuView.swift */; };
 		187B556F1D1D291C00841430 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187B556E1D1D291C00841430 /* LoginController.swift */; };
 		18857C201D52092E0049714B /* AlipaySDK.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 18857C1E1D52092E0049714B /* AlipaySDK.bundle */; };
@@ -438,6 +439,9 @@
 		186DD1421D793F660098064E /* HideKeyboardDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HideKeyboardDelegate.swift; path = Common/Delegate/HideKeyboardDelegate.swift; sourceTree = "<group>"; };
 		186DD1441D798A070098064E /* ArriveDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArriveDelegate.swift; path = Common/Delegate/ArriveDelegate.swift; sourceTree = "<group>"; };
 		186DD1461D798DCE0098064E /* RefreshMapDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefreshMapDelegate.swift; path = Common/Delegate/RefreshMapDelegate.swift; sourceTree = "<group>"; };
+		186F5ED01D9C92AF0066617D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		186F5ED21D9C92B10066617D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		186F5ED31D9C92B30066617D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		1872B55A1D44FF5100416A49 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuView.swift; path = UI/View/MenuView.swift; sourceTree = "<group>"; };
 		187B556E1D1D291C00841430 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginController.swift; path = UI/Controllers/LoginController.swift; sourceTree = "<group>"; };
 		18857C1E1D52092E0049714B /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = AlipaySDK.bundle; path = Frameworks/AlipaySDK.bundle; sourceTree = "<group>"; };
@@ -1201,6 +1205,7 @@
 			isa = PBXGroup;
 			children = (
 				18FD1A9E1D1A2FC800225C92 /* Localizable.strings */,
+				186F5ED11D9C92AF0066617D /* InfoPlist.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1418,6 +1423,7 @@
 				18C789251D3DCC2A003123F8 /* bomb_c.png in Resources */,
 				18C789231D3DCC2A003123F8 /* bomb_a.png in Resources */,
 				1822053C1D4F5B6D005A3F83 /* grass_fairy.png in Resources */,
+				186F5ECF1D9C92AF0066617D /* InfoPlist.strings in Resources */,
 				184CBF491D65A31100135C60 /* RateView.xib in Resources */,
 				1822053D1D4F5B6D005A3F83 /* lightning_giant.png in Resources */,
 				1802B3511D2D43BE004D8AB5 /* hideseek_cities.db in Resources */,
@@ -1783,6 +1789,17 @@
 			);
 			name = MonsterGuideView.xib;
 			path = UI/Xib;
+			sourceTree = "<group>";
+		};
+		186F5ED11D9C92AF0066617D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				186F5ED01D9C92AF0066617D /* Base */,
+				186F5ED21D9C92B10066617D /* en */,
+				186F5ED31D9C92B30066617D /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			path = Common/Resources;
 			sourceTree = "<group>";
 		};
 		18FD1A961D1A2B8F00225C92 /* LaunchScreen.storyboard */ = {

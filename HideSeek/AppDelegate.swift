@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let SHARE_SECRET = "d54adfb1105f71be8099b5a803bbc92f"
     let QQ_SHARE_ID = "1105718948"
     let QQ_SHARE_KEY = "ZDFy7JnidJqj1G2a"
+    let BUGLY_ID = "900054641"
     var window: UIWindow?
     var isBackgroundActivateApplication: Bool = false
     var tabBarController: ViewController!
@@ -38,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SMSSDK.registerApp(SMS_KEY, withSecret: SMS_SECRET)
         
         PushManager.instance.startApp(launchOptions)
+        Bugly.startWithAppId(BUGLY_ID)
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         

@@ -26,12 +26,11 @@ class LoginController: UIViewController {
     }
     
     @IBAction func loginBtnClicked(sender: AnyObject) {
-        let channalId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.CHANNEL_ID) as! String
+        let channalId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.CHANNEL_ID) as? String
+        
         let paramDict = ["phone": phone,
                          "password": password,
-                         "channel_id": channalId]
-        manager = AFHTTPRequestOperationManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+                         "channel_id": channalId == nil ? "" : channalId!]
         
         var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
@@ -73,6 +72,8 @@ class LoginController: UIViewController {
         super.viewDidLoad()
         
         initView()
+        manager = AFHTTPRequestOperationManager()
+        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
     }
     
     override func viewDidAppear(animated: Bool) {

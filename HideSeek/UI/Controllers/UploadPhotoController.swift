@@ -39,7 +39,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
     }
     
     @IBAction func matchRoleBtnClicked(sender: AnyObject) {
-        let channalId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.CHANNEL_ID) as! String
+        let channalId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.CHANNEL_ID) as? String
         let paramDict = NSMutableDictionary()
         let role = arc4random_uniform(5)
         paramDict["phone"] = phone
@@ -47,7 +47,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
         paramDict["password"] = password
         paramDict["role"] = "\(role)"
         paramDict["sex"] = "\(sex.rawValue)"
-        paramDict["channel_id"] = channalId
+        paramDict["channel_id"] = channalId == nil ? "" : channalId!
         
         if region != nil {
             paramDict["region"] = region

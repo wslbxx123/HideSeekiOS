@@ -66,19 +66,15 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
         super.viewDidAppear(animated)
         showInternal()
         self.navigationController?.navigationBarHidden = false
-        self.tabBarController?.tabBar.hidden = true
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         self.navigationController?.navigationBarHidden = false
-        self.tabBarController?.tabBar.hidden = true
     }
     
     override func viewWillDisappear(animated: Bool) {
-        self.tabBarController?.tabBar.hidden = false
-        
         super.viewWillDisappear(animated)
     }
 

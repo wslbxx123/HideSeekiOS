@@ -7,5 +7,5 @@
 //
 
 class Setting {
-    static var IF_STORE_HIDDEN = false
+    static var IF_STORE_HIDDEN = true
 }

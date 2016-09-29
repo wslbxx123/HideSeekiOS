@@ -6,7 +6,6 @@
   Copyright © 2016 mj. All rights reserved.
 */
 
-"CFBundleDisplayName" = "寻宝部落";
 "LOADING_HINT" = "请等待……";
 "JOIN" = "加入";
 "SCORE_TITLE" = "积分：";

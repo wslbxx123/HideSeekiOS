@@ -31,5 +31,7 @@
 //人人SDK头文件
 #import <RennSDK/RennSDK.h>
 
+#import <Bugly/Bugly.h>
+
 //#import <AFNetworking.h>
 //#import <MBProgressHUD.h>
