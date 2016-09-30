@@ -16,6 +16,7 @@ class FriendVerificationController: UIViewController {
     @IBOutlet weak var navigation: UINavigationItem!
     var manager: CustomRequestManager!
     var user: User!
+    var count: Int = 0
 
     @IBAction func clearBtnClicked(sender: AnyObject) {
         requestTextField.text = ""
@@ -52,6 +53,12 @@ class FriendVerificationController: UIViewController {
     }
     
     func sendBtnClicked() {
+        count = 0
+        sendFriendRequest()
+    }
+    
+    func sendFriendRequest() {
+        count += 1
         let message = requestTextField.text == nil ? "" : requestTextField.text!
         let paramDict: NSMutableDictionary = ["friend_id": "\(user.pkId)", "message": message]
         var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
@@ -79,12 +86,16 @@ class FriendVerificationController: UIViewController {
         if code == CodeParam.SUCCESS {
             self.dismissViewControllerAnimated(true, completion: nil)
         } else {
-            let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
-                if code == CodeParam.ERROR_SESSION_INVALID {
-                    UserInfoManager.instance.logout(self)
-                }
-            })
+            if code == 10023 && count <= 5 {
+                sendFriendRequest()
+            } else {
+                let errorMessage = ErrorMessageFactory.get(code)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                    if code == CodeParam.ERROR_SESSION_INVALID {
+                        UserInfoManager.instance.logout(self)
+                    }
+                })
+            }
         }
     }
 }

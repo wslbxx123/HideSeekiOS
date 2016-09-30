@@ -6,7 +6,7 @@
 "1J1-rg-3W1.text" = "设置为默认地址";
 
 /* Class = "UIButton"; normalTitle = "Add"; ObjectID = "1ee-zo-yxL"; */
-"1ee-zo-yxL.normalTitle" = "增加";
+"1ee-zo-yxL.normalTitle" = "添加";
 
 /* Class = "UILabel"; text = "Region"; ObjectID = "3qH-dw-FQ7"; */
 "3qH-dw-FQ7.text" = "地区";

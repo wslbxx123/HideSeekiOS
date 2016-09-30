@@ -90,6 +90,7 @@
 "ERROR_RECORD_NOT_ENOUGH" = "You record is not enough";
 "ERROR_NO_GOAL" = "There is no goal for you";
 "ERROR_GOAL_INVALID" = "The goal has disappeared";
+"ERROR_FAIL_SEND_MESSAGE" = "Failed to send friend request";
 
 "MESSAGE_GET_MUSHROOM" = "Throw a mushroom monster into sack easily, Rich bitch!";
 "MESSAGE_GET_EGG" = "So excited! Beat an egg monster successfully!";

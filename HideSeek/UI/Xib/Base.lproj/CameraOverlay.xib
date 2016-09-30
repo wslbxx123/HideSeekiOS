@@ -122,7 +122,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9v8-E7-fn6" userLabel="MapView">
                     <rect key="frame" x="0.0" y="392" width="600" height="160"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ho2-Ne-CxX" userLabel="MapStackView">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iza-vF-Sh9" userLabel="MapContentView" customClass="OAStackView">
                             <rect key="frame" x="2" y="2" width="596" height="156"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mjI-7t-vi7" userLabel="MapUIView">
@@ -136,7 +136,7 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </view>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="mMg-UT-3ch" userLabel="MapInfoStackView">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cQv-ll-gle" userLabel="MapInfoView" customClass="OAStackView">
                                     <rect key="frame" x="298" y="0.0" width="298" height="156"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1fI-ub-an9" userLabel="HintView">
@@ -168,7 +168,7 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v2z-Qt-HHa" userLabel="DistanceView" customClass="HomeView" customModule="HideSeek" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="39" width="298" height="78"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="dKN-Ix-JWA" userLabel="LocationStackView">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A4h-qn-7N2" userLabel="LocationView" customClass="OAStackView">
                                                     <rect key="frame" x="89" y="14" width="120" height="50"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="introduce_icon" translatesAutoresizingMaskIntoConstraints="NO" id="9W7-ly-wp1" userLabel="LocationImageView">
@@ -181,7 +181,7 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XIm-cG-yTI" userLabel="DistanceView">
                                                             <rect key="frame" x="35" y="0.0" width="85" height="50"/>
                                                             <subviews>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="F2F-XU-j6q" userLabel="DistanceStackView">
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k9U-a2-IQt" userLabel="DistanceInfoView">
                                                                     <rect key="frame" x="0.0" y="7" width="85" height="37"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Goal Distance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ilx-Hf-298" userLabel="DistanceHint">
@@ -198,27 +198,46 @@
                                                                         </label>
                                                                     </subviews>
                                                                     <constraints>
-                                                                        <constraint firstItem="GTX-in-qZb" firstAttribute="height" secondItem="Ilx-Hf-298" secondAttribute="height" id="Q3A-L6-EN4"/>
-                                                                        <constraint firstItem="Ilx-Hf-298" firstAttribute="width" secondItem="F2F-XU-j6q" secondAttribute="width" id="hBQ-5u-va4"/>
+                                                                        <constraint firstItem="GTX-in-qZb" firstAttribute="centerX" secondItem="k9U-a2-IQt" secondAttribute="centerX" id="3g0-12-Vmq"/>
+                                                                        <constraint firstItem="Ilx-Hf-298" firstAttribute="width" secondItem="k9U-a2-IQt" secondAttribute="width" id="6Xh-Z3-x8h"/>
+                                                                        <constraint firstItem="GTX-in-qZb" firstAttribute="width" secondItem="k9U-a2-IQt" secondAttribute="width" id="Bxt-w2-ehR"/>
+                                                                        <constraint firstAttribute="bottom" secondItem="GTX-in-qZb" secondAttribute="bottom" id="GKT-73-dv5"/>
+                                                                        <constraint firstItem="Ilx-Hf-298" firstAttribute="centerX" secondItem="k9U-a2-IQt" secondAttribute="centerX" id="R6z-VI-RPY"/>
+                                                                        <constraint firstItem="GTX-in-qZb" firstAttribute="top" secondItem="Ilx-Hf-298" secondAttribute="bottom" constant="5" id="WUK-ik-pfK"/>
+                                                                        <constraint firstItem="Ilx-Hf-298" firstAttribute="top" secondItem="k9U-a2-IQt" secondAttribute="top" id="gon-2M-q9d"/>
                                                                     </constraints>
-                                                                </stackView>
+                                                                </view>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstItem="F2F-XU-j6q" firstAttribute="centerY" secondItem="XIm-cG-yTI" secondAttribute="centerY" id="C8R-jb-x0A"/>
-                                                                <constraint firstItem="F2F-XU-j6q" firstAttribute="centerX" secondItem="XIm-cG-yTI" secondAttribute="centerX" id="bTH-Z1-gec"/>
-                                                                <constraint firstItem="F2F-XU-j6q" firstAttribute="width" secondItem="XIm-cG-yTI" secondAttribute="width" id="p7t-Ca-xlw"/>
+                                                                <constraint firstItem="k9U-a2-IQt" firstAttribute="centerX" secondItem="XIm-cG-yTI" secondAttribute="centerX" id="G7e-pf-22c"/>
+                                                                <constraint firstItem="k9U-a2-IQt" firstAttribute="centerY" secondItem="XIm-cG-yTI" secondAttribute="centerY" id="fHI-wh-4xr"/>
+                                                                <constraint firstItem="k9U-a2-IQt" firstAttribute="width" secondItem="XIm-cG-yTI" secondAttribute="width" id="q0c-Nz-yTx"/>
                                                             </constraints>
                                                         </view>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="9W7-ly-wp1" firstAttribute="leading" secondItem="dKN-Ix-JWA" secondAttribute="leading" id="lBR-T2-fhP"/>
+                                                        <constraint firstItem="9W7-ly-wp1" firstAttribute="centerY" secondItem="A4h-qn-7N2" secondAttribute="centerY" id="8pv-Bm-j8k"/>
+                                                        <constraint firstItem="XIm-cG-yTI" firstAttribute="leading" secondItem="9W7-ly-wp1" secondAttribute="trailing" constant="5" id="G4y-xD-WBX"/>
+                                                        <constraint firstItem="XIm-cG-yTI" firstAttribute="height" secondItem="A4h-qn-7N2" secondAttribute="height" id="Gx0-R7-0Tl"/>
+                                                        <constraint firstItem="XIm-cG-yTI" firstAttribute="centerY" secondItem="A4h-qn-7N2" secondAttribute="centerY" id="Pcb-89-UYM"/>
+                                                        <constraint firstItem="9W7-ly-wp1" firstAttribute="leading" secondItem="A4h-qn-7N2" secondAttribute="leading" id="SSC-d2-qPX"/>
+                                                        <constraint firstItem="9W7-ly-wp1" firstAttribute="height" secondItem="A4h-qn-7N2" secondAttribute="height" id="UFm-ba-xem"/>
+                                                        <constraint firstAttribute="trailing" secondItem="XIm-cG-yTI" secondAttribute="trailing" id="uPL-NN-sCG"/>
                                                     </constraints>
-                                                </stackView>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="axisValue">
+                                                            <integer key="value" value="0"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="spacing">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
-                                                <constraint firstItem="dKN-Ix-JWA" firstAttribute="centerX" secondItem="v2z-Qt-HHa" secondAttribute="centerX" id="F5B-NG-2dV"/>
-                                                <constraint firstItem="dKN-Ix-JWA" firstAttribute="centerY" secondItem="v2z-Qt-HHa" secondAttribute="centerY" id="lQe-U9-bNy"/>
+                                                <constraint firstItem="A4h-qn-7N2" firstAttribute="centerX" secondItem="v2z-Qt-HHa" secondAttribute="centerX" id="9Yb-lu-V8Q"/>
+                                                <constraint firstItem="A4h-qn-7N2" firstAttribute="centerY" secondItem="v2z-Qt-HHa" secondAttribute="centerY" id="Jnf-ba-EGp"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
@@ -264,26 +283,56 @@
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="1gL-RO-Ndz" secondAttribute="bottom" id="ZYk-hQ-yqi"/>
-                                        <constraint firstItem="1gL-RO-Ndz" firstAttribute="height" secondItem="mMg-UT-3ch" secondAttribute="height" multiplier="0.25" id="gDp-4W-GzE"/>
-                                        <constraint firstItem="v2z-Qt-HHa" firstAttribute="centerY" secondItem="mMg-UT-3ch" secondAttribute="centerY" id="v1m-lD-Ulc"/>
+                                        <constraint firstItem="v2z-Qt-HHa" firstAttribute="top" secondItem="1fI-ub-an9" secondAttribute="bottom" id="0aB-As-teW"/>
+                                        <constraint firstItem="v2z-Qt-HHa" firstAttribute="width" secondItem="cQv-ll-gle" secondAttribute="width" id="0cT-zL-wBf"/>
+                                        <constraint firstItem="1gL-RO-Ndz" firstAttribute="height" secondItem="cQv-ll-gle" secondAttribute="height" multiplier="0.25" id="4Dx-4Q-WRm"/>
+                                        <constraint firstItem="v2z-Qt-HHa" firstAttribute="centerY" secondItem="cQv-ll-gle" secondAttribute="centerY" id="AXn-Jr-sfm"/>
+                                        <constraint firstItem="1fI-ub-an9" firstAttribute="top" secondItem="cQv-ll-gle" secondAttribute="top" id="HrD-lS-9eu"/>
+                                        <constraint firstAttribute="bottom" secondItem="1gL-RO-Ndz" secondAttribute="bottom" id="LXI-CX-0cg"/>
+                                        <constraint firstItem="1fI-ub-an9" firstAttribute="width" secondItem="cQv-ll-gle" secondAttribute="width" id="T9Z-pi-vkG"/>
+                                        <constraint firstItem="1fI-ub-an9" firstAttribute="centerX" secondItem="cQv-ll-gle" secondAttribute="centerX" id="a8F-gx-j6t"/>
+                                        <constraint firstItem="v2z-Qt-HHa" firstAttribute="centerX" secondItem="cQv-ll-gle" secondAttribute="centerX" id="gtI-hN-ctQ"/>
+                                        <constraint firstItem="1gL-RO-Ndz" firstAttribute="centerX" secondItem="cQv-ll-gle" secondAttribute="centerX" id="kMb-Xn-QYi"/>
+                                        <constraint firstItem="1gL-RO-Ndz" firstAttribute="top" secondItem="v2z-Qt-HHa" secondAttribute="bottom" id="mCl-CP-VD9"/>
+                                        <constraint firstItem="1gL-RO-Ndz" firstAttribute="width" secondItem="cQv-ll-gle" secondAttribute="width" id="w9p-rV-9FO"/>
                                     </constraints>
-                                </stackView>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="axisValue">
+                                            <integer key="value" value="1"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="spacing">
+                                            <real key="value" value="0.0"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </view>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="mMg-UT-3ch" firstAttribute="height" secondItem="ho2-Ne-CxX" secondAttribute="height" id="2Ub-Ep-BrV"/>
-                                <constraint firstItem="mMg-UT-3ch" firstAttribute="width" secondItem="mjI-7t-vi7" secondAttribute="width" id="BJ2-5y-Erh"/>
-                                <constraint firstItem="mjI-7t-vi7" firstAttribute="height" secondItem="ho2-Ne-CxX" secondAttribute="height" id="wJ6-zR-1xj"/>
+                                <constraint firstItem="mjI-7t-vi7" firstAttribute="centerY" secondItem="Iza-vF-Sh9" secondAttribute="centerY" id="0Pu-jb-nhO"/>
+                                <constraint firstItem="cQv-ll-gle" firstAttribute="leading" secondItem="mjI-7t-vi7" secondAttribute="trailing" id="7It-94-Zbm"/>
+                                <constraint firstItem="mjI-7t-vi7" firstAttribute="height" secondItem="Iza-vF-Sh9" secondAttribute="height" id="7gL-3S-ZK8"/>
+                                <constraint firstItem="cQv-ll-gle" firstAttribute="centerY" secondItem="Iza-vF-Sh9" secondAttribute="centerY" id="AeV-f4-2KI"/>
+                                <constraint firstAttribute="trailing" secondItem="cQv-ll-gle" secondAttribute="trailing" id="KPh-qV-iga"/>
+                                <constraint firstItem="cQv-ll-gle" firstAttribute="width" secondItem="mjI-7t-vi7" secondAttribute="width" id="g8G-mP-S1z"/>
+                                <constraint firstItem="mjI-7t-vi7" firstAttribute="leading" secondItem="Iza-vF-Sh9" secondAttribute="leading" id="yGC-Yg-9LO"/>
+                                <constraint firstItem="cQv-ll-gle" firstAttribute="height" secondItem="Iza-vF-Sh9" secondAttribute="height" id="ycG-no-TjU"/>
                             </constraints>
-                        </stackView>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="axisValue">
+                                    <integer key="value" value="0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="spacing">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="ho2-Ne-CxX" firstAttribute="top" secondItem="9v8-E7-fn6" secondAttribute="top" constant="2" id="5hr-uh-cWW"/>
-                        <constraint firstItem="ho2-Ne-CxX" firstAttribute="leading" secondItem="9v8-E7-fn6" secondAttribute="leading" constant="2" id="6Ji-YR-Jn0"/>
-                        <constraint firstAttribute="trailing" secondItem="ho2-Ne-CxX" secondAttribute="trailing" constant="2" id="IhY-h1-Uun"/>
+                        <constraint firstAttribute="bottom" secondItem="Iza-vF-Sh9" secondAttribute="bottom" constant="2" id="JTG-N5-rJq"/>
+                        <constraint firstItem="Iza-vF-Sh9" firstAttribute="leading" secondItem="9v8-E7-fn6" secondAttribute="leading" constant="2" id="TU7-zt-a8U"/>
+                        <constraint firstItem="Iza-vF-Sh9" firstAttribute="top" secondItem="9v8-E7-fn6" secondAttribute="top" constant="2" id="ZQD-KC-hRZ"/>
                         <constraint firstAttribute="height" constant="160" id="cgX-ud-cbc"/>
-                        <constraint firstAttribute="bottom" secondItem="ho2-Ne-CxX" secondAttribute="bottom" constant="2" id="p2S-AK-1tb"/>
+                        <constraint firstAttribute="trailing" secondItem="Iza-vF-Sh9" secondAttribute="trailing" constant="2" id="fFg-a4-2Lo"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BY3-2w-hFz" userLabel="BlankView">
@@ -330,7 +379,7 @@
                 <outlet property="distanceView" destination="v2z-Qt-HHa" id="FLZ-W1-SWN"/>
                 <outlet property="goalImageView" destination="Ssn-ak-qNT" id="bYi-TP-2x1"/>
                 <outlet property="guideBtn" destination="iqj-2I-Iwq" id="95P-6e-68G"/>
-                <outlet property="locationStackView" destination="dKN-Ix-JWA" id="Rbt-hj-kvo"/>
+                <outlet property="locationView" destination="A4h-qn-7N2" id="OWq-Fv-XP4"/>
                 <outlet property="mapUIView" destination="mjI-7t-vi7" id="fvM-Fb-ZXk"/>
                 <outlet property="monsterGuideBtn" destination="BNQ-eh-gqy" id="e5h-Vg-Md3"/>
                 <outlet property="setBombBtn" destination="M9I-w2-uCC" id="FT1-4c-Ac2"/>

@@ -189,8 +189,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         overlayView.warningDelegate = self
         overlayView.shareDelegate = self
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeController.touchDown))
-        overlayView.locationStackView.userInteractionEnabled = true
-        overlayView.locationStackView.addGestureRecognizer(gestureRecognizer)
+        overlayView.locationView.userInteractionEnabled = true
+        overlayView.locationView.addGestureRecognizer(gestureRecognizer)
         
         if overlayView != nil {
             initMenuBtn()

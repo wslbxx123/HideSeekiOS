@@ -146,7 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-        NSLog("DeviceToken 获取失败，原因：％@", error)
+        NSLog("DeviceToken 获取失败，原因：％@", error.description)
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
@@ -196,10 +196,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             BadgeUtil.updateMeBadge()
             break;
-        default:
+        case ACCEPT_FRIEND:
             newFriendController.setFriendRequest(result, isFriend: true)
             
             BadgeUtil.updateMeBadge()
+            break;
+        default:
             break;
         }
         

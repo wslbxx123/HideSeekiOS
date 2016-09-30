@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import OAStackView
 
 class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate {
     let HtmlType = "text/html"
@@ -14,7 +15,7 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
     var manager: CustomRequestManager!
     @IBOutlet weak var recordTableView: RecordTableView!
     @IBOutlet weak var scoreSumLabel: UILabel!
-    @IBOutlet weak var noResultStackView: UIStackView!
+    @IBOutlet weak var noResultView: OAStackView!
     var refreshControl: UIRefreshControl!
     var recordTableManager: RecordTableManager!
     var loadingImageView: UIImageView!
@@ -104,9 +105,9 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
             self.scoreSumLabel.text = String(RecordCache.instance.scoreSum)
             self.recordTableView.recordList = RecordCache.instance.cacheList
             if self.recordTableView.recordList.count == 0 {
-                self.noResultStackView.hidden = false
+                self.noResultView.hidden = false
             } else {
-                self.noResultStackView.hidden = true
+                self.noResultView.hidden = true
             }
             self.recordTableView.reloadData()
             self.refreshControl.endRefreshing()

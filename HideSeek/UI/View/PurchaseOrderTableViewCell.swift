@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import OAStackView
 
 class PurchaseOrderTableViewCell: UITableViewCell {
     let TAG_PRODUCT_IMAGEVIEW = 1;
@@ -21,7 +22,7 @@ class PurchaseOrderTableViewCell: UITableViewCell {
     var amountLabel: UILabel!
     var payBtn: UIButton!
     var successLabel: UILabel!
-    var processView: UIStackView!
+    var processView: OAStackView!
     var purchaseDelegate: PurchaseDelegate!
     var product: Product!
     var orderId: Int64 = 0
@@ -34,7 +35,7 @@ class PurchaseOrderTableViewCell: UITableViewCell {
         self.amountLabel = self.viewWithTag(TAG_AMOUNT_LABEL) as! UILabel
         self.payBtn = self.viewWithTag(TAG_PAY_BUTTON) as! UIButton
         self.successLabel = self.viewWithTag(TAG_SUCCESS_LABEL) as! UILabel
-        self.processView = self.viewWithTag(TAG_PROCESS_VIEW) as! UIStackView
+        self.processView = self.viewWithTag(TAG_PROCESS_VIEW) as! OAStackView
         self.payBtn.addTarget(self, action: #selector(PurchaseOrderTableViewCell.payBtnClicked), forControlEvents: UIControlEvents.TouchDown)
     }
     

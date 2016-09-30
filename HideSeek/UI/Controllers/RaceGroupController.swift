@@ -8,12 +8,13 @@
 
 import UIKit
 import AFNetworking
+import OAStackView
 
 class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate, GoToPhotoDelegate{
     let HtmlType = "text/html"
     let TAG_LOADING_IMAGEVIEW = 1
     @IBOutlet weak var raceGroupTableView: RaceGroupTableView!
-    @IBOutlet weak var noResultStackView: UIStackView!
+    @IBOutlet weak var noResultView: OAStackView!
     var manager: CustomRequestManager!
     var refreshControl: UIRefreshControl!
     var customLoadingView: UIView!
@@ -114,9 +115,9 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
             self.raceGroupTableView.reloadData()
             
             if self.raceGroupTableView.raceGroupList.count == 0 {
-                self.noResultStackView.hidden = false
+                self.noResultView.hidden = false
             } else {
-                self.noResultStackView.hidden = true
+                self.noResultView.hidden = true
             }
         } else {
             let errorMessage = ErrorMessageFactory.get(code)

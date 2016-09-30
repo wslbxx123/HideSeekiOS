@@ -13,4 +13,5 @@ pod 'Bugly'
 use_frameworks!
 pod 'SQLite.swift', '~> 0.10.1'
 pod 'PEPhotoCropEditor'
+pod "OAStackView"
 end

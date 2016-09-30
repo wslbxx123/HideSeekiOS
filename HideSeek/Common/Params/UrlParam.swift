@@ -48,7 +48,7 @@ class UrlParam {
     static let REMOVE_FRIEND_URL = "https://www.hideseek.cn/home/friend/removeFriend"
     static let UPDATE_CHANNEL_URL = "https://www.hideseek.cn/home/user/updateChannelId"
     
-    static let APP_STORE_URL = "https://itunes.apple.com/us/app/hideseek/id1154398844?ls=1&mt=8"
-    static let IOS7_APP_STORE_URL = "https://itunes.apple.com/us/app/hideseek/id1154398844?ls=1&mt=8"
+    static let APP_STORE_URL = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1154398844&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8"
+    static let IOS7_APP_STORE_URL = "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1154398844&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8"
     static let MANUAL_URL = "http://mp.weixin.qq.com/s?__biz=MzIzNzQ4MTU1NQ==&mid=2247483667&idx=1&sn=0d84694e04c2985d40b0b766eff2a448&chksm=e8c6ba2fdfb133391db9343c64b3826e7f5721bd094b9d985fce526f37f725ae610c57e0d0a3#rd"
 }

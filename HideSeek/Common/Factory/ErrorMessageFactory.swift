@@ -21,6 +21,8 @@ class ErrorMessageFactory {
             return NSLocalizedString("ERROR_GOAL_DISAPPEAR", comment: "The goal is killed by others")
         case CodeParam.ERROR_SEARCH_MYSELF:
             return NSLocalizedString("ERROR_SEARCH_MYSELF", comment: "Cannot add yourself as friend")
+        case CodeParam.ERROR_FAIL_SEND_MESSAGE:
+            return NSLocalizedString("ERROR_FAIL_SEND_MESSAGE", comment: "Failed to send friend request")
         default:
             return ""
         }

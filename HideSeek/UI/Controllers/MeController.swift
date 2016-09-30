@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import OAStackView
 
 class MeController: UIViewController, TouchDownDelegate {
 
@@ -14,7 +15,7 @@ class MeController: UIViewController, TouchDownDelegate {
     @IBOutlet weak var notLoginLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var registerDateLabel: UILabel!
-    @IBOutlet weak var profileInfoStackView: UIStackView!
+    @IBOutlet weak var profileView: OAStackView!
     @IBOutlet weak var roleImageView: UIImageView!
     @IBOutlet weak var friendNumLabel: UILabel!
     @IBOutlet weak var scoreNumLabel: UILabel!
@@ -143,13 +144,13 @@ class MeController: UIViewController, TouchDownDelegate {
                 + " " + NSLocalizedString("JOIN", comment: "join")
             roleImageView.image = UIImage(named: user.roleImageName)
             notLoginLabel.hidden = true
-            profileInfoStackView.hidden = false
+            profileView.hidden = false
             
             scoreNumLabel.text = "\(user.record)"
             friendNumLabel.text = "\(user.friendNum)"
             friendView.addGestureRecognizer(goToFriendGesture)
         } else {
-            profileInfoStackView.hidden = true
+            profileView.hidden = true
             notLoginLabel.hidden = false
             photoUrl = ""
             scoreNumLabel.text = "0"

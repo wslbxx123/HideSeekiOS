@@ -45,9 +45,9 @@ class RegisterController: UIViewController {
         SMSSDK.getVerificationCodeByMethod(SMSGetCodeMethodSMS, phoneNumber: phone, zone: "86",
                                            customIdentifier: nil) { (error) in
             if (error == nil) {
-                
+                NSLog("发送验证码成功")
             } else {
-                NSLog("错误信息：%@", error)
+                NSLog("错误信息：%@", error.description)
             }
         }
     }

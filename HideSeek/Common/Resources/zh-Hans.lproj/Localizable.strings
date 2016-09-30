@@ -90,6 +90,7 @@
 "ERROR_RECORD_NOT_ENOUGH" = "你的积分不足";
 "ERROR_NO_GOAL" = "你没有目标物";
 "ERROR_GOAL_INVALID" = "该目标已经消失";
+"ERROR_FAIL_SEND_MESSAGE" = "发送好友请求失败";
 
 "MESSAGE_GET_MUSHROOM" = "成功丢入1枚蘑菇兽，有钱就是任性。";
 "MESSAGE_GET_EGG" = "鸡冻！秒碎1只怪诞兽，画面太美，我不敢看。";

@@ -112,7 +112,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>GPS在后台持续运行，可以大大降低电池的寿命。 </string>
+	<string>在地图上随时得到用户的位置并且监测用户和目标的距离</string>
 	<key>Required Background Modes</key>
 	<string></string>
 	<key>UIAppFonts</key>

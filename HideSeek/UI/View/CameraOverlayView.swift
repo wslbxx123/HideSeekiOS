@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import OAStackView
 
 class CameraOverlayView: UIView, HitMonsterDelegate {
     var mapView:MAMapView!
@@ -18,7 +19,7 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var monsterGuideBtn: UIButton!
     @IBOutlet weak var distanceView: HomeView!
-    @IBOutlet weak var locationStackView: UIStackView!
+    @IBOutlet weak var locationView: OAStackView!
     @IBOutlet weak var goalImageView: GoalImageView!
     @IBOutlet weak var swordImageView: SwordImageView!
     @IBOutlet weak var warningBtn: UIButton!
