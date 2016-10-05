@@ -13,6 +13,7 @@ class MapDialogController: UIViewController, MAMapViewDelegate {
     var markerDictionary = NSMutableDictionary()
     var goalDictionary = NSMutableDictionary()
     var setEndGoalDelegate: SetEndGoalDelegate!
+    var ifMapLoaded: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +40,10 @@ class MapDialogController: UIViewController, MAMapViewDelegate {
         mapView.customizeUserLocationAccuracyCircleRepresentation = true
         mapView.delegate = self
         self.view.addSubview(mapView)
+    }
+    
+    func mapViewDidFinishLoadingMap(mapView: MAMapView!) {
+        ifMapLoaded = true
     }
 
     func mapView(mapView: MAMapView!, didSelectAnnotationView view: MAAnnotationView!) {

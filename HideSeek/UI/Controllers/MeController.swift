@@ -113,15 +113,6 @@ class MeController: UIViewController, TouchDownDelegate {
         pushNumView.layer.masksToBounds = true
         
         self.automaticallyAdjustsScrollViewInsets = false
-        
-        if Setting.IF_STORE_HIDDEN {
-            rewardExchangeView.hidden = true
-            myOrderView.hidden = true
-            meView.removeConstraint(topConstraint)
-            
-            let constraint = NSLayoutConstraint(item: settingView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: friendScoreView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 10)
-            meView.addConstraint(constraint)
-        }
     }
     
     func showPhoto() {
@@ -134,6 +125,15 @@ class MeController: UIViewController, TouchDownDelegate {
     }
     
     func setProfileInfo() {
+        if Setting.IF_STORE_HIDDEN {
+            rewardExchangeView.hidden = true
+            myOrderView.hidden = true
+            meView.removeConstraint(topConstraint)
+            
+            let constraint = NSLayoutConstraint(item: settingView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: friendScoreView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 10)
+            meView.addConstraint(constraint)
+        }
+        
         var photoUrl: String?
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         if(UserCache.instance.ifLogin()) {

@@ -80,6 +80,9 @@ class ViewController: UITabBarController {
             let result = response["result"] as! NSDictionary
             
             Setting.IF_STORE_HIDDEN = BaseInfoUtil.getIntegerFromAnyObject(result["if_store_hidden"]) == 1
+            
+            let log = Setting.IF_STORE_HIDDEN ? "true" : "false"
+            NSLog(log)
         }
     }
 }
