@@ -69,6 +69,10 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
             self.friendTableView.alphaIndex = self.getAlphaIndexFromList(FriendCache.instance.friendList)
             self.friendTableView.friendList = FriendCache.instance.friendList
             self.friendTableView.reloadData()
+            
+            if UserCache.instance.ifLogin() && UserCache.instance.user.friendNum != FriendCache.instance.friendList.count {
+                UserCache.instance.user.friendNum = FriendCache.instance.friendList.count
+            }
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
             HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {

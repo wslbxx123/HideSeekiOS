@@ -46,6 +46,7 @@ class UserInfoManager {
         
         PushManager.instance.unRegister()
         GoalCache.instance.ifNeedClearMap = true
+        BadgeUtil.clearMeBadge()
     }
     
     func logout(viewController: UIViewController) -> Bool {

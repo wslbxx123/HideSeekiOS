@@ -10,7 +10,7 @@ import UIKit
 import OAStackView
 
 class MeController: UIViewController, TouchDownDelegate {
-
+    let HtmlType = "text/html"
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var notLoginLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
@@ -33,6 +33,7 @@ class MeController: UIViewController, TouchDownDelegate {
     @IBOutlet weak var rewardExchangeView: MenuView!
     
     var myProfileController: MyProfileController!
+    var getFriendRequestManager: CustomRequestManager!
     var dateFormatter: NSDateFormatter = NSDateFormatter()
     
     @IBAction func goToFriends(sender: AnyObject) {
@@ -65,12 +66,15 @@ class MeController: UIViewController, TouchDownDelegate {
         super.viewDidLoad()
 
         initView()
+        getFriendRequestManager = CustomRequestManager()
+        getFriendRequestManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
         setProfileInfo()
+        setFriendRequests()
         self.navigationController?.navigationBarHidden = false
     }
     
@@ -116,7 +120,12 @@ class MeController: UIViewController, TouchDownDelegate {
     }
     
     func showPhoto() {
-        
+        let storyboard = UIStoryboard(name:"Main", bundle: nil)
+        let photoController = storyboard.instantiateViewControllerWithIdentifier("photo") as! PhotoController
+        let user = UserCache.instance.user
+        photoController.photoUrl = user.photoUrl as String
+        photoController.smallPhotoUrl = user.smallPhotoUrl as String
+        self.navigationController?.pushViewController(photoController, animated: true)
     }
     
     func goToRecord() {
@@ -124,14 +133,50 @@ class MeController: UIViewController, TouchDownDelegate {
         (window?.rootViewController as! UITabBarController).selectedIndex = 1
     }
     
+    func setFriendRequests() {
+        if !UserCache.instance.ifLogin() {
+            return
+        }
+        
+        let paramDict = NSMutableDictionary()
+        getFriendRequestManager.POST(UrlParam.GET_FRIEND_REQUESTS_URL, paramDict: paramDict, success: { (operation, responseObject) in
+            let response = responseObject as! NSDictionary
+            print("JSON: " + responseObject.description!)
+            
+            self.setInfoFromCallback(response)
+            
+            }) { (operation, error) in
+                print("Error: " + error.localizedDescription)
+        }
+    }
+    
+    func setInfoFromCallback(response: NSDictionary) {
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
+        
+        if code == CodeParam.SUCCESS {
+            let friendRequests = response["result"] as! NSArray
+            
+            NewFriendCache.instance.setFriends(friendRequests)
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+        }
+    }
+    
     func setProfileInfo() {
         if Setting.IF_STORE_HIDDEN {
             rewardExchangeView.hidden = true
             myOrderView.hidden = true
-            meView.removeConstraint(topConstraint)
-            
-            let constraint = NSLayoutConstraint(item: settingView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: friendScoreView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 10)
-            meView.addConstraint(constraint)
+            if topConstraint != nil {
+                meView.removeConstraint(topConstraint)
+                
+                let constraint = NSLayoutConstraint(item: settingView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: friendScoreView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 10)
+                meView.addConstraint(constraint)
+            }
         }
         
         var photoUrl: String?

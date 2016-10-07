@@ -57,4 +57,37 @@ class AlipayManager {
         }
         return returnStr
     }
+    
+    func checkAlipayResult(url: NSURL) {
+        AlipaySDK.defaultService().processOrderWithPaymentResult(url, standbyCallback: { (result) in
+            NSLog("result = %@", result.description);
+            
+            let resultDic = result as NSDictionary
+            let resultStatus = resultDic["resultStatus"]?.integerValue
+            let message = AlipayManager.instance.getAlipayResult(resultStatus!)
+            
+            let window = UIApplication.sharedApplication().keyWindow
+            let controller = window!.visibleViewController()
+            
+            if controller.isKindOfClass(StoreController) {
+                let storeController = controller as! StoreController
+                if(resultStatus == 9000) {
+                    storeController.purchaseController.showMessage(message as String, type: HudToastFactory.MessageType.SUCCESS)
+                    storeController.purchaseController.purchase()
+                    storeController.purchaseController.close()
+                } else {
+                    storeController.purchaseController.showMessage(message as String, type: HudToastFactory.MessageType.ERROR)
+                }
+            } else if controller.isKindOfClass(MyOrderController){
+                let myOrderController = controller as! MyOrderController
+                if(resultStatus == 9000) {
+                    myOrderController.purchaseOrderController.showMessage(message as String, type: HudToastFactory.MessageType.SUCCESS)
+                    myOrderController.purchaseOrderController.purchase()
+                    myOrderController.purchaseOrderController.close()
+                } else {
+                    myOrderController.purchaseOrderController.showMessage(message as String, type: HudToastFactory.MessageType.ERROR)
+                }
+            }
+        })
+    }
 }

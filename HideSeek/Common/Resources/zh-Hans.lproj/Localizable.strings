@@ -92,6 +92,7 @@
 "ERROR_GOAL_INVALID" = "该目标已经消失";
 "ERROR_FAIL_SEND_MESSAGE" = "发送好友请求失败";
 
+"SEARCH_NO_USER" = "没有找到符合的用户";
 "MESSAGE_GET_MUSHROOM" = "成功丢入1枚蘑菇兽，有钱就是任性。";
 "MESSAGE_GET_EGG" = "鸡冻！秒碎1只怪诞兽，画面太美，我不敢看。";
 "MESSAGE_GET_COW" = "被1只呲牙兽盯上了，还好机智及时发现，快夸我！";

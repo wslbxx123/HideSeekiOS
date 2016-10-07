@@ -92,6 +92,7 @@
 "ERROR_GOAL_INVALID" = "The goal has disappeared";
 "ERROR_FAIL_SEND_MESSAGE" = "Failed to send friend request";
 
+"SEARCH_NO_USER" = "There are no users matched";
 "MESSAGE_GET_MUSHROOM" = "Throw a mushroom monster into sack easily, Rich bitch!";
 "MESSAGE_GET_EGG" = "So excited! Beat an egg monster successfully!";
 "MESSAGE_GET_COW" = "You are watched by a cow monster，how smart I am to beat it in time!";

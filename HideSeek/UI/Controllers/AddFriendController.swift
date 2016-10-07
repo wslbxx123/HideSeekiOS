@@ -75,6 +75,12 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
                 addFriendTableView.reloadData()
             } else if(userList.count == 1) {
                 goToProfile(userList[0] as! User)
+            } else {
+                let alertController = UIAlertController(title: nil,
+                                                        message: NSLocalizedString("SEARCH_NO_USER", comment: "There are no users matched"), preferredStyle: UIAlertControllerStyle.Alert)
+                let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Cancel, handler: nil)
+                alertController.addAction(okAction)
+                self.presentViewController(alertController, animated: true, completion: nil)
             }
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
