@@ -5,5 +5,5 @@
 /* Class = "UILabel"; text = "Battle Roles: "; ObjectID = "YLE-W6-r3m"; */
 "YLE-W6-r3m.text" = "战斗角色: ";
 
-/* Class = "UILabel"; text = "Label"; ObjectID = "YbZ-RO-IXw"; */
-"YbZ-RO-IXw.text" = "Label";
+/* Class = "UILabel"; text = "Monster Guide"; ObjectID = "Kxu-Ra-uzd"; */
+"Kxu-Ra-uzd.text" = "怪兽图鉴";

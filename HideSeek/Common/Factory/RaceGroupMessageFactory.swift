@@ -10,11 +10,11 @@ class RaceGroupMessageFactory {
     class func get(goalType: Goal.GoalTypeEnum, showTypeName: String?)-> String {
         switch(goalType) {
         case .mushroom:
-            return NSLocalizedString("MESSAGE_GET_MUSHROOM", comment: "Get a mushroom into a sack successfully")
+            return NSLocalizedString("MESSAGE_GET_MUSHROOM", comment: "Throw a mushroom monster into sack easily, Rich bitch!")
         case .monster:
             return getMonsterMessage(showTypeName!)
         case .bomb:
-            return NSLocalizedString("MESSAGE_GET_BOMB", comment: "A bomb went off, ouch")
+            return NSLocalizedString("MESSAGE_GET_BOMB", comment: "Unfortunately detonated a crafty bomb monster, Give me a break!")
         default:
             return ""
         }
