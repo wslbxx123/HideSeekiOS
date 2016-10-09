@@ -1,6 +1,6 @@
 
 /* Class = "UIButton"; normalTitle = "Get"; ObjectID = "Ee5-PQ-CfK"; */
-"Ee5-PQ-CfK.normalTitle" = "获得";
+"Ee5-PQ-CfK.normalTitle" = "击打";
 
 /* Class = "UILabel"; text = "Boss, a goal there!"; ObjectID = "89j-Ef-BxR"; */
 "89j-Ef-BxR.text" = "族人！发现目标";
@@ -10,3 +10,6 @@
 
 /* Class = "UIButton"; text = "Guide Me"; ObjectID = "iqj-2I-Iwq"; */
 "iqj-2I-Iwq.normalTitle" = "开始寻宝";
+
+/* Class = "UILabel"; text = "Welcome to HideSeek"; ObjectID = "kby-Mx-uQJ"; */
+"kby-Mx-uQJ.text" = "欢迎来到寻宝部落";

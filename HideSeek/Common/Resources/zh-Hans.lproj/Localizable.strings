@@ -72,6 +72,7 @@
 "BEAT_SCORE" = "战败积分: ";
 "VERSION_FORMAT" = "寻宝部落 %@.%@";
 "ALREADY_HAS_GUIDE" = "你已经有怪兽图鉴了，继续购买吗？";
+"NOT_MEET_CONDITION" = "没有满足打怪条件";
 
 "ERROR_INIT_CAMERA" = "初始化相机失败";
 "ERROR_NOT_LOGIN" = "请先登录";
@@ -100,3 +101,4 @@
 "MESSAGE_GET_GIRAFFE" = "出门靠朋友，1只长悠兽说来就来，运气好怪我咯？！";
 "MESSAGE_GET_DRAGON" = "大快人心！龙冠兽霸气回收，让我高调嘚瑟下。";
 "MESSAGE_GET_BOMB" = "不幸引爆1只蹲点的诡诈兽，给跪了！";
+"MESSAGE_GOAL_HINT" = "族人！发现目标";

@@ -23,5 +23,6 @@ class UserDefaultParam {
     static let EXCHANGE_ORDER_MIN_ID = "ExchangeOrderMinId"
     static let EXCHANGE_ORDER_VERSION  = "ExchangeOrderVersion"
     static let FRIEND_VERSION = "FriendVersion"
+    static let DEVICE_TOKEN = "DeviceToken"
     static let CHANNEL_ID = "ChannelId"
 }

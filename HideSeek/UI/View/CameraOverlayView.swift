@@ -24,6 +24,10 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     @IBOutlet weak var swordImageView: SwordImageView!
     @IBOutlet weak var warningBtn: UIButton!
     @IBOutlet weak var shareBtn: UIButton!
+    @IBOutlet weak var hintLabel: UILabel!
+    @IBOutlet weak var hintInfoView: OAStackView!
+    @IBOutlet weak var welcomeLabel: UILabel!
+    @IBOutlet weak var roleImageView: UIImageView!
     
     var refreshMapDelegate: RefreshMapDelegate!
     var setBombDelegate: SetBombDelegate!

@@ -1375,6 +1375,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.Push = {
+								enabled = 1;
+							};
 							com.apple.SafariKeychain = {
 								enabled = 1;
 							};
@@ -1989,7 +1992,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = mj.HideSeek;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "1aab2a61-cd54-4097-81c7-b811490eaf4e";
 				SWIFT_OBJC_BRIDGING_HEADER = "HideSeek/HideSeek-Bridging-Header.h";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};

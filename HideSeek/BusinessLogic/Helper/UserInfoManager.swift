@@ -26,6 +26,7 @@ class UserInfoManager {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.EXCHANGE_ORDER_MIN_ID)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.FRIEND_VERSION)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.SCORE_SUM)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.CHANNEL_ID)
         
         NSUserDefaults.standardUserDefaults().synchronize()
         

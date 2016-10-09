@@ -19,6 +19,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     var manager: AFHTTPRequestOperationManager!
     var setBombManager: CustomRequestManager!
     var getGoalManager: CustomRequestManager!
+    var hitMonsterManager: CustomRequestManager!
     var success: AFHTTPRequestOperation!
     var latitude: CLLocationDegrees!
     var longitude: CLLocationDegrees!
@@ -59,6 +60,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         setBombManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
         getGoalManager = CustomRequestManager()
         getGoalManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        hitMonsterManager = CustomRequestManager()
+        hitMonsterManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
         
         locManager = CLLocationManager()
         locManager.delegate = self
@@ -80,6 +83,16 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             initMenuBtn()
             overlayView.addMapView(self)
             mapDialogController.initView(mapWidth, mapHeight: mapHeight)
+            
+            if UserCache.instance.ifLogin() {
+                let user = UserCache.instance.user
+                overlayView.welcomeLabel.hidden = true
+                overlayView.hintInfoView.hidden = false
+                overlayView.roleImageView.image = UIImage(named: user.roleImageName)
+            } else {
+                overlayView.welcomeLabel.hidden = false
+                overlayView.hintInfoView.hidden = true
+            }
         }
         
         self.navigationController?.navigationBarHidden = true
@@ -520,13 +533,14 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         }
         setGoalsOnMap(list)
         endGoal = GoalCache.instance.selectedGoal
+        overlayView.hintLabel.text = NSLocalizedString("MESSAGE_GOAL_HINT", comment: "Leader, a goal there!")
         
         if endGoal != nil {
+            overlayView.endGoal = endGoal
             endPoint = MAMapPointForCoordinate(CLLocationCoordinate2DMake(endGoal.latitude, endGoal.longitude));
             
             refreshDistance()
             checkIfGoalDisplayed()
-            overlayView.endGoal = endGoal
         }
         
         self.ifSeeGoal = false;
@@ -736,7 +750,6 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             UserInfoManager.instance.checkIfGoToLogin(self)
             return
         }
-
         
         let paramDict = NSMutableDictionary()
         let pkId: Int64 = (endGoal?.pkId)!
@@ -744,14 +757,18 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         paramDict["goal_id"] = "\(pkId)"
         paramDict["account_role"] = "\(accountRole)"
         
-        getGoalManager.POST(UrlParam.HIT_MONSTER_URL, paramDict: paramDict, success: { (operation, responseObject) in
+        hitMonsterManager.POST(UrlParam.HIT_MONSTER_URL, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
             
             self.setInfoFromHitMonsterCallback(response)
+            self.hitMonsterManager.ifLock = false
         }) { (operation, error) in
             let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
             HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            self.hitMonsterManager.ifLock = false
         }
+        
+        hitMonsterManager.ifLock = true
     }
     
     func setInfoFromHitMonsterCallback(response: NSDictionary) {
@@ -761,9 +778,15 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             let result = response["result"] as! NSDictionary
             if (result["score_sum"] != nil && !result.objectForKey("score_sum")!.isKindOfClass(NSNull)) {
                 HudToastFactory.showScore(self.endGoal.score, view: self.view)
+        
                 if(UserCache.instance.ifLogin()) {
                     UserCache.instance.user.record = BaseInfoUtil.getIntegerFromAnyObject(result["score_sum"])
                     self.updateEndGoal()
+                }
+            } else {
+                let canSuccess = BaseInfoUtil.getIntegerFromAnyObject(result["if_can_success"])
+                if canSuccess == 0 {
+                    overlayView.hintLabel.text = NSLocalizedString("NOT_MEET_CONDITION", comment: "Not meet hit-monster condition")
                 }
             }
         } else {

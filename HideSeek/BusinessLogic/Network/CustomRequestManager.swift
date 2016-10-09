@@ -8,10 +8,16 @@
 import AFNetworking
 
 class CustomRequestManager: AFHTTPRequestOperationManager {
+    var ifLock: Bool = false
+    
     func POST(URLString: String,
               paramDict: NSMutableDictionary,
               success: ((AFHTTPRequestOperation, AnyObject) -> Void)?,
               failure: ((AFHTTPRequestOperation?, NSError) -> Void)?) -> AFHTTPRequestOperation? {
+        if ifLock {
+            return nil
+        }
+        
         let userDefault = NSUserDefaults.standardUserDefaults()
         let sessionToken = userDefault.objectForKey(UserDefaultParam.SESSION_TOKEN) as? String
         paramDict["session_id"] = sessionToken
@@ -20,6 +26,10 @@ class CustomRequestManager: AFHTTPRequestOperationManager {
     }
     
     func POST(URLString: String, paramDict: NSMutableDictionary, constructingBodyWithBlock block: ((AFMultipartFormData) -> Void)?, success: ((AFHTTPRequestOperation, AnyObject) -> Void)?, failure: ((AFHTTPRequestOperation?, NSError) -> Void)?) -> AFHTTPRequestOperation? {
+        if ifLock {
+            return nil
+        }
+
         let userDefault = NSUserDefaults.standardUserDefaults()
         let sessionToken = userDefault.objectForKey(UserDefaultParam.SESSION_TOKEN) as? String
         paramDict["session_id"] = sessionToken

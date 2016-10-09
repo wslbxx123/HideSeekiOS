@@ -72,6 +72,7 @@
 "BEAT_SCORE" = "Beat Score: ";
 "VERSION_FORMAT" = "HideSeek %@.%@";
 "ALREADY_HAS_GUIDE" = "You already have a monster guide. Continue to buy?";
+"NOT_MEET_CONDITION" = "Not meet hit-monster condition";
 
 "ERROR_INIT_CAMERA" = "Failed to initiailize the camera";
 "ERROR_NOT_LOGIN" = "Please login first";
@@ -100,3 +101,4 @@
 "MESSAGE_GET_GIRAFFE" = "Thanks to friends,lucky to get a giraffe monster!";
 "MESSAGE_GET_DRAGON" = "It is a great satisfaction to get a dragon monster, so cool!";
 "MESSAGE_GET_BOMB" = "Unfortunately detonated a crafty bomb monster, Give me a break!";
+"MESSAGE_GOAL_HINT" = "Leader, a goal there!";

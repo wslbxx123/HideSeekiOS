@@ -1,6 +1,6 @@
 
 /* Class = "UIButton"; normalTitle = "Get"; ObjectID = "Ee5-PQ-CfK"; */
-"Ee5-PQ-CfK.normalTitle" = "Get";
+"Ee5-PQ-CfK.normalTitle" = "Hit";
 
 /* Class = "UILabel"; text = "Boss, a goal there!"; ObjectID = "89j-Ef-BxR"; */
 "89j-Ef-BxR.text" = "Leader, a goal there!";
@@ -10,3 +10,6 @@
 
 /* Class = "UIButton"; text = "Guide Me"; ObjectID = "iqj-2I-Iwq"; */
 "iqj-2I-Iwq.normalTitle" = "Guide Me";
+
+/* Class = "UILabel"; text = "Welcome to HideSeek"; ObjectID = "kby-Mx-uQJ"; */
+"kby-Mx-uQJ.text" = "Welcome to HideSeek";

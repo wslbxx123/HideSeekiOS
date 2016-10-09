@@ -142,19 +142,54 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1fI-ub-an9" userLabel="HintView">
                                             <rect key="frame" x="0.0" y="0.0" width="298" height="39"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leader, a goal there!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89j-Ef-BxR" userLabel="HintLabel">
-                                                    <rect key="frame" x="0.0" y="0.0" width="298" height="39"/>
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TMl-aG-Viu" userLabel="HintInfoView" customClass="OAStackView">
+                                                    <rect key="frame" x="74" y="7" width="151" height="25"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uq6-8k-LZY" userLabel="RoleImageView">
+                                                            <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="25" id="IOm-fh-OgT"/>
+                                                                <constraint firstAttribute="height" constant="25" id="Sol-jH-2r7"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leader, a goal there!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89j-Ef-BxR" userLabel="HintLabel">
+                                                            <rect key="frame" x="27" y="4" width="124" height="16"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="89j-Ef-BxR" secondAttribute="trailing" id="1Hd-Yp-SJx"/>
+                                                        <constraint firstItem="89j-Ef-BxR" firstAttribute="centerY" secondItem="TMl-aG-Viu" secondAttribute="centerY" id="EFV-kk-xrO"/>
+                                                        <constraint firstItem="uq6-8k-LZY" firstAttribute="height" secondItem="TMl-aG-Viu" secondAttribute="height" id="Igx-gh-7l9"/>
+                                                        <constraint firstItem="uq6-8k-LZY" firstAttribute="leading" secondItem="TMl-aG-Viu" secondAttribute="leading" id="fnh-KL-Hbh"/>
+                                                        <constraint firstItem="89j-Ef-BxR" firstAttribute="leading" secondItem="uq6-8k-LZY" secondAttribute="trailing" constant="2" id="nah-va-lvR"/>
+                                                        <constraint firstItem="uq6-8k-LZY" firstAttribute="centerY" secondItem="TMl-aG-Viu" secondAttribute="centerY" id="uXu-dA-G8B"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="axisValue">
+                                                            <integer key="value" value="0"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="spacing">
+                                                            <real key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to HideSeek!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kby-Mx-uQJ" userLabel="WelcomeLabel">
+                                                    <rect key="frame" x="81" y="12" width="137" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
-                                                <constraint firstItem="89j-Ef-BxR" firstAttribute="top" secondItem="1fI-ub-an9" secondAttribute="top" id="5hP-a4-mAu"/>
-                                                <constraint firstAttribute="trailing" secondItem="89j-Ef-BxR" secondAttribute="trailing" id="Hp9-vb-8Fh"/>
-                                                <constraint firstItem="89j-Ef-BxR" firstAttribute="centerY" secondItem="1fI-ub-an9" secondAttribute="centerY" id="XQw-sN-uvk"/>
-                                                <constraint firstItem="89j-Ef-BxR" firstAttribute="leading" secondItem="1fI-ub-an9" secondAttribute="leading" id="Ysh-r1-GRv"/>
+                                                <constraint firstItem="kby-Mx-uQJ" firstAttribute="centerX" secondItem="1fI-ub-an9" secondAttribute="centerX" id="I9m-kQ-izd"/>
+                                                <constraint firstItem="kby-Mx-uQJ" firstAttribute="centerY" secondItem="1fI-ub-an9" secondAttribute="centerY" id="Vpr-yM-CPc"/>
+                                                <constraint firstItem="TMl-aG-Viu" firstAttribute="centerY" secondItem="1fI-ub-an9" secondAttribute="centerY" id="W9d-H8-lIL"/>
+                                                <constraint firstItem="TMl-aG-Viu" firstAttribute="centerX" secondItem="1fI-ub-an9" secondAttribute="centerX" id="bdd-qm-Nvk"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
@@ -342,14 +377,14 @@
                         <constraint firstAttribute="height" constant="48" id="j5Z-VY-HTv"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ee5-PQ-CfK" userLabel="GetBtn">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ee5-PQ-CfK" userLabel="HitBtn">
                     <rect key="frame" x="260" y="352" width="80" height="80"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="80" id="baO-Vh-cOF"/>
                         <constraint firstAttribute="height" constant="80" id="cNX-Ei-cxH"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                    <state key="normal" title="Get" backgroundImage="get_btn">
+                    <state key="normal" title="Hit" backgroundImage="get_btn">
                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <state key="highlighted" backgroundImage="get_btn_click"/>
@@ -379,13 +414,17 @@
                 <outlet property="distanceView" destination="v2z-Qt-HHa" id="FLZ-W1-SWN"/>
                 <outlet property="goalImageView" destination="Ssn-ak-qNT" id="bYi-TP-2x1"/>
                 <outlet property="guideBtn" destination="iqj-2I-Iwq" id="95P-6e-68G"/>
+                <outlet property="hintInfoView" destination="TMl-aG-Viu" id="Ysi-bJ-ieL"/>
+                <outlet property="hintLabel" destination="89j-Ef-BxR" id="oBE-7i-qOx"/>
                 <outlet property="locationView" destination="A4h-qn-7N2" id="OWq-Fv-XP4"/>
                 <outlet property="mapUIView" destination="mjI-7t-vi7" id="fvM-Fb-ZXk"/>
                 <outlet property="monsterGuideBtn" destination="BNQ-eh-gqy" id="e5h-Vg-Md3"/>
+                <outlet property="roleImageView" destination="uq6-8k-LZY" id="yq3-Tb-qyJ"/>
                 <outlet property="setBombBtn" destination="M9I-w2-uCC" id="FT1-4c-Ac2"/>
                 <outlet property="shareBtn" destination="02K-wu-j0g" id="Pe4-bu-Pfg"/>
                 <outlet property="swordImageView" destination="DGt-Et-Df3" id="0Hi-nS-xFL"/>
                 <outlet property="warningBtn" destination="ESH-Dz-thK" id="Pxo-Re-MGg"/>
+                <outlet property="welcomeLabel" destination="kby-Mx-uQJ" id="huj-JR-1hq"/>
             </connections>
             <point key="canvasLocation" x="248.5" y="186"/>
         </view>
