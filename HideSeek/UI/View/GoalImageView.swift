@@ -63,6 +63,7 @@ class GoalImageView: UIImageView {
         }
         set {
             _endGoal = newValue
+            currentFrameIndex = 0
             animatedImages.removeAll()
             
             let imageNameArray = AnimationImageFactory.get(newValue)

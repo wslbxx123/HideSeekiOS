@@ -991,7 +991,7 @@
                   moduleName = "HideSeek"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/apple/Documents/Project/iOS/HideSeek/HideSeek/BusinessLogic/Cache/BaseCache.swift"
-                  timestampString = "497541170.459761"
+                  timestampString = "497673066.393204"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
@@ -1006,7 +1006,7 @@
                   moduleName = "HideSeek"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/apple/Documents/Project/iOS/HideSeek/HideSeek/BusinessLogic/Cache/BaseCache.swift"
-                  timestampString = "497541170.460048"
+                  timestampString = "497673066.393542"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
@@ -6665,11 +6665,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/View/GoalImageView.swift"
-            timestampString = "496740505.885418"
+            timestampString = "497638886.141263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
             landmarkName = "changeKeyFrame()"
             landmarkType = "5">
          </BreakpointContent>
@@ -6681,11 +6681,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/View/GoalImageView.swift"
-            timestampString = "496740505.885418"
+            timestampString = "497638886.141263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
             landmarkName = "changeKeyFrame()"
             landmarkType = "5">
          </BreakpointContent>
@@ -6697,11 +6697,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/View/GoalImageView.swift"
-            timestampString = "496740505.885418"
+            timestampString = "497638886.141263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
             landmarkName = "changeKeyFrame()"
             landmarkType = "5">
          </BreakpointContent>
@@ -6829,11 +6829,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/View/GoalImageView.swift"
-            timestampString = "496740505.885418"
+            timestampString = "497638886.141263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
             landmarkName = "init(frame:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6845,11 +6845,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/View/GoalImageView.swift"
-            timestampString = "496740505.885418"
+            timestampString = "497638886.141263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "200"
-            endingLineNumber = "200"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
             landmarkName = "hitMonster()"
             landmarkType = "5">
          </BreakpointContent>
@@ -7085,11 +7085,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/View/GoalImageView.swift"
-            timestampString = "493230419.633045"
+            timestampString = "497638886.141263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
             landmarkName = "GoalImageView"
             landmarkType = "3">
          </BreakpointContent>
@@ -7193,7 +7193,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/BusinessLogic/Cache/GoalCache.swift"
@@ -11900,11 +11900,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/View/GoalImageView.swift"
-            timestampString = "496740505.885418"
+            timestampString = "497638886.141263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
             landmarkName = "changeKeyFrame()"
             landmarkType = "5">
          </BreakpointContent>
@@ -11948,11 +11948,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/View/GoalImageView.swift"
-            timestampString = "496743792.359935"
+            timestampString = "497638886.141263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "changeKeyFrame()"
             landmarkType = "5">
          </BreakpointContent>
@@ -11964,11 +11964,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/View/GoalImageView.swift"
-            timestampString = "496744618.738511"
+            timestampString = "497638886.141263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
             landmarkName = "stopAnimating()"
             landmarkType = "5">
          </BreakpointContent>
@@ -12274,6 +12274,70 @@
             startingLineNumber = "171"
             endingLineNumber = "171"
             landmarkName = "setProfileInfo()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HideSeek/UI/View/GoalImageView.swift"
+            timestampString = "497638886.141263"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "changeKeyFrame()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HideSeek/UI/View/GoalImageView.swift"
+            timestampString = "497638886.141263"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "GoalImageView"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HideSeek/UI/View/GoalImageView.swift"
+            timestampString = "497638886.141263"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "GoalImageView"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HideSeek/UI/View/GoalImageView.swift"
+            timestampString = "497638886.141263"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "startAnimating()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
