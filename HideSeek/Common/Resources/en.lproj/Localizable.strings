@@ -92,6 +92,7 @@
 "ERROR_NO_GOAL" = "There is no goal for you";
 "ERROR_GOAL_INVALID" = "The goal has disappeared";
 "ERROR_FAIL_SEND_MESSAGE" = "Failed to send friend request";
+"ERROR_GUIDE_NOT_SEE_MONSTER" = "You can only use the monster guide when you see the monster";
 
 "SEARCH_NO_USER" = "There are no users matched";
 "MESSAGE_GET_MUSHROOM" = "Throw a mushroom monster into sack easily, Rich bitch!";

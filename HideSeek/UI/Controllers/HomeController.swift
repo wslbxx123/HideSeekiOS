@@ -132,6 +132,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     }
     
     func initView() {
+        self.automaticallyAdjustsScrollViewInsets = false;
         if self.previewLayer == nil {
             self.previewLayer = AVCaptureVideoPreviewLayer.init(session: self.session)
             
@@ -282,7 +283,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             print("latitude : %f,longitude: %f", latitude, longitude);
             
             if(!locationFlag) {
-                refreshMap();
+                refreshMap(false);
                 locationFlag = true;
             }
             
@@ -427,8 +428,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         return nil
     }
     
-    func refreshMap() {
-        if ifRefreshing {
+    func refreshMap(ifSure: Bool) {
+        if ifRefreshing && !ifSure {
             return
         }
         
@@ -594,7 +595,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             let bombNum = (response["result"] as! NSNumber).integerValue
             UserCache.instance.user.bombNum = bombNum
             self.overlayView.bombNumBtn.setTitle("\(bombNum)", forState: UIControlState.Normal)
-            refreshMap()
+            refreshMap(true)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
             HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
@@ -694,6 +695,12 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     }
     
     func showMonsterGuide() {
+        if !ifSeeGoal {
+            let errorMessage = NSLocalizedString("ERROR_GUIDE_NOT_SEE_MONSTER", comment: "You can only use the monster guide when you see the monster")
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: nil)
+            return
+        }
+        
         if overlayView != nil && !overlayView.goalImageView.hidden {
             guideView.goalImageView.image = UIImage(named: GoalImageFactory.get(endGoal.type, showTypeName: endGoal.showTypeName))
             if endGoal.unionType == 1 {
@@ -863,6 +870,6 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         markerDictionary.removeAllObjects()
         goalDictionary.removeAllObjects()
         GoalCache.instance.reset()
-        refreshMap()
+        refreshMap(true)
     }
 }
