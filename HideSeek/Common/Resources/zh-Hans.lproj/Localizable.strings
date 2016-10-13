@@ -49,9 +49,12 @@
 "SAVE" = "保存";
 "SEND" = "发送";
 "mushroom" = "蘑菇兽";
-"bomb" = "炸弹";
-"dragon" = "龙冠兽";
+"bomb" = "诡诈兽";
 "egg" = "怪诞兽";
+"cow" = "呲牙兽";
+"bird" = "飞魂兽";
+"giraffe" = "长悠兽";
+"dragon" = "龙冠兽";
 "WATCHED_BY_MONSTER" = "小心！你被一只%@盯上了";
 "LEAGUE_RACE" = "%d族可胜";
 "LEAGUE_RACES" = "%d族联盟";
@@ -90,7 +93,7 @@
 "ERROR_SEARCH_MYSELF" = "不能加自己为好友";
 "ERROR_RECORD_NOT_ENOUGH" = "你的积分不足";
 "ERROR_NO_GOAL" = "你没有目标物";
-"ERROR_GOAL_INVALID" = "该目标已经消失";
+"ERROR_GOAL_INVALID" = "该目标已经消失或者不在你的范围之内";
 "ERROR_FAIL_SEND_MESSAGE" = "发送好友请求失败";
 "ERROR_GUIDE_NOT_SEE_MONSTER" = "你只有看到目标才能使用怪兽图鉴";
 
@@ -102,4 +105,6 @@
 "MESSAGE_GET_GIRAFFE" = "出门靠朋友，1只长悠兽说来就来，运气好怪我咯？！";
 "MESSAGE_GET_DRAGON" = "大快人心！龙冠兽霸气回收，让我高调嘚瑟下。";
 "MESSAGE_GET_BOMB" = "不幸引爆1只蹲点的诡诈兽，给跪了！";
+"MESSAGE_GET_UNKNOWN" = "你打败了一个不明生物！";
 "MESSAGE_GOAL_HINT" = "族人！发现目标";
+"MESSAGE_BEATEND_BY_MONSTER" = "你被%@袭击了！";

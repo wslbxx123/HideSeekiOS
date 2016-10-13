@@ -20,7 +20,12 @@ class CustomRequestManager: AFHTTPRequestOperationManager {
         
         let userDefault = NSUserDefaults.standardUserDefaults()
         let sessionToken = userDefault.objectForKey(UserDefaultParam.SESSION_TOKEN) as? String
+        
+        let version = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! NSString
+        let buildVersion = NSBundle.mainBundle().infoDictionary!["CFBundleVersion"] as! NSString
+        
         paramDict["session_id"] = sessionToken
+        paramDict["app_version"] = (version as String) + "." + (buildVersion as String)
         
         return super.POST(URLString, parameters: paramDict, success: success, failure: failure)
     }

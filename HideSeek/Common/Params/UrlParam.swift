@@ -29,7 +29,7 @@ class UrlParam {
     static let CREATE_EXCHANGE_ORDER_URL = "https://www.hideseek.cn/home/store/createExchangeOrder"
     static let GET_PURCHASE_ORDER_URL = "https://www.hideseek.cn/home/store/getPurchaseOrder"
     static let HIT_MONSTER_URL = "https://www.hideseek.cn/home/map/hitMonster"
-    static let CHECK_IF_USER_EXIST = "https://www.hideseek.cn/home/user/checkIfUserExist"
+    static let CHECK_IF_USER_EXIST_URL = "https://www.hideseek.cn/home/user/checkIfUserExist"
     static let UPDATE_PHOTO_URL = "https://www.hideseek.cn/home/user/updatePhotoUrl"
     static let UPDATE_NICKNAME = "https://www.hideseek.cn/home/user/updateNickname"
     static let UPDATE_SEX = "https://www.hideseek.cn/home/user/updateSex"

@@ -43,7 +43,7 @@ class BaseInfoUtil {
         let attributes = NSDictionary(object: font, forKey: NSFontAttributeName)
         let size = CGSizeMake(width, CGFloat(MAXFLOAT))
         let stringRect = message!.boundingRectWithSize(size, options: option, attributes: attributes as? [String : AnyObject], context: nil)
-        return stringRect.height
+        return stringRect.height + 10
     }
     
     class func getLabelWidth(size: CGFloat, height: CGFloat, message: NSString?) -> CGFloat{

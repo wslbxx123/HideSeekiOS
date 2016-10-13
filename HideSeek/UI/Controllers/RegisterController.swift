@@ -55,6 +55,15 @@ class RegisterController: UIViewController {
     @IBAction func phoneTextChanged(sender: AnyObject) {
         phone = phoneTextField.text!
         
+        if self.countDownTimer != nil {
+            self.countDownTimer.invalidate()
+            self.countDownTimer = nil
+        }
+        
+        self.sendCodeBtn.setTitle(
+            NSLocalizedString("SEND_VERIFICATION_CODE", comment: "Send Verification Code"),
+            forState: UIControlState.Normal)
+        
         checkIfCodeEnabled()
         checkIfRegisterEnabled()
     }
@@ -90,7 +99,7 @@ class RegisterController: UIViewController {
         
         let paramDict = ["phone": phone]
         
-        manager.POST(UrlParam.CHECK_IF_USER_EXIST,
+        manager.POST(UrlParam.CHECK_IF_USER_EXIST_URL,
                      parameters: paramDict,
                      success: { (operation, responseObject) in
                         let response = responseObject as! NSDictionary

@@ -135,14 +135,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        let deviceTokenstr = XGPush.registerDevice(deviceToken, successCallback: {
-            NSLog("[XGPush Demo]register successBlock");
-            }) { 
-            NSLog("[XGPush Demo]register errorBlock");
+        if UserCache.instance.ifLogin() {
+            XGPush.setAccount(UserCache.instance.user.phone as String)
+            var deviceTokenStr = XGPush.registerDevice(deviceToken, successCallback: {
+                NSLog("[XGPush Demo]register successBlock");
+            }) {
+                NSLog("[XGPush Demo]register errorBlock");
+            }
+            
+            if deviceTokenStr == nil || deviceTokenStr == "" {
+                deviceTokenStr = deviceToken.description.stringByReplacingOccurrencesOfString("<", withString: "")
+                    .stringByReplacingOccurrencesOfString(">", withString: "")
+                    .stringByReplacingOccurrencesOfString(" ", withString: "")
+            }
+            
+            NSLog("[XGPush Demo]device token: " + deviceTokenStr);
+            
+            tabBarController.updateSetting()
+            tabBarController.updateChannelId(deviceTokenStr as String)
         }
-        
-        tabBarController.updateSetting()
-        tabBarController.updateChannelId(deviceTokenstr)
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {

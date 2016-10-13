@@ -14,6 +14,7 @@ class ViewController: UITabBarController {
     @IBOutlet weak var uiTabBar: UITabBar!
     var manager: CustomRequestManager!
     var httpManager: AFHTTPRequestOperationManager!
+    var postChanneldId = 0
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,17 +48,29 @@ class ViewController: UITabBarController {
             NSUserDefaults.standardUserDefaults().synchronize()
             
             if(UserCache.instance.ifLogin()) {
-                let paramDict: NSMutableDictionary = ["channel_id": channelId]
-                manager.POST(UrlParam.UPDATE_CHANNEL_URL,
-                             paramDict: paramDict,
-                             success: { (operation, responseObject) in
-                                print("JSON: " + responseObject.description!)
-                    },
-                             failure: { (operation, error) in
-                                print("Error: " + error.localizedDescription)
-                })
+                postChanneldId = 0
+                postChannelId(channelId)
             }
         }
+    }
+    
+    func postChannelId(channelId: String) {
+        postChanneldId += 1
+        
+        if postChanneldId > 5 {
+            return;
+        }
+        
+        let paramDict: NSMutableDictionary = ["channel_id": channelId]
+        manager.POST(UrlParam.UPDATE_CHANNEL_URL,
+                     paramDict: paramDict,
+                     success: { (operation, responseObject) in
+                        print("JSON: " + responseObject.description!)
+            },
+                     failure: { (operation, error) in
+                        print("Error: " + error.localizedDescription)
+                        self.postChannelId(channelId);
+        })
     }
     
     func updateSetting() {

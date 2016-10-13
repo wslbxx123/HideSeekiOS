@@ -48,6 +48,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
         paramDict["role"] = "\(role)"
         paramDict["sex"] = "\(sex.rawValue)"
         paramDict["channel_id"] = channalId == nil ? "" : channalId!
+        paramDict["app_platform"] = "0"
         
         if region != nil {
             paramDict["region"] = region

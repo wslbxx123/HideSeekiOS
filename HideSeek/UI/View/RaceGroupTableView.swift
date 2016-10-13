@@ -62,7 +62,7 @@ class RaceGroupTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         }
         
         let raceGroup = raceGroupList.objectAtIndex(indexPath.row) as! RaceGroup
-        let message = RaceGroupMessageFactory.get(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName) as NSString
+        let message = RaceGroupMessageFactory.get(raceGroup.recordItem.score, goalType: raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName) as NSString
         
         let frame = UIScreen.mainScreen().bounds
         let labelHeight = BaseInfoUtil.getLabelHeight(15.0, width: frame.width - 130, message: message)

@@ -48,7 +48,7 @@ class RaceGroupTableViewCell: UITableViewCell {
         
         goalImageView.image = UIImage(named: GoalImageFactory.get(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName))
         
-        messageLabel.text = RaceGroupMessageFactory.get(raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName)
+        messageLabel.text = RaceGroupMessageFactory.get(raceGroup.recordItem.score, goalType: raceGroup.recordItem.goalType, showTypeName: raceGroup.recordItem.showTypeName)
         
         let scoreStr = raceGroup.recordItem.score >= 0 ? "+" + String(raceGroup.recordItem.score) : String(raceGroup.recordItem.score)
         

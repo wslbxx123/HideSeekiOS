@@ -362,7 +362,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             GoalCache.instance.selectedGoal = goal!
             setEndGoal()
         } else {
-            let errorMessage = NSLocalizedString("ERROR_GOAL_INVALID", comment: "The goal has disappeared")
+            let errorMessage = NSLocalizedString("ERROR_GOAL_INVALID", comment: "The goal has disappeared or beyond your range")
             HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
         }
     }
@@ -659,11 +659,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
-            if self.endGoal.type == Goal.GoalTypeEnum.bomb {
-                HudToastFactory.showScore(self.endGoal.score, view: self.view)
-            } else {
-                HudToastFactory.showScore(self.endGoal.score, view: self.view)
-            }
+            HudToastFactory.showScore(self.endGoal.score, view: self.view)
             
             UserCache.instance.user.record = BaseInfoUtil.getIntegerFromAnyObject(response["result"])
             self.updateEndGoal()

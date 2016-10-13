@@ -36,10 +36,6 @@ class PushManager {
     }
     
     func register() {
-        if UserCache.instance.ifLogin() {
-            XGPush.setAccount(UserCache.instance.user.phone as String)
-        }
-        
         XGPush.initForReregister {
             NSLog("Reregister initialize successfully.")
         }

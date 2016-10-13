@@ -50,8 +50,11 @@
 "SEND" = "Send";
 "mushroom" = "Mushroom";
 "bomb" = "Bomb";
-"dragon" = "Dragon";
 "egg" = "Egg";
+"cow" = "Cow";
+"bird" = "Bird";
+"giraffe" = "Giraffe";
+"dragon" = "Dragon";
 "WATCHED_BY_MONSTER" = "Take care, you are watched by a %@";
 "LEAGUE_RACE" = "%d race is enough";
 "LEAGUE_RACES" = "League of %d races";
@@ -90,7 +93,7 @@
 "ERROR_SEARCH_MYSELF" = "Cannot add yourself as friend";
 "ERROR_RECORD_NOT_ENOUGH" = "You record is not enough";
 "ERROR_NO_GOAL" = "There is no goal for you";
-"ERROR_GOAL_INVALID" = "The goal has disappeared";
+"ERROR_GOAL_INVALID" = "The goal has disappeared or beyond your range";
 "ERROR_FAIL_SEND_MESSAGE" = "Failed to send friend request";
 "ERROR_GUIDE_NOT_SEE_MONSTER" = "You can only use the monster guide when you see the monster";
 
@@ -102,4 +105,6 @@
 "MESSAGE_GET_GIRAFFE" = "Thanks to friends,lucky to get a giraffe monster!";
 "MESSAGE_GET_DRAGON" = "It is a great satisfaction to get a dragon monster, so cool!";
 "MESSAGE_GET_BOMB" = "Unfortunately detonated a crafty bomb monster, Give me a break!";
+"MESSAGE_GET_UNKNOWN" = "You beat an unknown living!";
 "MESSAGE_GOAL_HINT" = "Leader, a goal there!";
+"MESSAGE_BEATEND_BY_MONSTER" = "You are beated by a %@";
