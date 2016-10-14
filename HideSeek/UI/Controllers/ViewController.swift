@@ -93,9 +93,27 @@ class ViewController: UITabBarController {
             let result = response["result"] as! NSDictionary
             
             Setting.IF_STORE_HIDDEN = BaseInfoUtil.getIntegerFromAnyObject(result["if_store_hidden"]) == 1
+            Setting.LATEST_APP_VERSION = (result["latest_app_version"] as! String)
+            
+            if BaseInfoUtil.getAppVersion() < Setting.LATEST_APP_VERSION {
+                showUpdateDialog()
+            }
             
             let log = Setting.IF_STORE_HIDDEN ? "true" : "false"
             NSLog(log)
         }
+    }
+    
+    func showUpdateDialog() {
+        let alertController = UIAlertController(title: nil,
+                                                message: NSLocalizedString("MESSAGE_UPDATE_APP", comment: "There is a new version of this app. Go to app store to update it?"), preferredStyle: UIAlertControllerStyle.Alert)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("NEXT_TIME", comment: "Next Time"),
+                                         style: UIAlertActionStyle.Cancel, handler: nil)
+        let okAction = UIAlertAction(title: NSLocalizedString("UPDATE", comment: "Update"), style: UIAlertActionStyle.Default, handler: { (action) in
+            UIApplication.sharedApplication().openURL(NSURL(string: UrlParam.APP_STORE_URL)!)
+        })
+        alertController.addAction(cancelAction)
+        alertController.addAction(okAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 }

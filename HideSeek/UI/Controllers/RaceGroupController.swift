@@ -37,6 +37,11 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
         
         self.raceGroupTableView.raceGroupList = RaceGroupCache.instance.raceGroupList
         self.raceGroupTableView.reloadData()
+        if self.raceGroupTableView.raceGroupList.count == 0 {
+            self.noResultView.hidden = false
+        } else {
+            self.noResultView.hidden = true
+        }
         
         if(UserCache.instance.ifLogin()) {
             UIView.animateWithDuration(0.25,

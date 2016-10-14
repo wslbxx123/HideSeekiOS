@@ -120,12 +120,14 @@ class MeController: UIViewController, TouchDownDelegate {
     }
     
     func showPhoto() {
-        let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let photoController = storyboard.instantiateViewControllerWithIdentifier("photo") as! PhotoController
-        let user = UserCache.instance.user
-        photoController.photoUrl = user.photoUrl as String
-        photoController.smallPhotoUrl = user.smallPhotoUrl as String
-        self.navigationController?.pushViewController(photoController, animated: true)
+        if(UserCache.instance.ifLogin()) {
+            let storyboard = UIStoryboard(name:"Main", bundle: nil)
+            let photoController = storyboard.instantiateViewControllerWithIdentifier("photo") as! PhotoController
+            let user = UserCache.instance.user
+            photoController.photoUrl = user.photoUrl as String
+            photoController.smallPhotoUrl = user.smallPhotoUrl as String
+            self.navigationController?.pushViewController(photoController, animated: true)
+        }
     }
     
     func goToRecord() {
@@ -168,7 +170,7 @@ class MeController: UIViewController, TouchDownDelegate {
     }
     
     func setProfileInfo() {
-        if Setting.IF_STORE_HIDDEN {
+        if Setting.IF_STORE_HIDDEN || Setting.LATEST_APP_VERSION < BaseInfoUtil.getAppVersion() {
             rewardExchangeView.hidden = true
             myOrderView.hidden = true
             if topConstraint != nil {

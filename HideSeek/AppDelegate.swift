@@ -174,10 +174,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             BadgeUtil.updateMeBadge()
             break;
-        default:
+        case ACCEPT_FRIEND:
             newFriendController.setFriendRequest(result, isFriend: true)
             
             BadgeUtil.updateMeBadge()
+            break;
+        default:
             break;
         }
         

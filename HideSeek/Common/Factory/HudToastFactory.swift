@@ -36,7 +36,7 @@ class HudToastFactory {
         case .SUCCESS:
             return UIColor.greenColor()
         case .WARNING:
-            return UIColor.yellowColor()
+            return BaseInfoUtil.stringToRGB("#fccb05")
         case .ERROR:
             return UIColor.redColor()
         }

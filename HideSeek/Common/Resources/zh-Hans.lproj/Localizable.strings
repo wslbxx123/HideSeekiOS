@@ -73,9 +73,11 @@
 "NONE" = "无";
 "WIN_SCORE" = "战胜积分: ";
 "BEAT_SCORE" = "战败积分: ";
-"VERSION_FORMAT" = "寻宝部落 %@.%@";
+"VERSION_FORMAT" = "寻宝部落 %@";
 "ALREADY_HAS_GUIDE" = "你已经有怪兽图鉴了，继续购买吗？";
 "NOT_MEET_CONDITION" = "没有满足打怪条件";
+"NEXT_TIME" = "下一次";
+"UPDATE" = "更新";
 
 "ERROR_INIT_CAMERA" = "初始化相机失败";
 "ERROR_NOT_LOGIN" = "请先登录";
@@ -108,3 +110,5 @@
 "MESSAGE_GET_UNKNOWN" = "你打败了一个不明生物！";
 "MESSAGE_GOAL_HINT" = "族人！发现目标";
 "MESSAGE_BEATEND_BY_MONSTER" = "你被%@袭击了！";
+"MESSAGE_UPDATE_APP" = "当前应有有新版本，到苹果商场去更新吗？";
+"MESSAGE_NOT_SUCCESS" = "去看看右三的怪兽图鉴吧";

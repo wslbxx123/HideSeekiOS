@@ -55,9 +55,9 @@ class SettingController: UIViewController {
         let systemVersion: NSString = UIDevice.currentDevice().systemVersion
         
         if systemVersion.floatValue != 7.0 {
-            UIApplication.sharedApplication().openURL(NSURL(string: UrlParam.APP_STORE_URL)!)
+            UIApplication.sharedApplication().openURL(NSURL(string: UrlParam.APP_STORE_REVIEW_URL)!)
         } else {
-            UIApplication.sharedApplication().openURL(NSURL(string: UrlParam.IOS7_APP_STORE_URL)!)
+            UIApplication.sharedApplication().openURL(NSURL(string: UrlParam.IOS7_APP_STORE_REVIEW_URL)!)
         }
     }
     

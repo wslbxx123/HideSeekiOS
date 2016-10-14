@@ -186,4 +186,11 @@ class BaseInfoUtil {
             (object as! NSString).integerValue :
             (object as! NSNumber).integerValue
     }
+    
+    class func getAppVersion() -> String {
+        let version = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! NSString
+        let buildVersion = NSBundle.mainBundle().infoDictionary!["CFBundleVersion"] as! NSString
+        
+        return (version as String) + "." + (buildVersion as String)
+    }
 }

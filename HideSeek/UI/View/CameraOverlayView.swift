@@ -28,6 +28,15 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     @IBOutlet weak var hintInfoView: OAStackView!
     @IBOutlet weak var welcomeLabel: UILabel!
     @IBOutlet weak var roleImageView: UIImageView!
+    @IBOutlet weak var nextStepBtn: UIButton!
+    @IBOutlet weak var startBtn: UIButton!
+    @IBOutlet weak var mapGuideImageView: UIImageView!
+    @IBOutlet weak var getGuideImageView: UIImageView!
+    @IBOutlet weak var getMonsterGuideImageView: UIImageView!
+    @IBOutlet weak var boxGuideImageView: UIImageView!
+    @IBOutlet weak var refreshGuideImageView: UIImageView!
+    @IBOutlet weak var refreshGuideArrowImageView: UIImageView!
+    @IBOutlet weak var guideView: UIView!
     
     var refreshMapDelegate: RefreshMapDelegate!
     var setBombDelegate: SetBombDelegate!
@@ -37,6 +46,8 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     var guideMonsterDelegate: GuideMonsterDelegate!
     var warningDelegate: WarningDelegate!
     var shareDelegate: ShareDelegate!
+    var hideBottomBarDelegate: HideBottomBarDelegate!
+    var step: Int = 0
     
     private var _endGoal: Goal! = nil
     var endGoal: Goal! {
@@ -91,6 +102,14 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     
     @IBAction func shareBtnClicked(sender: AnyObject) {
         shareDelegate?.share()
+    }
+    
+    @IBAction func nextStepBtnClicked(sender: AnyObject) {
+        refreshGuide()
+    }
+    
+    @IBAction func startBtnClicked(sender: AnyObject) {
+        refreshGuide()
     }
     
     override init(frame: CGRect) {
@@ -152,5 +171,95 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     
     func hitMonster() {
         goalImageView.hitMonster()
+    }
+    
+    func initGuide() {
+        step = 0
+    }
+    
+    func refreshGuide() {
+        switch step {
+        case 0:
+            showMapGuide()
+            break;
+        case 1:
+            showGetMonsterGuide()
+            break;
+        case 2:
+            showGetGuide()
+            break;
+        case 3:
+            showRefreshGuide()
+            break;
+        default:
+            finishGuide()
+            break;
+        }
+        
+        step += 1
+    }
+    
+    func showMapGuide() {
+        self.guideView.hidden = false
+        self.nextStepBtn.hidden = false
+        self.mapGuideImageView.hidden = false
+        self.getGuideImageView.hidden = true
+        self.getMonsterGuideImageView.hidden = true
+        self.boxGuideImageView.hidden = true
+        self.refreshGuideImageView.hidden = true
+        self.refreshGuideArrowImageView.hidden = true
+        self.startBtn.hidden = true
+    }
+    
+    func showGetGuide() {
+        self.guideView.hidden = false
+        self.nextStepBtn.hidden = false
+        self.mapGuideImageView.hidden = true
+        self.getGuideImageView.hidden = false
+        self.getMonsterGuideImageView.hidden = true
+        self.boxGuideImageView.hidden = true
+        self.refreshGuideImageView.hidden = true
+        self.refreshGuideArrowImageView.hidden = true
+        self.startBtn.hidden = true
+    }
+    
+    func showGetMonsterGuide() {
+        self.guideView.hidden = false
+        self.nextStepBtn.hidden = false
+        self.mapGuideImageView.hidden = true
+        self.getGuideImageView.hidden = true
+        self.getMonsterGuideImageView.hidden = false
+        self.boxGuideImageView.hidden = false
+        self.refreshGuideImageView.hidden = true
+        self.refreshGuideArrowImageView.hidden = true
+        self.startBtn.hidden = true
+    }
+    
+    func showRefreshGuide() {
+        self.guideView.hidden = false
+        self.nextStepBtn.hidden = true
+        self.mapGuideImageView.hidden = true
+        self.getGuideImageView.hidden = true
+        self.getMonsterGuideImageView.hidden = true
+        self.boxGuideImageView.hidden = true
+        self.refreshGuideImageView.hidden = false
+        self.refreshGuideArrowImageView.hidden = false
+        self.startBtn.hidden = false
+    }
+    
+    func finishGuide() {
+        self.guideView.hidden = true
+        self.nextStepBtn.hidden = true
+        self.mapGuideImageView.hidden = true
+        self.getGuideImageView.hidden = true
+        self.getMonsterGuideImageView.hidden = true
+        self.boxGuideImageView.hidden = true
+        self.refreshGuideImageView.hidden = true
+        self.refreshGuideArrowImageView.hidden = true
+        self.startBtn.hidden = true
+        
+        NSUserDefaults.standardUserDefaults().setObject(BaseInfoUtil.getAppVersion(), forKey: UserDefaultParam.APP_VERSION)
+        NSUserDefaults.standardUserDefaults().synchronize()
+        hideBottomBarDelegate?.hideBottomBar()
     }
 }

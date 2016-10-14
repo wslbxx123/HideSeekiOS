@@ -27,6 +27,8 @@ class UserInfoManager {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.FRIEND_VERSION)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.SCORE_SUM)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.CHANNEL_ID)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.RECORD_UPDATE_TIME)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(UserDefaultParam.RACE_GROUP_UPDATE_TIME)
         
         NSUserDefaults.standardUserDefaults().synchronize()
         

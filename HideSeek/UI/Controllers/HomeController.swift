@@ -13,7 +13,7 @@ import CoreMotion.CMMotionManager
 import MBProgressHUD
 import AVFoundation
 
-class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, ArriveDelegate, RefreshMapDelegate, UpdateGoalDelegate {
+class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, ArriveDelegate, RefreshMapDelegate, UpdateGoalDelegate, HideBottomBarDelegate {
     let HtmlType = "text/html"
     let REFRESH_MAP_INTERVAL: Double = 5
     var manager: AFHTTPRequestOperationManager!
@@ -74,7 +74,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if (self.session != nil) {
+        if (self.session != nil && !self.session.running) {
             self.session.startRunning()
         }
         
@@ -103,6 +103,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         if GoalCache.instance.ifNeedClearMap {
             refresh()
         }
+        
+        refreshDistance()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -129,6 +131,16 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         
         time.invalidate()
         time = nil
+    }
+    
+    func checkIfFirstUse() {
+        let appVersion = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.APP_VERSION) as? NSString
+        
+        if appVersion == nil || BaseInfoUtil.getAppVersion() > appVersion! as String  {
+            self.tabBarController!.tabBar.hidden = true
+            overlayView.initGuide()
+            overlayView.refreshGuide()
+        }
     }
     
     func initView() {
@@ -202,12 +214,14 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         overlayView.hitMonsterDelegate = self
         overlayView.warningDelegate = self
         overlayView.shareDelegate = self
+        overlayView.hideBottomBarDelegate = self
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeController.touchDown))
         overlayView.locationView.userInteractionEnabled = true
         overlayView.locationView.addGestureRecognizer(gestureRecognizer)
         
         if overlayView != nil {
             initMenuBtn()
+            checkIfFirstUse()
         }
     }
     
@@ -462,7 +476,11 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                     success: { (operation, responseObject) in
                         let response = responseObject as! NSDictionary
                         print("JSON: " + responseObject.description!)
-                        GoalCache.instance.setGoals(response["result"] as! NSDictionary, latitude: self.latitude, longitude: self.longitude)
+                        
+                        if let resultInfo = response["result"] as? NSDictionary {
+                            GoalCache.instance.setGoals(resultInfo, latitude: self.latitude, longitude: self.longitude)
+                        }
+                        
                         
                         if hud != nil {
                             GoalCache.instance.refreshClosestGoal(self.latitude, longitude: self.longitude)
@@ -497,21 +515,22 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                 return ((element as! NSNumber).longLongValue == goalInfo.pkId)
             }) {
                 
-                let annotation = markerDictionary.objectForKey(NSNumber(longLong: goalInfo.pkId)) as! MAPointAnnotation
-                if !goalInfo.valid {
-                    overlayView.mapView.removeAnnotation(annotation)
-                    overlayView.mapView.addAnnotation(annotation)
-                    overlayView.mapView.removeAnnotation(annotation)
-                    mapDialogController.mapView.removeAnnotation(annotation)
-                    mapDialogController.mapView.addAnnotation(annotation)
-                    mapDialogController.mapView.removeAnnotation(annotation)
-                    markerDictionary.removeObjectForKey(NSNumber(longLong: goalInfo.pkId))
-                    goalDictionary.removeObjectForKey(NSNumber(longLong: goalInfo.pkId))
-                } else {
-                    overlayView.mapView.removeAnnotation(annotation)
-                    overlayView.mapView.addAnnotation(annotation)
-                    mapDialogController.mapView.removeAnnotation(annotation)
-                    mapDialogController.mapView.addAnnotation(annotation)
+                if let annotation = markerDictionary.objectForKey(NSNumber(longLong: goalInfo.pkId)) as? MAPointAnnotation {
+                    if !goalInfo.valid {
+                        overlayView.mapView.removeAnnotation(annotation)
+                        overlayView.mapView.addAnnotation(annotation)
+                        overlayView.mapView.removeAnnotation(annotation)
+                        mapDialogController.mapView.removeAnnotation(annotation)
+                        mapDialogController.mapView.addAnnotation(annotation)
+                        mapDialogController.mapView.removeAnnotation(annotation)
+                        markerDictionary.removeObjectForKey(NSNumber(longLong: goalInfo.pkId))
+                        goalDictionary.removeObjectForKey(NSNumber(longLong: goalInfo.pkId))
+                    } else {
+                        overlayView.mapView.removeAnnotation(annotation)
+                        overlayView.mapView.addAnnotation(annotation)
+                        mapDialogController.mapView.removeAnnotation(annotation)
+                        mapDialogController.mapView.addAnnotation(annotation)
+                    }
                 }
             } else {
                 if goalInfo.valid {
@@ -789,6 +808,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             } else {
                 let canSuccess = BaseInfoUtil.getIntegerFromAnyObject(result["if_can_success"])
                 if canSuccess == 0 {
+                    HudToastFactory.show(NSLocalizedString("MESSAGE_NOT_SUCCESS", comment: "Please see the monster guide on the right"), view: self.view, type: HudToastFactory.MessageType.WARNING)
                     overlayView.hintLabel.text = NSLocalizedString("NOT_MEET_CONDITION", comment: "Not meet hit-monster condition")
                 }
             }
@@ -867,5 +887,9 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         goalDictionary.removeAllObjects()
         GoalCache.instance.reset()
         refreshMap(true)
+    }
+    
+    func hideBottomBar() {
+        self.tabBarController?.tabBar.hidden = false
     }
 }

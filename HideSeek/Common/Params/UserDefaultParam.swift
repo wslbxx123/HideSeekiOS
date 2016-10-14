@@ -11,9 +11,11 @@ class UserDefaultParam {
     static let USER_INFO = "UserInfo"
     static let RACE_GROUP_VERSION = "RaceGroupVersion"
     static let RACE_GROUP_RECORD_MIN_ID = "RaceGroupRecordMinId"
+    static let RACE_GROUP_UPDATE_TIME = "RaceGroupUpdateTime"
     static let RECORD_MIN_ID = "RecordMinId"
     static let SCORE_SUM = "ScoreSum"
     static let RECORD_VERSION = "RecordVersion"
+    static let RECORD_UPDATE_TIME = "RecordUpdateTime"
     static let PRODUCT_VERSION = "ProductVersion"
     static let PRODUCT_MIN_ID = "ProductMinId"
     static let REWARD_VERSION = "RewardVersion"
@@ -25,4 +27,5 @@ class UserDefaultParam {
     static let FRIEND_VERSION = "FriendVersion"
     static let DEVICE_TOKEN = "DeviceToken"
     static let CHANNEL_ID = "ChannelId"
+    static let APP_VERSION = "AppVersion"
 }

@@ -28,7 +28,7 @@ class GoalCache : BaseCache<Goal> {
         }
     }
     
-    func setGoals(goalInfo: NSDictionary!, latitude: Double, longitude: Double) {
+    func setGoals(goalInfo: NSDictionary, latitude: Double, longitude: Double) {
         updateList.removeAllObjects()
         saveGoals(goalInfo)
         

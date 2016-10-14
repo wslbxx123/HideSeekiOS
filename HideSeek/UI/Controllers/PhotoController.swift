@@ -48,6 +48,10 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         let picker = UIImagePickerController()
         picker.delegate = self
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.barButtonItem = self.navigationItem.rightBarButtonItem
+        }
+        
         let cameraAction = UIAlertAction(title: NSLocalizedString("CAMERA", comment: "Camera"), style: UIAlertActionStyle.Default) { (action) in
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
                 picker.sourceType = UIImagePickerControllerSourceType.Camera
@@ -154,7 +158,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
 
     func cropViewControllerDidCancel(controller: PECropViewController!) {
-        
+        controller.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func cropViewController(controller: PECropViewController!, didFinishCroppingImage croppedImage: UIImage!) {

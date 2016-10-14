@@ -22,6 +22,7 @@ class RecordTableManager {
     var database: Connection!
     var recordTable: Table!
     var _recordMinId: Int64! = 0
+    var timeFormatter: NSDateFormatter = NSDateFormatter()
 
     var recordMinId: Int64 {
         get{
@@ -56,10 +57,21 @@ class RecordTableManager {
         }
     }
     
+    var updateDate: String {
+        get{
+            let tempUpdateDate = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.RECORD_UPDATE_TIME) as? NSString
+            
+            if(tempUpdateDate == nil) {
+                return ""
+            }
+            return tempUpdateDate! as String
+        }
+    }
+    
     private init() {
         do {
             database = DatabaseManager.instance.database
-            
+            timeFormatter.dateFormat = "yyyy-MM-dd"
             recordTable = Table("record")
             
             try database.run(recordTable.create(ifNotExists: true) { t in
@@ -123,6 +135,16 @@ class RecordTableManager {
     }
     
     func searchRecords() -> NSMutableArray {
+        let curDate = NSDate()
+        let curDateStr = timeFormatter.stringFromDate(curDate)
+        
+        if(curDateStr != updateDate) {
+            clearMoreData()
+        }
+        
+        NSUserDefaults.standardUserDefaults().setObject(curDateStr, forKey: UserDefaultParam.RECORD_UPDATE_TIME)
+        NSUserDefaults.standardUserDefaults().synchronize()
+        
         let recordList = NSMutableArray()
         do {
             var result: Table
@@ -185,6 +207,33 @@ class RecordTableManager {
         }
         
         return recordList
+    }
+    
+    func clearMoreData() {
+        do {
+            let result = recordTable.order(recordId.desc).limit(20)
+            
+            if database.scalar(result.count) > 0 {
+                var minRecordId: Int64 = 0
+                for item in try database.prepare(result) {
+                    minRecordId = item[recordId]
+                }
+                
+                if minRecordId > _recordMinId {
+                    _recordMinId = minRecordId
+                }
+                
+                NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:recordMinId), forKey: UserDefaultParam.RECORD_MIN_ID)
+                NSUserDefaults.standardUserDefaults().synchronize()
+                
+                let deleteResult = recordTable.filter(recordId < minRecordId)
+                try database.run(deleteResult.delete())
+            }
+        }
+        catch let error as NSError {
+            print("SQLiteDB - failed to clear table race_group!")
+            print("Error - \(error.localizedDescription)")
+        }
     }
     
     func clear() {

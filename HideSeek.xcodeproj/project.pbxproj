@@ -79,6 +79,7 @@
 		184CBF4E1D662C7900135C60 /* kai.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 184CBF4D1D66259E00135C60 /* kai.ttf */; };
 		18508E501D9B6F04008AF03B /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18508E4F1D9B6F04008AF03B /* Setting.swift */; };
 		1857C5EC1D1E719C00D1101C /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1857C5EB1D1E719C00D1101C /* CustomButton.swift */; };
+		185813891DB0755C004C9242 /* HideBottomBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185813881DB0755C004C9242 /* HideBottomBarDelegate.swift */; };
 		185E16881D4C28B200212714 /* HotCityCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185E16871D4C28B200212714 /* HotCityCollectionView.swift */; };
 		185E3DB81D3E2AE800898FED /* GetGoalDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185E3DB71D3E2AE800898FED /* GetGoalDelegate.swift */; };
 		186672591D35348F0047D220 /* RecordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186672581D35348F0047D220 /* RecordController.swift */; };
@@ -388,6 +389,7 @@
 		184CBF4D1D66259E00135C60 /* kai.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = kai.ttf; path = Fonts/kai.ttf; sourceTree = "<group>"; };
 		18508E4F1D9B6F04008AF03B /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Setting.swift; path = Common/Util/Setting.swift; sourceTree = "<group>"; };
 		1857C5EB1D1E719C00D1101C /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomButton.swift; path = Common/Extenstion/CustomButton.swift; sourceTree = "<group>"; };
+		185813881DB0755C004C9242 /* HideBottomBarDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HideBottomBarDelegate.swift; path = Common/Delegate/HideBottomBarDelegate.swift; sourceTree = "<group>"; };
 		185E16871D4C28B200212714 /* HotCityCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HotCityCollectionView.swift; path = UI/View/HotCityCollectionView.swift; sourceTree = "<group>"; };
 		185E3DB71D3E2AE800898FED /* GetGoalDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetGoalDelegate.swift; path = Common/Delegate/GetGoalDelegate.swift; sourceTree = "<group>"; };
 		186672581D35348F0047D220 /* RecordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecordController.swift; path = UI/Controllers/RecordController.swift; sourceTree = "<group>"; };
@@ -1022,6 +1024,7 @@
 				1893A00C1D841CCE007CA861 /* ShowAreaDelegate.swift */,
 				184CB7481D8880B40086B559 /* RemoveFriendDelegate.swift */,
 				182A09021D8FD81800E71C29 /* GoToPhotoDelegate.swift */,
+				185813881DB0755C004C9242 /* HideBottomBarDelegate.swift */,
 			);
 			name = Delegate;
 			sourceTree = "<group>";
@@ -1654,6 +1657,7 @@
 				18BC31C31D45B4E300C7E463 /* ExchangeCollectionViewCell.swift in Sources */,
 				18670F2E1D6C297B0025E051 /* FriendController.swift in Sources */,
 				18B57ADB1D6EB6F000678658 /* Warning.swift in Sources */,
+				185813891DB0755C004C9242 /* HideBottomBarDelegate.swift in Sources */,
 				189CD4131D4A3310005983CB /* ExternalController.swift in Sources */,
 				18D016FD1D3F159500695BD4 /* CustomImage.swift in Sources */,
 				186BC2821D3C9CDB002A0BFE /* NavigationController.swift in Sources */,

@@ -25,6 +25,7 @@ class RaceGroupTableManager {
     var database: Connection!
     var raceGroupTable: Table!
     var _recordMinId: Int64 = 0
+    var timeFormatter: NSDateFormatter = NSDateFormatter()
     
     var recordMinId: Int64 {
         get{
@@ -48,11 +49,23 @@ class RaceGroupTableManager {
         }
     }
     
+    var updateDate: String {
+        get{
+            let tempUpdateDate = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.RACE_GROUP_UPDATE_TIME) as? NSString
+            
+            if(tempUpdateDate == nil) {
+                return ""
+            }
+            return tempUpdateDate! as String
+        }
+    }
+    
     private init() {
         do {
             database = DatabaseManager.instance.database
             
             raceGroupTable = Table("race_group")
+            timeFormatter.dateFormat = "yyyy-MM-dd"
             
             try database.run(raceGroupTable.create(ifNotExists: true) { t in
                 t.column(recordId, primaryKey: true)
@@ -75,6 +88,16 @@ class RaceGroupTableManager {
     }
     
     func searchRaceGroup() -> NSMutableArray {
+        let curDate = NSDate()
+        let curDateStr = timeFormatter.stringFromDate(curDate)
+        
+        if(curDateStr != updateDate) {
+            clearMoreData()
+        }
+        
+        NSUserDefaults.standardUserDefaults().setObject(curDateStr, forKey: UserDefaultParam.RACE_GROUP_UPDATE_TIME)
+        NSUserDefaults.standardUserDefaults().synchronize()
+        
         let raceGroupList = NSMutableArray()
         do {
             var result: Table
@@ -194,6 +217,33 @@ class RaceGroupTableManager {
         }
         
         return raceGroupList
+    }
+    
+    func clearMoreData() {
+        do {
+            let result = raceGroupTable.order(recordId.desc).limit(20)
+            
+            if database.scalar(result.count) > 0 {
+                var minRecordId: Int64 = 0
+                for item in try database.prepare(result) {
+                    minRecordId = item[recordId]
+                }
+                
+                if minRecordId > _recordMinId {
+                    _recordMinId = minRecordId
+                }
+                
+                NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:recordMinId), forKey: UserDefaultParam.RACE_GROUP_RECORD_MIN_ID)
+                NSUserDefaults.standardUserDefaults().synchronize()
+                
+                let deleteResult = raceGroupTable.filter(recordId < minRecordId)
+                try database.run(deleteResult.delete())
+            }
+        }
+        catch let error as NSError {
+            print("SQLiteDB - failed to clear table race_group!")
+            print("Error - \(error.localizedDescription)")
+        }
     }
     
     func clear() {

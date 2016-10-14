@@ -38,6 +38,11 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
         self.scoreSumLabel.text = String(RecordCache.instance.scoreSum)
         self.recordTableView.recordList = RecordCache.instance.recordList
         self.recordTableView.reloadData()
+        if self.recordTableView.recordList.count == 0 {
+            self.noResultView.hidden = false
+        } else {
+            self.noResultView.hidden = true
+        }
         
         if(UserCache.instance.ifLogin()) {
             UIView.animateWithDuration(0.25,

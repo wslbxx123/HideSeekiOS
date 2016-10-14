@@ -73,9 +73,11 @@
 "NONE" = "None";
 "WIN_SCORE" = "Win Score: ";
 "BEAT_SCORE" = "Beat Score: ";
-"VERSION_FORMAT" = "HideSeek %@.%@";
+"VERSION_FORMAT" = "HideSeek %@";
 "ALREADY_HAS_GUIDE" = "You already have a monster guide. Continue to buy?";
-"NOT_MEET_CONDITION" = "Not meet hit-monster condition";
+"NOT_MEET_CONDITION" = "Not meet hitting condition";
+"NEXT_TIME" = "Next Time";
+"UPDATE" = "Update";
 
 "ERROR_INIT_CAMERA" = "Failed to initiailize the camera";
 "ERROR_NOT_LOGIN" = "Please login first";
@@ -106,5 +108,7 @@
 "MESSAGE_GET_DRAGON" = "It is a great satisfaction to get a dragon monster, so cool!";
 "MESSAGE_GET_BOMB" = "Unfortunately detonated a crafty bomb monster, Give me a break!";
 "MESSAGE_GET_UNKNOWN" = "You beat an unknown living!";
-"MESSAGE_GOAL_HINT" = "Leader, a goal there!";
+"MESSAGE_GOAL_HINT" = "Leader, a goal!";
 "MESSAGE_BEATEND_BY_MONSTER" = "You are beated by a %@";
+"MESSAGE_UPDATE_APP" = "There is a new version of this app. Go to app store to update it?";
+"MESSAGE_NOT_SUCCESS" = "Please see the monster guide on the right";

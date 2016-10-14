@@ -7,5 +7,6 @@
 //
 
 class Setting {
-    static var IF_STORE_HIDDEN = false
+    static var IF_STORE_HIDDEN: Bool = false
+    static var LATEST_APP_VERSION: String = ""
 }

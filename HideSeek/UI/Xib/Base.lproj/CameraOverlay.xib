@@ -180,7 +180,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to HideSeek!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kby-Mx-uQJ" userLabel="WelcomeLabel">
                                                     <rect key="frame" x="81" y="12" width="137" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -392,36 +392,139 @@
                         <action selector="getBtnClicked:" destination="iN0-l3-epB" eventType="touchDown" id="vL7-MK-oga"/>
                     </connections>
                 </button>
+                <view hidden="YES" alpha="0.65000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dEv-tv-pGa" userLabel="GuideView">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YBO-SI-oIJ" userLabel="NextStepBtn">
+                            <rect key="frame" x="260" y="560" width="80" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="qoE-Po-t0j"/>
+                                <constraint firstAttribute="width" constant="80" id="tXk-LO-Hbg"/>
+                            </constraints>
+                            <state key="normal" image="next_step">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="nextStepBtnClicked:" destination="iN0-l3-epB" eventType="touchDown" id="dOr-9C-BED"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o8w-aO-UIU" userLabel="StartBtn">
+                            <rect key="frame" x="250" y="560" width="100" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="Og2-Ri-ViV"/>
+                                <constraint firstAttribute="width" constant="100" id="aGY-oh-2gm"/>
+                            </constraints>
+                            <state key="normal" image="start"/>
+                            <connections>
+                                <action selector="startBtnClicked:" destination="iN0-l3-epB" eventType="touchDown" id="fG5-Lv-kGC"/>
+                            </connections>
+                        </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map_guide" translatesAutoresizingMaskIntoConstraints="NO" id="6Pc-YA-L33" userLabel="MapGuideImageView">
+                            <rect key="frame" x="425" y="323" width="150" height="120"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="120" id="KA5-Bt-1l8"/>
+                                <constraint firstAttribute="width" constant="150" id="a3e-9r-mcg"/>
+                            </constraints>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="get_guide" translatesAutoresizingMaskIntoConstraints="NO" id="W5E-8R-JQf" userLabel="GetGuideImageView">
+                            <rect key="frame" x="260" y="257" width="150" height="120"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="150" id="2wM-44-YpW"/>
+                                <constraint firstAttribute="height" constant="120" id="iC3-cg-fLw"/>
+                            </constraints>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="get_monster_guide" translatesAutoresizingMaskIntoConstraints="NO" id="bub-gB-QGY" userLabel="GetMonsterGuideImageView">
+                            <rect key="frame" x="180" y="21" width="150" height="120"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="150" id="Sdv-fw-pFM"/>
+                                <constraint firstAttribute="height" constant="120" id="kFP-rH-6J5"/>
+                            </constraints>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="box_guide" translatesAutoresizingMaskIntoConstraints="NO" id="suy-4H-Cpu" userLabel="BoxGuideImageView">
+                            <rect key="frame" x="225" y="146" width="150" height="120"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="150" id="ETq-cR-x32"/>
+                                <constraint firstAttribute="height" constant="120" id="WBj-M4-dHZ"/>
+                            </constraints>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="refresh_guide" translatesAutoresizingMaskIntoConstraints="NO" id="tQs-em-q8P" userLabel="RefreshGuideImageView">
+                            <rect key="frame" x="335" y="65" width="150" height="80"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="150" id="1IR-xU-23l"/>
+                                <constraint firstAttribute="height" constant="80" id="xad-nw-L3c"/>
+                            </constraints>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="refresh_guide_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="hfz-rx-HFz" userLabel="RefreshGuideArrowImageView">
+                            <rect key="frame" x="485" y="45" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="YTT-XL-lDZ"/>
+                                <constraint firstAttribute="height" constant="50" id="tId-pe-LeP"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="YBO-SI-oIJ" secondAttribute="bottom" constant="8" id="DAJ-0r-9rB"/>
+                        <constraint firstItem="suy-4H-Cpu" firstAttribute="centerX" secondItem="dEv-tv-pGa" secondAttribute="centerX" id="FKa-O0-AQO"/>
+                        <constraint firstItem="suy-4H-Cpu" firstAttribute="top" secondItem="bub-gB-QGY" secondAttribute="bottom" constant="5" id="NR5-7g-whB"/>
+                        <constraint firstItem="o8w-aO-UIU" firstAttribute="centerX" secondItem="dEv-tv-pGa" secondAttribute="centerX" id="OYF-Q5-MKH"/>
+                        <constraint firstAttribute="bottom" secondItem="o8w-aO-UIU" secondAttribute="bottom" constant="8" id="ebs-iE-FoI"/>
+                        <constraint firstAttribute="trailing" secondItem="6Pc-YA-L33" secondAttribute="trailing" constant="25" id="gc8-YG-J6M"/>
+                        <constraint firstItem="YBO-SI-oIJ" firstAttribute="centerX" secondItem="dEv-tv-pGa" secondAttribute="centerX" id="hEh-kf-PN7"/>
+                    </constraints>
+                </view>
             </subviews>
             <constraints>
                 <constraint firstItem="Ee5-PQ-CfK" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="4XJ-2V-KLb"/>
                 <constraint firstItem="BY3-2w-hFz" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="5Kh-85-kIn"/>
                 <constraint firstAttribute="trailing" secondItem="9v8-E7-fn6" secondAttribute="trailing" id="5MJ-ZY-v2L"/>
+                <constraint firstItem="v2z-Qt-HHa" firstAttribute="top" secondItem="6Pc-YA-L33" secondAttribute="bottom" constant="-10" id="6Q6-kg-jGJ"/>
                 <constraint firstItem="bFr-RG-79B" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="80H-1E-PiQ"/>
                 <constraint firstItem="9v8-E7-fn6" firstAttribute="top" secondItem="Ssn-ak-qNT" secondAttribute="bottom" constant="81" id="A5D-Xl-ozO"/>
+                <constraint firstItem="bub-gB-QGY" firstAttribute="bottom" secondItem="Ssn-ak-qNT" secondAttribute="top" constant="30" id="ATq-V1-eir"/>
                 <constraint firstAttribute="bottom" secondItem="BY3-2w-hFz" secondAttribute="bottom" id="Brl-Yt-YQz"/>
                 <constraint firstAttribute="trailing" secondItem="bFr-RG-79B" secondAttribute="trailing" id="Jai-ug-q8E"/>
+                <constraint firstItem="tQs-em-q8P" firstAttribute="top" secondItem="PJm-1f-p9i" secondAttribute="bottom" id="JzM-6I-wp2"/>
+                <constraint firstItem="dEv-tv-pGa" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="KTU-Yx-p0s"/>
                 <constraint firstItem="9v8-E7-fn6" firstAttribute="bottom" secondItem="BY3-2w-hFz" secondAttribute="top" id="LcD-JT-Feq"/>
                 <constraint firstItem="Ee5-PQ-CfK" firstAttribute="top" secondItem="9v8-E7-fn6" secondAttribute="top" constant="-40" id="PLh-w9-Szl"/>
+                <constraint firstItem="dEv-tv-pGa" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="SwL-OC-dzm"/>
+                <constraint firstItem="Ee5-PQ-CfK" firstAttribute="top" secondItem="W5E-8R-JQf" secondAttribute="bottom" constant="-25" id="T26-mg-piR"/>
+                <constraint firstItem="dEv-tv-pGa" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="Xyf-xH-g6N"/>
+                <constraint firstItem="W5E-8R-JQf" firstAttribute="leading" secondItem="Ee5-PQ-CfK" secondAttribute="trailing" constant="-80" id="a6d-XI-PuI"/>
+                <constraint firstItem="PJm-1f-p9i" firstAttribute="leading" secondItem="tQs-em-q8P" secondAttribute="trailing" constant="60" id="bp3-dm-R8G"/>
                 <constraint firstItem="BY3-2w-hFz" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="dGQ-gv-0sL"/>
                 <constraint firstItem="9v8-E7-fn6" firstAttribute="top" secondItem="bFr-RG-79B" secondAttribute="bottom" id="fpU-lU-msU"/>
+                <constraint firstItem="dEv-tv-pGa" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="jSA-uX-oOs"/>
+                <constraint firstItem="bub-gB-QGY" firstAttribute="leading" secondItem="Ssn-ak-qNT" secondAttribute="trailing" constant="-220" id="kPS-1n-9wP"/>
                 <constraint firstItem="9v8-E7-fn6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="mQ1-zB-Zfr"/>
                 <constraint firstItem="bFr-RG-79B" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="piY-s7-8lf"/>
+                <constraint firstItem="PJm-1f-p9i" firstAttribute="leading" secondItem="hfz-rx-HFz" secondAttribute="trailing" constant="10" id="qXZ-IM-h7S"/>
+                <constraint firstItem="hfz-rx-HFz" firstAttribute="top" secondItem="PJm-1f-p9i" secondAttribute="top" constant="20" id="tax-Uu-T52"/>
             </constraints>
             <connections>
                 <outlet property="bombNumBtn" destination="FHb-2i-GSr" id="PHQ-O2-tbb"/>
+                <outlet property="boxGuideImageView" destination="suy-4H-Cpu" id="QG7-yC-889"/>
                 <outlet property="distanceLabel" destination="GTX-in-qZb" id="VbK-uj-MP5"/>
                 <outlet property="distanceView" destination="v2z-Qt-HHa" id="FLZ-W1-SWN"/>
+                <outlet property="getGuideImageView" destination="W5E-8R-JQf" id="aFn-XS-17X"/>
+                <outlet property="getMonsterGuideImageView" destination="bub-gB-QGY" id="d8u-cu-huc"/>
                 <outlet property="goalImageView" destination="Ssn-ak-qNT" id="bYi-TP-2x1"/>
                 <outlet property="guideBtn" destination="iqj-2I-Iwq" id="95P-6e-68G"/>
+                <outlet property="guideView" destination="dEv-tv-pGa" id="0s7-Pb-vlp"/>
                 <outlet property="hintInfoView" destination="TMl-aG-Viu" id="Ysi-bJ-ieL"/>
                 <outlet property="hintLabel" destination="89j-Ef-BxR" id="oBE-7i-qOx"/>
                 <outlet property="locationView" destination="A4h-qn-7N2" id="OWq-Fv-XP4"/>
+                <outlet property="mapGuideImageView" destination="6Pc-YA-L33" id="BNH-jL-xfZ"/>
                 <outlet property="mapUIView" destination="mjI-7t-vi7" id="fvM-Fb-ZXk"/>
                 <outlet property="monsterGuideBtn" destination="BNQ-eh-gqy" id="e5h-Vg-Md3"/>
+                <outlet property="nextStepBtn" destination="YBO-SI-oIJ" id="CBk-MQ-TYz"/>
+                <outlet property="refreshGuideArrowImageView" destination="hfz-rx-HFz" id="Bdb-z1-I5I"/>
+                <outlet property="refreshGuideImageView" destination="tQs-em-q8P" id="0VA-sY-Af5"/>
                 <outlet property="roleImageView" destination="uq6-8k-LZY" id="yq3-Tb-qyJ"/>
                 <outlet property="setBombBtn" destination="M9I-w2-uCC" id="FT1-4c-Ac2"/>
                 <outlet property="shareBtn" destination="02K-wu-j0g" id="Pe4-bu-Pfg"/>
+                <outlet property="startBtn" destination="o8w-aO-UIU" id="5fz-FC-knd"/>
                 <outlet property="swordImageView" destination="DGt-Et-Df3" id="0Hi-nS-xFL"/>
                 <outlet property="warningBtn" destination="ESH-Dz-thK" id="Pxo-Re-MGg"/>
                 <outlet property="welcomeLabel" destination="kby-Mx-uQJ" id="huj-JR-1hq"/>
@@ -430,16 +533,24 @@
         </view>
     </objects>
     <resources>
+        <image name="box_guide" width="150" height="125"/>
         <image name="circle" width="37" height="37"/>
         <image name="get_btn" width="105" height="104"/>
         <image name="get_btn_click" width="105" height="104"/>
+        <image name="get_guide" width="150" height="141"/>
+        <image name="get_monster_guide" width="277" height="260"/>
         <image name="introduce_icon" width="268" height="332"/>
+        <image name="map_guide" width="173" height="150"/>
         <image name="monster_guide" width="84" height="84"/>
         <image name="monster_guide_click" width="84" height="84"/>
+        <image name="next_step" width="150" height="59"/>
         <image name="refresh" width="84" height="84"/>
+        <image name="refresh_guide" width="150" height="43"/>
+        <image name="refresh_guide_arrow" width="150" height="117"/>
         <image name="set_bomb" width="84" height="84"/>
         <image name="set_bomb_click" width="84" height="84"/>
         <image name="share" width="84" height="84"/>
+        <image name="start" width="150" height="54"/>
         <image name="warning" width="84" height="84"/>
     </resources>
 </document>
