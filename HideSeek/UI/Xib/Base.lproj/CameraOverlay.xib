@@ -392,7 +392,7 @@
                         <action selector="getBtnClicked:" destination="iN0-l3-epB" eventType="touchDown" id="vL7-MK-oga"/>
                     </connections>
                 </button>
-                <view hidden="YES" alpha="0.65000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dEv-tv-pGa" userLabel="GuideView">
+                <view hidden="YES" alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dEv-tv-pGa" userLabel="GuideView">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YBO-SI-oIJ" userLabel="NextStepBtn">

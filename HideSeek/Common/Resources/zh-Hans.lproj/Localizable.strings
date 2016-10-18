@@ -78,6 +78,7 @@
 "NOT_MEET_CONDITION" = "没有满足打怪条件";
 "NEXT_TIME" = "下一次";
 "UPDATE" = "更新";
+"NAME" = "名字：%@";
 
 "ERROR_INIT_CAMERA" = "初始化相机失败";
 "ERROR_NOT_LOGIN" = "请先登录";

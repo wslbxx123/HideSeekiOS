@@ -19,6 +19,7 @@ class ProfileController: UIViewController {
     @IBOutlet weak var addFriendBtn: UIButton!
     @IBOutlet weak var remarkLabel: UILabel!
     @IBOutlet weak var rightArrowImageView: UIImageView!
+    @IBOutlet weak var nickNameLabel: UILabel!
     
     var user: User!
     
@@ -81,6 +82,10 @@ class ProfileController: UIViewController {
             
             if user.alias != "" {
                 nameLabel.text = user.alias as String
+                nickNameLabel.hidden = false
+                nickNameLabel.text = NSString(format: NSLocalizedString("NAME", comment: "Name: %@"), user.nickname) as String
+            } else {
+                nickNameLabel.hidden = true
             }
         } else {
             remarkLabel.hidden = true

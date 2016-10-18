@@ -95,8 +95,8 @@ class ViewController: UITabBarController {
             Setting.IF_STORE_HIDDEN = BaseInfoUtil.getIntegerFromAnyObject(result["if_store_hidden"]) == 1
             Setting.LATEST_APP_VERSION = (result["latest_app_version"] as! String)
             
-            if BaseInfoUtil.getAppVersion() < Setting.LATEST_APP_VERSION {
-                showUpdateDialog()
+            if BaseInfoUtil.getAppVersion().compareTo(Setting.LATEST_APP_VERSION, separator: ".") < 0{
+                self.showUpdateDialog()
             }
             
             let log = Setting.IF_STORE_HIDDEN ? "true" : "false"

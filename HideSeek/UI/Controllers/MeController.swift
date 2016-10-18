@@ -170,7 +170,7 @@ class MeController: UIViewController, TouchDownDelegate {
     }
     
     func setProfileInfo() {
-        if Setting.IF_STORE_HIDDEN || Setting.LATEST_APP_VERSION < BaseInfoUtil.getAppVersion() {
+        if Setting.IF_STORE_HIDDEN || Setting.LATEST_APP_VERSION.compareTo(BaseInfoUtil.getAppVersion(), separator: ".") < 0 {
             rewardExchangeView.hidden = true
             myOrderView.hidden = true
             if topConstraint != nil {

@@ -13,6 +13,7 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     let TAG_ALPHA_LABEL = 2
     let TAG_PHOTO_IMAGEVIEW = 3
     let TAG_NAME_LABEL = 4
+    let TAG_NICKNAME_LABEL = 5
     
     var friendList: NSMutableArray!
     var tabelViewCell: UITableViewCell!
@@ -88,6 +89,7 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
             let alphaLabel = cell.viewWithTag(TAG_ALPHA_LABEL) as! UILabel
             let photoImageView = cell.viewWithTag(TAG_PHOTO_IMAGEVIEW) as! UIImageView
             let nameLabel = cell.viewWithTag(TAG_NAME_LABEL) as! UILabel
+            let nicknameLabel = cell.viewWithTag(TAG_NICKNAME_LABEL) as! UILabel
             if showAlpha && !isSearching {
                 alphaView.hidden = false
                 alphaLabel.text = alphaIndex.allKeysForObject(indexPath.row)[0] as? String
@@ -103,6 +105,10 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
             
             if friend.alias != "" {
                 nameLabel.text = friend.alias as String
+                nicknameLabel.hidden = false
+                nicknameLabel.text = NSString(format: NSLocalizedString("NAME", comment: "Name: %s"), friend.nickname) as String
+            } else {
+                nicknameLabel.hidden = true
             }
             break;
         default:

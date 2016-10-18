@@ -151,9 +151,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             NSLog("[XGPush Demo]device token: " + deviceTokenStr);
             
-            tabBarController.updateSetting()
             tabBarController.updateChannelId(deviceTokenStr as String)
         }
+        
+        tabBarController.updateSetting()
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {

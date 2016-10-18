@@ -99,7 +99,7 @@ class FriendTableManager {
     func searchFriends(keyword: String) -> NSMutableArray {
         let friendList = NSMutableArray()
         do {
-            for item in try database.prepare(friendTable.filter(nickname.like("%\(keyword)%") || pinyin.like("%\(keyword)%")).order(pinyin.asc)) {
+            for item in try database.prepare(friendTable.filter(nickname.like("%\(keyword)%") || pinyin.like("%\(keyword)%") || alias.like("%\(keyword)%")).order(pinyin.asc)) {
                 let user = User(
                     pkId: item[accountId],
                     phone: item[phone],

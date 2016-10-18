@@ -78,6 +78,7 @@
 "NOT_MEET_CONDITION" = "Not meet hit-monster condition";
 "NEXT_TIME" = "Next Time";
 "UPDATE" = "Update";
+"NAME" = "Name: %@";
 
 "ERROR_INIT_CAMERA" = "Failed to initiailize the camera";
 "ERROR_NOT_LOGIN" = "Please login first";

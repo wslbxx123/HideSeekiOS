@@ -136,7 +136,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     func checkIfFirstUse() {
         let appVersion = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.APP_VERSION) as? NSString
         
-        if appVersion == nil || BaseInfoUtil.getAppVersion() > appVersion! as String  {
+        if appVersion == nil || BaseInfoUtil.getAppVersion().compareTo(appVersion! as String, separator: ".") > 0 {
             self.tabBarController!.tabBar.hidden = true
             overlayView.initGuide()
             overlayView.refreshGuide()

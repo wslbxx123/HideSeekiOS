@@ -220,6 +220,7 @@
 		18D017051D3F5A1300695BD4 /* PurchaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D017041D3F5A1300695BD4 /* PurchaseCollectionViewCell.swift */; };
 		18D0AB8D1D70183100B51E7A /* SetEndGoalDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D0AB8C1D70183100B51E7A /* SetEndGoalDelegate.swift */; };
 		18D0AB9A1D7080D100B51E7A /* NewFriendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D0AB991D7080D100B51E7A /* NewFriendController.swift */; };
+		18D513D71DB1F5B20015B8E6 /* CustomString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D513D61DB1F5B20015B8E6 /* CustomString.swift */; };
 		18D7831F1D2DE20D0013FB3C /* LoadMoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D7831E1D2DE20D0013FB3C /* LoadMoreDelegate.swift */; };
 		18D783211D2F3FF50013FB3C /* RecordTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D783201D2F3FF50013FB3C /* RecordTableView.swift */; };
 		18DCE98B1D2B9FC1009510FD /* RefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE98A1D2B9FC1009510FD /* RefreshView.swift */; };
@@ -552,6 +553,7 @@
 		18D017041D3F5A1300695BD4 /* PurchaseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PurchaseCollectionViewCell.swift; path = UI/View/PurchaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		18D0AB8C1D70183100B51E7A /* SetEndGoalDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SetEndGoalDelegate.swift; path = Common/Delegate/SetEndGoalDelegate.swift; sourceTree = "<group>"; };
 		18D0AB991D7080D100B51E7A /* NewFriendController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewFriendController.swift; path = UI/Controllers/NewFriendController.swift; sourceTree = "<group>"; };
+		18D513D61DB1F5B20015B8E6 /* CustomString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomString.swift; path = Common/Extenstion/CustomString.swift; sourceTree = "<group>"; };
 		18D7831E1D2DE20D0013FB3C /* LoadMoreDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadMoreDelegate.swift; path = Common/Delegate/LoadMoreDelegate.swift; sourceTree = "<group>"; };
 		18D783201D2F3FF50013FB3C /* RecordTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecordTableView.swift; path = UI/View/RecordTableView.swift; sourceTree = "<group>"; };
 		18DCE98A1D2B9FC1009510FD /* RefreshView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefreshView.swift; path = UI/View/RefreshView.swift; sourceTree = "<group>"; };
@@ -936,6 +938,7 @@
 				180E970F1D2A46A200481703 /* CustomLabel.swift */,
 				1824E37B1D3B16A8008A4E15 /* CustomTabBar.swift */,
 				18D016FC1D3F159500695BD4 /* CustomImage.swift */,
+				18D513D61DB1F5B20015B8E6 /* CustomString.swift */,
 			);
 			name = Extenstion;
 			sourceTree = "<group>";
@@ -1643,6 +1646,7 @@
 				180E97021D29EAE500481703 /* RaceGroupCache.swift in Sources */,
 				18857C2A1D520C4C0049714B /* AlipayManager.swift in Sources */,
 				18B57AD91D6EB63A00678658 /* WarningTableView.swift in Sources */,
+				18D513D71DB1F5B20015B8E6 /* CustomString.swift in Sources */,
 				18FD1AA81D1A804D00225C92 /* ImageCache.swift in Sources */,
 				18D0AB8D1D70183100B51E7A /* SetEndGoalDelegate.swift in Sources */,
 				186DD1451D798A070098064E /* ArriveDelegate.swift in Sources */,
