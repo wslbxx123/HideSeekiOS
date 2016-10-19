@@ -90,6 +90,7 @@ class ProfileController: UIViewController {
         } else {
             remarkLabel.hidden = true
             rightArrowImageView.hidden = true
+            nickNameLabel.hidden = true
         }
     }
 }
