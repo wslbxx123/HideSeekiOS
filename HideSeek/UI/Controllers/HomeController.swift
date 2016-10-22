@@ -89,6 +89,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                 overlayView.welcomeLabel.hidden = true
                 overlayView.hintInfoView.hidden = false
                 overlayView.roleImageView.image = UIImage(named: user.roleImageName)
+                overlayView.roleNameLabel.text = user.roleName
             } else {
                 overlayView.welcomeLabel.hidden = false
                 overlayView.hintInfoView.hidden = true

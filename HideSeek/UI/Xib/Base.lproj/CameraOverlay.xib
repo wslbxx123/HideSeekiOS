@@ -15,6 +15,42 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bFr-RG-79B" userLabel="CameraView">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="392"/>
                     <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2te-A1-9HO" userLabel="RoleInfoView">
+                            <rect key="frame" x="15" y="25" width="110" height="40"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="role_back.png" translatesAutoresizingMaskIntoConstraints="NO" id="paK-Y6-ZMq" userLabel="BackImageView">
+                                    <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="110" id="0vR-Hg-WqX"/>
+                                        <constraint firstAttribute="height" constant="40" id="aEE-Rp-q9q"/>
+                                    </constraints>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YIM-Rv-9ly" userLabel="RoleImageView">
+                                    <rect key="frame" x="5" y="5" width="30" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="30" id="Bh8-Wg-tB3"/>
+                                        <constraint firstAttribute="height" constant="30" id="rP2-g7-70w"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2dA-wQ-qqd" userLabel="RoleNameLabel">
+                                    <rect key="frame" x="34" y="12" width="76" height="17"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <color key="textColor" red="0.59566837549209595" green="0.46220940351486206" blue="0.25236606597900391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="2dA-wQ-qqd" firstAttribute="leading" secondItem="YIM-Rv-9ly" secondAttribute="trailing" constant="-1" id="B9Q-M2-ROI"/>
+                                <constraint firstItem="paK-Y6-ZMq" firstAttribute="centerX" secondItem="2te-A1-9HO" secondAttribute="centerX" id="Mbu-Bb-Kuh"/>
+                                <constraint firstItem="paK-Y6-ZMq" firstAttribute="centerY" secondItem="2te-A1-9HO" secondAttribute="centerY" id="O7m-Qm-KSX"/>
+                                <constraint firstItem="2dA-wQ-qqd" firstAttribute="centerY" secondItem="2te-A1-9HO" secondAttribute="centerY" id="PjT-hl-bZl"/>
+                                <constraint firstAttribute="trailing" secondItem="2dA-wQ-qqd" secondAttribute="trailing" id="RWm-XH-fuJ"/>
+                                <constraint firstItem="paK-Y6-ZMq" firstAttribute="width" secondItem="2te-A1-9HO" secondAttribute="width" id="Tyl-eV-Ou2"/>
+                                <constraint firstItem="YIM-Rv-9ly" firstAttribute="leading" secondItem="paK-Y6-ZMq" secondAttribute="leading" constant="5" id="Vau-j9-dbS"/>
+                                <constraint firstItem="YIM-Rv-9ly" firstAttribute="centerY" secondItem="2te-A1-9HO" secondAttribute="centerY" id="bds-mO-96k"/>
+                                <constraint firstItem="paK-Y6-ZMq" firstAttribute="height" secondItem="2te-A1-9HO" secondAttribute="height" id="fMT-6Z-SIg"/>
+                            </constraints>
+                        </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PJm-1f-p9i" userLabel="RefreshBtn">
                             <rect key="frame" x="545" y="25" width="40" height="40"/>
                             <constraints>
@@ -110,9 +146,11 @@
                         <constraint firstItem="ESH-Dz-thK" firstAttribute="trailing" secondItem="BNQ-eh-gqy" secondAttribute="trailing" id="Crn-Da-wsn"/>
                         <constraint firstItem="Ssn-ak-qNT" firstAttribute="centerX" secondItem="bFr-RG-79B" secondAttribute="centerX" id="JN4-PJ-kHt"/>
                         <constraint firstItem="M9I-w2-uCC" firstAttribute="bottom" secondItem="BNQ-eh-gqy" secondAttribute="top" constant="-5" id="LY6-b6-XQu"/>
+                        <constraint firstItem="2te-A1-9HO" firstAttribute="top" secondItem="bFr-RG-79B" secondAttribute="top" constant="25" id="Ueg-Oa-YcE"/>
                         <constraint firstAttribute="trailing" secondItem="M9I-w2-uCC" secondAttribute="trailing" constant="15" id="YIv-0e-g1p"/>
                         <constraint firstItem="DGt-Et-Df3" firstAttribute="centerX" secondItem="bFr-RG-79B" secondAttribute="centerX" id="aqY-Xi-NX3"/>
                         <constraint firstItem="FHb-2i-GSr" firstAttribute="bottom" secondItem="M9I-w2-uCC" secondAttribute="bottom" id="cPO-pC-lfo"/>
+                        <constraint firstItem="2te-A1-9HO" firstAttribute="leading" secondItem="bFr-RG-79B" secondAttribute="leading" constant="15" id="djy-Mw-XfW"/>
                         <constraint firstItem="02K-wu-j0g" firstAttribute="top" secondItem="ESH-Dz-thK" secondAttribute="bottom" constant="5" id="ewA-JX-cpy"/>
                         <constraint firstItem="ESH-Dz-thK" firstAttribute="top" secondItem="BNQ-eh-gqy" secondAttribute="bottom" constant="5" id="fd4-Jb-ZzT"/>
                         <constraint firstItem="M9I-w2-uCC" firstAttribute="leading" secondItem="BNQ-eh-gqy" secondAttribute="leading" id="oJ0-XV-xft"/>
@@ -143,17 +181,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="298" height="39"/>
                                             <subviews>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TMl-aG-Viu" userLabel="HintInfoView" customClass="OAStackView">
-                                                    <rect key="frame" x="74" y="7" width="151" height="25"/>
+                                                    <rect key="frame" x="87" y="20" width="124" height="0.0"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uq6-8k-LZY" userLabel="RoleImageView">
-                                                            <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="25" id="IOm-fh-OgT"/>
-                                                                <constraint firstAttribute="height" constant="25" id="Sol-jH-2r7"/>
-                                                            </constraints>
-                                                        </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leader, a goal there!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89j-Ef-BxR" userLabel="HintLabel">
-                                                            <rect key="frame" x="27" y="4" width="124" height="16"/>
+                                                            <rect key="frame" x="0.0" y="-8" width="124" height="16"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -162,11 +193,10 @@
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="89j-Ef-BxR" secondAttribute="trailing" id="1Hd-Yp-SJx"/>
+                                                        <constraint firstItem="89j-Ef-BxR" firstAttribute="leading" secondItem="TMl-aG-Viu" secondAttribute="leading" id="C7N-Xh-Pfz"/>
                                                         <constraint firstItem="89j-Ef-BxR" firstAttribute="centerY" secondItem="TMl-aG-Viu" secondAttribute="centerY" id="EFV-kk-xrO"/>
-                                                        <constraint firstItem="uq6-8k-LZY" firstAttribute="height" secondItem="TMl-aG-Viu" secondAttribute="height" id="Igx-gh-7l9"/>
-                                                        <constraint firstItem="uq6-8k-LZY" firstAttribute="leading" secondItem="TMl-aG-Viu" secondAttribute="leading" id="fnh-KL-Hbh"/>
-                                                        <constraint firstItem="89j-Ef-BxR" firstAttribute="leading" secondItem="uq6-8k-LZY" secondAttribute="trailing" constant="2" id="nah-va-lvR"/>
-                                                        <constraint firstItem="uq6-8k-LZY" firstAttribute="centerY" secondItem="TMl-aG-Viu" secondAttribute="centerY" id="uXu-dA-G8B"/>
+                                                        <constraint firstAttribute="bottom" secondItem="89j-Ef-BxR" secondAttribute="bottom" constant="-8" id="wNU-4m-4bS"/>
+                                                        <constraint firstItem="89j-Ef-BxR" firstAttribute="top" secondItem="TMl-aG-Viu" secondAttribute="top" constant="-8" id="xAY-hR-QWI"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="axisValue">
@@ -521,7 +551,8 @@
                 <outlet property="nextStepBtn" destination="YBO-SI-oIJ" id="CBk-MQ-TYz"/>
                 <outlet property="refreshGuideArrowImageView" destination="hfz-rx-HFz" id="Bdb-z1-I5I"/>
                 <outlet property="refreshGuideImageView" destination="tQs-em-q8P" id="0VA-sY-Af5"/>
-                <outlet property="roleImageView" destination="uq6-8k-LZY" id="yq3-Tb-qyJ"/>
+                <outlet property="roleImageView" destination="YIM-Rv-9ly" id="7Jn-EK-aVo"/>
+                <outlet property="roleNameLabel" destination="2dA-wQ-qqd" id="td0-JD-EbF"/>
                 <outlet property="setBombBtn" destination="M9I-w2-uCC" id="FT1-4c-Ac2"/>
                 <outlet property="shareBtn" destination="02K-wu-j0g" id="Pe4-bu-Pfg"/>
                 <outlet property="startBtn" destination="o8w-aO-UIU" id="5fz-FC-knd"/>
@@ -547,6 +578,7 @@
         <image name="refresh" width="84" height="84"/>
         <image name="refresh_guide" width="150" height="43"/>
         <image name="refresh_guide_arrow" width="150" height="117"/>
+        <image name="role_back.png" width="283" height="104"/>
         <image name="set_bomb" width="84" height="84"/>
         <image name="set_bomb_click" width="84" height="84"/>
         <image name="share" width="84" height="84"/>

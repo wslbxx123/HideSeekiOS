@@ -37,6 +37,7 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     @IBOutlet weak var refreshGuideImageView: UIImageView!
     @IBOutlet weak var refreshGuideArrowImageView: UIImageView!
     @IBOutlet weak var guideView: UIView!
+    @IBOutlet weak var roleNameLabel: UILabel!
     
     var refreshMapDelegate: RefreshMapDelegate!
     var setBombDelegate: SetBombDelegate!

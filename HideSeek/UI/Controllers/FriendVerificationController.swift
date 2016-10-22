@@ -86,7 +86,7 @@ class FriendVerificationController: UIViewController {
         if code == CodeParam.SUCCESS {
             self.dismissViewControllerAnimated(true, completion: nil)
         } else {
-            if code == 10023 && count <= 5 {
+            if code == CodeParam.ERROR_FAIL_SEND_MESSAGE && count <= 5 {
                 sendFriendRequest()
             } else {
                 let errorMessage = ErrorMessageFactory.get(code)

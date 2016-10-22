@@ -221,6 +221,7 @@
 		18D0AB8D1D70183100B51E7A /* SetEndGoalDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D0AB8C1D70183100B51E7A /* SetEndGoalDelegate.swift */; };
 		18D0AB9A1D7080D100B51E7A /* NewFriendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D0AB991D7080D100B51E7A /* NewFriendController.swift */; };
 		18D513D71DB1F5B20015B8E6 /* CustomString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D513D61DB1F5B20015B8E6 /* CustomString.swift */; };
+		18D760E81DBB0CB7009C7219 /* role_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 18D760E71DBB0CB7009C7219 /* role_back.png */; };
 		18D7831F1D2DE20D0013FB3C /* LoadMoreDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D7831E1D2DE20D0013FB3C /* LoadMoreDelegate.swift */; };
 		18D783211D2F3FF50013FB3C /* RecordTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D783201D2F3FF50013FB3C /* RecordTableView.swift */; };
 		18DCE98B1D2B9FC1009510FD /* RefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DCE98A1D2B9FC1009510FD /* RefreshView.swift */; };
@@ -554,6 +555,7 @@
 		18D0AB8C1D70183100B51E7A /* SetEndGoalDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SetEndGoalDelegate.swift; path = Common/Delegate/SetEndGoalDelegate.swift; sourceTree = "<group>"; };
 		18D0AB991D7080D100B51E7A /* NewFriendController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewFriendController.swift; path = UI/Controllers/NewFriendController.swift; sourceTree = "<group>"; };
 		18D513D61DB1F5B20015B8E6 /* CustomString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomString.swift; path = Common/Extenstion/CustomString.swift; sourceTree = "<group>"; };
+		18D760E71DBB0CB7009C7219 /* role_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = role_back.png; path = Images/role_back.png; sourceTree = "<group>"; };
 		18D7831E1D2DE20D0013FB3C /* LoadMoreDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadMoreDelegate.swift; path = Common/Delegate/LoadMoreDelegate.swift; sourceTree = "<group>"; };
 		18D783201D2F3FF50013FB3C /* RecordTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecordTableView.swift; path = UI/View/RecordTableView.swift; sourceTree = "<group>"; };
 		18DCE98A1D2B9FC1009510FD /* RefreshView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefreshView.swift; path = UI/View/RefreshView.swift; sourceTree = "<group>"; };
@@ -946,6 +948,7 @@
 		18C788F01D3DCAA9003123F8 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				18D760E71DBB0CB7009C7219 /* role_back.png */,
 				186DD0D11D7827360098064E /* giraffe.png */,
 				184CBF301D65893E00135C60 /* guide_back.png */,
 				18F661861D62C8C600689AF0 /* sword_a.png */,
@@ -1471,6 +1474,7 @@
 				18FD1A9C1D1A2FC800225C92 /* Localizable.strings in Resources */,
 				186DD1361D7834AD0098064E /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				18C788FD1D3DCB6E003123F8 /* cow_a.png in Resources */,
+				18D760E81DBB0CB7009C7219 /* role_back.png in Resources */,
 				18C788FF1D3DCB6E003123F8 /* cow_c.png in Resources */,
 				18F661931D62C8C600689AF0 /* sword_f.png in Resources */,
 				1893A0091D840C9C007CA861 /* city.plist in Resources */,
