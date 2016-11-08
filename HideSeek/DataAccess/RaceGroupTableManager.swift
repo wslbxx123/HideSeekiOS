@@ -251,6 +251,7 @@ class RaceGroupTableManager {
             let sqlStr = "delete from race_group; " +
             "update sqlite_sequence SET seq = 0 where name ='race_group'"
             try database.execute(sqlStr)
+            self._recordMinId = 0
         }
         catch let error as NSError {
             print("SQLiteDB - failed to truncate table race_group!")

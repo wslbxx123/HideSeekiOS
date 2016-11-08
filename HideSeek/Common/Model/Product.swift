@@ -6,7 +6,7 @@
 //  Copyright © 2016 mj. All rights reserved.
 //
 
-class Product {
+class Product: NSObject {
     var pkId: Int64
     var name: String
     var imageUrl: String?

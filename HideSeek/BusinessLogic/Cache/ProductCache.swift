@@ -21,6 +21,20 @@ class ProductCache : BaseCache<Product> {
         }
     }
     
+    var productIdList: NSMutableArray {
+        get {
+            let tempProductIds = NSMutableArray()
+            let bundleId = NSBundle.mainBundle().bundleIdentifier!.lowercaseString
+            
+            for productItem in cacheList {
+                let product = productItem as! Product
+                tempProductIds.addObject(bundleId + "\(product.pkId)")
+            }
+            
+            return tempProductIds
+        }
+    }
+    
     private override init() {
         super.init()
         productTableManager = ProductTableManager.instance

@@ -48,9 +48,10 @@ class UrlParam {
     static let REMOVE_FRIEND_URL = "https://www.hideseek.cn/home/friend/removeFriend"
     static let UPDATE_CHANNEL_URL = "https://www.hideseek.cn/home/user/updateChannelId"
     static let GET_FRIEND_REQUESTS_URL = "https://www.hideseek.cn/home/user/getFriendRequests"
+    static let UPDATE_USER_INFO_URL = "https://www.hideseek.cn/home/user/updateUserInfo"
     
     
-//    static let IP_ADDRESS = "192.168.1.102"
+//    static let IP_ADDRESS = "192.168.1.104"
 //    static let GET_SETTINGS = "http://" + IP_ADDRESS + "/home/user/getSettings"
 //    static let LOGIN_URL = "http://" + IP_ADDRESS + "/home/user/login"
 //    static let REGISTER_URL = "http://" + IP_ADDRESS + "/home/user/register"
@@ -92,6 +93,7 @@ class UrlParam {
 //    static let REMOVE_FRIEND_URL = "http://" + IP_ADDRESS + "/home/friend/removeFriend"
 //    static let UPDATE_CHANNEL_URL = "http://" + IP_ADDRESS + "/home/user/updateChannelId"
 //    static let GET_FRIEND_REQUESTS_URL = "http://" + IP_ADDRESS + "/home/user/getFriendRequests"
+//    static let UPDATE_USER_INFO_URL = "http://" + IP_ADDRESS + "/home/user/updateUserInfo"
     
     
     static let APP_STORE_URL = "https://itunes.apple.com/us/app/hideseek/id1154398844?ls=1&mt=8"

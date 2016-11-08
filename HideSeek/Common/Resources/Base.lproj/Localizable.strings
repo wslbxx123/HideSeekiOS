@@ -48,6 +48,7 @@
 "CANCEL" = "Cancel";
 "SAVE" = "Save";
 "SEND" = "Send";
+"reward" = "Reward";
 "mushroom" = "Mushroom";
 "bomb" = "Bomb";
 "egg" = "Egg";
@@ -79,6 +80,8 @@
 "NEXT_TIME" = "Next Time";
 "UPDATE" = "Update";
 "NAME" = "Name: %@";
+"APPLE_PAY" = "Apple Pay";
+"ALIPAY" = "Alipay";
 
 "ERROR_INIT_CAMERA" = "Failed to initiailize the camera";
 "ERROR_NOT_LOGIN" = "Please login first";

@@ -211,6 +211,7 @@ class PurchaseOrderTableManager {
             let sqlStr = "delete from purchase_order; " +
             "update sqlite_sequence SET seq = 0 where name ='purchase_order'"
             try database.execute(sqlStr)
+            self._orderMinId = 0
         }
         catch let error as NSError {
             print("SQLiteDB - failed to truncate table purchase_order!")

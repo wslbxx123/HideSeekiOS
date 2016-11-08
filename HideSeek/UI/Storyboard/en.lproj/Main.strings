@@ -63,7 +63,7 @@
 "8kC-v1-2ny.text" = "Register Phone";
 
 /* Class = "UILabel"; text = "Profile"; ObjectID = "8ms-Lo-W7g"; */
-"8ms-Lo-W7g.text" = "Profile";
+"8ms-Lo-W7g.text" = "My Profile";
 
 /* Class = "UISegmentedControl"; 9Q3-Qy-m5v.segmentTitles[0] = "Purchase Area"; ObjectID = "9Q3-Qy-m5v"; */
 "9Q3-Qy-m5v.segmentTitles[0]" = "Purchase Area";
@@ -400,3 +400,6 @@
 
 /* Class = "UILabel"; text = "Manual"; ObjectID = "vj4-ml-Ya2"; */
 "vj4-ml-Ya2.text" = "Manual";
+
+/* Class = "UILabel"; text = "Pay Way"; ObjectID = "ONu-t1-geG"; */
+"ONu-t1-geG.text" = "Pay Way";

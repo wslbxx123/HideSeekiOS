@@ -175,6 +175,7 @@ class RewardTableManager {
             let sqlStr = "delete from product; " +
             "update sqlite_sequence SET seq = 0 where name ='product'"
             try database.execute(sqlStr)
+            self._rewardMinId = 0
         }
         catch let error as NSError {
             print("SQLiteDB - failed to truncate table product!")

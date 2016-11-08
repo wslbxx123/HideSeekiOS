@@ -25,7 +25,6 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     @IBOutlet weak var warningBtn: UIButton!
     @IBOutlet weak var shareBtn: UIButton!
     @IBOutlet weak var hintLabel: UILabel!
-    @IBOutlet weak var hintInfoView: OAStackView!
     @IBOutlet weak var welcomeLabel: UILabel!
     @IBOutlet weak var roleImageView: UIImageView!
     @IBOutlet weak var nextStepBtn: UIButton!
@@ -38,6 +37,7 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     @IBOutlet weak var refreshGuideArrowImageView: UIImageView!
     @IBOutlet weak var guideView: UIView!
     @IBOutlet weak var roleNameLabel: UILabel!
+    @IBOutlet weak var roleInfoView: UIView!
     
     var refreshMapDelegate: RefreshMapDelegate!
     var setBombDelegate: SetBombDelegate!
@@ -141,14 +141,9 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
             mapView.removeFromSuperview()
         }
         
-        mapView.showsUserLocation = true
-        mapView.setUserTrackingMode(MAUserTrackingMode.Follow, animated: false)
         mapView.showsScale = true
         mapView.delegate = mapViewDelegate
-        mapView.pausesLocationUpdatesAutomatically = false
-        mapView.allowsBackgroundLocationUpdates = true
         mapView.showsCompass = false
-        mapView.customizeUserLocationAccuracyCircleRepresentation = true
         mapUIView.addSubview(mapView)
     }
     

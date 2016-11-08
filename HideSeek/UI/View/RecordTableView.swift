@@ -12,6 +12,8 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     let TAG_SCORE_LABEL = 3
     let TAG_DATE_LABEL = 4
     let TAG_DATE_VIEW = 5
+    let TAG_GOAL_NAME_LABEL = 6
+    let TAG_WHITE_VIEW = 7
     let VISIBLE_REFRESH_COUNT = 2;
     
     var recordList: NSMutableArray!
@@ -20,6 +22,8 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     var infiniteScrollingView: UIView!
     var loadMoreDelegate: LoadMoreDelegate!
     var screenHeight: CGFloat!
+    let dateFormatter = NSDateFormatter()
+    var customDateFormatter = NSDateFormatter()
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -29,6 +33,8 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         self.recordList = NSMutableArray()
         self.setupInfiniteScrollingView()
         self.screenHeight = UIScreen.mainScreen().bounds.height - 184
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        customDateFormatter.dateFormat = "MM-dd"
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -48,10 +54,13 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         let timeLabel = cell.viewWithTag(TAG_TIME_LABEL) as! UILabel
         let goalImageView = cell.viewWithTag(TAG_GOAL_IMAGEVIEW) as! UIImageView
         let scoreLabel = cell.viewWithTag(TAG_SCORE_LABEL) as! UILabel
+        let goalNameLabel = cell.viewWithTag(TAG_GOAL_NAME_LABEL) as! UILabel
+        let whiteView = cell.viewWithTag(TAG_WHITE_VIEW)
 
         timeLabel.text = record.time
         
         goalImageView.image = UIImage(named: GoalImageFactory.get(record.goalType, showTypeName: record.showTypeName))
+        goalNameLabel.text = record.goalName
         
         if record.score >= 0 {
             scoreLabel.text = "+" + String(record.score)
@@ -59,12 +68,15 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
             scoreLabel.text = String(record.score)
         }
         
-        dateLabel.text = String(record.date)
+        let date = dateFormatter.dateFromString(record.date)
+        dateLabel.text = customDateFormatter.stringFromDate(date!)
         
         if indexPath.row == 0 ||
             record.date != (recordList.objectAtIndex(indexPath.row - 1) as! Record).date {
+            whiteView?.hidden = false
         } else {
             dateLabel.text = ""
+            whiteView?.hidden = true
         }
 
         cell.selectionStyle = UITableViewCellSelectionStyle.None
@@ -76,7 +88,7 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 60
+        return 80
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -88,10 +100,10 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         
         if indexPath.row == 0 ||
             record.date != (recordList.objectAtIndex(indexPath.row - 1) as! Record).date {
-            return 100
+            return 110
         }
         
-        return 58
+        return 78
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -126,7 +138,7 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         let screenWidth = UIScreen.mainScreen().bounds.width
         self.infiniteScrollingView = UIView(frame: CGRectMake(0, self.contentSize.height, screenWidth, 40))
         self.infiniteScrollingView!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
-        self.infiniteScrollingView!.backgroundColor = UIColor.whiteColor()
+//        self.infiniteScrollingView!.backgroundColor = UIColor.whiteColor()
         
         let loadinglabel = UILabel()
         loadinglabel.frame.size = CGSize(width: 100, height: 20)

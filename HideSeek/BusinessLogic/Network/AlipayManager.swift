@@ -6,13 +6,15 @@
 //  Copyright © 2016 mj. All rights reserved.
 //
 
-class AlipayManager {
+class AlipayManager : PayManager {
     let PARTNER = "2088421519055042";
     let SELLER = "wslbxx@hotmail.com";
     
     static let instance = AlipayManager()
     
-    func purchase(sign: NSString, tradeNo: NSString, product: Product, count: Int) {
+    override func purchase(sign: NSString, tradeNo: NSString, product: Product,
+                           count: Int, orderId: Int64) {
+        super.purchase(sign, tradeNo: tradeNo, product: product, count: count, orderId: orderId)
         let order = AlipayOrder(service: "mobile.securitypay.pay",
                                 partner: PARTNER,
                                 inputCharset: "utf-8",
@@ -38,7 +40,7 @@ class AlipayManager {
         var returnStr: NSString = ""
         switch(orderState) {
         case 9000:
-            returnStr = NSLocalizedString("TRANSACTION_COMPLETE", comment: "Transaction Completed")
+            returnStr = NSLocalizedString("SUCCESS_PURCHASE", comment: "Purchase the product successfully")
             break;
         case 8000:
             returnStr = NSLocalizedString("ORDER_PROCESSING", comment: "The order is being processed")
@@ -74,7 +76,6 @@ class AlipayManager {
                 if(resultStatus == 9000) {
                     storeController.purchaseController.showMessage(message as String, type: HudToastFactory.MessageType.SUCCESS)
                     storeController.purchaseController.purchase()
-                    storeController.purchaseController.close()
                 } else {
                     storeController.purchaseController.showMessage(message as String, type: HudToastFactory.MessageType.ERROR)
                 }

@@ -8,5 +8,5 @@
 
 class Setting {
     static var IF_STORE_HIDDEN: Bool = false
-    static var LATEST_APP_VERSION: String = ""
+    static var LATEST_APP_VERSION: String = BaseInfoUtil.getAppVersion()
 }

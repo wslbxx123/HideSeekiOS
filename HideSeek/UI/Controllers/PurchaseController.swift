@@ -9,9 +9,10 @@
 import UIKit
 import AFNetworking
 import MBProgressHUD
+import StoreKit
 
 class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDelegate,
-    CloseDelegate, LoadMoreDelegate {
+    CloseDelegate, LoadMoreDelegate, ChangePayWayDelegate {
     let HtmlType = "text/html"
     let TAG_LOADING_IMAGEVIEW = 1
     
@@ -23,6 +24,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
     var customLoadingView: UIView!
     var productTableManager: ProductTableManager!
     var createOrderManager: CustomRequestManager!
+    var payManager: PayManager!
     var purchaseDialogController: PurchaseDialogController!
     var screenRect: CGRect!
     var purchaseHeight: CGFloat = 250
@@ -40,6 +42,8 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         createOrderManager = CustomRequestManager()
         createOrderManager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
         productTableManager = ProductTableManager.instance
+        payManager = PayWayFactory.get(purchaseDialogController.payWay)
+        payManager.purchaseDelegate = self
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -84,6 +88,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         purchaseDialogController = storyboard.instantiateViewControllerWithIdentifier("purchaseDialog") as! PurchaseDialogController
         purchaseDialogController.confirmPurchaseDelegate = self
         purchaseDialogController.closeDelegate = self
+        purchaseDialogController.changePayWayDelegate = self
     }
     
     func refreshProductData() {
@@ -179,11 +184,12 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary
             self.purchaseDialogController.orderId = (result["order_id"] as! NSString).longLongValue
-            AlipayManager.instance.purchase(
+            self.payManager.purchase(
                 result["sign"] as! NSString,
                 tradeNo: result["trade_no"] as! NSString,
                 product: product,
-                count: count)
+                count: count,
+                orderId: purchaseDialogController.orderId)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
             HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
@@ -197,6 +203,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
     func close() {
         grayView.removeFromSuperview()
         purchaseDialogController.view.removeFromSuperview()
+        purchaseDialogController.closePayWayView()
     }
     
     func showMessage(message: String, type: HudToastFactory.MessageType) {
@@ -245,8 +252,9 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
     }
     
     func purchase() {
-        let successMessage = NSLocalizedString("SUCCESS_PURCHASE", comment: "Purchase the product successfully")
-        HudToastFactory.show(successMessage, view: self.view, type: HudToastFactory.MessageType.SUCCESS)
+        if purchaseDialogController.orderId == 0 {
+            return
+        }
         
         let paramDict: NSMutableDictionary = ["order_id": "\(purchaseDialogController.orderId)"]
         createOrderManager.POST(UrlParam.PURCHASE_URL,
@@ -274,6 +282,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
             
             UserCache.instance.user.bombNum = bombNum
             UserCache.instance.user.hasGuide = hasGuide == 1
+            self.close()
             self.refreshProductData()
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
@@ -283,5 +292,9 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
                 }
             })
         }
+    }
+    
+    func payWayChanged(payWay: PayWayFactory.PayWayEnum) {
+        self.payManager = PayWayFactory.get(payWay)
     }
 }

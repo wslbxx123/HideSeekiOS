@@ -18,6 +18,8 @@
 		181499B41D71334600C5BBF5 /* NewFriendCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181499B31D71334600C5BBF5 /* NewFriendCache.swift */; };
 		181499B61D71339A00C5BBF5 /* NewFriendTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181499B51D71339A00C5BBF5 /* NewFriendTableManager.swift */; };
 		181499B81D713BDD00C5BBF5 /* FriendVerificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181499B71D713BDD00C5BBF5 /* FriendVerificationController.swift */; };
+		1815B4D01DC427DE0094CF76 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1815B4CF1DC427DE0094CF76 /* StoreKit.framework */; };
+		1815B4D21DC449EA0094CF76 /* InAppPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1815B4D11DC449EA0094CF76 /* InAppPurchaseManager.swift */; };
 		1817148B1D221D2C00B1685B /* UserCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1817148A1D221D2C00B1685B /* UserCache.swift */; };
 		1817148E1D221DF500B1685B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1817148D1D221DF500B1685B /* User.swift */; };
 		181714901D22789C00B1685B /* CodeParam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1817148F1D22789C00B1685B /* CodeParam.swift */; };
@@ -64,6 +66,9 @@
 		1845A95F1D509DEE005271E4 /* RewardCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1845A95E1D509DEE005271E4 /* RewardCache.swift */; };
 		1845A9611D50B77E005271E4 /* PurchaseDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1845A9601D50B77E005271E4 /* PurchaseDelegate.swift */; };
 		1845A9691D50D194005271E4 /* PurchaseDialogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1845A9681D50D194005271E4 /* PurchaseDialogController.swift */; };
+		184619511DCDFCB200B63527 /* PayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184619501DCDFCB200B63527 /* PayManager.swift */; };
+		184619531DCE00E500B63527 /* PayWayFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184619521DCE00E500B63527 /* PayWayFactory.swift */; };
+		184619551DCE04A800B63527 /* ChangePayWayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184619541DCE04A800B63527 /* ChangePayWayDelegate.swift */; };
 		184955E61D0959DC001A20DC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184955E51D0959DC001A20DC /* AppDelegate.swift */; };
 		184955FB1D0959DC001A20DC /* HideSeekTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184955FA1D0959DC001A20DC /* HideSeekTests.swift */; };
 		184956061D0959DC001A20DC /* HideSeekUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184956051D0959DC001A20DC /* HideSeekUITests.swift */; };
@@ -208,7 +213,6 @@
 		18C8D6361D2F6A4C00464394 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C8D6351D2F6A4C00464394 /* Record.swift */; };
 		18C8D6381D2FF36300464394 /* RecordCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C8D6371D2FF36300464394 /* RecordCache.swift */; };
 		18CF63531D55889500EABFC0 /* CloseDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CF63521D55889500EABFC0 /* CloseDelegate.swift */; };
-		18CF63571D55956800EABFC0 /* splash_back.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 18CF63561D55956800EABFC0 /* splash_back.jpg */; };
 		18CF63591D55A57500EABFC0 /* MyOrderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CF63581D55A57500EABFC0 /* MyOrderController.swift */; };
 		18CF635B1D55CA2D00EABFC0 /* PurchaseOrderTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CF635A1D55CA2D00EABFC0 /* PurchaseOrderTableManager.swift */; };
 		18CF63611D55E0F500EABFC0 /* PurchaseOrderCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CF63601D55E0F500EABFC0 /* PurchaseOrderCache.swift */; };
@@ -281,7 +285,6 @@
 		18FD1A811D1A281700225C92 /* CameraOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FD1A801D1A281700225C92 /* CameraOverlayView.swift */; };
 		18FD1A841D1A28EF00225C92 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FD1A831D1A28EF00225C92 /* HomeController.swift */; };
 		18FD1A861D1A291800225C92 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FD1A851D1A291800225C92 /* ViewController.swift */; };
-		18FD1A941D1A2B8F00225C92 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18FD1A961D1A2B8F00225C92 /* LaunchScreen.storyboard */; };
 		18FD1A9C1D1A2FC800225C92 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 18FD1A9E1D1A2FC800225C92 /* Localizable.strings */; };
 		18FD1AA81D1A804D00225C92 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FD1AA71D1A804D00225C92 /* ImageCache.swift */; };
 		18FD1AAA1D1A8B8900225C92 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FD1AA91D1A8B8900225C92 /* CustomImageView.swift */; };
@@ -318,6 +321,8 @@
 		181499B31D71334600C5BBF5 /* NewFriendCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewFriendCache.swift; path = BusinessLogic/Cache/NewFriendCache.swift; sourceTree = "<group>"; };
 		181499B51D71339A00C5BBF5 /* NewFriendTableManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewFriendTableManager.swift; path = DataAccess/NewFriendTableManager.swift; sourceTree = "<group>"; };
 		181499B71D713BDD00C5BBF5 /* FriendVerificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FriendVerificationController.swift; path = UI/Controllers/FriendVerificationController.swift; sourceTree = "<group>"; };
+		1815B4CF1DC427DE0094CF76 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		1815B4D11DC449EA0094CF76 /* InAppPurchaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InAppPurchaseManager.swift; path = BusinessLogic/Network/InAppPurchaseManager.swift; sourceTree = "<group>"; };
 		1817148A1D221D2C00B1685B /* UserCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserCache.swift; path = BusinessLogic/Cache/UserCache.swift; sourceTree = "<group>"; };
 		1817148D1D221DF500B1685B /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = User.swift; path = Common/Model/User.swift; sourceTree = "<group>"; };
 		1817148F1D22789C00B1685B /* CodeParam.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CodeParam.swift; path = Common/Params/CodeParam.swift; sourceTree = "<group>"; };
@@ -367,6 +372,9 @@
 		1845A95E1D509DEE005271E4 /* RewardCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RewardCache.swift; path = BusinessLogic/Cache/RewardCache.swift; sourceTree = "<group>"; };
 		1845A9601D50B77E005271E4 /* PurchaseDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PurchaseDelegate.swift; path = Common/Delegate/PurchaseDelegate.swift; sourceTree = "<group>"; };
 		1845A9681D50D194005271E4 /* PurchaseDialogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PurchaseDialogController.swift; path = UI/Controllers/PurchaseDialogController.swift; sourceTree = "<group>"; };
+		184619501DCDFCB200B63527 /* PayManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PayManager.swift; path = BusinessLogic/Network/PayManager.swift; sourceTree = "<group>"; };
+		184619521DCE00E500B63527 /* PayWayFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PayWayFactory.swift; path = Common/Factory/PayWayFactory.swift; sourceTree = "<group>"; };
+		184619541DCE04A800B63527 /* ChangePayWayDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChangePayWayDelegate.swift; path = Common/Delegate/ChangePayWayDelegate.swift; sourceTree = "<group>"; };
 		184955E21D0959DC001A20DC /* HideSeek.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HideSeek.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		184955E51D0959DC001A20DC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		184955F61D0959DC001A20DC /* HideSeekTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HideSeekTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -542,7 +550,6 @@
 		18C8D6351D2F6A4C00464394 /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Record.swift; path = Common/Model/Record.swift; sourceTree = "<group>"; };
 		18C8D6371D2FF36300464394 /* RecordCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecordCache.swift; path = BusinessLogic/Cache/RecordCache.swift; sourceTree = "<group>"; };
 		18CF63521D55889500EABFC0 /* CloseDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloseDelegate.swift; path = Common/Delegate/CloseDelegate.swift; sourceTree = "<group>"; };
-		18CF63561D55956800EABFC0 /* splash_back.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = splash_back.jpg; path = Images/splash_back.jpg; sourceTree = "<group>"; };
 		18CF63581D55A57500EABFC0 /* MyOrderController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyOrderController.swift; path = UI/Controllers/MyOrderController.swift; sourceTree = "<group>"; };
 		18CF635A1D55CA2D00EABFC0 /* PurchaseOrderTableManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PurchaseOrderTableManager.swift; path = DataAccess/PurchaseOrderTableManager.swift; sourceTree = "<group>"; };
 		18CF63601D55E0F500EABFC0 /* PurchaseOrderCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PurchaseOrderCache.swift; path = BusinessLogic/Cache/PurchaseOrderCache.swift; sourceTree = "<group>"; };
@@ -617,7 +624,6 @@
 		18FD1A801D1A281700225C92 /* CameraOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraOverlayView.swift; path = UI/View/CameraOverlayView.swift; sourceTree = "<group>"; };
 		18FD1A831D1A28EF00225C92 /* HomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeController.swift; path = UI/Controllers/HomeController.swift; sourceTree = "<group>"; };
 		18FD1A851D1A291800225C92 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = UI/Controllers/ViewController.swift; sourceTree = "<group>"; };
-		18FD1A951D1A2B8F00225C92 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		18FD1A9D1D1A2FC800225C92 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		18FD1A9F1D1A2FCB00225C92 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		18FD1AA01D1A2FCC00225C92 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -645,6 +651,7 @@
 				188658D81D77B8B00012912F /* ImageIO.framework in Frameworks */,
 				18EC9D961D4759F5005F88A5 /* JavaScriptCore.framework in Frameworks */,
 				186DD1401D7834AD0098064E /* ShareSDKConnector.framework in Frameworks */,
+				1815B4D01DC427DE0094CF76 /* StoreKit.framework in Frameworks */,
 				18857C261D52099B0049714B /* CoreMotion.framework in Frameworks */,
 				18857C251D5209840049714B /* CFNetwork.framework in Frameworks */,
 				18857C231D5209640049714B /* CoreText.framework in Frameworks */,
@@ -704,6 +711,8 @@
 				18857C291D520C4C0049714B /* AlipayManager.swift */,
 				180E970B1D29EFE900481703 /* CustomRequestManager.swift */,
 				18939FF31D7E8166007CA861 /* PushManager.swift */,
+				1815B4D11DC449EA0094CF76 /* InAppPurchaseManager.swift */,
+				184619501DCDFCB200B63527 /* PayManager.swift */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -737,6 +746,7 @@
 				18C788EE1D3DB55E003123F8 /* AnimationImageFactory.swift */,
 				184CBF361D65903700135C60 /* GoalImageFactory.swift */,
 				182A09001D8FD52400E71C29 /* RaceGroupMessageFactory.swift */,
+				184619521DCE00E500B63527 /* PayWayFactory.swift */,
 			);
 			name = Factory;
 			sourceTree = "<group>";
@@ -959,7 +969,6 @@
 				18F6618B1D62C8C600689AF0 /* sword_f.png */,
 				18F6618C1D62C8C600689AF0 /* sword_g.png */,
 				18F6618D1D62C8C600689AF0 /* sword_h.png */,
-				18CF63561D55956800EABFC0 /* splash_back.jpg */,
 				1845A94B1D505A48005271E4 /* stone_monster.png */,
 				1845A94C1D505A48005271E4 /* water_magician.png */,
 				182205381D4F5B6D005A3F83 /* fire_knight.png */,
@@ -1031,6 +1040,7 @@
 				184CB7481D8880B40086B559 /* RemoveFriendDelegate.swift */,
 				182A09021D8FD81800E71C29 /* GoToPhotoDelegate.swift */,
 				185813881DB0755C004C9242 /* HideBottomBarDelegate.swift */,
+				184619541DCE04A800B63527 /* ChangePayWayDelegate.swift */,
 			);
 			name = Delegate;
 			sourceTree = "<group>";
@@ -1205,7 +1215,6 @@
 			isa = PBXGroup;
 			children = (
 				1845A94F1D506DAE005271E4 /* Main.storyboard */,
-				18FD1A961D1A2B8F00225C92 /* LaunchScreen.storyboard */,
 			);
 			name = Storyboard;
 			sourceTree = "<group>";
@@ -1252,6 +1261,7 @@
 		BB17D2BFE1256B4CDF8F36F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1815B4CF1DC427DE0094CF76 /* StoreKit.framework */,
 				18939FED1D7E6D21007CA861 /* libXG-SDK.a */,
 				18939FEE1D7E6D21007CA861 /* XGPush.h */,
 				18939FEF1D7E6D21007CA861 /* XGSetting.h */,
@@ -1384,6 +1394,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -1495,9 +1508,7 @@
 				18C789081D3DCB90003123F8 /* dragon.png in Resources */,
 				18C7891D1D3DCBF7003123F8 /* bird_d.png in Resources */,
 				186DD1371D7834AD0098064E /* RennSDK.bundle in Resources */,
-				18CF63571D55956800EABFC0 /* splash_back.jpg in Resources */,
 				183DF4E31D407D5B00C25529 /* Assets.xcassets in Resources */,
-				18FD1A941D1A2B8F00225C92 /* LaunchScreen.storyboard in Resources */,
 				184CBF311D65893E00135C60 /* guide_back.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1579,10 +1590,12 @@
 				180E970C1D29EFE900481703 /* CustomRequestManager.swift in Sources */,
 				18670F321D6C3F6B0025E051 /* FriendCache.swift in Sources */,
 				181C09D91D675F1D00473D47 /* PhotoController.swift in Sources */,
+				184619511DCDFCB200B63527 /* PayManager.swift in Sources */,
 				182BBF241D3A7AB00095DE4A /* SetBombDelegate.swift in Sources */,
 				18D7831F1D2DE20D0013FB3C /* LoadMoreDelegate.swift in Sources */,
 				185E16881D4C28B200212714 /* HotCityCollectionView.swift in Sources */,
 				1845A94A1D503E9F005271E4 /* ShowToastDelegate.swift in Sources */,
+				184619551DCE04A800B63527 /* ChangePayWayDelegate.swift in Sources */,
 				184CBF4B1D65A4B900135C60 /* RateView.swift in Sources */,
 				18B9C8941D4B5165000D5007 /* SelectRegionDelegate.swift in Sources */,
 				188658A21D7573EE0012912F /* FeedbackController.swift in Sources */,
@@ -1714,7 +1727,9 @@
 				186BC2801D3C99A5002A0BFE /* GuideDelegate.swift in Sources */,
 				189CD4091D49A3AB005983CB /* RegionController.swift in Sources */,
 				18D016FF1D3F2EA900695BD4 /* PurchaseCollectionView.swift in Sources */,
+				1815B4D21DC449EA0094CF76 /* InAppPurchaseManager.swift in Sources */,
 				1836EF5F1D56D16500D95B12 /* PurchaseOrderController.swift in Sources */,
+				184619531DCE00E500B63527 /* PayWayFactory.swift in Sources */,
 				1845A9611D50B77E005271E4 /* PurchaseDelegate.swift in Sources */,
 				18D017011D3F3F2900695BD4 /* ProductCache.swift in Sources */,
 				183DF4E51D407E7400C25529 /* ProductTableManager.swift in Sources */,
@@ -1815,15 +1830,6 @@
 			);
 			name = InfoPlist.strings;
 			path = Common/Resources;
-			sourceTree = "<group>";
-		};
-		18FD1A961D1A2B8F00225C92 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				18FD1A951D1A2B8F00225C92 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			path = UI/Storyboard;
 			sourceTree = "<group>";
 		};
 		18FD1A9E1D1A2FC800225C92 /* Localizable.strings */ = {
@@ -1932,6 +1938,7 @@
 			baseConfigurationReference = F5750C74CE7FDDCA5640D64F /* Pods-HideSeek.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = HideSeek/HideSeek.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1974,10 +1981,11 @@
 			baseConfigurationReference = E24D269691D801F9C7C41FE0 /* Pods-HideSeek.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = HideSeek/HideSeek.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Min Xiang (2R6YHLQQAT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Min Xiang (2R6YHLQQAT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2004,7 +2012,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = mj.HideSeek;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1aab2a61-cd54-4097-81c7-b811490eaf4e";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "HideSeek/HideSeek-Bridging-Header.h";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};

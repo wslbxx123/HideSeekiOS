@@ -48,6 +48,7 @@
 "CANCEL" = "取消";
 "SAVE" = "保存";
 "SEND" = "发送";
+"reward" = "奖品";
 "mushroom" = "蘑菇兽";
 "bomb" = "诡诈兽";
 "egg" = "怪诞兽";
@@ -79,6 +80,8 @@
 "NEXT_TIME" = "下一次";
 "UPDATE" = "更新";
 "NAME" = "名字：%@";
+"APPLE_PAY" = "苹果内购";
+"ALIPAY" = "支付宝";
 
 "ERROR_INIT_CAMERA" = "初始化相机失败";
 "ERROR_NOT_LOGIN" = "请先登录";

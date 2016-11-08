@@ -8,7 +8,8 @@
 
 import UIKit
 
-class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDelegate, ConfirmPurchaseDelegate, CloseDelegate {
+class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDelegate, ConfirmPurchaseDelegate,
+    CloseDelegate, ChangePayWayDelegate {
     let HtmlType = "text/html"
     let TAG_LOADING_IMAGEVIEW = 1
     
@@ -26,6 +27,7 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
     var purchaseHeight: CGFloat = 250
     var purchaseWidth: CGFloat!
     var getOrderManager: CustomRequestManager!
+    var payManager: PayManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +51,9 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
         purchaseDialogController = storyboard.instantiateViewControllerWithIdentifier("purchaseDialog") as! PurchaseDialogController
         purchaseDialogController.confirmPurchaseDelegate = self
         purchaseDialogController.closeDelegate = self
+        purchaseDialogController.changePayWayDelegate = self
+        payManager = PayWayFactory.get(purchaseDialogController.payWay)
+        payManager.purchaseDelegate = self
         
         if(UserCache.instance.ifLogin()) {
             UIView.animateWithDuration(0.25,
@@ -247,11 +252,12 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary
-            AlipayManager.instance.purchase(
+            self.payManager.purchase(
                 result["sign"] as! NSString,
                 tradeNo: result["trade_no"] as! NSString,
                 product: product,
-                count: count)
+                count: count,
+                orderId: purchaseDialogController.orderId)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
             HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
@@ -265,6 +271,7 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
     func close() {
         grayView.removeFromSuperview()
         purchaseDialogController.view.removeFromSuperview()
+        refreshData()
     }
     
     func showMessage(message: String, type: HudToastFactory.MessageType) {
@@ -309,5 +316,9 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
                 }
             })
         }
+    }
+    
+    func payWayChanged(payWay: PayWayFactory.PayWayEnum) {
+        self.payManager = PayWayFactory.get(payWay)
     }
 }

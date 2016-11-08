@@ -31,6 +31,7 @@ class MeController: UIViewController, TouchDownDelegate {
     @IBOutlet weak var myOrderView: MenuView!
     @IBOutlet weak var settingView: MenuView!
     @IBOutlet weak var rewardExchangeView: MenuView!
+    @IBOutlet weak var profileLabel: UILabel!
     
     var myProfileController: MyProfileController!
     var getFriendRequestManager: CustomRequestManager!
@@ -170,17 +171,6 @@ class MeController: UIViewController, TouchDownDelegate {
     }
     
     func setProfileInfo() {
-        if Setting.IF_STORE_HIDDEN || Setting.LATEST_APP_VERSION.compareTo(BaseInfoUtil.getAppVersion(), separator: ".") < 0 {
-            rewardExchangeView.hidden = true
-            myOrderView.hidden = true
-            if topConstraint != nil {
-                meView.removeConstraint(topConstraint)
-                
-                let constraint = NSLayoutConstraint(item: settingView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: friendScoreView, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 10)
-                meView.addConstraint(constraint)
-            }
-        }
-        
         var photoUrl: String?
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         if(UserCache.instance.ifLogin()) {
@@ -192,6 +182,7 @@ class MeController: UIViewController, TouchDownDelegate {
             roleImageView.image = UIImage(named: user.roleImageName)
             notLoginLabel.hidden = true
             profileView.hidden = false
+            profileLabel.hidden = false
             
             scoreNumLabel.text = "\(user.record)"
             friendNumLabel.text = "\(user.friendNum)"
@@ -199,6 +190,7 @@ class MeController: UIViewController, TouchDownDelegate {
         } else {
             profileView.hidden = true
             notLoginLabel.hidden = false
+            profileLabel.hidden = true
             photoUrl = ""
             scoreNumLabel.text = "0"
             friendNumLabel.text = "0"

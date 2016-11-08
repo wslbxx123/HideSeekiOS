@@ -15,6 +15,7 @@ class ViewController: UITabBarController {
     var manager: CustomRequestManager!
     var httpManager: AFHTTPRequestOperationManager!
     var postChanneldId = 0
+    var updateSettingCount = 0
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,10 @@ class ViewController: UITabBarController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     override func didReceiveMemoryWarning() {
@@ -73,7 +78,18 @@ class ViewController: UITabBarController {
         })
     }
     
+    func refreshSetting() {
+        updateSettingCount = 0
+        updateSetting()
+    }
+    
     func updateSetting() {
+        updateSettingCount += 1
+        
+        if updateSettingCount > 5 {
+            return;
+        }
+        
         httpManager.POST(UrlParam.GET_SETTINGS, parameters: [],
                          success: { (operation, responseObject) in
                             let response = responseObject as! NSDictionary
@@ -83,6 +99,7 @@ class ViewController: UITabBarController {
                 },
                          failure: { (operation, error) in
                             print("Error: " + error.localizedDescription)
+                            self.updateSetting()
             })
     }
     

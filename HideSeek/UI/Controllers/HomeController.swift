@@ -13,13 +13,15 @@ import CoreMotion.CMMotionManager
 import MBProgressHUD
 import AVFoundation
 
-class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, ArriveDelegate, RefreshMapDelegate, UpdateGoalDelegate, HideBottomBarDelegate {
+class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, GuideDelegate, GetGoalDelegate, GuideMonsterDelegate, TouchDownDelegate, CLLocationManagerDelegate, HitMonsterDelegate, WarningDelegate, CloseDelegate, SetEndGoalDelegate, ShareDelegate, ArriveDelegate, RefreshMapDelegate, UpdateGoalDelegate, HideBottomBarDelegate,
+    AMapLocationManagerDelegate{
     let HtmlType = "text/html"
     let REFRESH_MAP_INTERVAL: Double = 5
     var manager: AFHTTPRequestOperationManager!
     var setBombManager: CustomRequestManager!
     var getGoalManager: CustomRequestManager!
     var hitMonsterManager: CustomRequestManager!
+    var updateUserInfoManager: CustomRequestManager!
     var success: AFHTTPRequestOperation!
     var latitude: CLLocationDegrees!
     var longitude: CLLocationDegrees!
@@ -35,7 +37,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     var orientation: Int = -1
     var mapDialogController: MapDialogController!
     var screenRect: CGRect!
-    var mapHeight: CGFloat = 300
+    var mapHeight: CGFloat!
     var mapWidth: CGFloat!
     var grayView: UIView!
     var locManager: CLLocationManager!
@@ -47,6 +49,9 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     var imageOutput: AVCaptureStillImageOutput!
     var session: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
+    var pointAnnotation: MAPointAnnotation!
+    var circleAnnotation: MAPointAnnotation!
+    var locationManager: AMapLocationManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +65,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         setBombManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
         getGoalManager = CustomRequestManager()
         getGoalManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        updateUserInfoManager = CustomRequestManager()
+        updateUserInfoManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
         hitMonsterManager = CustomRequestManager()
         hitMonsterManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
         
@@ -78,21 +85,26 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             self.session.startRunning()
         }
         
+        if self.locationManager != nil {
+            self.locationManager.startUpdatingLocation()
+        }
+        
         time = NSTimer.scheduledTimerWithTimeInterval(REFRESH_MAP_INTERVAL, target: self, selector: #selector(HomeController.refreshMap), userInfo: nil, repeats: true)
         if overlayView != nil {
             initMenuBtn()
-            overlayView.addMapView(self)
-            mapDialogController.initView(mapWidth, mapHeight: mapHeight)
+//            mapDialogController.initView(mapWidth, mapHeight: mapHeight)
             
             if UserCache.instance.ifLogin() {
                 let user = UserCache.instance.user
                 overlayView.welcomeLabel.hidden = true
-                overlayView.hintInfoView.hidden = false
+                overlayView.hintLabel.hidden = false
                 overlayView.roleImageView.image = UIImage(named: user.roleImageName)
                 overlayView.roleNameLabel.text = user.roleName
+                
+                updateUserInfo()
             } else {
                 overlayView.welcomeLabel.hidden = false
-                overlayView.hintInfoView.hidden = true
+                overlayView.hintLabel.hidden = true
             }
         }
         
@@ -130,8 +142,40 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             self.session.stopRunning()
         }
         
-        time.invalidate()
-        time = nil
+        if time != nil {
+            time.invalidate()
+            time = nil
+        }
+    }
+    
+    func updateUserInfo() {
+        let paramDict = NSMutableDictionary()
+        updateUserInfoManager.POST(UrlParam.UPDATE_USER_INFO_URL, paramDict: paramDict, success: { (operation, responseObject) in
+            let response = responseObject as! NSDictionary
+            print("JSON: " + responseObject.description!)
+            
+            self.setInfoFromUpdateUserInfoCallback(response)
+        }) { (operation, error) in
+            print("Error: " + error.localizedDescription)
+        }
+    }
+    
+    func setInfoFromUpdateUserInfoCallback(response: NSDictionary) {
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
+        
+        if code == CodeParam.SUCCESS {
+            let result = response["result"] as! NSDictionary
+            UserCache.instance.user.bombNum = BaseInfoUtil.getIntegerFromAnyObject(result["bomb_num"])
+            self.overlayView.bombNumBtn.setTitle("\(UserCache.instance.user.bombNum)", forState: UIControlState.Normal)
+            UserCache.instance.user.hasGuide = BaseInfoUtil.getIntegerFromAnyObject(result["has_guide"]) == 1
+        } else {
+            let errorMessage = ErrorMessageFactory.get(code)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                if code == CodeParam.ERROR_SESSION_INVALID {
+                    UserInfoManager.instance.logout(self)
+                }
+            })
+        }
     }
     
     func checkIfFirstUse() {
@@ -171,6 +215,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             initOverlayView()
             initMapDialog()
             initMonsterGuide()
+            configLocationManager()
         }
     }
     
@@ -180,6 +225,12 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             self.input = try AVCaptureDeviceInput(device: self.device)
             self.imageOutput = AVCaptureStillImageOutput()
             self.session = AVCaptureSession()
+            
+            if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Phone {
+                self.session.sessionPreset = AVCaptureSessionPresetHigh
+            } else {
+                self.session.sessionPreset = AVCaptureSessionPresetMedium
+            }
             
             if self.session.canAddInput(self.input) {
                 self.session.addInput(self.input)
@@ -239,12 +290,14 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             overlayView.monsterGuideBtn.hidden = false
             overlayView.warningBtn.hidden = false
             overlayView.shareBtn.hidden = false
+            overlayView.roleInfoView.hidden = false
         } else {
             overlayView.bombNumBtn.hidden = true
             overlayView.setBombBtn.hidden = true
             overlayView.monsterGuideBtn.hidden = true
             overlayView.warningBtn.hidden = true
             overlayView.shareBtn.hidden = true
+            overlayView.roleInfoView.hidden = true
         }
     }
     
@@ -266,6 +319,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     func initMapDialog() {
         screenRect = UIScreen.mainScreen().bounds
         mapWidth = screenRect.width - 40
+        mapHeight = mapWidth
         grayView = UIView(frame: screenRect)
         grayView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
         
@@ -291,21 +345,41 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         mapDialogController.view.hidden = true
     }
     
-    func mapView(mapView: MAMapView!, didUpdateUserLocation userLocation: MAUserLocation!, updatingLocation: Bool) {
-        if updatingLocation {
-            latitude = userLocation.coordinate.latitude
-            longitude = userLocation.coordinate.longitude
-            print("latitude : %f,longitude: %f", latitude, longitude);
+    func configLocationManager() {
+        self.locationManager = AMapLocationManager()
+        self.locationManager.delegate = self
+        self.locationManager.pausesLocationUpdatesAutomatically = false
+        self.locationManager.allowsBackgroundLocationUpdates = true
+    }
+    
+    func amapLocationManager(manager: AMapLocationManager!, didUpdateLocation location: CLLocation!) {
+        latitude = location.coordinate.latitude
+        longitude = location.coordinate.longitude
+        
+        if self.pointAnnotation == nil {
+            self.pointAnnotation = MAPointAnnotation()
+            self.pointAnnotation.coordinate = location.coordinate
+            self.circleAnnotation = MAPointAnnotation()
+            self.circleAnnotation.coordinate = location.coordinate
+            self.mapDialogController.pointAnnotation = self.pointAnnotation
+            self.mapDialogController.circleAnnotation = self.circleAnnotation
             
-            if(!locationFlag) {
-                refreshMap(false);
-                locationFlag = true;
-            }
-            
-            refreshDistance()
-            
-            checkIfGoalDisplayed()
+            self.overlayView.mapView.addAnnotation(self.pointAnnotation)
+            self.overlayView.mapView.addAnnotation(self.circleAnnotation)
+            self.mapDialogController.mapView.addAnnotation(self.pointAnnotation)
+            self.mapDialogController.mapView.addAnnotation(self.circleAnnotation)
+            refreshMap(false);
         }
+        
+        self.pointAnnotation.coordinate = location.coordinate
+        
+        self.overlayView.mapView.centerCoordinate = location.coordinate
+        self.overlayView.mapView.zoomLevel = 15.1
+        self.mapDialogController.mapView.centerCoordinate = location.coordinate
+        self.mapDialogController.mapView.zoomLevel = 15.1
+        
+        refreshDistance()
+        checkIfGoalDisplayed()
     }
     
     func refreshDistance() {
@@ -384,41 +458,53 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     
     func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
         var annotationView : MAAnnotationView!
-        if annotation.isKindOfClass(MAUserLocation) {
-            let userLocationStyleReuseIdentifier = "userLocationStyleReuseIndetifier"
-            annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(userLocationStyleReuseIdentifier)
-            if annotationView == nil {
-                annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: userLocationStyleReuseIdentifier)
-                annotationView.image = UIImage(named: "location")
-            }
-            annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
-        } else if annotation.isKindOfClass(MAPointAnnotation) {
-            let reuseIndetifier = "annotationReuseIndetifier"
-            annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIndetifier)
-            if annotationView == nil {
-                annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: reuseIndetifier)
-            }
-            
-            var keys = markerDictionary.allKeysForObject(annotation)
-            if(keys.count > 0) {
-                let goal = goalDictionary.objectForKey(keys[0]) as! Goal
+        if annotation.isKindOfClass(MAPointAnnotation) {
+            if pointAnnotation == annotation as! MAPointAnnotation {
+                let pointReuseIndetifier = "pointReuseIndetifier"
+                annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(pointReuseIndetifier)
                 
-                if UserCache.instance.ifLogin() && goal.createBy == UserCache.instance.user.pkId
-                    && goal.type == Goal.GoalTypeEnum.bomb {
-                    if goal.isSelected {
-                        annotationView.image = UIImage(named: "bomb_selected_marker")
-                        annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 30)
+                if annotationView == nil {
+                    annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: pointReuseIndetifier)
+                    annotationView.image = UIImage(named: "location")
+                    annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
+                }
+            } else if circleAnnotation == annotation as! MAPointAnnotation {
+                let pointReuseIndetifier = "pointReuseIndetifier"
+                annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(pointReuseIndetifier)
+                
+                if annotationView == nil {
+                    annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: pointReuseIndetifier)
+                    annotationView.image = UIImage(named: "location_circle")
+                    annotationView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+                }
+            } else {
+                let reuseIndetifier = "annotationReuseIndetifier"
+                annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIndetifier)
+                if annotationView == nil {
+                    annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: reuseIndetifier)
+                }
+                
+                var keys = markerDictionary.allKeysForObject(annotation)
+                if(keys.count > 0) {
+                    let goal = goalDictionary.objectForKey(keys[0]) as! Goal
+                    
+                    if UserCache.instance.ifLogin() && goal.createBy == UserCache.instance.user.pkId
+                        && goal.type == Goal.GoalTypeEnum.bomb {
+                        if goal.isSelected {
+                            annotationView.image = UIImage(named: "bomb_selected_marker")
+                            annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 30)
+                        } else {
+                            annotationView.image = UIImage(named: "bomb_marker")
+                            annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
+                        }
                     } else {
-                        annotationView.image = UIImage(named: "bomb_marker")
-                        annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
-                    }
-                } else {
-                    if goal.isSelected {
-                        annotationView.image = UIImage(named: "box_selected_marker")
-                        annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 30)
-                    } else {
-                        annotationView.image = UIImage(named: "box_marker")
-                        annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
+                        if goal.isSelected {
+                            annotationView.image = UIImage(named: "box_selected_marker")
+                            annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 30)
+                        } else {
+                            annotationView.image = UIImage(named: "box_marker")
+                            annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
+                        }
                     }
                 }
             }
@@ -612,7 +698,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
-            let bombNum = (response["result"] as! NSNumber).integerValue
+            let bombNum = BaseInfoUtil.getIntegerFromAnyObject(response["result"])
             UserCache.instance.user.bombNum = bombNum
             self.overlayView.bombNumBtn.setTitle("\(bombNum)", forState: UIControlState.Normal)
             refreshMap(true)

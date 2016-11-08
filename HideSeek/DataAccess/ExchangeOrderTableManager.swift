@@ -206,6 +206,7 @@ class ExchangeOrderTableManager {
             let sqlStr = "delete from exchange_order; " +
             "update sqlite_sequence SET seq = 0 where name ='exchange_order'"
             try database.execute(sqlStr)
+            self._orderMinId = 0
         }
         catch let error as NSError {
             print("SQLiteDB - failed to truncate table exchange_order!")

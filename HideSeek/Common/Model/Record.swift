@@ -27,4 +27,21 @@ class Record {
         self.version = version
         self.showTypeName = showTypeName
     }
+    
+    var goalName: String {
+        get {
+            switch goalType {
+            case .reward:
+                return NSLocalizedString("reward", comment: "mushroom")
+            case .mushroom:
+                return NSLocalizedString("mushroom", comment: "mushroom")
+            case .bomb:
+                return NSLocalizedString("bomb", comment: "bomb")
+            case .monster:
+                return NSLocalizedString(showTypeName!, comment: "dragon")
+            default:
+                return ""
+            }
+        }
+    }
 }

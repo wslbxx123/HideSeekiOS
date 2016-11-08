@@ -8,4 +8,6 @@
 
 protocol PurchaseDelegate {
     func purchase(product: Product, orderId: Int64)
+    
+    func purchase()
 }

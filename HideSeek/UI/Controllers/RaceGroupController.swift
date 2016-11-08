@@ -39,8 +39,10 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
         self.raceGroupTableView.reloadData()
         if self.raceGroupTableView.raceGroupList.count == 0 {
             self.noResultView.hidden = false
+            self.raceGroupTableView.hidden = true
         } else {
             self.noResultView.hidden = true
+            self.raceGroupTableView.hidden = false
         }
         
         if(UserCache.instance.ifLogin()) {
@@ -121,8 +123,10 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
             
             if self.raceGroupTableView.raceGroupList.count == 0 {
                 self.noResultView.hidden = false
+                self.raceGroupTableView.hidden = true
             } else {
                 self.noResultView.hidden = true
+                self.raceGroupTableView.hidden = false
             }
         } else {
             let errorMessage = ErrorMessageFactory.get(code)

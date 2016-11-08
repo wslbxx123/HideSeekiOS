@@ -63,7 +63,7 @@
 "8kC-v1-2ny.text" = "注册手机";
 
 /* Class = "UILabel"; text = "Profile"; ObjectID = "8ms-Lo-W7g"; */
-"8ms-Lo-W7g.text" = "主页";
+"8ms-Lo-W7g.text" = "个人中心";
 
 /* Class = "UISegmentedControl"; 9Q3-Qy-m5v.segmentTitles[0] = "Purchase Area"; ObjectID = "9Q3-Qy-m5v"; */
 "9Q3-Qy-m5v.segmentTitles[0]" = "购买区";
@@ -394,3 +394,6 @@
 
 /* Class = "UILabel"; text = "Manual"; ObjectID = "vj4-ml-Ya2"; */
 "vj4-ml-Ya2.text" = "使用指南";
+
+/* Class = "UILabel"; text = "Pay Way"; ObjectID = "ONu-t1-geG"; */
+"ONu-t1-geG.text" = "支付方式";

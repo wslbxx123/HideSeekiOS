@@ -40,8 +40,10 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
         self.recordTableView.reloadData()
         if self.recordTableView.recordList.count == 0 {
             self.noResultView.hidden = false
+            self.recordTableView.hidden = true
         } else {
             self.noResultView.hidden = true
+            self.recordTableView.hidden = false
         }
         
         if(UserCache.instance.ifLogin()) {
@@ -111,8 +113,10 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
             self.recordTableView.recordList = RecordCache.instance.cacheList
             if self.recordTableView.recordList.count == 0 {
                 self.noResultView.hidden = false
+                self.recordTableView.hidden = true
             } else {
                 self.noResultView.hidden = true
+                self.recordTableView.hidden = false
             }
             self.recordTableView.reloadData()
             self.refreshControl.endRefreshing()

@@ -14,6 +14,8 @@ class MapDialogController: UIViewController, MAMapViewDelegate {
     var goalDictionary = NSMutableDictionary()
     var setEndGoalDelegate: SetEndGoalDelegate!
     var ifMapLoaded: Bool = false
+    var pointAnnotation: MAPointAnnotation!
+    var circleAnnotation: MAPointAnnotation!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,13 +33,8 @@ class MapDialogController: UIViewController, MAMapViewDelegate {
             mapView.removeFromSuperview()
         }
         
-        mapView.showsUserLocation = true
-        mapView.setUserTrackingMode(MAUserTrackingMode.Follow, animated: false)
         mapView.showsScale = true
-        mapView.pausesLocationUpdatesAutomatically = false
-        mapView.allowsBackgroundLocationUpdates = true
         mapView.showsCompass = false
-        mapView.customizeUserLocationAccuracyCircleRepresentation = true
         mapView.delegate = self
         self.view.addSubview(mapView)
     }
@@ -59,41 +56,53 @@ class MapDialogController: UIViewController, MAMapViewDelegate {
     
     func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
         var annotationView : MAAnnotationView!
-        if annotation.isKindOfClass(MAUserLocation) {
-            let userLocationStyleReuseIdentifier = "userLocationStyleReuseIndetifier"
-            annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(userLocationStyleReuseIdentifier)
-            if annotationView == nil {
-                annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: userLocationStyleReuseIdentifier)
-                annotationView.image = UIImage(named: "location")
-            }
-            annotationView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
-        } else if annotation.isKindOfClass(MAPointAnnotation) {
-            let reuseIndetifier = "annotationReuseIndetifier"
-            annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIndetifier)
-            if annotationView == nil {
-                annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: reuseIndetifier)
-            }
-            
-            var keys = markerDictionary.allKeysForObject(annotation)
-            if(keys.count > 0) {
-                let goal = goalDictionary.objectForKey(keys[0]) as! Goal
+        if annotation.isKindOfClass(MAPointAnnotation) {
+            if pointAnnotation == annotation as! MAPointAnnotation {
+                let pointReuseIndetifier = "pointReuseIndetifier"
+                annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(pointReuseIndetifier)
                 
-                if UserCache.instance.ifLogin() && goal.createBy == UserCache.instance.user.pkId
-                    && goal.type == Goal.GoalTypeEnum.bomb {
-                    if goal.isSelected {
-                        annotationView.image = UIImage(named: "big_bomb_selected_marker")
-                        annotationView.frame = CGRect(x: 0, y: 0, width: 25, height: 50)
+                if annotationView == nil {
+                    annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: pointReuseIndetifier)
+                    annotationView.image = UIImage(named: "location")
+                    annotationView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+                }
+            } else if circleAnnotation == annotation as! MAPointAnnotation {
+                let pointReuseIndetifier = "pointReuseIndetifier"
+                annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(pointReuseIndetifier)
+                
+                if annotationView == nil {
+                    annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: pointReuseIndetifier)
+                    annotationView.image = UIImage(named: "location_circle")
+                    annotationView.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+                }
+            } else {
+                let reuseIndetifier = "annotationReuseIndetifier"
+                annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIndetifier)
+                if annotationView == nil {
+                    annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: reuseIndetifier)
+                }
+                
+                var keys = markerDictionary.allKeysForObject(annotation)
+                if(keys.count > 0) {
+                    let goal = goalDictionary.objectForKey(keys[0]) as! Goal
+                    
+                    if UserCache.instance.ifLogin() && goal.createBy == UserCache.instance.user.pkId
+                        && goal.type == Goal.GoalTypeEnum.bomb {
+                        if goal.isSelected {
+                            annotationView.image = UIImage(named: "big_bomb_selected_marker")
+                            annotationView.frame = CGRect(x: 0, y: 0, width: 25, height: 50)
+                        } else {
+                            annotationView.image = UIImage(named: "big_bomb_marker")
+                            annotationView.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+                        }
                     } else {
-                        annotationView.image = UIImage(named: "big_bomb_marker")
-                        annotationView.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
-                    }
-                } else {
-                    if goal.isSelected {
-                        annotationView.image = UIImage(named: "big_box_selected_marker")
-                        annotationView.frame = CGRect(x: 0, y: 0, width: 25, height: 50)
-                    } else {
-                        annotationView.image = UIImage(named: "big_box_marker")
-                        annotationView.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+                        if goal.isSelected {
+                            annotationView.image = UIImage(named: "big_box_selected_marker")
+                            annotationView.frame = CGRect(x: 0, y: 0, width: 25, height: 50)
+                        } else {
+                            annotationView.image = UIImage(named: "big_box_marker")
+                            annotationView.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+                        }
                     }
                 }
             }

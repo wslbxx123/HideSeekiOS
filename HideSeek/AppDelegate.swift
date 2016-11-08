@@ -12,6 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let SEND_FRIEND_REQUEST = 1
     let ACCEPT_FRIEND = 2
+    let LOGOUT = 3
     
     let MAP_KEY = "293ee05942de45f4f221656ca2faa5b9"
     let AUDIO_KEY = "578cb259"
@@ -154,7 +155,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             tabBarController.updateChannelId(deviceTokenStr as String)
         }
         
-        tabBarController.updateSetting()
+        tabBarController.refreshSetting()
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
@@ -179,6 +180,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             newFriendController.setFriendRequest(result, isFriend: true)
             
             BadgeUtil.updateMeBadge()
+            break;
+        case LOGOUT:
+            UserInfoManager.instance.logout(tabBarController)
             break;
         default:
             break;
@@ -214,6 +218,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             newFriendController.setFriendRequest(result, isFriend: true)
             
             BadgeUtil.updateMeBadge()
+            break;
+        case LOGOUT:
+            UserInfoManager.instance.logout(tabBarController)
             break;
         default:
             break;

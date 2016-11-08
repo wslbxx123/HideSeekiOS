@@ -241,6 +241,7 @@ class RecordTableManager {
             let sqlStr = "delete from record; " +
             "update sqlite_sequence SET seq = 0 where name ='record'"
             try database.execute(sqlStr)
+            self._recordMinId = 0
         }
         catch let error as NSError {
             print("SQLiteDB - failed to truncate table record!")
