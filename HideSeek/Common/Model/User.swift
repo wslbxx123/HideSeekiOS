@@ -10,7 +10,7 @@ class User: NSObject {
     var pkId : Int64
     var phone : NSString
     var sessionId : NSString = ""
-    var registerDate: NSDate = NSDate()
+    var registerDate: Date = Date()
     var role: RoleEnum
     var version: Int64
     var pinyin: NSString
@@ -27,14 +27,14 @@ class User: NSObject {
         set {
             self._defaultArea = newValue
             
-            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            let tempUserInfo = UserDefaults.standard.object(forKey: UserDefaultParam.USER_INFO) as? NSDictionary
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
                 userInfo["default_area"] = newValue
                 
-                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(userInfo, forKey: UserDefaultParam.USER_INFO)
+                UserDefaults.standard.synchronize()
             }
         }
     }
@@ -47,14 +47,14 @@ class User: NSObject {
         set {
             self._defaultAddress = newValue
             
-            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            let tempUserInfo = UserDefaults.standard.object(forKey: UserDefaultParam.USER_INFO) as? NSDictionary
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
                 userInfo["default_address"] = newValue
                 
-                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(userInfo, forKey: UserDefaultParam.USER_INFO)
+                UserDefaults.standard.synchronize()
             }
         }
     }
@@ -67,14 +67,14 @@ class User: NSObject {
         set {
             self._nickname = newValue
             
-            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            let tempUserInfo = UserDefaults.standard.object(forKey: UserDefaultParam.USER_INFO) as? NSDictionary
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
                 userInfo["nickname"] = newValue
                 
-                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(userInfo, forKey: UserDefaultParam.USER_INFO)
+                UserDefaults.standard.synchronize()
             }
         }
     }
@@ -87,14 +87,14 @@ class User: NSObject {
         set {
             self._sex = newValue
             
-            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            let tempUserInfo = UserDefaults.standard.object(forKey: UserDefaultParam.USER_INFO) as? NSDictionary
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
                 userInfo["sex"] = NSString(format: "%d", newValue.rawValue)
                 
-                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(userInfo, forKey: UserDefaultParam.USER_INFO)
+                UserDefaults.standard.synchronize()
             }
         }
     }
@@ -107,14 +107,14 @@ class User: NSObject {
         set {
             self._region = newValue
             
-            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            let tempUserInfo = UserDefaults.standard.object(forKey: UserDefaultParam.USER_INFO) as? NSDictionary
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
                 userInfo["region"] = newValue
                 
-                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(userInfo, forKey: UserDefaultParam.USER_INFO)
+                UserDefaults.standard.synchronize()
             }
         }
     }
@@ -127,14 +127,14 @@ class User: NSObject {
         set {
             self._photoUrl = newValue
             
-            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            let tempUserInfo = UserDefaults.standard.object(forKey: UserDefaultParam.USER_INFO) as? NSDictionary
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
                 userInfo["photo_url"] = newValue
                 
-                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(userInfo, forKey: UserDefaultParam.USER_INFO)
+                UserDefaults.standard.synchronize()
             }
         }
     }
@@ -147,14 +147,14 @@ class User: NSObject {
         set {
             self._smallPhotoUrl = newValue
             
-            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            let tempUserInfo = UserDefaults.standard.object(forKey: UserDefaultParam.USER_INFO) as? NSDictionary
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
                 userInfo["small_photo_url"] = newValue
                 
-                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(userInfo, forKey: UserDefaultParam.USER_INFO)
+                UserDefaults.standard.synchronize()
             }
         }
     }
@@ -167,14 +167,14 @@ class User: NSObject {
         set {
             self._record = newValue
             
-            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            let tempUserInfo = UserDefaults.standard.object(forKey: UserDefaultParam.USER_INFO) as? NSDictionary
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
                 userInfo["record"] = NSString(format: "%d", newValue)
                 
-                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(userInfo, forKey: UserDefaultParam.USER_INFO)
+                UserDefaults.standard.synchronize()
             }
         }
     }
@@ -187,14 +187,14 @@ class User: NSObject {
         set {
             self._friendNum = newValue
             
-            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            let tempUserInfo = UserDefaults.standard.object(forKey: UserDefaultParam.USER_INFO) as? NSDictionary
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
                 userInfo["friend_num"] = NSString(format: "%d", newValue)
                 
-                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(userInfo, forKey: UserDefaultParam.USER_INFO)
+                UserDefaults.standard.synchronize()
             }
         }
     }
@@ -207,14 +207,14 @@ class User: NSObject {
         set {
             self._bombNum = newValue
             
-            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            let tempUserInfo = UserDefaults.standard.object(forKey: UserDefaultParam.USER_INFO) as? NSDictionary
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
                 userInfo["bomb_num"] = NSString(format: "%d", newValue)
                 
-                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(userInfo, forKey: UserDefaultParam.USER_INFO)
+                UserDefaults.standard.synchronize()
             }
         }
     }
@@ -227,19 +227,19 @@ class User: NSObject {
         set {
             self._hasGuide = newValue
             
-            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            let tempUserInfo = UserDefaults.standard.object(forKey: UserDefaultParam.USER_INFO) as? NSDictionary
             
             if tempUserInfo != nil {
                 let userInfo = tempUserInfo?.mutableCopy() as! NSMutableDictionary
                 userInfo["has_guide"] = NSString(format: "%d", newValue ? 1 : 0)
                 
-                NSUserDefaults.standardUserDefaults().setObject(userInfo, forKey: UserDefaultParam.USER_INFO)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(userInfo, forKey: UserDefaultParam.USER_INFO)
+                UserDefaults.standard.synchronize()
             }
         }
     }
     
-    var dateFormatter: NSDateFormatter = NSDateFormatter()
+    var dateFormatter: DateFormatter = DateFormatter()
     
     var roleImageName: String {
         get{
@@ -315,7 +315,7 @@ class User: NSObject {
         self.sessionId = sessionId
         self._nickname = nickname
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        self.registerDate = dateFormatter.dateFromString(registerDateStr as String)!
+        self.registerDate = dateFormatter.date(from: registerDateStr as String)!
         self._record = record
         self.role = role
         self.version = version
@@ -353,7 +353,7 @@ class User: NSObject {
         self.phone = phone
         self._nickname = nickname
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        self.registerDate = dateFormatter.dateFromString(registerDateStr as String)!
+        self.registerDate = dateFormatter.date(from: registerDateStr as String)!
         
         if photoUrl != nil {
             self._photoUrl = photoUrl!

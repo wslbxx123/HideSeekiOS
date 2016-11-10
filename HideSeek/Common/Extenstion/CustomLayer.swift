@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 extension CALayer {
-    func setBorderColorFromUIColor(color: UIColor) {
-        self.borderColor = color.CGColor
+    func setBorderColorFromUIColor(_ color: UIColor) {
+        self.borderColor = color.cgColor
     }
 }

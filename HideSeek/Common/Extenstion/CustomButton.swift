@@ -7,40 +7,40 @@
 //
 
 extension UIButton {
-    func setBackgroundColor(defaultColorStr: String, selectedColorStr: String, disabledColorStr: String) {
+    func setBackgroundColor(_ defaultColorStr: String, selectedColorStr: String, disabledColorStr: String) {
         self.setImage(getImageWithColor(BaseInfoUtil.stringToRGB(defaultColorStr)),
-                                forState: UIControlState.Normal)
+                                for: UIControlState())
         self.setImage(getImageWithColor(BaseInfoUtil.stringToRGB(selectedColorStr)),
-                                forState: UIControlState.Selected)
+                                for: UIControlState.selected)
         self.setImage(getImageWithColor(BaseInfoUtil.stringToRGB(disabledColorStr)),
-                                forState: UIControlState.Disabled)
+                                for: UIControlState.disabled)
         
         self.setBackgroundImage(getImageWithColor(BaseInfoUtil.stringToRGB(defaultColorStr)),
-                                forState: UIControlState.Normal)
+                                for: UIControlState())
         self.setBackgroundImage(getImageWithColor(BaseInfoUtil.stringToRGB(selectedColorStr)),
-                                forState: UIControlState.Selected)
+                                for: UIControlState.selected)
         self.setBackgroundImage(getImageWithColor(BaseInfoUtil.stringToRGB(disabledColorStr)),
-                                forState: UIControlState.Disabled)
+                                for: UIControlState.disabled)
     }
     
-    func getImageWithColor(color: UIColor) ->UIImage{
-        let rect = CGRectMake(0.0, 0.0, 1.0, 1.0);
+    func getImageWithColor(_ color: UIColor) ->UIImage{
+        let rect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0);
         UIGraphicsBeginImageContext(rect.size);
         let context = UIGraphicsGetCurrentContext();
-        CGContextSetFillColorWithColor(context, color.CGColor);
-        CGContextFillRect(context, rect);
+        context?.setFillColor(color.cgColor);
+        context?.fill(rect);
         let image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         
-        return image;
+        return image!;
     }
     
     func setImageUpTitleDown() {
-        let internalImage = self.imageForState(UIControlState.Normal)
+        let internalImage = self.image(for: UIControlState())
         self.titleEdgeInsets = UIEdgeInsetsMake(30, -internalImage!.size.width, 0, 0)
         
         let height = self.titleLabel?.frame.size.height
-        let width = BaseInfoUtil.getLabelWidth((self.titleLabel?.font.pointSize)!, height: height!, message: self.currentTitle)
+        let width = BaseInfoUtil.getLabelWidth((self.titleLabel?.font.pointSize)!, height: height!, message: self.currentTitle!)
         self.imageEdgeInsets = UIEdgeInsetsMake(-8, 0, 0, -width)
     }
 }

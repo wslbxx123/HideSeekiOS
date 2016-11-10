@@ -26,9 +26,9 @@ class MapDialogController: UIViewController, MAMapViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func initView(mapWidth: CGFloat, mapHeight: CGFloat) {
+    func initView(_ mapWidth: CGFloat, mapHeight: CGFloat) {
         if mapView == nil {
-            mapView = MAMapView(frame: CGRectMake(2, 2, mapWidth - 4, mapHeight - 4))
+            mapView = MAMapView(frame: CGRect(x: 2, y: 2, width: mapWidth - 4, height: mapHeight - 4))
         } else {
             mapView.removeFromSuperview()
         }
@@ -39,27 +39,27 @@ class MapDialogController: UIViewController, MAMapViewDelegate {
         self.view.addSubview(mapView)
     }
     
-    func mapViewDidFinishLoadingMap(mapView: MAMapView!) {
+    func mapViewDidFinishLoadingMap(_ mapView: MAMapView!) {
         ifMapLoaded = true
     }
 
-    func mapView(mapView: MAMapView!, didSelectAnnotationView view: MAAnnotationView!) {
-        var keys = markerDictionary.allKeysForObject(view.annotation)
+    func mapView(_ mapView: MAMapView!, didSelect view: MAAnnotationView!) {
+        var keys = markerDictionary.allKeys(for: view.annotation)
         if(keys.count > 0) {
             GoalCache.instance.selectedGoal?.isSelected = false
-            let goal = goalDictionary.objectForKey(keys[0]) as! Goal
+            let goal = goalDictionary.object(forKey: keys[0]) as! Goal
             goal.isSelected = true
             GoalCache.instance.selectedGoal = goal
             setEndGoalDelegate?.setEndGoal()
         }
     }
     
-    func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
+    func mapView(_ mapView: MAMapView!, viewFor annotation: MAAnnotation!) -> MAAnnotationView! {
         var annotationView : MAAnnotationView!
-        if annotation.isKindOfClass(MAPointAnnotation) {
+        if annotation.isKind(of: MAPointAnnotation.self) {
             if pointAnnotation == annotation as! MAPointAnnotation {
                 let pointReuseIndetifier = "pointReuseIndetifier"
-                annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(pointReuseIndetifier)
+                annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: pointReuseIndetifier)
                 
                 if annotationView == nil {
                     annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: pointReuseIndetifier)
@@ -68,7 +68,7 @@ class MapDialogController: UIViewController, MAMapViewDelegate {
                 }
             } else if circleAnnotation == annotation as! MAPointAnnotation {
                 let pointReuseIndetifier = "pointReuseIndetifier"
-                annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(pointReuseIndetifier)
+                annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: pointReuseIndetifier)
                 
                 if annotationView == nil {
                     annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: pointReuseIndetifier)
@@ -77,14 +77,14 @@ class MapDialogController: UIViewController, MAMapViewDelegate {
                 }
             } else {
                 let reuseIndetifier = "annotationReuseIndetifier"
-                annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIndetifier)
+                annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIndetifier)
                 if annotationView == nil {
                     annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: reuseIndetifier)
                 }
                 
-                var keys = markerDictionary.allKeysForObject(annotation)
+                var keys = markerDictionary.allKeys(for: annotation)
                 if(keys.count > 0) {
-                    let goal = goalDictionary.objectForKey(keys[0]) as! Goal
+                    let goal = goalDictionary.object(forKey: keys[0]) as! Goal
                     
                     if UserCache.instance.ifLogin() && goal.createBy == UserCache.instance.user.pkId
                         && goal.type == Goal.GoalTypeEnum.bomb {
@@ -110,17 +110,17 @@ class MapDialogController: UIViewController, MAMapViewDelegate {
             annotationView = MAAnnotationView()
         }
         
-        annotationView.contentMode = UIViewContentMode.ScaleAspectFit
+        annotationView.contentMode = UIViewContentMode.scaleAspectFit
         return annotationView
     }
     
-    func mapView(mapView: MAMapView!, rendererForOverlay overlay: MAOverlay!) -> MAOverlayRenderer! {
+    func mapView(_ mapView: MAMapView!, rendererFor overlay: MAOverlay!) -> MAOverlayRenderer! {
         let overlayCircle = overlay as! MACircle
         if overlayCircle == mapView.userLocationAccuracyCircle {
             let accuracyCircleRenderer = MACircleRenderer.init(circle: overlayCircle)
-            accuracyCircleRenderer.lineWidth = 1
-            accuracyCircleRenderer.strokeColor = UIColor.lightGrayColor()
-            accuracyCircleRenderer.fillColor = UIColor.init(red: 0, green: 0, blue: 1, alpha: 0.3)
+            accuracyCircleRenderer?.lineWidth = 1
+            accuracyCircleRenderer?.strokeColor = UIColor.lightGray
+            accuracyCircleRenderer?.fillColor = UIColor.init(red: 0, green: 0, blue: 1, alpha: 0.3)
             return accuracyCircleRenderer
         }
         

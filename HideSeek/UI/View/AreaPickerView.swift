@@ -25,68 +25,68 @@ class AreaPickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         return _location
     }
     
-    @IBAction func cancelBtnClicked(sender: AnyObject) {
+    @IBAction func cancelBtnClicked(_ sender: AnyObject) {
         delegate?.cancelChange()
     }
     
-    @IBAction func okBtnClicked(sender: AnyObject) {
+    @IBAction func okBtnClicked(_ sender: AnyObject) {
         delegate?.pickerDidChange()
     }
     
-    func initWithStyle(pickerStyle: AreaPickerStyle, delegate: AreaPickerDelegate) {
+    func initWithStyle(_ pickerStyle: AreaPickerStyle, delegate: AreaPickerDelegate) {
         self.delegate = delegate
         self.pickerStyle = pickerStyle
         self.locatePicker.dataSource = self
         self.locatePicker.delegate = self
         
-        if self.pickerStyle == AreaPickerStyle.AreaPickerWithStateAndCityAndDistrict {
-            provinces = NSArray.init(contentsOfFile: NSBundle.mainBundle().pathForResource("area.plist", ofType: nil)!)
+        if self.pickerStyle == AreaPickerStyle.areaPickerWithStateAndCityAndDistrict {
+            provinces = NSArray.init(contentsOfFile: Bundle.main.path(forResource: "area.plist", ofType: nil)!)
             
-            let province = provinces.objectAtIndex(0) as! NSDictionary
-            cities = province.objectForKey("cities") as! NSArray
+            let province = provinces.object(at: 0) as! NSDictionary
+            cities = province.object(forKey: "cities") as! NSArray
             
-            let city = cities.objectAtIndex(0) as! NSDictionary
-            self.location.state = province.objectForKey("state") as! NSString
-            self.location.city = city.objectForKey("city") as! NSString
+            let city = cities.object(at: 0) as! NSDictionary
+            self.location.state = province.object(forKey: "state") as! NSString
+            self.location.city = city.object(forKey: "city") as! NSString
             
-            areas = city.objectForKey("areas") as! NSArray
+            areas = city.object(forKey: "areas") as! NSArray
             
             if areas.count > 0 {
-                self.location.district = areas.objectAtIndex(0) as! NSString
+                self.location.district = areas.object(at: 0) as! NSString
             } else {
                 self.location.district = ""
             }
         } else {
-            provinces = NSArray.init(contentsOfFile: NSBundle.mainBundle().pathForResource("city.plist", ofType: nil)!)
-            let province = provinces.objectAtIndex(0) as! NSDictionary
-            cities = province.objectForKey("cities") as! NSArray
+            provinces = NSArray.init(contentsOfFile: Bundle.main.path(forResource: "city.plist", ofType: nil)!)
+            let province = provinces.object(at: 0) as! NSDictionary
+            cities = province.object(forKey: "cities") as! NSArray
             
-            self.location.state = province.objectForKey("state") as! NSString
-            self.location.city = cities.objectAtIndex(0) as! NSString
+            self.location.state = province.object(forKey: "state") as! NSString
+            self.location.city = cities.object(at: 0) as! NSString
         }
     }
     
     enum AreaPickerStyle : Int {
-        case AreaPickerWithStateAndCity = 1
-        case AreaPickerWithStateAndCityAndDistrict = 2
+        case areaPickerWithStateAndCity = 1
+        case areaPickerWithStateAndCityAndDistrict = 2
     }
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        if self.pickerStyle == AreaPickerStyle.AreaPickerWithStateAndCityAndDistrict {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        if self.pickerStyle == AreaPickerStyle.areaPickerWithStateAndCityAndDistrict {
             return 3
         } else {
             return 2;
         }
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch(component) {
         case 0:
             return provinces.count
         case 1:
             return cities.count
         case 2:
-            if self.pickerStyle == AreaPickerStyle.AreaPickerWithStateAndCityAndDistrict {
+            if self.pickerStyle == AreaPickerStyle.areaPickerWithStateAndCityAndDistrict {
                 return areas.count
             }
             break;
@@ -97,18 +97,18 @@ class AreaPickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         return 0
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if self.pickerStyle == AreaPickerStyle.AreaPickerWithStateAndCityAndDistrict {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if self.pickerStyle == AreaPickerStyle.areaPickerWithStateAndCityAndDistrict {
             switch component {
             case 0:
-                let province = provinces.objectAtIndex(row)
-                return province.objectForKey("state") as? String
+                let province = provinces.object(at: row)
+                return (province as AnyObject).object(forKey: "state") as? String
             case 1:
-                let city = cities.objectAtIndex(row)
-                return city.objectForKey("city") as? String
+                let city = cities.object(at: row)
+                return (city as AnyObject).object(forKey: "city") as? String
             case 2:
                 if areas.count > 0 {
-                    return areas.objectAtIndex(row) as? String
+                    return areas.object(at: row) as? String
                 }
                 break;
             default:
@@ -117,10 +117,10 @@ class AreaPickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         } else {
             switch component {
             case 0:
-                let province = provinces.objectAtIndex(row)
-                return province.objectForKey("state") as? String
+                let province = provinces.object(at: row)
+                return (province as AnyObject).object(forKey: "state") as? String
             case 1:
-                return cities.objectAtIndex(row) as? String
+                return cities.object(at: row) as? String
             default:
                 return ""
             }
@@ -129,50 +129,50 @@ class AreaPickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         return ""
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if self.pickerStyle == AreaPickerStyle.AreaPickerWithStateAndCityAndDistrict {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if self.pickerStyle == AreaPickerStyle.areaPickerWithStateAndCityAndDistrict {
             switch component {
             case 0:
-                var province = provinces.objectAtIndex(row) as! NSDictionary
-                cities = province.objectForKey("cities") as! NSArray
+                var province = provinces.object(at: row) as! NSDictionary
+                cities = province.object(forKey: "cities") as! NSArray
                 
                 self.locatePicker.selectRow(0, inComponent: 1, animated: true)
                 self.locatePicker.reloadComponent(1)
                 
-                let city = cities.objectAtIndex(0) as! NSDictionary
-                areas = city.objectForKey("areas") as! NSArray
+                let city = cities.object(at: 0) as! NSDictionary
+                areas = city.object(forKey: "areas") as! NSArray
                 
                 self.locatePicker.selectRow(0, inComponent: 2, animated: true)
                 self.locatePicker.reloadComponent(2)
                 
-                province = provinces.objectAtIndex(row) as! NSDictionary
-                self.location.state = province.objectForKey("state") as! NSString
-                self.location.city = city.objectForKey("city") as! NSString
+                province = provinces.object(at: row) as! NSDictionary
+                self.location.state = province.object(forKey: "state") as! NSString
+                self.location.city = city.object(forKey: "city") as! NSString
                 
                 if areas.count > 0 {
-                    self.location.district = areas.objectAtIndex(0) as! NSString
+                    self.location.district = areas.object(at: 0) as! NSString
                 } else {
                     self.location.district = ""
                 }
                 break;
             case 1:
-                var city = cities.objectAtIndex(row) as! NSDictionary
-                areas = city.objectForKey("areas") as! NSArray
+                var city = cities.object(at: row) as! NSDictionary
+                areas = city.object(forKey: "areas") as! NSArray
                 self.locatePicker.selectRow(0, inComponent: 2, animated: true)
                 self.locatePicker.reloadComponent(2)
                 
-                city = cities.objectAtIndex(row) as! NSDictionary
-                self.location.city = city.objectForKey("city") as! NSString
+                city = cities.object(at: row) as! NSDictionary
+                self.location.city = city.object(forKey: "city") as! NSString
                 
                 if areas.count > 0 {
-                    self.location.district = areas.objectAtIndex(0) as! NSString
+                    self.location.district = areas.object(at: 0) as! NSString
                 } else {
                     self.location.district = ""
                 }
                 break;
             case 2:
                 if areas.count > 0 {
-                    self.location.district = areas.objectAtIndex(row) as! NSString
+                    self.location.district = areas.object(at: row) as! NSString
                 } else {
                     self.location.district = ""
                 }
@@ -183,16 +183,16 @@ class AreaPickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource {
         } else {
             switch component {
             case 0:
-                let province = provinces.objectAtIndex(row) as! NSDictionary
-                cities = province.objectForKey("cities") as! NSArray
+                let province = provinces.object(at: row) as! NSDictionary
+                cities = province.object(forKey: "cities") as! NSArray
                 self.locatePicker.selectRow(0, inComponent: 1, animated: true)
                 self.locatePicker.reloadComponent(1)
                 
-                self.location.state = province.objectForKey("state") as! NSString
-                self.location.city = cities.objectAtIndex(0) as! NSString
+                self.location.state = province.object(forKey: "state") as! NSString
+                self.location.city = cities.object(at: 0) as! NSString
                 break;
             case 1:
-                self.location.city = cities.objectAtIndex(row) as! NSString
+                self.location.city = cities.object(at: row) as! NSString
                 break;
             default:
                 break;

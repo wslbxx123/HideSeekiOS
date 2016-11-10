@@ -16,7 +16,7 @@ class HotCityCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        rect = UIScreen.mainScreen().bounds
+        rect = UIScreen.main.bounds
         self.nameBtn = UIButton()
         self.contentView.addSubview(nameBtn)
     }
@@ -25,16 +25,16 @@ class HotCityCollectionViewCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
-    func setName(name: String) {
-        self.nameBtn.setTitle(name, forState: UIControlState.Normal)
+    func setName(_ name: String) {
+        self.nameBtn.setTitle(name, for: UIControlState())
         self.nameBtn.frame = CGRect(x: 0, y: 0, width: (rect.width  - 85) / 3, height: 40)
         self.nameBtn.setBackgroundColor("#ffffff", selectedColorStr: "#f0f0f0", disabledColorStr: "#f0f0f0")
         self.nameBtn.layer.cornerRadius = 5
         self.nameBtn.layer.masksToBounds = true
-        self.nameBtn.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        self.nameBtn.titleLabel?.font = UIFont.systemFontOfSize(15)
+        self.nameBtn.setTitleColor(UIColor.black, for: UIControlState())
+        self.nameBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15)
         
-        self.nameBtn.addTarget(self, action: #selector(HotCityCollectionViewCell.selectRegion), forControlEvents: UIControlEvents.TouchDown)
+        self.nameBtn.addTarget(self, action: #selector(HotCityCollectionViewCell.selectRegion), for: UIControlEvents.touchDown)
     }
     
     func selectRegion() {

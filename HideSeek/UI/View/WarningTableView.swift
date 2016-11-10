@@ -22,22 +22,22 @@ class WarningTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
         self.dataSource = self
         self.delegate = self
         self.warningList = NSMutableArray()
-        self.screenHeight = UIScreen.mainScreen().bounds.height - 44
-        self.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.screenHeight = UIScreen.main.bounds.height - 44
+        self.separatorStyle = UITableViewCellSeparatorStyle.none
         BaseInfoUtil.cancelButtonDelay(self)
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.dequeueReusableCellWithIdentifier("warningCell") as! WarningTableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.dequeueReusableCell(withIdentifier: "warningCell") as! WarningTableViewCell
         
-        if warningList.count < indexPath.row + 1 {
+        if warningList.count < (indexPath as NSIndexPath).row + 1 {
             return cell
         }
-        let warning = warningList.objectAtIndex(indexPath.row) as! Warning
+        let warning = warningList.object(at: (indexPath as NSIndexPath).row) as! Warning
         
         cell.initWarning(warning)
         cell.updateGoalDelegate = updateGoalDelegate
@@ -45,15 +45,15 @@ class WarningTableView: UITableView, UITableViewDataSource, UITableViewDelegate 
         return cell
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return warningList.count
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
     }
 }

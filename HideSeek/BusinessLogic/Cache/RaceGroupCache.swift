@@ -19,26 +19,26 @@ class RaceGroupCache : BaseCache<RaceGroup> {
         return super.cacheList
     }
     
-    private override init() {
+    fileprivate override init() {
         super.init()
         raceGroupTableManager = RaceGroupTableManager.instance
     }
     
-    func getMoreRaceGroup(count: Int, hasLoaded: Bool) -> Bool {
+    func getMoreRaceGroup(_ count: Int, hasLoaded: Bool) -> Bool {
         let raceGroupList = raceGroupTableManager.getMoreRaceGroup(count, version: version, hasLoaded: hasLoaded)
         
-        self.cacheList.addObjectsFromArray(raceGroupList as [AnyObject])
+        self.cacheList.addObjects(from: raceGroupList as [AnyObject])
         return raceGroupList.count > 0
     }
     
-    func setRaceGroup(raceGroupInfo: NSDictionary!) {
+    func setRaceGroup(_ raceGroupInfo: NSDictionary!) {
         saveRaceGroup(raceGroupInfo)
         
         cacheList = raceGroupTableManager.searchRaceGroup()
         version = raceGroupTableManager.version
     }
     
-    func saveRaceGroup(result: NSDictionary!) {
+    func saveRaceGroup(_ result: NSDictionary!) {
         let list = NSMutableArray()
         let temp_version = result["version"] as? NSString
         var version: Int64
@@ -53,7 +53,7 @@ class RaceGroupCache : BaseCache<RaceGroup> {
         for raceGroup in raceGroupArray {
             let raceGroupInfo = raceGroup as! NSDictionary
             let recordIdStr = raceGroupInfo["pk_id"] as! NSString
-            list.addObject(RaceGroup(recordId: recordIdStr.longLongValue,
+            list.add(RaceGroup(recordId: recordIdStr.longLongValue,
                 nickname: raceGroupInfo["nickname"] as! String,
                 photoUrl: raceGroupInfo["photo_url"] as? String,
                 smallPhotoUrl: raceGroupInfo["small_photo_url"] as? String,
@@ -71,7 +71,7 @@ class RaceGroupCache : BaseCache<RaceGroup> {
         raceGroupTableManager.updateRaceGroup(recordMinId, version: version, raceGroupList: list)
     }
     
-    func addRaceGroup(result: NSDictionary!) {
+    func addRaceGroup(_ result: NSDictionary!) {
         saveRaceGroup(result)
         
         getMoreRaceGroup(10, hasLoaded: true)

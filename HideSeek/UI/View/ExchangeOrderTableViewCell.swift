@@ -30,18 +30,18 @@ class ExchangeOrderTableViewCell: UITableViewCell {
         self.nameLabel = self.viewWithTag(TAG_NAME_LABEL) as! UILabel
         self.amountLabel = self.viewWithTag(TAG_AMOUNT_LABEL) as! UILabel
         self.exchangeBtn = self.viewWithTag(TAG_EXCHANGE_BUTTON) as! UIButton
-        self.exchangeBtn.addTarget(self, action: #selector(ExchangeOrderTableViewCell.exchangeBtnClicked), forControlEvents: UIControlEvents.TouchDown)
+        self.exchangeBtn.addTarget(self, action: #selector(ExchangeOrderTableViewCell.exchangeBtnClicked), for: UIControlEvents.touchDown)
     }
     
     func exchangeBtnClicked() {
         exchangeDelegate?.exchange(reward)
     }
     
-    func initOrder(order: ExchangeOrder) {
+    func initOrder(_ order: ExchangeOrder) {
         rewardImageView.setWebImage(order.imageUrl, defaultImage: "default_photo", isCache: true)
         nameLabel.text = order.rewardName
         let score: Int = order.record * order.count
-        amountLabel.text = NSString(format: NSLocalizedString("EXCHANGE_AMOUNT_TITLE", comment: "Amount: %d score"), score) as String
+        amountLabel.text = NSString(format: NSLocalizedString("EXCHANGE_AMOUNT_TITLE", comment: "Amount: %d score") as NSString, score) as String
         exchangeBtn.setBackgroundColor("#fccb05", selectedColorStr: "#ffa200", disabledColorStr: "#bab8b8")
         exchangeBtn.layer.cornerRadius = 5
         exchangeBtn.layer.masksToBounds = true

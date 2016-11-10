@@ -7,5 +7,5 @@
 //
 
 protocol GoToPhotoDelegate {
-    func goToPhoto(raceGroup: RaceGroup)
+    func goToPhoto(_ raceGroup: RaceGroup)
 }

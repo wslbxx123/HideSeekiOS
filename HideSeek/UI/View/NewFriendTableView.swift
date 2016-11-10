@@ -19,23 +19,23 @@ class NewFriendTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         self.dataSource = self
         self.delegate = self
         self.newFriendList = NSMutableArray()
-        self.screenHeight = UIScreen.mainScreen().bounds.height - 44
-        self.separatorStyle = UITableViewCellSeparatorStyle.None;
+        self.screenHeight = UIScreen.main.bounds.height - 44
+        self.separatorStyle = UITableViewCellSeparatorStyle.none;
         
         BaseInfoUtil.cancelButtonDelay(self)
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.dequeueReusableCellWithIdentifier("newFriendCell")! as! NewFriendTableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.dequeueReusableCell(withIdentifier: "newFriendCell")! as! NewFriendTableViewCell
         
-        if newFriendList.count < indexPath.row + 1 {
+        if newFriendList.count < (indexPath as NSIndexPath).row + 1 {
             return cell
         }
-        let friend = newFriendList.objectAtIndex(indexPath.row) as! User
+        let friend = newFriendList.object(at: (indexPath as NSIndexPath).row) as! User
         cell.initNewFriend(friend)
         cell.acceptDelegate = acceptDelegate
         
@@ -43,31 +43,31 @@ class NewFriendTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         return cell
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return newFriendList.count
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        let result = UITableViewCellEditingStyle.Delete
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        let result = UITableViewCellEditingStyle.delete
         
         return result
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.Delete {
-            if newFriendList.count < indexPath.row + 1 {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
+            if newFriendList.count < (indexPath as NSIndexPath).row + 1 {
                 return
             }
             
-            let friend = newFriendList.objectAtIndex(indexPath.row) as! User
+            let friend = newFriendList.object(at: (indexPath as NSIndexPath).row) as! User
             NewFriendCache.instance.removeFriend(friend)
             self.reloadData()
         }

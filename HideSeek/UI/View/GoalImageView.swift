@@ -29,7 +29,7 @@ class GoalImageView: UIImageView {
         if self.superview != nil {
             if _displayLink == nil {
                 _displayLink = CADisplayLink(target: self, selector: #selector(GoalImageView.changeKeyFrame))
-                _displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: self.runLoopMode)
+                _displayLink.add(to: RunLoop.main, forMode: RunLoopMode(rawValue: self.runLoopMode))
             }
         } else {
             _displayLink.invalidate()
@@ -42,14 +42,14 @@ class GoalImageView: UIImageView {
     var _runLoopMode: String!
     var runLoopMode: String {
         get{
-            return _runLoopMode == nil ? NSRunLoopCommonModes : _runLoopMode
+            return _runLoopMode == nil ? RunLoopMode.commonModes.rawValue : _runLoopMode
         }
         set{
             if newValue != _runLoopMode {
                 self.stopAnimating()
-                let runLoop = NSRunLoop.mainRunLoop()
-                self.displayLink.removeFromRunLoop(runLoop, forMode: _runLoopMode)
-                self.displayLink.addToRunLoop(runLoop, forMode: newValue)
+                let runLoop = RunLoop.main
+                self.displayLink.remove(from: runLoop, forMode: RunLoopMode(rawValue: _runLoopMode))
+                self.displayLink.add(to: runLoop, forMode: RunLoopMode(rawValue: newValue))
                 _runLoopMode = newValue
                 self.startAnimating()
             }
@@ -69,7 +69,7 @@ class GoalImageView: UIImageView {
             let imageNameArray = AnimationImageFactory.get(newValue)
             
             for imageName in imageNameArray {
-                let filePath = NSBundle.mainBundle().pathForResource(imageName as? String, ofType: ".png")
+                let filePath = Bundle.main.path(forResource: imageName as? String, ofType: ".png")
                 animatedImages.append(UIImage(contentsOfFile: filePath!)!)
             }
             
@@ -87,16 +87,16 @@ class GoalImageView: UIImageView {
     }
     
     override func startAnimating() {
-        if self.isAnimating() {
+        if self.isAnimating {
             return;
         }
         super.startAnimating()
-        self.displayLink.paused = false
+        self.displayLink.isPaused = false
     }
     
     override func stopAnimating() {
         super.stopAnimating()
-        self.displayLink.paused = true
+        self.displayLink.isPaused = true
     }
     
     func setDuration() {
@@ -148,7 +148,7 @@ class GoalImageView: UIImageView {
         while self.flingAccumulator >= FLING_DURATION {
             self.flingAccumulator -= FLING_DURATION;
             if isHittingMonster && flingIndex <= FLING_COUNT{
-                self.hidden = !self.hidden
+                self.isHidden = !self.isHidden
                 
                 if flingIndex == FLING_COUNT {
                     isHittingMonster = false
@@ -158,13 +158,13 @@ class GoalImageView: UIImageView {
         }
     }
     
-    override func displayLayer(layer: CALayer) {
+    override func display(_ layer: CALayer) {
         if self.animatedImages.count == 0 {
             return;
         }
         
         if self.currentFrame != nil {
-            layer.contents = self.currentFrame?.CGImage
+            layer.contents = self.currentFrame?.cgImage
         }
     }
     

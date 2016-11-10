@@ -7,5 +7,5 @@
 //
 
 protocol GoToProfileDelegate {
-    func goToProfile(user: User)
+    func goToProfile(_ user: User)
 }

@@ -17,12 +17,12 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     AMapLocationManagerDelegate{
     let HtmlType = "text/html"
     let REFRESH_MAP_INTERVAL: Double = 5
-    var manager: AFHTTPRequestOperationManager!
+    var manager: AFHTTPSessionManager!
     var setBombManager: CustomRequestManager!
     var getGoalManager: CustomRequestManager!
     var hitMonsterManager: CustomRequestManager!
     var updateUserInfoManager: CustomRequestManager!
-    var success: AFHTTPRequestOperation!
+//    var success: AFHTTPRequestOperation!
     var latitude: CLLocationDegrees!
     var longitude: CLLocationDegrees!
     var endGoal: Goal!
@@ -32,7 +32,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     var overlayView: CameraOverlayView!
     var markerDictionary = NSMutableDictionary()
     var goalDictionary = NSMutableDictionary()
-    var time: NSTimer!
+    var time: Timer!
     var locationFlag = false
     var orientation: Int = -1
     var mapDialogController: MapDialogController!
@@ -59,16 +59,16 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         initCamera()
         initView()
 
-        manager = AFHTTPRequestOperationManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager = AFHTTPSessionManager()
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         setBombManager = CustomRequestManager()
-        setBombManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        setBombManager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         getGoalManager = CustomRequestManager()
-        getGoalManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        getGoalManager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         updateUserInfoManager = CustomRequestManager()
-        updateUserInfoManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        updateUserInfoManager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         hitMonsterManager = CustomRequestManager()
-        hitMonsterManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        hitMonsterManager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         
         locManager = CLLocationManager()
         locManager.delegate = self
@@ -78,10 +78,10 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         super.didReceiveMemoryWarning()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if (self.session != nil && !self.session.running) {
+        if (self.session != nil && !self.session.isRunning) {
             self.session.startRunning()
         }
         
@@ -89,26 +89,26 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             self.locationManager.startUpdatingLocation()
         }
         
-        time = NSTimer.scheduledTimerWithTimeInterval(REFRESH_MAP_INTERVAL, target: self, selector: #selector(HomeController.refreshMap), userInfo: nil, repeats: true)
+        time = Timer.scheduledTimer(timeInterval: REFRESH_MAP_INTERVAL, target: self, selector: #selector(HomeController.refreshMap), userInfo: nil, repeats: true)
         if overlayView != nil {
             initMenuBtn()
 //            mapDialogController.initView(mapWidth, mapHeight: mapHeight)
             
             if UserCache.instance.ifLogin() {
                 let user = UserCache.instance.user
-                overlayView.welcomeLabel.hidden = true
-                overlayView.hintLabel.hidden = false
-                overlayView.roleImageView.image = UIImage(named: user.roleImageName)
-                overlayView.roleNameLabel.text = user.roleName
+                overlayView.welcomeLabel.isHidden = true
+                overlayView.hintLabel.isHidden = false
+                overlayView.roleImageView.image = UIImage(named: (user?.roleImageName)!)
+                overlayView.roleNameLabel.text = user?.roleName
                 
                 updateUserInfo()
             } else {
-                overlayView.welcomeLabel.hidden = false
-                overlayView.hintLabel.hidden = true
+                overlayView.welcomeLabel.isHidden = false
+                overlayView.hintLabel.isHidden = true
             }
         }
         
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
         if CLLocationManager.headingAvailable() {
             locManager.startUpdatingHeading()
         }
@@ -120,14 +120,14 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         refreshDistance()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }    
     
-    override func viewWillDisappear(animated: Bool) {
-        self.navigationController?.navigationBarHidden = false
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
         if CLLocationManager.headingAvailable() {
             locManager.stopUpdatingHeading()
         }
@@ -135,7 +135,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         super.viewWillDisappear(animated)
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         if (self.session != nil) {
@@ -150,7 +150,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     
     func updateUserInfo() {
         let paramDict = NSMutableDictionary()
-        updateUserInfoManager.POST(UrlParam.UPDATE_USER_INFO_URL, paramDict: paramDict, success: { (operation, responseObject) in
+        _ = updateUserInfoManager.POST(UrlParam.UPDATE_USER_INFO_URL, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
             print("JSON: " + responseObject.description!)
             
@@ -160,17 +160,17 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         }
     }
     
-    func setInfoFromUpdateUserInfoCallback(response: NSDictionary) {
+    func setInfoFromUpdateUserInfoCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary
             UserCache.instance.user.bombNum = BaseInfoUtil.getIntegerFromAnyObject(result["bomb_num"])
-            self.overlayView.bombNumBtn.setTitle("\(UserCache.instance.user.bombNum)", forState: UIControlState.Normal)
+            self.overlayView.bombNumBtn.setTitle("\(UserCache.instance.user.bombNum)", for: UIControlState())
             UserCache.instance.user.hasGuide = BaseInfoUtil.getIntegerFromAnyObject(result["has_guide"]) == 1
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -179,10 +179,10 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     }
     
     func checkIfFirstUse() {
-        let appVersion = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.APP_VERSION) as? NSString
+        let appVersion = UserDefaults.standard.object(forKey: UserDefaultParam.APP_VERSION) as? NSString
         
         if appVersion == nil || BaseInfoUtil.getAppVersion().compareTo(appVersion! as String, separator: ".") > 0 {
-            self.tabBarController!.tabBar.hidden = true
+            self.tabBarController!.tabBar.isHidden = true
             overlayView.initGuide()
             overlayView.refreshGuide()
         }
@@ -200,17 +200,17 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             self.view.layer.addSublayer(previewLayer)
         }
         
-        overlayView = NSBundle.mainBundle().loadNibNamed("CameraOverlay", owner: nil, options: nil).first as? CameraOverlayView
+        overlayView = Bundle.main.loadNibNamed("CameraOverlay", owner: nil, options: nil)?.first as? CameraOverlayView
         if overlayView != nil {
-            let frame = UIScreen.mainScreen().bounds
+            let frame = UIScreen.main.bounds
             overlayView?.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
             overlayView?.addMapView(self)
             overlayView.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview(overlayView)
-            let widthConstraint = NSLayoutConstraint(item: overlayView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: 0)
-            let heightConstraint = NSLayoutConstraint(item: overlayView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
-            let centerXConstraint = NSLayoutConstraint(item: overlayView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
-            let centerYConstraint = NSLayoutConstraint(item: overlayView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self.view, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0)
+            let widthConstraint = NSLayoutConstraint(item: overlayView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.width, multiplier: 1, constant: 0)
+            let heightConstraint = NSLayoutConstraint(item: overlayView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.height, multiplier: 1, constant: 0)
+            let centerXConstraint = NSLayoutConstraint(item: overlayView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0)
+            let centerYConstraint = NSLayoutConstraint(item: overlayView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: self.view, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0)
             self.view.addConstraints([widthConstraint, heightConstraint, centerXConstraint, centerYConstraint])
             initOverlayView()
             initMapDialog()
@@ -221,12 +221,12 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     
     func initCamera() {
         do {
-            self.device = self.cameraWithPosition(AVCaptureDevicePosition.Back)
+            self.device = self.cameraWithPosition(AVCaptureDevicePosition.back)
             self.input = try AVCaptureDeviceInput(device: self.device)
             self.imageOutput = AVCaptureStillImageOutput()
             self.session = AVCaptureSession()
             
-            if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Phone {
+            if UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.phone {
                 self.session.sessionPreset = AVCaptureSessionPresetHigh
             } else {
                 self.session.sessionPreset = AVCaptureSessionPresetMedium
@@ -237,12 +237,12 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             }
         } catch {
             let errorMessage = NSLocalizedString("ERROR_INIT_CAMERA", comment: "Failed to initialize camera")
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
         }
     }
     
-    func cameraWithPosition(position: AVCaptureDevicePosition) -> AVCaptureDevice? {
-        let devices: NSArray = AVCaptureDevice.devicesWithMediaType(AVMediaTypeVideo)
+    func cameraWithPosition(_ position: AVCaptureDevicePosition) -> AVCaptureDevice? {
+        let devices: NSArray = AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo) as NSArray
         
         for device in devices as! [AVCaptureDevice]{
             if device.position == position {
@@ -268,7 +268,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         overlayView.shareDelegate = self
         overlayView.hideBottomBarDelegate = self
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeController.touchDown))
-        overlayView.locationView.userInteractionEnabled = true
+        overlayView.locationView.isUserInteractionEnabled = true
         overlayView.locationView.addGestureRecognizer(gestureRecognizer)
         
         if overlayView != nil {
@@ -281,56 +281,56 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         if UserCache.instance.ifLogin() {
             let bombNum = UserCache.instance.user.bombNum
             if bombNum >= 100 {
-                overlayView.bombNumBtn.setTitle("99+", forState: UIControlState.Normal)
+                overlayView.bombNumBtn.setTitle("99+", for: UIControlState())
             } else {
-                overlayView.bombNumBtn.setTitle("\(bombNum)", forState: UIControlState.Normal)
+                overlayView.bombNumBtn.setTitle("\(bombNum)", for: UIControlState())
             }
-            overlayView.bombNumBtn.hidden = false
-            overlayView.setBombBtn.hidden = false
-            overlayView.monsterGuideBtn.hidden = false
-            overlayView.warningBtn.hidden = false
-            overlayView.shareBtn.hidden = false
-            overlayView.roleInfoView.hidden = false
+            overlayView.bombNumBtn.isHidden = false
+            overlayView.setBombBtn.isHidden = false
+            overlayView.monsterGuideBtn.isHidden = false
+            overlayView.warningBtn.isHidden = false
+            overlayView.shareBtn.isHidden = false
+            overlayView.roleInfoView.isHidden = false
         } else {
-            overlayView.bombNumBtn.hidden = true
-            overlayView.setBombBtn.hidden = true
-            overlayView.monsterGuideBtn.hidden = true
-            overlayView.warningBtn.hidden = true
-            overlayView.shareBtn.hidden = true
-            overlayView.roleInfoView.hidden = true
+            overlayView.bombNumBtn.isHidden = true
+            overlayView.setBombBtn.isHidden = true
+            overlayView.monsterGuideBtn.isHidden = true
+            overlayView.warningBtn.isHidden = true
+            overlayView.shareBtn.isHidden = true
+            overlayView.roleInfoView.isHidden = true
         }
     }
     
     func initMonsterGuide() {
-        let guideViewContents = NSBundle.mainBundle().loadNibNamed("MonsterGuideView",
+        let guideViewContents = Bundle.main.loadNibNamed("MonsterGuideView",
                                                                    owner: view, options: nil)
-        guideView = guideViewContents[0] as! MonsterGuideView
-        guideView.layer.frame = CGRectMake(
-            20,
-            (screenRect.height - 300) / 2 - 50,
-            screenRect.width - 40,
-            300)
+        guideView = guideViewContents?[0] as! MonsterGuideView
+        guideView.layer.frame = CGRect(
+            x: 20,
+            y: (screenRect.height - 300) / 2 - 50,
+            width: screenRect.width - 40,
+            height: 300)
         self.view.addSubview(guideView)
         guideView.initView()
-        guideView.hidden = true
+        guideView.isHidden = true
         guideView.closeDelegate = self
     }
     
     func initMapDialog() {
-        screenRect = UIScreen.mainScreen().bounds
+        screenRect = UIScreen.main.bounds
         mapWidth = screenRect.width - 40
         mapHeight = mapWidth
         grayView = UIView(frame: screenRect)
-        grayView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+        grayView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
         
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        mapDialogController = storyboard.instantiateViewControllerWithIdentifier("mapDialog") as! MapDialogController
-        mapDialogController.view.layer.frame = CGRectMake(
-            (screenRect.width - mapWidth) / 2,
-            (screenRect.height - mapHeight) / 2,
-            mapWidth,
-            mapHeight)
-        mapDialogController.view.userInteractionEnabled = true
+        mapDialogController = storyboard.instantiateViewController(withIdentifier: "mapDialog") as! MapDialogController
+        mapDialogController.view.layer.frame = CGRect(
+            x: (screenRect.width - mapWidth) / 2,
+            y: (screenRect.height - mapHeight) / 2,
+            width: mapWidth,
+            height: mapHeight)
+        mapDialogController.view.isUserInteractionEnabled = true
         mapDialogController.markerDictionary = markerDictionary
         mapDialogController.goalDictionary = goalDictionary
         mapDialogController.setEndGoalDelegate = self
@@ -341,8 +341,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         self.view.addSubview(grayView)
         self.view.addSubview(mapDialogController.view)
         mapDialogController.initView(mapWidth, mapHeight: mapHeight)
-        grayView.hidden = true
-        mapDialogController.view.hidden = true
+        grayView.isHidden = true
+        mapDialogController.view.isHidden = true
     }
     
     func configLocationManager() {
@@ -352,17 +352,13 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         self.locationManager.allowsBackgroundLocationUpdates = true
     }
     
-    func amapLocationManager(manager: AMapLocationManager!, didUpdateLocation location: CLLocation!) {
+    func amapLocationManager(_ manager: AMapLocationManager!, didUpdate location: CLLocation!) {
         latitude = location.coordinate.latitude
         longitude = location.coordinate.longitude
         
         if self.pointAnnotation == nil {
             self.pointAnnotation = MAPointAnnotation()
-            self.pointAnnotation.coordinate = location.coordinate
             self.circleAnnotation = MAPointAnnotation()
-            self.circleAnnotation.coordinate = location.coordinate
-            self.mapDialogController.pointAnnotation = self.pointAnnotation
-            self.mapDialogController.circleAnnotation = self.circleAnnotation
             
             self.overlayView.mapView.addAnnotation(self.pointAnnotation)
             self.overlayView.mapView.addAnnotation(self.circleAnnotation)
@@ -372,6 +368,9 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         }
         
         self.pointAnnotation.coordinate = location.coordinate
+        self.circleAnnotation.coordinate = location.coordinate
+        self.mapDialogController.pointAnnotation = self.pointAnnotation
+        self.mapDialogController.circleAnnotation = self.circleAnnotation
         
         self.overlayView.mapView.centerCoordinate = location.coordinate
         self.overlayView.mapView.zoomLevel = 15.1
@@ -385,7 +384,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     func refreshDistance() {
         if startPoint != nil && endPoint != nil {
             distance = MAMetersBetweenMapPoints(startPoint, endPoint) < 30 ? 0 : MAMetersBetweenMapPoints(startPoint, endPoint) - 30
-            overlayView.distanceLabel.text = NSString(format: NSLocalizedString("M", comment: "%.0f m"), distance) as String
+            overlayView.distanceLabel.text = NSString(format: NSLocalizedString("M", comment: "%.0f m") as NSString, distance) as String
         }
     }
     
@@ -412,14 +411,14 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         let paramDict = NSMutableDictionary()
         let pkId: Int64 = (endGoal.pkId)
         paramDict["goal_id"] = "\(pkId)"
-        getGoalManager.POST(UrlParam.SEE_MONSTER_URL, paramDict: paramDict, success: { (operation, responseObject) in
+        _ = getGoalManager.POST(UrlParam.SEE_MONSTER_URL, paramDict: paramDict, success: { (operation, responseObject) in
             print("JSON: " + responseObject.description!)
             let response = responseObject as! NSDictionary
             let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
             
             if code != CodeParam.SUCCESS {
                 let errorMessage = ErrorMessageFactory.get(code)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                     if code == CodeParam.ERROR_SESSION_INVALID {
                         UserInfoManager.instance.logout(self)
                     }
@@ -428,7 +427,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             }
         }) { (operation, error) in
             let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
             self.ifSeeGoal = false
         }
     }
@@ -442,7 +441,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         setEndGoal()
     }
     
-    func updateEndGoal(goalId: Int64) {
+    func updateEndGoal(_ goalId: Int64) {
         GoalCache.instance.selectedGoal?.isSelected = false
         let goal = GoalCache.instance.getGoal(goalId)
         
@@ -452,16 +451,16 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             setEndGoal()
         } else {
             let errorMessage = NSLocalizedString("ERROR_GOAL_INVALID", comment: "The goal has disappeared or beyond your range")
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
         }
     }
     
-    func mapView(mapView: MAMapView!, viewForAnnotation annotation: MAAnnotation!) -> MAAnnotationView! {
+    func mapView(_ mapView: MAMapView!, viewFor annotation: MAAnnotation!) -> MAAnnotationView! {
         var annotationView : MAAnnotationView!
-        if annotation.isKindOfClass(MAPointAnnotation) {
+        if annotation.isKind(of: MAPointAnnotation.self) {
             if pointAnnotation == annotation as! MAPointAnnotation {
                 let pointReuseIndetifier = "pointReuseIndetifier"
-                annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(pointReuseIndetifier)
+                annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: pointReuseIndetifier)
                 
                 if annotationView == nil {
                     annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: pointReuseIndetifier)
@@ -470,7 +469,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                 }
             } else if circleAnnotation == annotation as! MAPointAnnotation {
                 let pointReuseIndetifier = "pointReuseIndetifier"
-                annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(pointReuseIndetifier)
+                annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: pointReuseIndetifier)
                 
                 if annotationView == nil {
                     annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: pointReuseIndetifier)
@@ -479,14 +478,14 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                 }
             } else {
                 let reuseIndetifier = "annotationReuseIndetifier"
-                annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIndetifier)
+                annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIndetifier)
                 if annotationView == nil {
                     annotationView = MAAnnotationView.init(annotation: annotation, reuseIdentifier: reuseIndetifier)
                 }
                 
-                var keys = markerDictionary.allKeysForObject(annotation)
+                var keys = markerDictionary.allKeys(for: annotation)
                 if(keys.count > 0) {
-                    let goal = goalDictionary.objectForKey(keys[0]) as! Goal
+                    let goal = goalDictionary.object(forKey: keys[0]) as! Goal
                     
                     if UserCache.instance.ifLogin() && goal.createBy == UserCache.instance.user.pkId
                         && goal.type == Goal.GoalTypeEnum.bomb {
@@ -512,24 +511,24 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             annotationView = MAAnnotationView()
         }
         
-        annotationView.contentMode = UIViewContentMode.ScaleAspectFit
+        annotationView.contentMode = UIViewContentMode.scaleAspectFit
         return annotationView
     }
     
-    func mapView(mapView: MAMapView!, rendererForOverlay overlay: MAOverlay!) -> MAOverlayRenderer! {
+    func mapView(_ mapView: MAMapView!, rendererFor overlay: MAOverlay!) -> MAOverlayRenderer! {
         let overlayCircle = overlay as! MACircle
         if overlayCircle == mapView.userLocationAccuracyCircle {
             let accuracyCircleRenderer = MACircleRenderer.init(circle: overlayCircle)
-            accuracyCircleRenderer.lineWidth = 1
-            accuracyCircleRenderer.strokeColor = UIColor.lightGrayColor()
-            accuracyCircleRenderer.fillColor = UIColor.init(red: 0, green: 0, blue: 1, alpha: 0.3)
+            accuracyCircleRenderer?.lineWidth = 1
+            accuracyCircleRenderer?.strokeColor = UIColor.lightGray
+            accuracyCircleRenderer?.fillColor = UIColor.init(red: 0, green: 0, blue: 1, alpha: 0.3)
             return accuracyCircleRenderer
         }
         
         return nil
     }
     
-    func refreshMap(ifSure: Bool) {
+    func refreshMap(_ ifSure: Bool) {
         if ifRefreshing && !ifSure {
             return
         }
@@ -546,8 +545,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         
         var hud: MBProgressHUD!
         if GoalCache.instance.version == 0 {
-            hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            hud.labelText = NSLocalizedString("REFRESH_MAP_HINT", comment: "Refreshing map...")
+            hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+            hud.label.text = NSLocalizedString("REFRESH_MAP_HINT", comment: "Refreshing map...")
             hud.dimBackground = true
         }
         
@@ -555,14 +554,14 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         
         if UserCache.instance.ifLogin() {
             let user = UserCache.instance.user
-            paramDict["account_role"] = String(user.role.rawValue)
+            paramDict["account_role"] = String(describing: user?.role.rawValue)
         }
         
-        manager.POST(UrlParam.REFRESH_MAP_URL,
+        _ = manager.post(UrlParam.REFRESH_MAP_URL,
                     parameters: paramDict,
                     success: { (operation, responseObject) in
                         let response = responseObject as! NSDictionary
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + (responseObject as AnyObject).description!)
                         
                         if let resultInfo = response["result"] as? NSDictionary {
                             GoalCache.instance.setGoals(resultInfo, latitude: self.latitude, longitude: self.longitude)
@@ -594,15 +593,15 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
 
     }
     
-    func setGoalsOnMap(goals: NSMutableArray) {
+    func setGoalsOnMap(_ goals: NSMutableArray) {
         for goal in goals {
             let goalInfo = goal as! Goal
             
-            if markerDictionary.allKeys.contains({ element in
-                return ((element as! NSNumber).longLongValue == goalInfo.pkId)
+            if markerDictionary.allKeys.contains(where: { element in
+                return ((element as! NSNumber).int64Value == goalInfo.pkId)
             }) {
                 
-                if let annotation = markerDictionary.objectForKey(NSNumber(longLong: goalInfo.pkId)) as? MAPointAnnotation {
+                if let annotation = markerDictionary.object(forKey: NSNumber(value: goalInfo.pkId as Int64)) as? MAPointAnnotation {
                     if !goalInfo.valid {
                         overlayView.mapView.removeAnnotation(annotation)
                         overlayView.mapView.addAnnotation(annotation)
@@ -610,8 +609,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                         mapDialogController.mapView.removeAnnotation(annotation)
                         mapDialogController.mapView.addAnnotation(annotation)
                         mapDialogController.mapView.removeAnnotation(annotation)
-                        markerDictionary.removeObjectForKey(NSNumber(longLong: goalInfo.pkId))
-                        goalDictionary.removeObjectForKey(NSNumber(longLong: goalInfo.pkId))
+                        markerDictionary.removeObject(forKey: NSNumber(value: goalInfo.pkId as Int64))
+                        goalDictionary.removeObject(forKey: NSNumber(value: goalInfo.pkId as Int64))
                     } else {
                         overlayView.mapView.removeAnnotation(annotation)
                         overlayView.mapView.addAnnotation(annotation)
@@ -623,8 +622,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                 if goalInfo.valid {
                     let annotation = MAPointAnnotation()
                     annotation.coordinate = CLLocationCoordinate2DMake(goalInfo.latitude, goalInfo.longitude)
-                    markerDictionary.setObject(annotation, forKey: NSNumber(longLong: goalInfo.pkId))
-                    goalDictionary.setObject(goalInfo, forKey: NSNumber(longLong: goalInfo.pkId))
+                    markerDictionary.setObject(annotation, forKey: NSNumber(value: goalInfo.pkId as Int64))
+                    goalDictionary.setObject(goalInfo, forKey: NSNumber(value: goalInfo.pkId as Int64))
                     overlayView.mapView.addAnnotation(annotation)
                     mapDialogController.mapView.addAnnotation(annotation)
                 }
@@ -635,8 +634,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     func setEndGoal() {
         let list = NSMutableArray()
         if endGoal != nil {
-            list.addObject(endGoal)
-            list.addObject(GoalCache.instance.selectedGoal!)
+            list.add(endGoal)
+            list.add(GoalCache.instance.selectedGoal!)
         }
         setGoalsOnMap(list)
         endGoal = GoalCache.instance.selectedGoal
@@ -659,8 +658,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                 return
             }
             
-            var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+            let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+            hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
             hud.dimBackground = true
             
             let paramDict = NSMutableDictionary()
@@ -672,39 +671,37 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                 let response = responseObject as! NSDictionary
                 print("JSON: " + responseObject.description!)
                 hud.removeFromSuperview()
-                hud = nil
                 
                 self.setInfoFromSetBombCallback(response)
             }) { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 hud.removeFromSuperview()
-                hud = nil
             }
         } else {
             let alertController = UIAlertController(title: nil,
-                                                    message: NSLocalizedString("NOT_HAS_BOMB", comment: "You don't have bombs. Go to store to buy some?"), preferredStyle: UIAlertControllerStyle.Alert)
+                                                    message: NSLocalizedString("NOT_HAS_BOMB", comment: "You don't have bombs. Go to store to buy some?"), preferredStyle: UIAlertControllerStyle.alert)
             let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: "Cancel"),
-                                             style: UIAlertActionStyle.Cancel, handler: nil)
-            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Default, handler: { (action) in
+                                             style: UIAlertActionStyle.cancel, handler: nil)
+            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.default, handler: { (action) in
                 self.goToStore()
             })
             alertController.addAction(cancelAction)
             alertController.addAction(okAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
-    func setInfoFromSetBombCallback(response: NSDictionary) {
+    func setInfoFromSetBombCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let bombNum = BaseInfoUtil.getIntegerFromAnyObject(response["result"])
             UserCache.instance.user.bombNum = bombNum
-            self.overlayView.bombNumBtn.setTitle("\(bombNum)", forState: UIControlState.Normal)
+            self.overlayView.bombNumBtn.setTitle("\(bombNum)", for: UIControlState())
             refreshMap(true)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -714,7 +711,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     
     func goToStore() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let viewController = storyboard.instantiateViewControllerWithIdentifier("Store")
+        let viewController = storyboard.instantiateViewController(withIdentifier: "Store")
         
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -727,11 +724,11 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         
         if endGoal != nil {
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
-            let viewController = storyboard.instantiateViewControllerWithIdentifier("Navigation") as! NavigationController
+            let viewController = storyboard.instantiateViewController(withIdentifier: "Navigation") as! NavigationController
             viewController.arriveDelegate = self
-            viewController.startPoint = AMapNaviPoint.locationWithLatitude(CGFloat(latitude), longitude: CGFloat(longitude))
-            viewController.endPoint = AMapNaviPoint.locationWithLatitude(CGFloat(endGoal!.latitude), longitude: CGFloat(endGoal!.longitude))
-            self.presentViewController(viewController, animated: true, completion: nil)
+            viewController.startPoint = AMapNaviPoint.location(withLatitude: CGFloat(latitude), longitude: CGFloat(longitude))
+            viewController.endPoint = AMapNaviPoint.location(withLatitude: CGFloat(endGoal!.latitude), longitude: CGFloat(endGoal!.longitude))
+            self.present(viewController, animated: true, completion: nil)
         }
     }
     
@@ -757,11 +754,11 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             self.setInfoFromGetGoalCallback(response)
         }) { (operation, error) in
             let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
         }
     }
     
-    func setInfoFromGetGoalCallback(response: NSDictionary) {
+    func setInfoFromGetGoalCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -771,7 +768,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             self.updateEndGoal()
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -784,35 +781,35 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                 showMonsterGuide()
         } else {
             let alertController = UIAlertController(title: nil,
-                                                    message: NSLocalizedString("NOT_HAS_GUIDE", comment: "You don't have monster guide. Go to store to buy one?"), preferredStyle: UIAlertControllerStyle.Alert)
+                                                    message: NSLocalizedString("NOT_HAS_GUIDE", comment: "You don't have monster guide. Go to store to buy one?"), preferredStyle: UIAlertControllerStyle.alert)
             let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: "Cancel"),
-                                             style: UIAlertActionStyle.Cancel, handler: nil)
-            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Default, handler: { (action) in
+                                             style: UIAlertActionStyle.cancel, handler: nil)
+            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.default, handler: { (action) in
                 self.goToStore()
             })
             alertController.addAction(cancelAction)
             alertController.addAction(okAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
     func showMonsterGuide() {
         if !ifSeeGoal {
             let errorMessage = NSLocalizedString("ERROR_GUIDE_NOT_SEE_MONSTER", comment: "You can only use the monster guide when you see the monster")
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: nil)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: nil)
             return
         }
         
-        if overlayView != nil && !overlayView.goalImageView.hidden {
+        if overlayView != nil && !overlayView.goalImageView.isHidden {
             guideView.goalImageView.image = UIImage(named: GoalImageFactory.get(endGoal.type, showTypeName: endGoal.showTypeName))
             if endGoal.unionType == 1 {
                 if endGoal.score < 0 {
                     guideView.roleLabel.text = NSLocalizedString("NONE", comment: "None") as String
                 } else {
-                    guideView.roleLabel.text = NSString(format: NSLocalizedString("LEAGUE_RACE", comment: "%d race is enough"), endGoal.unionType) as String
+                    guideView.roleLabel.text = NSString(format: NSLocalizedString("LEAGUE_RACE", comment: "%d race is enough") as NSString, endGoal.unionType) as String
                 }
             } else if endGoal.unionType > 1{
-                 guideView.roleLabel.text = NSString(format: NSLocalizedString("LEAGUE_RACES", comment: "League of %d races"), endGoal.unionType) as String
+                 guideView.roleLabel.text = NSString(format: NSLocalizedString("LEAGUE_RACES", comment: "League of %d races") as NSString, endGoal.unionType) as String
             }
             
             if endGoal.score > 0 {
@@ -823,25 +820,25 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             }
             guideView.introductionLabel.text = endGoal!.introduction
             guideView.rateView.initStar(endGoal.score)
-            guideView.hidden = !guideView.hidden
+            guideView.isHidden = !guideView.isHidden
         } else {
-            if !guideView.hidden {
-                guideView.hidden = true
+            if !guideView.isHidden {
+                guideView.isHidden = true
             }
         }
     }
     
-    func touchDown(tag: Int) {
-        grayView.hidden = false
-        mapDialogController.view.hidden = false
+    func touchDown(_ tag: Int) {
+        grayView.isHidden = false
+        mapDialogController.view.isHidden = false
     }
     
-    func closeMapDialog(sender: UITapGestureRecognizer) {
-        grayView.hidden = true
-        mapDialogController.view.hidden = true
+    func closeMapDialog(_ sender: UITapGestureRecognizer) {
+        grayView.isHidden = true
+        mapDialogController.view.isHidden = true
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         orientation = Int(newHeading.magneticHeading) / 90 * 90 % 360
         checkIfGoalDisplayed()
         print("angle: \(orientation)")
@@ -849,7 +846,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     
     func goToWarning() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let viewController = storyboard.instantiateViewControllerWithIdentifier("Warning") as! WarningController
+        let viewController = storyboard.instantiateViewController(withIdentifier: "Warning") as! WarningController
         viewController.updateGoalDelegate = self
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -873,19 +870,19 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             self.hitMonsterManager.ifLock = false
         }) { (operation, error) in
             let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
             self.hitMonsterManager.ifLock = false
         }
         
         hitMonsterManager.ifLock = true
     }
     
-    func setInfoFromHitMonsterCallback(response: NSDictionary) {
+    func setInfoFromHitMonsterCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary
-            if (result["score_sum"] != nil && !result.objectForKey("score_sum")!.isKindOfClass(NSNull)) {
+            if (result["score_sum"] != nil && !(result.object(forKey: "score_sum")! as AnyObject).isKind(of: NSNull.self)) {
                 HudToastFactory.showScore(self.endGoal.score, view: self.view)
         
                 if(UserCache.instance.ifLogin()) {
@@ -895,13 +892,13 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             } else {
                 let canSuccess = BaseInfoUtil.getIntegerFromAnyObject(result["if_can_success"])
                 if canSuccess == 0 {
-                    HudToastFactory.show(NSLocalizedString("MESSAGE_NOT_SUCCESS", comment: "Please see the monster guide on the right"), view: self.view, type: HudToastFactory.MessageType.WARNING)
+                    HudToastFactory.show(NSLocalizedString("MESSAGE_NOT_SUCCESS", comment: "Please see the monster guide on the right"), view: self.view, type: HudToastFactory.MessageType.warning)
                     overlayView.hintLabel.text = NSLocalizedString("NOT_MEET_CONDITION", comment: "Not meet hit-monster condition")
                 }
             }
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -914,19 +911,19 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     }
     
     func close() {
-        guideView.hidden = true
+        guideView.isHidden = true
     }
     
     func share() {
         if endGoal == nil {
             let errorMessage = NSLocalizedString("ERROR_NO_GOAL", comment: "There is no goal for you")
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: nil)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: nil)
             return
         }
         
         if !ifSeeGoal {
             let errorMessage = NSLocalizedString("ERROR_NOT_SEE_MONSTER", comment: "You can only share the goal when you see it")
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: nil)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: nil)
             return
         }
         
@@ -934,23 +931,23 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         var shareUrl = "https://m.hideseek.cn/home/mindex/sharePage?goal_id=\(endGoal.pkId)" +
                 "&nickname=" + (UserCache.instance.user.nickname as String) +
                 "&role=\(UserCache.instance.user.role.rawValue)"
-        shareUrl = shareUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        shareUrl = shareUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         
-        shareParams.SSDKSetupShareParamsByText(NSLocalizedString("SHARE_MESSAGE", comment: "My God! A monster is watching at me, please help me!"),
+        shareParams.ssdkSetupShareParams(byText: NSLocalizedString("SHARE_MESSAGE", comment: "My God! A monster is watching at me, please help me!"),
                                                 images : UIImage(named: "ic_launcher"),
-                                                url : NSURL(string: shareUrl),
+                                                url : URL(string: shareUrl),
                                                 title : NSLocalizedString("SHARE_TITLE", comment: "Enter into the age of tribes"),
-                                                type : SSDKContentType.Auto)
+                                                type : SSDKContentType.auto)
         
-        let platforms = [SSDKPlatformType.TypeWechat.rawValue, SSDKPlatformType.TypeQQ.rawValue]
+        let platforms = [SSDKPlatformType.typeWechat.rawValue, SSDKPlatformType.typeQQ.rawValue]
         
         ShareSDK.showShareActionSheet(self.view,
                                       items: platforms,
                                       shareParams: shareParams) { (state, platformType, userData, contentEntity, error, end) in
                                         switch state {
-                                        case SSDKResponseState.Success:
+                                        case SSDKResponseState.success:
                                             break;
-                                        case SSDKResponseState.Fail:
+                                        case SSDKResponseState.fail:
                                             break;
                                         default:
                                             break;
@@ -977,6 +974,6 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     }
     
     func hideBottomBar() {
-        self.tabBarController?.tabBar.hidden = false
+        self.tabBarController?.tabBar.isHidden = false
     }
 }

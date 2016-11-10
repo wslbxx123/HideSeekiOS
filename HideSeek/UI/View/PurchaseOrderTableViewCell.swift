@@ -36,27 +36,27 @@ class PurchaseOrderTableViewCell: UITableViewCell {
         self.payBtn = self.viewWithTag(TAG_PAY_BUTTON) as! UIButton
         self.successLabel = self.viewWithTag(TAG_SUCCESS_LABEL) as! UILabel
         self.processView = self.viewWithTag(TAG_PROCESS_VIEW) as! OAStackView
-        self.payBtn.addTarget(self, action: #selector(PurchaseOrderTableViewCell.payBtnClicked), forControlEvents: UIControlEvents.TouchDown)
+        self.payBtn.addTarget(self, action: #selector(PurchaseOrderTableViewCell.payBtnClicked), for: UIControlEvents.touchDown)
     }
     
     func payBtnClicked() {
         purchaseDelegate?.purchase(product, orderId: orderId)
     }
     
-    func initOrder(order: PurchaseOrder) {
+    func initOrder(_ order: PurchaseOrder) {
         orderId = order.orderId
         productImageView.setWebImage(order.imageUrl, defaultImage: "default_photo", isCache: true)
         nameLabel.text = order.productName
-        amountLabel.text = NSString(format: NSLocalizedString("AMOUNT_TITLE", comment: "Amount: %.2f yuan"), order.price * Double(order.count)) as String
+        amountLabel.text = NSString(format: NSLocalizedString("AMOUNT_TITLE", comment: "Amount: %.2f yuan") as NSString, order.price * Double(order.count)) as String
         payBtn.setBackgroundColor("#fccb05", selectedColorStr: "#ffa200", disabledColorStr: "#bab8b8")
         payBtn.layer.cornerRadius = 5
         payBtn.layer.masksToBounds = true
         if(order.status == 0) {
-            successLabel.hidden = true
-            processView.hidden = false
+            successLabel.isHidden = true
+            processView.isHidden = false
         } else {
-            successLabel.hidden = false
-            processView.hidden = true
+            successLabel.isHidden = false
+            processView.isHidden = true
         }
         
         product = Product(pkId: order.productId, name: order.productName, imageUrl: order.imageUrl, price: order.price * Double(order.count), purchaseCount: order.count, introduction: order.introduction, version: 1)

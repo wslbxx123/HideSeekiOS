@@ -16,23 +16,23 @@ class HotCityCollectionView: UICollectionView, UICollectionViewDelegateFlowLayou
         super.init(coder: aDecoder)
         
         self.hotCityList = NSArray()
-        self.bound = UIScreen.mainScreen().bounds
+        self.bound = UIScreen.main.bounds
         self.delegate = self
         self.dataSource = self
-        self.registerClass(RecentCityCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        self.register(RecentCityCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
         self.delaysContentTouches = false
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return hotCityList.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! RecentCityCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! RecentCityCollectionViewCell
         
-        if indexPath.row < hotCityList.count {
-            let city = hotCityList.objectAtIndex(indexPath.row) as! DomesticCity
-            cell.backgroundColor = UIColor.whiteColor()
+        if (indexPath as NSIndexPath).row < hotCityList.count {
+            let city = hotCityList.object(at: (indexPath as NSIndexPath).row) as! DomesticCity
+            cell.backgroundColor = UIColor.white
             cell.city = city
             cell.setName(city.name)
             cell.selectRegionDelegate = selectRegionDelegate
@@ -41,31 +41,31 @@ class HotCityCollectionView: UICollectionView, UICollectionViewDelegateFlowLayou
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let edgeInsets = UIEdgeInsetsMake(10, 10, 5, 10)
         return edgeInsets
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake((bound.width  - 85) / 3, 40)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: (bound.width  - 85) / 3, height: 40)
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if hotCityList.count < indexPath.row + 1 {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if hotCityList.count < (indexPath as NSIndexPath).row + 1 {
             return
         }
         
-        let city = hotCityList.objectAtIndex(indexPath.row) as! DomesticCity
+        let city = hotCityList.object(at: (indexPath as NSIndexPath).row) as! DomesticCity
         
         DomesticCityTableManager.instance.insertRecentCity(city)
         selectRegionDelegate?.regionSelected(city.name)
     }
     
-    override func touchesShouldCancelInContentView(view: UIView) -> Bool {
-        if view .isKindOfClass(UIButton) {
+    override func touchesShouldCancel(in view: UIView) -> Bool {
+        if view .isKind(of: UIButton.self) {
             return true
         }
         
-        return super.touchesShouldCancelInContentView(view)
+        return super.touchesShouldCancel(in: view)
     }
 }

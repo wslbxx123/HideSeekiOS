@@ -14,9 +14,9 @@ class MenuView: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.addTarget(self, action: #selector(MenuView.touchDown), forControlEvents: UIControlEvents.TouchDown)
-        self.addTarget(self, action: #selector(MenuView.touchCancel), forControlEvents: UIControlEvents.TouchCancel)
-        self.addTarget(self, action: #selector(MenuView.touchCancel), forControlEvents: UIControlEvents.TouchUpInside)
+        self.addTarget(self, action: #selector(MenuView.touchDown), for: UIControlEvents.touchDown)
+        self.addTarget(self, action: #selector(MenuView.touchCancel), for: UIControlEvents.touchCancel)
+        self.addTarget(self, action: #selector(MenuView.touchCancel), for: UIControlEvents.touchUpInside)
         let gesture = UITapGestureRecognizer(target: self, action: #selector(MenuView.gestureTouchDown))
         self.addGestureRecognizer(gesture)
     }
@@ -30,6 +30,6 @@ class MenuView: UIControl {
     }
     
     func touchCancel() {
-        self.backgroundColor = UIColor.whiteColor()
+        self.backgroundColor = UIColor.white
     }
 }

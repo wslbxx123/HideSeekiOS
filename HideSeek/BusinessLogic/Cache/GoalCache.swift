@@ -28,14 +28,14 @@ class GoalCache : BaseCache<Goal> {
         }
     }
     
-    func setGoals(goalInfo: NSDictionary, latitude: Double, longitude: Double) {
+    func setGoals(_ goalInfo: NSDictionary, latitude: Double, longitude: Double) {
         updateList.removeAllObjects()
         saveGoals(goalInfo)
         
         ifNeedClearMap = false
     }
     
-    func getGoal(goalId: Int64) -> Goal?{
+    func getGoal(_ goalId: Int64) -> Goal?{
         for goalItem in cacheList {
             let goal = goalItem as! Goal
             
@@ -47,7 +47,7 @@ class GoalCache : BaseCache<Goal> {
         return nil
     }
     
-    func saveGoals(result: NSDictionary!) {
+    func saveGoals(_ result: NSDictionary!) {
         let goalArray = result["goals"] as! NSArray
         
         for goalItem in goalArray {
@@ -64,9 +64,9 @@ class GoalCache : BaseCache<Goal> {
                             introduction: goalInfo["introduction"] as? String,
                             score: BaseInfoUtil.getIntegerFromAnyObject(goalInfo["score"]),
                             unionType: BaseInfoUtil.getIntegerFromAnyObject(goalInfo["union_type"]))
-            updateList.addObject(goal)
+            updateList.add(goal)
             if(goal.valid) {
-                cacheList.addObject(goal)
+                cacheList.add(goal)
             }
             NSLog("cachelist count: \(cacheList.count)")
         }
@@ -74,7 +74,7 @@ class GoalCache : BaseCache<Goal> {
         version = (result["version"] as! NSString).longLongValue
     }
     
-    func refreshClosestGoal(latitude: Double, longitude: Double) {
+    func refreshClosestGoal(_ latitude: Double, longitude: Double) {
         var minDistance: Double = -1
         NSLog("\(cacheList.count)")
         
@@ -82,7 +82,7 @@ class GoalCache : BaseCache<Goal> {
             let goal = item as! Goal
             if(!goal.valid) {
                 NSLog("goalId = \(goal.pkId)")
-                cacheList.removeObject(goal)
+                cacheList.remove(goal)
                 NSLog("\(cacheList.count)")
                 continue
             }

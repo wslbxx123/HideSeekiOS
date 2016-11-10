@@ -17,44 +17,44 @@ class ForgetPasswordController: UIViewController {
     
     var phone: String = ""
     var code: String = ""
-    var countDownTimer: NSTimer!
+    var countDownTimer: Timer!
     var countDownNum = 30
 
-    @IBAction func closeBtnClicked(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func closeBtnClicked(_ sender: AnyObject) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func nextStepBtnClicked(sender: AnyObject) {
+    @IBAction func nextStepBtnClicked(_ sender: AnyObject) {
         checkVerificationCode()
     }
     
-    @IBAction func phoneChanged(sender: AnyObject) {
+    @IBAction func phoneChanged(_ sender: AnyObject) {
         phone = phoneTextField.text!
         
         checkIfNextStepEnabled()
         checkIfCodeEnabled()
     }
     
-    @IBAction func codeChanged(sender: AnyObject) {
+    @IBAction func codeChanged(_ sender: AnyObject) {
         code = codeTextField.text!
         
         checkIfNextStepEnabled()
     }
     
-    @IBAction func sendCodeBtnClicked(sender: AnyObject) {
-        self.sendCodeBtn.enabled = false
+    @IBAction func sendCodeBtnClicked(_ sender: AnyObject) {
+        self.sendCodeBtn.isEnabled = false
         self.countDownNum = 30
         
-        self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(ForgetPasswordController.timeFireMethod), userInfo: nil, repeats: true)
+        self.countDownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ForgetPasswordController.timeFireMethod), userInfo: nil, repeats: true)
         
         self.countDownTimer.fire()
         
-        SMSSDK.getVerificationCodeByMethod(SMSGetCodeMethodSMS, phoneNumber: phone, zone: "86",
+        SMSSDK.getVerificationCode(by: SMSGetCodeMethodSMS, phoneNumber: phone, zone: "86",
                                            customIdentifier: nil) { (error) in
                                             if (error == nil) {
                                                 
                                             } else {
-                                                NSLog("错误信息：%@", error)
+                                                NSLog("错误信息：%@", error.debugDescription)
                                             }
         }
     }
@@ -65,20 +65,20 @@ class ForgetPasswordController: UIViewController {
         initView()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        self.navigationController?.navigationBarHidden = false
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
         
         super.viewWillDisappear(animated)
     }
@@ -102,18 +102,18 @@ class ForgetPasswordController: UIViewController {
     }
     
     func checkIfCodeEnabled() {
-        sendCodeBtn.enabled = !phone.isEmpty && phone.characters.count == 11
+        sendCodeBtn.isEnabled = !phone.isEmpty && phone.characters.count == 11
     }
     
     func checkIfNextStepEnabled() {
-        nextStepBtn.enabled = !phone.isEmpty && !code.isEmpty
+        nextStepBtn.isEnabled = !phone.isEmpty && !code.isEmpty
     }
     
     func checkVerificationCode() {
         SMSSDK.commitVerificationCode(self.code, phoneNumber: phone, zone: "86") { (error) in
             if ((error == nil)) {
                 let storyboard = UIStoryboard(name:"Main", bundle: nil)
-                let viewController = storyboard.instantiateViewControllerWithIdentifier("UpdatePassword") as! UpdatePasswordController
+                let viewController = storyboard.instantiateViewController(withIdentifier: "UpdatePassword") as! UpdatePasswordController
                 viewController.phone = self.phone
                 self.navigationController?.pushViewController(viewController, animated: true)
             }
@@ -123,7 +123,7 @@ class ForgetPasswordController: UIViewController {
                     NSLocalizedString("ERROR_VERIFICATION_CODE",
                         comment: "The input verification code is wrong"),
                     view: self.view,
-                    type: HudToastFactory.MessageType.ERROR)
+                    type: HudToastFactory.MessageType.error)
                 self.codeTextField.text = ""
             }
         }
@@ -133,12 +133,12 @@ class ForgetPasswordController: UIViewController {
         if(countDownNum == 0) {
             countDownTimer.invalidate()
             countDownTimer = nil
-            self.sendCodeBtn.enabled = true
+            self.sendCodeBtn.isEnabled = true
             self.sendCodeBtn.setTitle(
                 NSLocalizedString("SEND_VERIFICATION_CODE", comment: "Send Verification Code"),
-                forState: UIControlState.Normal)
+                for: UIControlState())
         } else {
-            self.sendCodeBtn.setTitle("\(countDownNum)s", forState: UIControlState.Normal)
+            self.sendCodeBtn.setTitle("\(countDownNum)s", for: UIControlState())
             countDownNum -= 1
         }
     }

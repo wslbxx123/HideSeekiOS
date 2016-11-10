@@ -33,27 +33,27 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
         super.viewDidLoad()
 
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         exchangeOrderTableManager = ExchangeOrderTableManager.instance
         initView()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         self.orderTableView.orderList = ExchangeOrderCache.instance.orderList
         self.orderTableView.reloadData()
         
         if(UserCache.instance.ifLogin()) {
-            UIView.animateWithDuration(0.25,
+            UIView.animate(withDuration: 0.25,
                                        delay: 0,
-                                       options: UIViewAnimationOptions.BeginFromCurrentState,
+                                       options: UIViewAnimationOptions.beginFromCurrentState,
                                        animations: {
                                         
-                                        self.orderTableView.contentOffset = CGPointMake(0, -self.refreshControl.frame.size.height);
+                                        self.orderTableView.contentOffset = CGPoint(x: 0, y: -self.refreshControl.frame.size.height);
                 }, completion: { (finished) in
                     self.refreshControl.beginRefreshing()
-                    self.refreshControl.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+                    self.refreshControl.sendActions(for: UIControlEvents.valueChanged)
             })
         }
     }
@@ -64,42 +64,42 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
     }
 
     func initView() {
-        self.screenRect = UIScreen.mainScreen().bounds
+        self.screenRect = UIScreen.main.bounds
         self.exchangeWidth = self.screenRect.width - 40
         refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(ExchangeOrderController.refreshData), forControlEvents: UIControlEvents.ValueChanged)
-        orderTableView.separatorStyle = UITableViewCellSeparatorStyle.None;
+        refreshControl.addTarget(self, action: #selector(ExchangeOrderController.refreshData), for: UIControlEvents.valueChanged)
+        orderTableView.separatorStyle = UITableViewCellSeparatorStyle.none;
         orderTableView.addSubview(refreshControl)
         orderTableView.loadMoreDelegate = self
         orderTableView.exchangeDelegate = self
         
-        let refreshContents = NSBundle.mainBundle().loadNibNamed("RefreshView",
+        let refreshContents = Bundle.main.loadNibNamed("RefreshView",
                                                                  owner: self, options: nil)
-        customLoadingView = refreshContents[0] as! UIView
+        customLoadingView = refreshContents?[0] as! UIView
         loadingImageView = customLoadingView.viewWithTag(TAG_LOADING_IMAGEVIEW) as! UIImageView
         customLoadingView.frame = refreshControl.bounds
         refreshControl.addSubview(customLoadingView)
         
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        exchangeDialogController = storyboard.instantiateViewControllerWithIdentifier("exchangeDialog") as! ExchangeDialogController
+        exchangeDialogController = storyboard.instantiateViewController(withIdentifier: "exchangeDialog") as! ExchangeDialogController
         exchangeDialogController.confirmExchangeDelegate = self
         exchangeDialogController.closeDelegate = self
         exchangeDialogController.showAreaDelegate = self
         
-        areaPickerView = NSBundle.mainBundle().loadNibNamed("AreaPickerView", owner: nil, options: nil).first as! AreaPickerView
-        areaPickerView.initWithStyle(AreaPickerView.AreaPickerStyle.AreaPickerWithStateAndCityAndDistrict, delegate: self)
+        areaPickerView = Bundle.main.loadNibNamed("AreaPickerView", owner: nil, options: nil)?.first as! AreaPickerView
+        areaPickerView.initWithStyle(AreaPickerView.AreaPickerStyle.areaPickerWithStateAndCityAndDistrict, delegate: self)
         
-        areaPickerView.layer.frame = CGRectMake(
-            0,
-            self.view.frame.height - 310,
-            self.view.frame.width,
-            180)
+        areaPickerView.layer.frame = CGRect(
+            x: 0,
+            y: self.view.frame.height - 310,
+            width: self.view.frame.width,
+            height: 180)
     }
     
     func refreshData() {
         let paramDict: NSMutableDictionary = ["version": String(exchangeOrderTableManager.version), "order_min_id": String(exchangeOrderTableManager.orderMinId)]
         isLoading = true
-        manager.POST(UrlParam.REFRESH_EXCHANGE_ORDERS_URL,
+        _ = manager.POST(UrlParam.REFRESH_EXCHANGE_ORDERS_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
                         print("JSON: " + responseObject.description!)
@@ -114,8 +114,8 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
         playAnimateRefresh()
     }
     
-    func setRefreshInfoFromCallback(response: NSDictionary) {
-        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
+    func setRefreshInfoFromCallback(_ response: NSDictionary) {
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"] as AnyObject)
         
         if code == CodeParam.SUCCESS {
             ExchangeOrderCache.instance.setOrders(response["result"] as! NSDictionary)
@@ -124,7 +124,7 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
             self.refreshControl.endRefreshing()
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -136,13 +136,13 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
         UIView.beginAnimations(nil, context: nil)
         UIView.setAnimationDuration(0.01)
         UIView.setAnimationDelegate(self)
-        UIView.setAnimationDidStopSelector(#selector(ExchangeOrderController.endAnimation))
-        self.loadingImageView.transform = CGAffineTransformMakeRotation(angle * CGFloat(M_PI / 180))
+        UIView.setAnimationDidStop(#selector(ExchangeOrderController.endAnimation))
+        self.loadingImageView.transform = CGAffineTransform(rotationAngle: angle * CGFloat(M_PI / 180))
         UIView.commitAnimations()
     }
     
     func endAnimation() {
-        if(refreshControl.refreshing) {
+        if(refreshControl.isRefreshing) {
             angle += 10;
             playAnimateRefresh()
         }
@@ -155,7 +155,7 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
             
             if(!hasData) {
                 let paramDict: NSMutableDictionary = ["version": String(exchangeOrderTableManager.version), "order_min_id": String(exchangeOrderTableManager.orderMinId)]
-                manager.POST(UrlParam.GET_EXCHANGE_ORDERS_URL,
+                _ = manager.POST(UrlParam.GET_EXCHANGE_ORDERS_URL,
                              paramDict: paramDict,
                              success: { (operation, responseObject) in
                                 print("JSON: " + responseObject.description!)
@@ -165,21 +165,21 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
                     },
                              failure: { (operation, error) in
                                 print("Error: " + error.localizedDescription)
-                                self.orderTableView.tableFooterView?.hidden = true
+                                self.orderTableView.tableFooterView?.isHidden = true
                 })
             } else {
                 self.orderTableView.orderList.removeAllObjects();
-                self.orderTableView.orderList.addObjectsFromArray(ExchangeOrderCache.instance.orderList as [AnyObject])
+                self.orderTableView.orderList.addObjects(from: ExchangeOrderCache.instance.orderList as [AnyObject])
                 self.orderTableView.reloadData()
                 
                 isLoading = false
-                self.orderTableView.tableFooterView?.hidden = true
+                self.orderTableView.tableFooterView?.isHidden = true
             }
         }
     }
     
-    func setInfoFromGetCallback(response: NSDictionary) {
-        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
+    func setInfoFromGetCallback(_ response: NSDictionary) {
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"] as AnyObject)
         
         if code == CodeParam.SUCCESS {
             PurchaseOrderCache.instance.addOrders(response["result"] as! NSDictionary)
@@ -187,10 +187,10 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
             self.orderTableView.orderList = PurchaseOrderCache.instance.cacheList
             self.orderTableView.reloadData()
             self.isLoading = false
-            self.orderTableView.tableFooterView?.hidden = true
+            self.orderTableView.tableFooterView?.isHidden = true
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -198,15 +198,15 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
         }
     }
     
-    func exchange(reward: Reward) {
+    func exchange(_ reward: Reward) {
         grayView = UIView(frame: screenRect)
-        grayView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+        grayView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
         
-        exchangeDialogController.view.layer.frame = CGRectMake(
-            (screenRect.width - exchangeWidth) / 2,
-            (screenRect.height - exchangeHeight) / 2 - 110,
-            exchangeWidth,
-            exchangeHeight)
+        exchangeDialogController.view.layer.frame = CGRect(
+            x: (screenRect.width - exchangeWidth) / 2,
+            y: (screenRect.height - exchangeHeight) / 2 - 110,
+            width: exchangeWidth,
+            height: exchangeHeight)
         exchangeDialogController.rewardNameLabel.text = reward.name
         exchangeDialogController.record = reward.record
         
@@ -214,10 +214,10 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
         self.view.addSubview(exchangeDialogController.view)
     }
     
-    func confirmExchange(reward: Reward, count: Int) {
+    func confirmExchange(_ reward: Reward, count: Int) {
         let paramDict: NSMutableDictionary = ["reward_id": "\(reward.pkId)",
                                               "count": "\(count)"]
-        createOrderManager.POST(UrlParam.CREATE_EXCHANGE_ORDER_URL,
+        _ = createOrderManager.POST(UrlParam.CREATE_EXCHANGE_ORDER_URL,
                                 paramDict: paramDict,
                                 success: { (operation, responseObject) in
                                     let response = responseObject as! NSDictionary
@@ -227,7 +227,7 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
         })
     }
     
-    func setCreateInfoFromCallback(response: NSDictionary) {
+    func setCreateInfoFromCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -235,15 +235,15 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
             self.refreshData()
             
             let alertController = UIAlertController(title: nil,
-                                                    message: NSLocalizedString("SUCCESS_EXCHANGE", comment: "Exchange successfully! please wait for the reward notice. "), preferredStyle: UIAlertControllerStyle.Alert)
-            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Default, handler: { (action) in
+                                                    message: NSLocalizedString("SUCCESS_EXCHANGE", comment: "Exchange successfully! please wait for the reward notice. "), preferredStyle: UIAlertControllerStyle.alert)
+            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.default, handler: { (action) in
                 self.close()
             })
             alertController.addAction(okAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -278,7 +278,7 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
         areaPickerView.removeFromSuperview()
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         exchangeDialogController.dismissKeyboard()
         exchangeDialogController.checkIfConfirmEnabled()
         areaPickerView.removeFromSuperview()

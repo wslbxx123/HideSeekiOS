@@ -16,7 +16,7 @@ class ExchangeController: UIViewController, ExchangeDelegate,
     
     @IBOutlet weak var collectionView: ExchangeCollectionView!
     var rewardRefreshControl: UIRefreshControl!
-    var manager: AFHTTPRequestOperationManager!
+    var manager: AFHTTPSessionManager!
     var angle: CGFloat = 0
     var loadingImageView: UIImageView!
     var customLoadingView: UIView!
@@ -34,11 +34,11 @@ class ExchangeController: UIViewController, ExchangeDelegate,
         super.viewDidLoad()
 
         initView()
-        manager = AFHTTPRequestOperationManager()
-        manager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        manager = AFHTTPSessionManager()
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         
         createOrderManager = CustomRequestManager()
-        createOrderManager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         rewardTableManager = RewardTableManager.instance
     }
 
@@ -47,64 +47,64 @@ class ExchangeController: UIViewController, ExchangeDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.collectionView.rewardList = RewardCache.instance.rewardList
         self.collectionView.reloadData()
         
-        UIView.animateWithDuration(0.25,
+        UIView.animate(withDuration: 0.25,
                                    delay: 0,
-                                   options: UIViewAnimationOptions.BeginFromCurrentState,
+                                   options: UIViewAnimationOptions.beginFromCurrentState,
                                    animations: {
                                     
-                                    self.collectionView.contentOffset = CGPointMake(0, -self.rewardRefreshControl.frame.size.height);
+                                    self.collectionView.contentOffset = CGPoint(x: 0, y: -self.rewardRefreshControl.frame.size.height);
             }, completion: { (finished) in
                 self.rewardRefreshControl.beginRefreshing()
-                self.rewardRefreshControl.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+                self.rewardRefreshControl.sendActions(for: UIControlEvents.valueChanged)
         })
     }
     
     func initView() {
         rewardRefreshControl = UIRefreshControl()
-        rewardRefreshControl.addTarget(self, action: #selector(ExchangeController.refreshRewardData), forControlEvents: UIControlEvents.ValueChanged)
+        rewardRefreshControl.addTarget(self, action: #selector(ExchangeController.refreshRewardData), for: UIControlEvents.valueChanged)
         collectionView.addSubview(rewardRefreshControl)
         collectionView.alwaysBounceVertical = true
         collectionView.exchangeDelegate = self
         collectionView.loadMoreDelegate = self
         
-        let refreshContents = NSBundle.mainBundle().loadNibNamed("RefreshView",
+        let refreshContents = Bundle.main.loadNibNamed("RefreshView",
                                                                  owner: self, options: nil)
-        customLoadingView = refreshContents[0] as! UIView
+        customLoadingView = refreshContents?[0] as! UIView
         loadingImageView = customLoadingView.viewWithTag(TAG_LOADING_IMAGEVIEW) as! UIImageView
         customLoadingView.frame = rewardRefreshControl.bounds
         rewardRefreshControl.addSubview(customLoadingView)
-        screenRect = UIScreen.mainScreen().bounds
+        screenRect = UIScreen.main.bounds
         exchangeWidth = screenRect.width - 40
         
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        exchangeDialogController = storyboard.instantiateViewControllerWithIdentifier("exchangeDialog") as! ExchangeDialogController
+        exchangeDialogController = storyboard.instantiateViewController(withIdentifier: "exchangeDialog") as! ExchangeDialogController
         exchangeDialogController.confirmExchangeDelegate = self
         exchangeDialogController.closeDelegate = self
         exchangeDialogController.showAreaDelegate = self
         
-        areaPickerView = NSBundle.mainBundle().loadNibNamed("AreaPickerView", owner: nil, options: nil).first as! AreaPickerView
-        areaPickerView.initWithStyle(AreaPickerView.AreaPickerStyle.AreaPickerWithStateAndCityAndDistrict, delegate: self)
+        areaPickerView = Bundle.main.loadNibNamed("AreaPickerView", owner: nil, options: nil)?.first as! AreaPickerView
+        areaPickerView.initWithStyle(AreaPickerView.AreaPickerStyle.areaPickerWithStateAndCityAndDistrict, delegate: self)
     
-        areaPickerView.layer.frame = CGRectMake(
-            0,
-            self.view.frame.height - 310,
-            self.view.frame.width,
-            180)
+        areaPickerView.layer.frame = CGRect(
+            x: 0,
+            y: self.view.frame.height - 310,
+            width: self.view.frame.width,
+            height: 180)
     }
     
     func refreshRewardData() {
         let paramDict: NSMutableDictionary = ["version": "\(rewardTableManager.version)",
                                               "reward_min_id": "\(rewardTableManager.rewardMinId)"]
         isLoading = true
-        manager.POST(UrlParam.REFRESH_REWARD_URL,
+        _ = manager.post(UrlParam.REFRESH_REWARD_URL,
                      parameters: paramDict,
                      success: { (operation, responseObject) in
                         let response = responseObject as! NSDictionary
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + (responseObject as AnyObject).description!)
                         RewardCache.instance.setRewards(response["result"] as! NSDictionary)
                         
                         self.collectionView.rewardList = RewardCache.instance.cacheList
@@ -123,25 +123,25 @@ class ExchangeController: UIViewController, ExchangeDelegate,
         UIView.beginAnimations(nil, context: nil)
         UIView.setAnimationDuration(0.01)
         UIView.setAnimationDelegate(self)
-        UIView.setAnimationDidStopSelector(#selector(RaceGroupController.endAnimation))
-        self.loadingImageView.transform = CGAffineTransformMakeRotation(angle * CGFloat(M_PI / 180))
+        UIView.setAnimationDidStop(#selector(RaceGroupController.endAnimation))
+        self.loadingImageView.transform = CGAffineTransform(rotationAngle: angle * CGFloat(M_PI / 180))
         UIView.commitAnimations()
     }
     
-    func exchange(reward: Reward) {
+    func exchange(_ reward: Reward) {
         if !UserCache.instance.ifLogin() {
             UserInfoManager.instance.checkIfGoToLogin(self)
             return
         }
         
         grayView = UIView(frame: screenRect)
-        grayView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+        grayView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
         
-        exchangeDialogController.view.layer.frame = CGRectMake(
-            (screenRect.width - exchangeWidth) / 2,
-            (screenRect.height - exchangeHeight) / 2 - 110,
-            exchangeWidth,
-            exchangeHeight)
+        exchangeDialogController.view.layer.frame = CGRect(
+            x: (screenRect.width - exchangeWidth) / 2,
+            y: (screenRect.height - exchangeHeight) / 2 - 110,
+            width: exchangeWidth,
+            height: exchangeHeight)
         exchangeDialogController.rewardNameLabel.text = reward.name
         exchangeDialogController.record = reward.record
         exchangeDialogController.reward = reward
@@ -149,14 +149,14 @@ class ExchangeController: UIViewController, ExchangeDelegate,
         self.view.addSubview(exchangeDialogController.view)
     }
     
-    func confirmExchange(reward: Reward, count: Int) {
+    func confirmExchange(_ reward: Reward, count: Int) {
         if count * reward.record > UserCache.instance.user.record {
             let errorMessage = NSLocalizedString("ERROR_RECORD_NOT_ENOUGH", comment: "You record is not enough")
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: nil)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: nil)
             return;
         }
         
-        let setDefault = exchangeDialogController.setDefaultSwitch.on ? "1" : "0"
+        let setDefault = exchangeDialogController.setDefaultSwitch.isOn ? "1" : "0"
         
         let paramDict: NSMutableDictionary = ["reward_id": "\(reward.pkId)",
                                               "count": "\(count)",
@@ -174,7 +174,7 @@ class ExchangeController: UIViewController, ExchangeDelegate,
         })
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
+    func setInfoFromCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -182,15 +182,15 @@ class ExchangeController: UIViewController, ExchangeDelegate,
             self.refreshRewardData()
             
             let alertController = UIAlertController(title: nil,
-                                                    message: NSLocalizedString("SUCCESS_EXCHANGE", comment: "Exchange successfully! please wait for the reward notice. "), preferredStyle: UIAlertControllerStyle.Alert)
-            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Default, handler: { (action) in
+                                                    message: NSLocalizedString("SUCCESS_EXCHANGE", comment: "Exchange successfully! please wait for the reward notice. "), preferredStyle: UIAlertControllerStyle.alert)
+            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.default, handler: { (action) in
                 self.close()
             })
             alertController.addAction(okAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -209,20 +209,20 @@ class ExchangeController: UIViewController, ExchangeDelegate,
             isLoading = true
             let hasData = RewardCache.instance.getMoreRewards(10, hasLoaded: false)
             if self.collectionView.footer != nil {
-                self.collectionView.footer.hidden = false
+                self.collectionView.footer.isHidden = false
             }
             
             if(!hasData) {
                 let paramDict: NSMutableDictionary = ["version": String(rewardTableManager.version), "reward_min_id": String(rewardTableManager.rewardMinId)]
-                manager.POST(UrlParam.GET_REWARD_URL,
+                _ = manager.post(UrlParam.GET_REWARD_URL,
                              parameters: paramDict,
                              success: { (operation, responseObject) in
-                                print("JSON: " + responseObject.description!)
+                                print("JSON: " + (responseObject as AnyObject).description!)
                                 let response = responseObject as! NSDictionary
                                 
                                 RewardCache.instance.addRewards(response["result"] as! NSDictionary)
                                 if self.collectionView.footer != nil {
-                                    self.collectionView.footer.hidden = true
+                                    self.collectionView.footer.isHidden = true
                                 }
                                 self.collectionView.rewardList = RewardCache.instance.cacheList
                                 self.collectionView.reloadData()
@@ -231,15 +231,15 @@ class ExchangeController: UIViewController, ExchangeDelegate,
                              failure: { (operation, error) in
                                 print("Error: " + error.localizedDescription)
                                 if self.collectionView.footer != nil {
-                                    self.collectionView.footer.hidden = true
+                                    self.collectionView.footer.isHidden = true
                                 }
                 })
             } else {
             
-                self.collectionView.rewardList.addObjectsFromArray(
-                    RewardCache.instance.rewardList as [AnyObject])
+                self.collectionView.rewardList.addObjects(
+                    from: RewardCache.instance.rewardList as [AnyObject])
                 if self.collectionView.footer != nil {
-                    self.collectionView.footer.hidden = true
+                    self.collectionView.footer.isHidden = true
                 }
                 self.collectionView.reloadData()
                 
@@ -269,7 +269,7 @@ class ExchangeController: UIViewController, ExchangeDelegate,
         areaPickerView.removeFromSuperview()
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         exchangeDialogController.dismissKeyboard()
         exchangeDialogController.checkIfConfirmEnabled()
         areaPickerView.removeFromSuperview()

@@ -14,13 +14,13 @@ class DomesticCityTableManager {
     let id = Expression<Int>("id")
     let name = Expression<String>("name")
     let pinyin = Expression<String>("pinyin")
-    let timestamp = Expression<NSDate>("timestamp")
+    let timestamp = Expression<Date>("timestamp")
     
     var database: Connection!
     var domesticCityTable: Table!
     var recentCityTable: Table!
     
-    private init() {
+    fileprivate init() {
         do {
             database = DatabaseManager.instance.database
             
@@ -31,7 +31,7 @@ class DomesticCityTableManager {
                 t.column(id, primaryKey: true)
                 t.column(name)
                 t.column(pinyin)
-                t.column(timestamp, defaultValue: NSDate())
+                t.column(timestamp, defaultValue: NSDate() as Date)
                 })
         } catch let error as NSError {
             print("SQLiteDB - failed to create table race_group!")
@@ -47,7 +47,7 @@ class DomesticCityTableManager {
             let result = domesticCityTable.order(pinyin)
             
             for item in try database.prepare(result) {
-                cityList.addObject(DomesticCity(name: item[name], pinYin: item[pinyin]))
+                cityList.add(DomesticCity(name: item[name], pinYin: item[pinyin]))
             }
         }
         catch let error as NSError {
@@ -58,18 +58,18 @@ class DomesticCityTableManager {
         return cityList
     }
     
-    func insertRecentCity(city: DomesticCity) {
+    func insertRecentCity(_ city: DomesticCity) {
         do {
             let count = try database.run(recentCityTable.filter(name == city.name)
                 .update(
                     pinyin <- city.pinYin,
-                    timestamp <- NSDate()))
+                    timestamp <- Date()))
             
             if count == 0 {
                 let insert = recentCityTable.insert(
                     name <- city.name,
                     pinyin <- city.pinYin,
-                    timestamp <- NSDate())
+                    timestamp <- Date())
                 
                 try database.run(insert)
             }
@@ -89,7 +89,7 @@ class DomesticCityTableManager {
             let result = recentCityTable.order(timestamp.desc).limit(3)
             
             for item in try database.prepare(result) {
-                cityList.addObject(DomesticCity(name: item[name], pinYin: item[pinyin]))
+                cityList.add(DomesticCity(name: item[name], pinYin: item[pinyin]))
             }
         }
         catch let error as NSError {
@@ -100,7 +100,7 @@ class DomesticCityTableManager {
         return cityList
     }
     
-    func searchCities(keyword: String) -> NSMutableArray {
+    func searchCities(_ keyword: String) -> NSMutableArray {
         let cityList = NSMutableArray()
         
         do {
@@ -108,7 +108,7 @@ class DomesticCityTableManager {
                 .order(pinyin)
             
             for item in try database.prepare(result) {
-                cityList.addObject(DomesticCity(name: item[name], pinYin: item[pinyin]))
+                cityList.add(DomesticCity(name: item[name], pinYin: item[pinyin]))
             }
         }
         catch let error as NSError {

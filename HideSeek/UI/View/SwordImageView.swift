@@ -23,7 +23,7 @@ class SwordImageView: UIImageView {
         if self.superview != nil {
             if _displayLink == nil {
                 _displayLink = CADisplayLink(target: self, selector: #selector(SwordImageView.changeKeyFrame))
-                _displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: self.runLoopMode)
+                _displayLink.add(to: RunLoop.main, forMode: RunLoopMode(rawValue: self.runLoopMode))
             }
         } else {
             _displayLink.invalidate()
@@ -36,14 +36,14 @@ class SwordImageView: UIImageView {
     var _runLoopMode: String!
     var runLoopMode: String {
         get{
-            return _runLoopMode == nil ? NSRunLoopCommonModes : _runLoopMode
+            return _runLoopMode == nil ? RunLoopMode.commonModes.rawValue : _runLoopMode
         }
         set{
             if newValue != _runLoopMode {
                 self.stopAnimating()
-                let runLoop = NSRunLoop.mainRunLoop()
-                self.displayLink.removeFromRunLoop(runLoop, forMode: _runLoopMode)
-                self.displayLink.addToRunLoop(runLoop, forMode: newValue)
+                let runLoop = RunLoop.main
+                self.displayLink.remove(from: runLoop, forMode: RunLoopMode(rawValue: _runLoopMode))
+                self.displayLink.add(to: runLoop, forMode: RunLoopMode(rawValue: newValue))
                 _runLoopMode = newValue
                 self.startAnimating()
             }
@@ -55,7 +55,7 @@ class SwordImageView: UIImageView {
         
         let imageNameArray = AnimationImageFactory.getSwordArray()
         for imageName in imageNameArray {
-            let filePath = NSBundle.mainBundle().pathForResource(imageName as? String, ofType: ".png")
+            let filePath = Bundle.main.path(forResource: imageName as? String, ofType: ".png")
             animatedImages.append(UIImage(contentsOfFile: filePath!)!)
         }
     }
@@ -65,11 +65,11 @@ class SwordImageView: UIImageView {
     }
     
     override func startAnimating() {
-        if self.isAnimating() {
+        if self.isAnimating {
             return;
         }
         super.startAnimating()
-        self.displayLink.paused = false
+        self.displayLink.isPaused = false
     }
     
     func changeKeyFrame() {
@@ -95,12 +95,12 @@ class SwordImageView: UIImageView {
         }
     }
     
-    override func displayLayer(layer: CALayer) {
+    override func display(_ layer: CALayer) {
         if self.animatedImages.count == 0 {
             return;
         }
         
-        layer.contents = self.currentFrame?.CGImage
+        layer.contents = self.currentFrame?.cgImage
     }
     
     override func didMoveToWindow() {
@@ -108,7 +108,7 @@ class SwordImageView: UIImageView {
         if self.window != nil {
             self.startAnimating()
         } else {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 if self.window == nil {
                     self.stopAnimating()
                 }

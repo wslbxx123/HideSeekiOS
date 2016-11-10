@@ -26,29 +26,29 @@ class PurchaseOrderTableManager {
     
     var database: Connection!
     var purchaseOrderTable: Table!
-    private var _orderMinId: Int64 = 0
+    fileprivate var _orderMinId: Int64 = 0
     
     var orderMinId: Int64 {
-        let tempOrderMinId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.PURCHASE_ORDER_MIN_ID) as? NSNumber
+        let tempOrderMinId = UserDefaults.standard.object(forKey: UserDefaultParam.PURCHASE_ORDER_MIN_ID) as? NSNumber
         
         if(tempOrderMinId == nil) {
             return 0
         }
-        return (tempOrderMinId?.longLongValue)!
+        return (tempOrderMinId?.int64Value)!
     }
     
     var version: Int64 {
         get{
-            let tempVersion = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.PURCHASE_ORDER_VERSION) as? NSNumber
+            let tempVersion = UserDefaults.standard.object(forKey: UserDefaultParam.PURCHASE_ORDER_VERSION) as? NSNumber
             
             if(tempVersion == nil) {
                 return 0
             }
-            return (tempVersion?.longLongValue)!
+            return (tempVersion?.int64Value)!
         }
     }
     
-    private init() {
+    fileprivate init() {
         do {
             database = DatabaseManager.instance.database
             
@@ -89,7 +89,7 @@ class PurchaseOrderTableManager {
             }
             
             for item in try database.prepare(result) {
-                orderList.addObject(PurchaseOrder(
+                orderList.add(PurchaseOrder(
                     orderId: item[orderId],
                     status: item[status],
                     createTime: item[createTime],
@@ -117,11 +117,11 @@ class PurchaseOrderTableManager {
         return orderList
     }
     
-    func updateOrders(orderMinId: Int64, version: Int64, orderList: NSArray) {
+    func updateOrders(_ orderMinId: Int64, version: Int64, orderList: NSArray) {
         do {
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:version), forKey: UserDefaultParam.PURCHASE_ORDER_VERSION)
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:orderMinId), forKey: UserDefaultParam.PURCHASE_ORDER_MIN_ID)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(NSNumber(value: version as Int64), forKey: UserDefaultParam.PURCHASE_ORDER_VERSION)
+            UserDefaults.standard.set(NSNumber(value: orderMinId as Int64), forKey: UserDefaultParam.PURCHASE_ORDER_MIN_ID)
+            UserDefaults.standard.synchronize()
             
             for orderItem in orderList {
                 let orderInfo = orderItem as! PurchaseOrder
@@ -157,7 +157,7 @@ class PurchaseOrderTableManager {
                         pullVersion <- orderInfo.version,
                         orderId <- orderInfo.orderId)
                     
-                    try database.run(insert)
+                    _ = try database.run(insert)
                 }
             }
         }
@@ -168,16 +168,16 @@ class PurchaseOrderTableManager {
         }
     }
     
-    func getMoreOrders(count: Int, version: Int64, hasLoaded: Bool) -> NSMutableArray {
+    func getMoreOrders(_ count: Int, version: Int64, hasLoaded: Bool) -> NSMutableArray {
         let orderList = NSMutableArray()
         do {
             let result = purchaseOrderTable.filter(pullVersion <= version && orderId < _orderMinId).order(productId.desc).limit(count)
             
-            let resultCount = database.scalar(result.count)
+            let resultCount = try database.scalar(result.count)
             
             if resultCount == count || hasLoaded {
                 for item in try database.prepare(result) {
-                    orderList.addObject(PurchaseOrder(
+                    orderList.add(PurchaseOrder(
                         orderId: item[orderId],
                         status: item[status],
                         createTime: item[createTime],

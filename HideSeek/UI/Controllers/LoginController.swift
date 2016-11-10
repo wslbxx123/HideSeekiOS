@@ -17,53 +17,51 @@ class LoginController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginScrollView: UIScrollView!
     
-    var manager: AFHTTPRequestOperationManager!
+    var manager: AFHTTPSessionManager!
     var phone: String = ""
     var password: String = ""
     
-    @IBAction func closeBtnClicked(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func closeBtnClicked(_ sender: AnyObject) {
+        self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func loginBtnClicked(sender: AnyObject) {
-        let channalId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.CHANNEL_ID) as? String
+    @IBAction func loginBtnClicked(_ sender: AnyObject) {
+        let channalId = UserDefaults.standard.object(forKey: UserDefaultParam.CHANNEL_ID) as? String
         
         let paramDict = ["phone": phone,
                          "password": password,
                          "channel_id": channalId == nil ? "" : channalId!,
                          "app_platform": "0"]
         
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
         hud.dimBackground = true
         
-        manager.POST(UrlParam.LOGIN_URL,
+        _ = manager.post(UrlParam.LOGIN_URL,
                     parameters: paramDict,
                     success: { (operation, responseObject) in
                         let response = responseObject as! NSDictionary
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + (responseObject as AnyObject).description!)
                         
                         self.setInfoFromCallback(response)
                         
                         hud.removeFromSuperview()
-                        hud = nil
             },
                     failure: { (operation, error) in
                         print("Error: " + error.localizedDescription)
                         let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                        HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                        HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
                         hud.removeFromSuperview()
-                        hud = nil
         })
     }
     
-    @IBAction func phoneTextChanged(sender: AnyObject) {
+    @IBAction func phoneTextChanged(_ sender: AnyObject) {
         phone = phoneTextField.text!
         
         checkIfLoginEnabled()
     }
     
-    @IBAction func passwordTextChanged(sender: AnyObject) {
+    @IBAction func passwordTextChanged(_ sender: AnyObject) {
         password = passwordTextField.text!
         
         checkIfLoginEnabled()
@@ -73,30 +71,30 @@ class LoginController: UIViewController {
         super.viewDidLoad()
         
         initView()
-        manager = AFHTTPRequestOperationManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager = AFHTTPSessionManager()
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        self.navigationController?.navigationBarHidden = false
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
         
         super.viewWillDisappear(animated)
     }
     
     override func viewDidLayoutSubviews() {
-        loginScrollView.contentSize = CGSizeMake(UIScreen.mainScreen().bounds.width, 700)
+        loginScrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 700)
     }
 
     override func didReceiveMemoryWarning() {
@@ -113,20 +111,20 @@ class LoginController: UIViewController {
     }
     
     func checkIfLoginEnabled() {
-        loginBtn.enabled = !phone.isEmpty && !password.isEmpty
+        loginBtn.isEnabled = !phone.isEmpty && !password.isEmpty
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
-        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
+    func setInfoFromCallback(_ response: NSDictionary) {
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"] as AnyObject)
         if code == CodeParam.SUCCESS {
             UserCache.instance.setUser(response["result"] as! NSDictionary)
             
             PushManager.instance.register()
             GoalCache.instance.ifNeedClearMap = true
-            self.navigationController?.popViewControllerAnimated(true)
+            self.navigationController?.popViewController(animated: true)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
         }
     }
 }

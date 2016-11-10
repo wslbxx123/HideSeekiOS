@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 extension UIImageView {
-    func setWebImage(url: String?, defaultImage: String?, isCache: Bool){
+    func setWebImage(_ url: String?, defaultImage: String?, isCache: Bool){
         var image: UIImage?
         if url == nil {
             return
@@ -21,7 +21,7 @@ extension UIImageView {
         }
         
         if isCache {
-            let data: NSData? = ImageCache.readCacheFromUrl(url!)
+            let data: Data? = ImageCache.readCacheFromUrl(url!)
             if data != nil {
                 image = UIImage(data: data!)
                 self.image = image
@@ -33,7 +33,7 @@ extension UIImageView {
         }
     }
     
-    func setWebImage(url: String?, smallPhotoUrl: String?, defaultImage: String?, isCache: Bool){
+    func setWebImage(_ url: String?, smallPhotoUrl: String?, defaultImage: String?, isCache: Bool){
         var image: UIImage?
         if url == nil {
             return
@@ -44,7 +44,7 @@ extension UIImageView {
         }
         
         if isCache {
-            let data: NSData? = ImageCache.readCacheFromUrl(smallPhotoUrl!)
+            let data: Data? = ImageCache.readCacheFromUrl(smallPhotoUrl!)
             if data != nil {
                 image = UIImage(data: data!)
                 self.image = image
@@ -56,7 +56,7 @@ extension UIImageView {
         }
         
         if isCache {
-            let data: NSData? = ImageCache.readCacheFromUrl(url!)
+            let data: Data? = ImageCache.readCacheFromUrl(url!)
             if data != nil {
                 image = UIImage(data: data!)
                 self.image = image
@@ -68,16 +68,16 @@ extension UIImageView {
         }
     }
     
-    func refreshImage(url: String?) {
+    func refreshImage(_ url: String?) {
         var image: UIImage?
-        let dispath = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
-        dispatch_async(dispath, { () -> Void in
-            let URL: NSURL = NSURL(string: url!)!
-            let data: NSData? = NSData(contentsOfURL: URL)
+        let dispath = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high)
+        dispath.async(execute: { () -> Void in
+            let URL: Foundation.URL = Foundation.URL(string: url!)!
+            let data: Data? = try? Data(contentsOf: URL)
             if data != nil {
                 image = UIImage(data: data!)
                 ImageCache.writeCacheToUrl(url!, data: data!)
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     self.image = image
                 })
             }

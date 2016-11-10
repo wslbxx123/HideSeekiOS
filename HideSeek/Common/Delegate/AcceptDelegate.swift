@@ -7,5 +7,5 @@
 //
 
 protocol AcceptDelegate {
-    func acceptFriend(friendId: Int64)
+    func acceptFriend(_ friendId: Int64)
 }

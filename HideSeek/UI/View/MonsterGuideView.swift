@@ -18,22 +18,22 @@ class MonsterGuideView: UIView {
     var rateView: RateView!
     var closeDelegate: CloseDelegate!
 
-    @IBAction func closeBtnClicked(sender: AnyObject) {
+    @IBAction func closeBtnClicked(_ sender: AnyObject) {
         closeDelegate?.close()
     }
     
     func initView() {
-        let rateViewContents = NSBundle.mainBundle().loadNibNamed("RateView",
+        let rateViewContents = Bundle.main.loadNibNamed("RateView",
                                                                    owner: self, options: nil)
-        rateView = rateViewContents[0] as! RateView
+        rateView = rateViewContents?[0] as! RateView
         
         rateView.translatesAutoresizingMaskIntoConstraints = false
         self.scoreView.addSubview(rateView)
         
-        let widthConstraint = NSLayoutConstraint(item: rateView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: scoreView, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: 0)
-        let heightConstraint = NSLayoutConstraint(item: rateView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: scoreView, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0)
-        let centerXConstraint = NSLayoutConstraint(item: rateView, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: scoreView, attribute: NSLayoutAttribute.CenterX, multiplier: 1, constant: 0)
-        let centerYConstraint = NSLayoutConstraint(item: rateView, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: scoreView, attribute: NSLayoutAttribute.CenterY, multiplier: 1, constant: 0)
+        let widthConstraint = NSLayoutConstraint(item: rateView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: scoreView, attribute: NSLayoutAttribute.width, multiplier: 1, constant: 0)
+        let heightConstraint = NSLayoutConstraint(item: rateView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem: scoreView, attribute: NSLayoutAttribute.height, multiplier: 1, constant: 0)
+        let centerXConstraint = NSLayoutConstraint(item: rateView, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: scoreView, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant: 0)
+        let centerYConstraint = NSLayoutConstraint(item: rateView, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal, toItem: scoreView, attribute: NSLayoutAttribute.centerY, multiplier: 1, constant: 0)
         scoreView.addConstraints([widthConstraint, heightConstraint, centerXConstraint, centerYConstraint])
     }
 }

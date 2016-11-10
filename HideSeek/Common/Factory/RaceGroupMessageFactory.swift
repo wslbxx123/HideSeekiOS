@@ -7,7 +7,7 @@
 //
 
 class RaceGroupMessageFactory {
-    class func get(score: Int, goalType: Goal.GoalTypeEnum, showTypeName: String?)-> String {
+    class func get(_ score: Int, goalType: Goal.GoalTypeEnum, showTypeName: String?)-> String {
         switch(goalType) {
         case .mushroom:
             return NSLocalizedString("MESSAGE_GET_MUSHROOM", comment: "Throw a mushroom monster into sack easily, Rich bitch!")
@@ -20,9 +20,9 @@ class RaceGroupMessageFactory {
         }
     }
     
-    class func getMonsterMessage(score: Int, showTypeName: String) -> String {
+    class func getMonsterMessage(_ score: Int, showTypeName: String) -> String {
         if score < 0 {
-            return NSString(format: NSLocalizedString("MESSAGE_BEATEND_BY_MONSTER", comment: "You are beated by a %@"), NSLocalizedString(showTypeName, comment: "")) as String
+            return NSString(format: NSLocalizedString("MESSAGE_BEATEND_BY_MONSTER", comment: "You are beated by a %@") as NSString, NSLocalizedString(showTypeName, comment: "")) as String
         }
         
         switch(showTypeName) {

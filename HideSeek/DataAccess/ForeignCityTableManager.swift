@@ -17,7 +17,7 @@ class ForeignCityTableManager {
     let name = Expression<String>("name")
     let country = Expression<String>("country")
     
-    private init() {
+    fileprivate init() {
         database = DatabaseManager.instance.database
         
         foreignCityTable = Table("foreign_city")
@@ -30,7 +30,7 @@ class ForeignCityTableManager {
             let result = foreignCityTable.order(name)
             
             for item in try database.prepare(result) {
-                cityList.addObject(ForeignCity(name: item[name], country: item[country]))
+                cityList.add(ForeignCity(name: item[name], country: item[country]))
             }
         }
         catch let error as NSError {
@@ -41,7 +41,7 @@ class ForeignCityTableManager {
         return cityList
     }
     
-    func searchCities(keyword: String) -> NSMutableArray {
+    func searchCities(_ keyword: String) -> NSMutableArray {
         let cityList = NSMutableArray()
         
         do {
@@ -49,7 +49,7 @@ class ForeignCityTableManager {
                 .order(name)
             
             for item in try database.prepare(result) {
-                cityList.addObject(ForeignCity(name: item[name], country: item[country]))
+                cityList.add(ForeignCity(name: item[name], country: item[country]))
             }
         }
         catch let error as NSError {

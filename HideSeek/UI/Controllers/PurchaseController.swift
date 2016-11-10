@@ -18,7 +18,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
     
     @IBOutlet weak var collectionView: PurchaseCollectionView!
     var productRefreshControl: UIRefreshControl!
-    var manager: AFHTTPRequestOperationManager!
+    var manager: AFHTTPSessionManager!
     var angle: CGFloat = 0
     var loadingImageView: UIImageView!
     var customLoadingView: UIView!
@@ -36,29 +36,29 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         super.viewDidLoad()
 
         initView()
-        manager = AFHTTPRequestOperationManager()
-        manager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        manager = AFHTTPSessionManager()
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         
         createOrderManager = CustomRequestManager()
-        createOrderManager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        createOrderManager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         productTableManager = ProductTableManager.instance
         payManager = PayWayFactory.get(purchaseDialogController.payWay)
         payManager.purchaseDelegate = self
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.collectionView.productList = ProductCache.instance.productList
         self.collectionView.reloadData()
         
-        UIView.animateWithDuration(0.25,
+        UIView.animate(withDuration: 0.25,
                                    delay: 0,
-                                   options: UIViewAnimationOptions.BeginFromCurrentState,
+                                   options: UIViewAnimationOptions.beginFromCurrentState,
                                    animations: {
                                     
-                                    self.collectionView.contentOffset = CGPointMake(0, -self.productRefreshControl.frame.size.height);
+                                    self.collectionView.contentOffset = CGPoint(x: 0, y: -self.productRefreshControl.frame.size.height);
             }, completion: { (finished) in
                 self.productRefreshControl.beginRefreshing()
-                self.productRefreshControl.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+                self.productRefreshControl.sendActions(for: UIControlEvents.valueChanged)
         })
     }
 
@@ -69,23 +69,23 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
     
     func initView() {
         productRefreshControl = UIRefreshControl()
-        productRefreshControl.addTarget(self, action: #selector(PurchaseController.refreshProductData), forControlEvents: UIControlEvents.ValueChanged)
+        productRefreshControl.addTarget(self, action: #selector(PurchaseController.refreshProductData), for: UIControlEvents.valueChanged)
         collectionView.addSubview(productRefreshControl)
         collectionView.alwaysBounceVertical = true
         collectionView.purchaseDelegate = self
         collectionView.loadMoreDelegate = self
         
-        let refreshContents = NSBundle.mainBundle().loadNibNamed("RefreshView",
+        let refreshContents = Bundle.main.loadNibNamed("RefreshView",
                                                                  owner: self, options: nil)
-        customLoadingView = refreshContents[0] as! UIView
+        customLoadingView = refreshContents?[0] as! UIView
         loadingImageView = customLoadingView.viewWithTag(TAG_LOADING_IMAGEVIEW) as! UIImageView
         customLoadingView.frame = productRefreshControl.bounds
         productRefreshControl.addSubview(customLoadingView)
-        screenRect = UIScreen.mainScreen().bounds
+        screenRect = UIScreen.main.bounds
         purchaseWidth = screenRect.width - 40
         
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        purchaseDialogController = storyboard.instantiateViewControllerWithIdentifier("purchaseDialog") as! PurchaseDialogController
+        purchaseDialogController = storyboard.instantiateViewController(withIdentifier: "purchaseDialog") as! PurchaseDialogController
         purchaseDialogController.confirmPurchaseDelegate = self
         purchaseDialogController.closeDelegate = self
         purchaseDialogController.changePayWayDelegate = self
@@ -95,11 +95,11 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         let paramDict: NSMutableDictionary = ["version": "\(productTableManager.version)",
                                                "product_min_id": "\(productTableManager.productMinId)"]
         isLoading = true
-        manager.POST(UrlParam.REFRESH_PRODUCT_URL,
+        manager.post(UrlParam.REFRESH_PRODUCT_URL,
                      parameters: paramDict,
                      success: { (operation, responseObject) in
                         let response = responseObject as! NSDictionary
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + (responseObject as AnyObject).description!)
                         ProductCache.instance.setProducts(response["result"] as! NSDictionary)
                         
                         self.collectionView.productList = ProductCache.instance.cacheList
@@ -118,12 +118,12 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         UIView.beginAnimations(nil, context: nil)
         UIView.setAnimationDuration(0.01)
         UIView.setAnimationDelegate(self)
-        UIView.setAnimationDidStopSelector(#selector(RaceGroupController.endAnimation))
-        self.loadingImageView.transform = CGAffineTransformMakeRotation(angle * CGFloat(M_PI / 180))
+        UIView.setAnimationDidStop(#selector(RaceGroupController.endAnimation))
+        self.loadingImageView.transform = CGAffineTransform(rotationAngle: angle * CGFloat(M_PI / 180))
         UIView.commitAnimations()
     }
     
-    func purchase(product: Product, orderId: Int64) {
+    func purchase(_ product: Product, orderId: Int64) {
         if !UserCache.instance.ifLogin() {
             UserInfoManager.instance.checkIfGoToLogin(self)
             return
@@ -131,29 +131,29 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         
         if product.pkId == 2 && UserCache.instance.user.hasGuide {
             let alertController = UIAlertController(title: nil,
-                                                    message: NSLocalizedString("ALREADY_HAS_GUIDE", comment: "You already have a monster guide. Continue to buy?"), preferredStyle: UIAlertControllerStyle.Alert)
+                                                    message: NSLocalizedString("ALREADY_HAS_GUIDE", comment: "You already have a monster guide. Continue to buy?"), preferredStyle: UIAlertControllerStyle.alert)
             let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: "Cancel"),
-                                             style: UIAlertActionStyle.Cancel, handler: nil)
-            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Default, handler: { (action) in
+                                             style: UIAlertActionStyle.cancel, handler: nil)
+            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.default, handler: { (action) in
                 self.openPurchaseDialog(product, orderId: orderId)
             })
             alertController.addAction(cancelAction)
             alertController.addAction(okAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         } else {
             self.openPurchaseDialog(product, orderId: orderId)
         }
     }
     
-    func openPurchaseDialog(product: Product, orderId: Int64) {
+    func openPurchaseDialog(_ product: Product, orderId: Int64) {
         grayView = UIView(frame: screenRect)
-        grayView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+        grayView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
         
-        purchaseDialogController.view.layer.frame = CGRectMake(
-            (screenRect.width - purchaseWidth) / 2,
-            (screenRect.height - purchaseHeight) / 2 - 110,
-            purchaseWidth,
-            purchaseHeight)
+        purchaseDialogController.view.layer.frame = CGRect(
+            x: (screenRect.width - purchaseWidth) / 2,
+            y: (screenRect.height - purchaseHeight) / 2 - 110,
+            width: purchaseWidth,
+            height: purchaseHeight)
         purchaseDialogController.productNameLabel.text = product.name
         purchaseDialogController.price = product.price
         purchaseDialogController.product = product
@@ -163,10 +163,10 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         self.view.addSubview(purchaseDialogController.view)
     }
     
-    func confirmPurchase(product: Product, count: Int, orderId: Int64) {
+    func confirmPurchase(_ product: Product, count: Int, orderId: Int64) {
         let paramDict: NSMutableDictionary = ["store_id": "\(product.pkId)",
                                               "count": "\(count)"]
-        createOrderManager.POST(UrlParam.CREATE_ORDER_URL,
+        _ = createOrderManager.POST(UrlParam.CREATE_ORDER_URL,
                                 paramDict: paramDict,
                                 success: { (operation, responseObject) in
                                         let response = responseObject as! NSDictionary
@@ -178,7 +178,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
                                 })
     }
     
-    func setInfoFromCreateOrderCallback(response: NSDictionary, product: Product, count: Int) {
+    func setInfoFromCreateOrderCallback(_ response: NSDictionary, product: Product, count: Int) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -192,7 +192,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
                 orderId: purchaseDialogController.orderId)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -206,7 +206,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         purchaseDialogController.closePayWayView()
     }
     
-    func showMessage(message: String, type: HudToastFactory.MessageType) {
+    func showMessage(_ message: String, type: HudToastFactory.MessageType) {
         HudToastFactory.show(message, view: self.view, type: type)
     }
     
@@ -215,19 +215,19 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
             isLoading = true
             let hasData = ProductCache.instance.getMoreProducts(10, hasLoaded: false)
             if self.collectionView.footer != nil {
-                self.collectionView.footer.hidden = false
+                self.collectionView.footer.isHidden = false
             }
             
             if(!hasData) {
                 let paramDict: NSMutableDictionary = ["version": String(productTableManager.version), "product_min_id": String(productTableManager.productMinId)]
-                manager.POST(UrlParam.GET_PRODUCT_URL,
+                manager.post(UrlParam.GET_PRODUCT_URL,
                              parameters: paramDict,
                              success: { (operation, responseObject) in
-                                print("JSON: " + responseObject.description!)
+                                print("JSON: " + (responseObject as AnyObject).description!)
                                 let response = responseObject as! NSDictionary
                                 ProductCache.instance.addProducts(response["result"] as! NSDictionary)
                                 if self.collectionView.footer != nil {
-                                    self.collectionView.footer.hidden = true
+                                    self.collectionView.footer.isHidden = true
                                 }
                                 self.collectionView.productList = ProductCache.instance.cacheList
                                 self.collectionView.reloadData()
@@ -236,13 +236,13 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
                              failure: { (operation, error) in
                                 print("Error: " + error.localizedDescription)
                                 if self.collectionView.footer != nil {
-                                    self.collectionView.footer.hidden = true
+                                    self.collectionView.footer.isHidden = true
                                 }
                 })
             } else {
-                self.collectionView.productList.addObjectsFromArray(ProductCache.instance.productList as [AnyObject])
+                self.collectionView.productList.addObjects(from: ProductCache.instance.productList as [AnyObject])
                 if self.collectionView.footer != nil {
-                    self.collectionView.footer.hidden = true
+                    self.collectionView.footer.isHidden = true
                 }
                 self.collectionView.reloadData()
                 
@@ -257,7 +257,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         }
         
         let paramDict: NSMutableDictionary = ["order_id": "\(purchaseDialogController.orderId)"]
-        createOrderManager.POST(UrlParam.PURCHASE_URL,
+        _ = createOrderManager.POST(UrlParam.PURCHASE_URL,
                                 paramDict: paramDict,
                                 success: { (operation, responseObject) in
                                     let response = responseObject as! NSDictionary
@@ -268,11 +268,11 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
         })
     }
     
-    func setInfoFromPurchaseCallback(response: NSDictionary) {
+    func setInfoFromPurchaseCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -286,7 +286,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
             self.refreshProductData()
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -294,7 +294,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         }
     }
     
-    func payWayChanged(payWay: PayWayFactory.PayWayEnum) {
+    func payWayChanged(_ payWay: PayWayFactory.PayWayEnum) {
         self.payManager = PayWayFactory.get(payWay)
     }
 }

@@ -7,7 +7,7 @@
 //
 
 class GoalImageFactory {
-    class func get(goalType: Goal.GoalTypeEnum, showTypeName: String?) -> String {
+    class func get(_ goalType: Goal.GoalTypeEnum, showTypeName: String?) -> String {
         switch goalType {
         case .reward:
             return "reward_exchange"

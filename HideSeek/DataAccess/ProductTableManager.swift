@@ -21,29 +21,29 @@ class ProductTableManager {
     
     var database: Connection!
     var productTable: Table!
-    private var _productMinId: Int64 = 0
+    fileprivate var _productMinId: Int64 = 0
     
     var productMinId: Int64 {
-        let tempProductMinId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.PRODUCT_MIN_ID) as? NSNumber
+        let tempProductMinId = UserDefaults.standard.object(forKey: UserDefaultParam.PRODUCT_MIN_ID) as? NSNumber
         
         if(tempProductMinId == nil) {
             return 0
         }
-        return (tempProductMinId?.longLongValue)!
+        return (tempProductMinId?.int64Value)!
     }
     
     var version: Int64 {
         get{
-            let tempVersion = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.PRODUCT_VERSION) as? NSNumber
+            let tempVersion = UserDefaults.standard.object(forKey: UserDefaultParam.PRODUCT_VERSION) as? NSNumber
             
             if(tempVersion == nil) {
                 return 0
             }
-            return (tempVersion?.longLongValue)!
+            return (tempVersion?.int64Value)!
         }
     }
     
-    private init() {
+    fileprivate init() {
         do {
             database = DatabaseManager.instance.database
             
@@ -78,7 +78,7 @@ class ProductTableManager {
             }
             
             for item in try database.prepare(result) {
-                productList.addObject(Product(
+                productList.add(Product(
                     pkId: item[productId],
                     name: item[name],
                     imageUrl: item[imageUrl],
@@ -100,13 +100,13 @@ class ProductTableManager {
         return productList
     }
     
-    func updateProducts(productMinId: Int64, version: Int64, productList: NSArray) {
+    func updateProducts(_ productMinId: Int64, version: Int64, productList: NSArray) {
         do {
-            NSUserDefaults.standardUserDefaults().setObject(
-                NSNumber(longLong:version), forKey: UserDefaultParam.PRODUCT_VERSION)
-            NSUserDefaults.standardUserDefaults().setObject(
-                NSNumber(longLong:productMinId), forKey: UserDefaultParam.PRODUCT_MIN_ID)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(
+                NSNumber(value: version as Int64), forKey: UserDefaultParam.PRODUCT_VERSION)
+            UserDefaults.standard.set(
+                NSNumber(value: productMinId as Int64), forKey: UserDefaultParam.PRODUCT_MIN_ID)
+            UserDefaults.standard.synchronize()
             
             for productItem in productList {
                 let productInfo = productItem as! Product
@@ -141,16 +141,16 @@ class ProductTableManager {
         }
     }
     
-    func getMoreProducts(count: Int, version: Int64, hasLoaded: Bool) -> NSMutableArray {
+    func getMoreProducts(_ count: Int, version: Int64, hasLoaded: Bool) -> NSMutableArray {
         let productList = NSMutableArray()
         do {
             let result = productTable.filter(pullVersion <= version && productId < _productMinId).order(productId.desc).limit(count)
             
-            let resultCount = database.scalar(result.count)
+            let resultCount = try database.scalar(result.count)
             
             if resultCount == count || hasLoaded {
                 for item in try database.prepare(result) {
-                    productList.addObject(Product(pkId: item[productId],
+                    productList.add(Product(pkId: item[productId],
                         name: item[name],
                         imageUrl: item[imageUrl],
                         price: item[price],

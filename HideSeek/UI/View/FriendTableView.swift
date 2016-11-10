@@ -33,56 +33,56 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         self.dataSource = self
         self.delegate = self
         self.friendList = NSMutableArray()
-        self.screenHeight = UIScreen.mainScreen().bounds.height - 44
-        self.separatorStyle = UITableViewCellSeparatorStyle.None;
-        self.tintColor = UIColor.blackColor()
+        self.screenHeight = UIScreen.main.bounds.height - 44
+        self.separatorStyle = UITableViewCellSeparatorStyle.none;
+        self.tintColor = UIColor.black
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         let toBeReturned = NSMutableArray()
         
         if !isSearching {
-            toBeReturned.addObjectsFromArray(alphaIndex.allKeys)
+            toBeReturned.addObjects(from: alphaIndex.allKeys)
         }
         
         return toBeReturned.copy() as? [String]
     }
     
-    func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         if index < 1 {
-            tableView.scrollToRowAtIndexPath(NSIndexPath(forItem: 0, inSection: index), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+            tableView.scrollToRow(at: IndexPath(item: 0, section: index), at: UITableViewScrollPosition.top, animated: true)
         } else {
             let position = alphaIndex[title]
             
             if (position != nil) {
-                tableView.scrollToRowAtIndexPath(NSIndexPath(forItem: position as! Int, inSection: 1), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+                tableView.scrollToRow(at: IndexPath(item: position as! Int, section: 1), at: UITableViewScrollPosition.top, animated: true)
             }
         }
         
         return index
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell
-        switch(indexPath.section) {
+        switch((indexPath as NSIndexPath).section) {
         case 0:
-            cell = self.dequeueReusableCellWithIdentifier("newFriendTitleCell")! as UITableViewCell
+            cell = self.dequeueReusableCell(withIdentifier: "newFriendTitleCell")! as UITableViewCell
             break;
         case 1:
-            cell = self.dequeueReusableCellWithIdentifier("friendCell")! as UITableViewCell
+            cell = self.dequeueReusableCell(withIdentifier: "friendCell")! as UITableViewCell
             
-            if friendList.count < indexPath.row + 1 {
+            if friendList.count < (indexPath as NSIndexPath).row + 1 {
                 return cell
             }
             
-            let friend = friendList.objectAtIndex(indexPath.row) as! User
+            let friend = friendList.object(at: (indexPath as NSIndexPath).row) as! User
             
-            let showAlpha = alphaIndex.allValues.contains({ value in
-                return value as! Int == indexPath.row
+            let showAlpha = alphaIndex.allValues.contains(where: { value in
+                return value as! Int == (indexPath as NSIndexPath).row
             })
             
             let alphaView = cell.viewWithTag(TAG_ALPHA_VIEW)!
@@ -91,10 +91,10 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
             let nameLabel = cell.viewWithTag(TAG_NAME_LABEL) as! UILabel
             let nicknameLabel = cell.viewWithTag(TAG_NICKNAME_LABEL) as! UILabel
             if showAlpha && !isSearching {
-                alphaView.hidden = false
-                alphaLabel.text = alphaIndex.allKeysForObject(indexPath.row)[0] as? String
+                alphaView.isHidden = false
+                alphaLabel.text = alphaIndex.allKeys(for: (indexPath as NSIndexPath).row)[0] as? String
             } else {
-                alphaView.hidden = true
+                alphaView.isHidden = true
                 alphaLabel.text = ""
             }
             
@@ -105,10 +105,10 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
             
             if friend.alias != "" {
                 nameLabel.text = friend.alias as String
-                nicknameLabel.hidden = false
-                nicknameLabel.text = NSString(format: NSLocalizedString("NAME", comment: "Name: %s"), friend.nickname) as String
+                nicknameLabel.isHidden = false
+                nicknameLabel.text = NSString(format: NSLocalizedString("NAME", comment: "Name: %s") as NSString, friend.nickname) as String
             } else {
-                nicknameLabel.hidden = true
+                nicknameLabel.isHidden = true
             }
             break;
         default:
@@ -118,7 +118,7 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             if isSearching {
                 return 0
@@ -130,17 +130,17 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         return friendList.count
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch(indexPath.section) {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch((indexPath as NSIndexPath).section) {
         case 0:
             return 62
         default:
-            let showAlpha = alphaIndex.allValues.contains({ value in
-                return value as! Int == indexPath.row
+            let showAlpha = alphaIndex.allValues.contains(where: { value in
+                return value as! Int == (indexPath as NSIndexPath).row
             })
             
             
@@ -152,27 +152,27 @@ class FriendTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 0 {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (indexPath as NSIndexPath).section == 0 {
             goToNewFriendDelegate?.goToNewFriend()
         } else {
-            if friendList.count < indexPath.row + 1 {
+            if friendList.count < (indexPath as NSIndexPath).row + 1 {
                 return
             }
             
-            let friend = friendList.objectAtIndex(indexPath.row) as! User
+            let friend = friendList.object(at: (indexPath as NSIndexPath).row) as! User
             friend.isFriend = true
             goToProfileDelegate?.goToProfile(friend)
         }
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.Delete {
-            if friendList.count < indexPath.row + 1 {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
+            if friendList.count < (indexPath as NSIndexPath).row + 1 {
                 return
             }
             
-            let friend = friendList.objectAtIndex(indexPath.row) as! User
+            let friend = friendList.object(at: (indexPath as NSIndexPath).row) as! User
             
             removeFriendDelegate?.checkRemoveFriend(friend)
         }

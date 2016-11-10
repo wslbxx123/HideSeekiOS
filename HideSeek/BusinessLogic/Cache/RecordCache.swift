@@ -9,11 +9,11 @@
 class RecordCache : BaseCache<Record> {
     static let instance = RecordCache()
     var recordTableManager: RecordTableManager!
-    let dateTimeFormatter = NSDateFormatter()
-    let timeFormatter = NSDateFormatter()
-    let dateFormatter = NSDateFormatter()
+    let dateTimeFormatter = DateFormatter()
+    let timeFormatter = DateFormatter()
+    let dateFormatter = DateFormatter()
     var version: Int64 = 0
-    private var _scoreSum: Int = 0
+    fileprivate var _scoreSum: Int = 0
     var scoreSum: Int {
         get{
             return recordTableManager.scoreSumValue
@@ -28,7 +28,7 @@ class RecordCache : BaseCache<Record> {
         return super.cacheList
     }
     
-    private override init() {
+    fileprivate override init() {
         super.init()
         recordTableManager = RecordTableManager.instance
         dateTimeFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -36,20 +36,20 @@ class RecordCache : BaseCache<Record> {
         dateFormatter.dateFormat = "yyyy-MM-dd"
     }
     
-    func setRecords(recordInfo: NSDictionary!) {
+    func setRecords(_ recordInfo: NSDictionary!) {
         saveRecords(recordInfo)
         
         cacheList = recordTableManager.searchRecords()
         version = recordTableManager.version
     }
     
-    func addRecords(result: NSDictionary!) {
+    func addRecords(_ result: NSDictionary!) {
         saveRecords(result)
         
         getMoreRecord(10, hasLoaded: true)
     }
     
-    func saveRecords(result: NSDictionary!) {
+    func saveRecords(_ result: NSDictionary!) {
         let list = NSMutableArray()
         let tempVersion = result["version"] as? NSString
         var version: Int64
@@ -70,11 +70,11 @@ class RecordCache : BaseCache<Record> {
         for record in recordArray{
             let recordInfo = record as! NSDictionary
             let time = recordInfo["time"] as! String
-            let date = dateTimeFormatter.dateFromString(time)
+            let date = dateTimeFormatter.date(from: time)
             
-            list.addObject(Record(date: dateFormatter.stringFromDate(date!),
+            list.add(Record(date: dateFormatter.string(from: date!),
                 recordId: (recordInfo["pk_id"] as! NSString).longLongValue,
-                time: timeFormatter.stringFromDate(date!),
+                time: timeFormatter.string(from: date!),
                 goalType: Goal.GoalTypeEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(recordInfo["goal_type"]))!,
                 score: BaseInfoUtil.getIntegerFromAnyObject(recordInfo["score"]),
                 scoreSum: BaseInfoUtil.getIntegerFromAnyObject(recordInfo["score_sum"]),
@@ -85,10 +85,10 @@ class RecordCache : BaseCache<Record> {
         recordTableManager.updateRecords(_scoreSum, recordMinId: recordMinId, version: version, recordList: list)
     }
     
-    func getMoreRecord(count: Int, hasLoaded: Bool) -> Bool{
+    func getMoreRecord(_ count: Int, hasLoaded: Bool) -> Bool{
         let recordList = recordTableManager.getMoreRecords(count, version: version, hasLoaded: hasLoaded)
         
-        self.cacheList.addObjectsFromArray(recordList as [AnyObject])
+        self.cacheList.addObjects(from: recordList as [AnyObject])
         
         return recordList.count > 0
     }

@@ -6,6 +6,8 @@
 //  Copyright © 2016年 AutoNavi. All rights reserved.
 //
 
+#if MA_INCLUDE_TRACE_CORRECT
+
 #import <Foundation/Foundation.h>
 #import <AMapFoundationKit/AMapFoundationKit.h>
 #import "MATraceLocation.h"
@@ -36,3 +38,5 @@ typedef void(^MAFailedCallback)(int errorCode, NSString *errorDesc);
                           failedCallback:(MAFailedCallback)failedCallback;
 
 @end
+
+#endif

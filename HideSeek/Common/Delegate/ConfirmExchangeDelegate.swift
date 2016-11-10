@@ -7,5 +7,5 @@
 //
 
 protocol ConfirmExchangeDelegate {
-    func confirmExchange(reward: Reward, count: Int)
+    func confirmExchange(_ reward: Reward, count: Int)
 }

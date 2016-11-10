@@ -35,31 +35,31 @@ class MeController: UIViewController, TouchDownDelegate {
     
     var myProfileController: MyProfileController!
     var getFriendRequestManager: CustomRequestManager!
-    var dateFormatter: NSDateFormatter = NSDateFormatter()
+    var dateFormatter: DateFormatter = DateFormatter()
     
-    @IBAction func goToFriends(sender: AnyObject) {
+    @IBAction func goToFriends(_ sender: AnyObject) {
         let tarBarController = BaseInfoUtil.getRootViewController() as! ViewController
         let item = tarBarController.uiTabBar.items![3]
         
         if item.badgeValue == nil || item.badgeValue == "0"{
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
-            let friendController = storyboard.instantiateViewControllerWithIdentifier("Friend") as! FriendController
+            let friendController = storyboard.instantiateViewController(withIdentifier: "Friend") as! FriendController
             self.navigationController?.pushViewController(friendController, animated: true)
         } else {
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
-            let newFriendController = storyboard.instantiateViewControllerWithIdentifier("NewFriend") as! NewFriendController
+            let newFriendController = storyboard.instantiateViewController(withIdentifier: "NewFriend") as! NewFriendController
             self.navigationController?.pushViewController(newFriendController, animated: true)
         }
     }
     
-    @IBAction func goToLogin(sender: AnyObject) {
+    @IBAction func goToLogin(_ sender: AnyObject) {
         if(UserCache.instance.ifLogin()) {
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
-            myProfileController = storyboard.instantiateViewControllerWithIdentifier("myProfile") as! MyProfileController
+            myProfileController = storyboard.instantiateViewController(withIdentifier: "myProfile") as! MyProfileController
             self.navigationController?.pushViewController(myProfileController, animated: true)
         } else {
-            self.navigationController?.navigationBarHidden = true
-            performSegueWithIdentifier("GoToLogin", sender: self)
+            self.navigationController?.isNavigationBarHidden = true
+            performSegue(withIdentifier: "GoToLogin", sender: self)
         }
     }
     
@@ -68,29 +68,29 @@ class MeController: UIViewController, TouchDownDelegate {
 
         initView()
         getFriendRequestManager = CustomRequestManager()
-        getFriendRequestManager.responseSerializer.acceptableContentTypes = NSSet().setByAddingObject(HtmlType)
+        getFriendRequestManager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         setProfileInfo()
         setFriendRequests()
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = false
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = false
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
     
     override func viewDidLayoutSubviews() {
-        scrollView.contentSize = CGSizeMake(UIScreen.mainScreen().bounds.width, 700)
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 700)
     }
 
     override func didReceiveMemoryWarning() {
@@ -104,14 +104,14 @@ class MeController: UIViewController, TouchDownDelegate {
         scoreView.touchDownDelegate = self
         let gotoRecordGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MeController.touchDown))
         gotoRecordGestureRecognizer.numberOfTapsRequired = 1
-        scoreNumLabel.userInteractionEnabled = true
+        scoreNumLabel.isUserInteractionEnabled = true
         scoreNumLabel.addGestureRecognizer(gotoRecordGestureRecognizer)
-        scoreLabel.userInteractionEnabled = true
+        scoreLabel.isUserInteractionEnabled = true
         scoreLabel.addGestureRecognizer(gotoRecordGestureRecognizer)
         
         let gotoPhotoGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MeController.showPhoto))
         gotoPhotoGestureRecognizer.numberOfTapsRequired = 1
-        photoImageView.userInteractionEnabled = true
+        photoImageView.isUserInteractionEnabled = true
         photoImageView.addGestureRecognizer(gotoPhotoGestureRecognizer)
         
         pushNumView.layer.cornerRadius = pushNumView.frame.height / 2
@@ -123,16 +123,16 @@ class MeController: UIViewController, TouchDownDelegate {
     func showPhoto() {
         if(UserCache.instance.ifLogin()) {
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
-            let photoController = storyboard.instantiateViewControllerWithIdentifier("photo") as! PhotoController
+            let photoController = storyboard.instantiateViewController(withIdentifier: "photo") as! PhotoController
             let user = UserCache.instance.user
-            photoController.photoUrl = user.photoUrl as String
-            photoController.smallPhotoUrl = user.smallPhotoUrl as String
+            photoController.photoUrl = user?.photoUrl as! String
+            photoController.smallPhotoUrl = user?.smallPhotoUrl as! String
             self.navigationController?.pushViewController(photoController, animated: true)
         }
     }
     
     func goToRecord() {
-        let window = UIApplication.sharedApplication().keyWindow
+        let window = UIApplication.shared.keyWindow
         (window?.rootViewController as! UITabBarController).selectedIndex = 1
     }
     
@@ -153,7 +153,7 @@ class MeController: UIViewController, TouchDownDelegate {
         }
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
+    func setInfoFromCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -162,7 +162,7 @@ class MeController: UIViewController, TouchDownDelegate {
             NewFriendCache.instance.setFriends(friendRequests)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -175,22 +175,22 @@ class MeController: UIViewController, TouchDownDelegate {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         if(UserCache.instance.ifLogin()) {
             let user = UserCache.instance.user
-            photoUrl = user.smallPhotoUrl as String
-            nameLabel.text = user.nickname as String
-            registerDateLabel.text = dateFormatter.stringFromDate(user.registerDate)
+            photoUrl = user?.smallPhotoUrl as! String
+            nameLabel.text = user?.nickname as! String
+            registerDateLabel.text = dateFormatter.string(from: (user?.registerDate)!)
                 + " " + NSLocalizedString("JOIN", comment: "join")
-            roleImageView.image = UIImage(named: user.roleImageName)
-            notLoginLabel.hidden = true
-            profileView.hidden = false
-            profileLabel.hidden = false
+            roleImageView.image = UIImage(named: (user?.roleImageName)!)
+            notLoginLabel.isHidden = true
+            profileView.isHidden = false
+            profileLabel.isHidden = false
             
-            scoreNumLabel.text = "\(user.record)"
-            friendNumLabel.text = "\(user.friendNum)"
+            scoreNumLabel.text = "\(user?.record)"
+            friendNumLabel.text = "\(user?.friendNum)"
             friendView.addGestureRecognizer(goToFriendGesture)
         } else {
-            profileView.hidden = true
-            notLoginLabel.hidden = false
-            profileLabel.hidden = true
+            profileView.isHidden = true
+            notLoginLabel.isHidden = false
+            profileLabel.isHidden = true
             photoUrl = ""
             scoreNumLabel.text = "0"
             friendNumLabel.text = "0"
@@ -202,7 +202,7 @@ class MeController: UIViewController, TouchDownDelegate {
         setBadgeValue()
     }
     
-    func touchDown(tag: Int) {
+    func touchDown(_ tag: Int) {
         goToRecord()
     }
     
@@ -215,15 +215,15 @@ class MeController: UIViewController, TouchDownDelegate {
         }
         
         if item.badgeValue == nil || item.badgeValue == "0"{
-            pushNumView.hidden = true
+            pushNumView.isHidden = true
         } else {
-            pushNumView.hidden = false
+            pushNumView.isHidden = false
         }
     }
     
     func clearBadgeValue() {
         if pushNumView != nil {
-            pushNumView.hidden = true
+            pushNumView.isHidden = true
         }
     }
 }

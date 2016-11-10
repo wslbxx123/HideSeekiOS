@@ -7,14 +7,14 @@
 //
 
 extension UIImage {
-    class func createImageWithColor(color: UIColor) -> UIImage{
-        let rect = CGRectMake(0.0, 0.0, 1.0, 30.0)
+    class func createImageWithColor(_ color: UIColor) -> UIImage{
+        let rect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 30.0)
         UIGraphicsBeginImageContext(rect.size);
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetFillColorWithColor(context, color.CGColor);
-        CGContextFillRect(context, rect);
+        context?.setFillColor(color.cgColor);
+        context?.fill(rect);
         let theImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        return theImage;
+        return theImage!;
     }
 }

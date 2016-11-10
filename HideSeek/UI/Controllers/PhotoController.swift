@@ -27,15 +27,15 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         photoImageView.setWebImage(photoUrl, smallPhotoUrl: smallPhotoUrl, defaultImage: "default_photo", isCache: true)
         
         if ifEdit {
-            let rightBarButton = UIBarButtonItem(image: UIImage(named: "more"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PhotoController.moreBtnClicked))
+            let rightBarButton = UIBarButtonItem(image: UIImage(named: "more"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(PhotoController.moreBtnClicked))
             self.navigationItem.rightBarButtonItem = rightBarButton
         }
         
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
 
@@ -47,39 +47,39 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
     func moreBtnClicked() {
         let picker = UIImagePickerController()
         picker.delegate = self
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         if let popoverController = alertController.popoverPresentationController {
             popoverController.barButtonItem = self.navigationItem.rightBarButtonItem
         }
         
-        let cameraAction = UIAlertAction(title: NSLocalizedString("CAMERA", comment: "Camera"), style: UIAlertActionStyle.Default) { (action) in
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
-                picker.sourceType = UIImagePickerControllerSourceType.Camera
+        let cameraAction = UIAlertAction(title: NSLocalizedString("CAMERA", comment: "Camera"), style: UIAlertActionStyle.default) { (action) in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+                picker.sourceType = UIImagePickerControllerSourceType.camera
             } else {
                 NSLog("模拟器无法打开相机")
             }
-            self.presentViewController(picker, animated: true, completion: nil)
+            self.present(picker, animated: true, completion: nil)
         }
         alertController.addAction(cameraAction)
         
-        let photoLibraryAction = UIAlertAction(title: NSLocalizedString("PHOTO_LIBRARY", comment: "Photo Library"), style: UIAlertActionStyle.Default) { (action) in
-            picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-            self.presentViewController(picker, animated: true, completion: nil)
+        let photoLibraryAction = UIAlertAction(title: NSLocalizedString("PHOTO_LIBRARY", comment: "Photo Library"), style: UIAlertActionStyle.default) { (action) in
+            picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+            self.present(picker, animated: true, completion: nil)
         }
         alertController.addAction(photoLibraryAction)
         
-        let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (action) in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: "Cancel"), style: UIAlertActionStyle.cancel) { (action) in
         }
         alertController.addAction(cancelAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        UIApplication.sharedApplication().statusBarHidden = false
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        UIApplication.shared.isStatusBarHidden = false
         
         let mediaType = info[UIImagePickerControllerMediaType]
-        var data: NSData
-        if mediaType != nil && mediaType!.isEqualToString("public.image") {
+        var data: Data
+        if mediaType != nil && (mediaType! as AnyObject).isEqual(to: "public.image") {
             let originImage = info[UIImagePickerControllerOriginalImage] as! UIImage
             
             let scaledImage = scaleImage(originImage, toScale: 0.8)
@@ -92,7 +92,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
             
             let image = UIImage(data: data)
             
-            picker.dismissViewControllerAnimated(true, completion: {
+            picker.dismiss(animated: true, completion: {
                 let controller = PECropViewController()
                 controller.delegate = self
                 controller.image = image
@@ -100,56 +100,54 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
                 let width = image!.size.width;
                 let height = image!.size.height;
                 let length = min(width, height);
-                controller.imageCropRect = CGRectMake((width - length) / 2,
-                    (height - length) / 2,
-                    length,
-                    length);
+                controller.imageCropRect = CGRect(x: (width - length) / 2,
+                    y: (height - length) / 2,
+                    width: length,
+                    height: length);
                 controller.keepingCropAspectRatio = true
                 
                 let navigationController = UINavigationController.init(rootViewController: controller)
                 
-                self.presentViewController(navigationController, animated: true, completion: nil)
+                self.present(navigationController, animated: true, completion: nil)
             })
         }
     }
     
     func updatePhoto() {
         let paramDict = NSMutableDictionary()
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
         hud.dimBackground = true
-        manager.POST(UrlParam.UPDATE_PHOTO_URL, paramDict: paramDict, constructingBodyWithBlock: { (formData) in
+        _ = manager.POST(UrlParam.UPDATE_PHOTO_URL, paramDict: paramDict, constructingBodyWithBlock: { (formData) in
             if self.croppedImage != nil {
                 let imgData = UIImageJPEGRepresentation(self.croppedImage!, 1);
-                formData.appendPartWithFileData(imgData!, name: "photo", fileName: "photo", mimeType: "image/jpeg")
+                formData.appendPart(withFileData: imgData!, name: "photo", fileName: "photo", mimeType: "image/jpeg")
             }
             }, success: { (operation, responseObject) in
                 let response = responseObject as! NSDictionary
                 self.setInfoFromCallback(response)
                 print("JSON: " + responseObject.description!)
                 hud.removeFromSuperview()
-                hud = nil
             }) { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
                 hud.removeFromSuperview()
-                hud = nil
         }
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
-        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
+    func setInfoFromCallback(_ response: NSDictionary) {
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"] as AnyObject)
         
         if code == CodeParam.SUCCESS {
             let result = response["result"] as! NSDictionary
             let user = UserCache.instance.user
-            user.photoUrl = result["photo_url"] as! NSString
-            user.smallPhotoUrl = result["small_photo_url"] as! NSString
+            user?.photoUrl = result["photo_url"] as! NSString
+            user?.smallPhotoUrl = result["small_photo_url"] as! NSString
             self.photoImageView.image = croppedImage
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -157,21 +155,21 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         }
     }
 
-    func cropViewControllerDidCancel(controller: PECropViewController!) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
+    func cropViewControllerDidCancel(_ controller: PECropViewController!) {
+        controller.dismiss(animated: true, completion: nil)
     }
     
-    func cropViewController(controller: PECropViewController!, didFinishCroppingImage croppedImage: UIImage!) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
+    func cropViewController(_ controller: PECropViewController!, didFinishCroppingImage croppedImage: UIImage!) {
+        controller.dismiss(animated: true, completion: nil)
         self.croppedImage = croppedImage
         updatePhoto()
     }
     
-    func scaleImage(image: UIImage, toScale: CGFloat) -> UIImage {
-        UIGraphicsBeginImageContext(CGSizeMake(image.size.width * toScale, image.size.height * toScale))
-        image.drawInRect(CGRectMake(0, 0, image.size.width * toScale, image.size.height * toScale))
+    func scaleImage(_ image: UIImage, toScale: CGFloat) -> UIImage {
+        UIGraphicsBeginImageContext(CGSize(width: image.size.width * toScale, height: image.size.height * toScale))
+        image.draw(in: CGRect(x: 0, y: 0, width: image.size.width * toScale, height: image.size.height * toScale))
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return scaledImage
+        return scaledImage!
     }
 }

@@ -8,22 +8,22 @@
 
 class WarningCache : BaseCache<Warning> {
     static let instance = WarningCache()
-    var serverTime: NSDate!
-    var dateFormatter: NSDateFormatter!
+    var serverTime: Date!
+    var dateFormatter: DateFormatter!
     
     override init() {
         super.init()
-        dateFormatter = NSDateFormatter()
+        dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
     }
     
-    func setWarnings(result: NSDictionary) {
+    func setWarnings(_ result: NSDictionary) {
         saveWarnings(result["warnings"] as! NSArray)
         
-        serverTime = dateFormatter.dateFromString(result["server_time"] as! String)
+        serverTime = dateFormatter.date(from: result["server_time"] as! String)
     }
     
-    func saveWarnings(warnings: NSArray) {
+    func saveWarnings(_ warnings: NSArray) {
         let list = NSMutableArray()
         
         for warningItem in warnings {
@@ -42,7 +42,7 @@ class WarningCache : BaseCache<Warning> {
                 unionType: BaseInfoUtil.getIntegerFromAnyObject(warningInfo["union_type"])),
                                   createTime: warningInfo["create_time"] as! String)
             
-            list.addObject(warning)
+            list.add(warning)
         }
         
         cacheList = list

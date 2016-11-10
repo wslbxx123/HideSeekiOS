@@ -10,14 +10,14 @@ class UserCache {
     static let instance = UserCache()
     var ifNeedRefresh: Bool = false
     
-    private var _user: User! = nil
+    fileprivate var _user: User! = nil
     var user: User! {
         get{
             if(_user != nil) {
                 return _user
             }
             
-            let tempUserInfo = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.USER_INFO) as? NSDictionary
+            let tempUserInfo = UserDefaults.standard.object(forKey: UserDefaultParam.USER_INFO) as? NSDictionary
             
             if(tempUserInfo == nil) {
                 return nil
@@ -30,35 +30,35 @@ class UserCache {
         }
     }
     
-    func setUser(userInfo: NSDictionary) {
+    func setUser(_ userInfo: NSDictionary) {
         user = from(userInfo)
         
         NewFriendTableManager.instance.refreshTable(user.pkId)
         
-        if(userInfo.objectForKey("friend_requests") != nil) {
+        if(userInfo.object(forKey: "friend_requests") != nil) {
             let friendRequests = userInfo["friend_requests"] as! NSArray
             
             NewFriendCache.instance.setFriends(friendRequests)
         }
         
         if(user.pkId > 0) {
-            NSUserDefaults.standardUserDefaults().setObject(userInfo["session_id"], forKey: UserDefaultParam.SESSION_TOKEN)
+            UserDefaults.standard.set(userInfo["session_id"], forKey: UserDefaultParam.SESSION_TOKEN)
             let tempUserInfo = BaseInfoUtil.removeNullFromDictionary(userInfo)
-            NSUserDefaults.standardUserDefaults().setObject(tempUserInfo, forKey: UserDefaultParam.USER_INFO)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(tempUserInfo, forKey: UserDefaultParam.USER_INFO)
+            UserDefaults.standard.synchronize()
         }
     }
     
-    func from(userInfo: NSDictionary)-> User {
+    func from(_ userInfo: NSDictionary)-> User {
         let user = User (pkId: (userInfo["pk_id"] as! NSString).longLongValue,
-                         phone: userInfo["phone"] as! String,
-                         sessionId: userInfo["session_id"] as! String,
-                         nickname: userInfo["nickname"] as! String,
-                         registerDateStr: userInfo["register_date"] as! String,
+                         phone: userInfo["phone"] as! String as NSString,
+                         sessionId: userInfo["session_id"] as! String as NSString,
+                         nickname: userInfo["nickname"] as! String as NSString,
+                         registerDateStr: userInfo["register_date"] as! String as NSString,
                          record: BaseInfoUtil.getIntegerFromAnyObject(userInfo["record"]!),
                          role: User.RoleEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(userInfo["role"]))!,
                          version: (userInfo["version"] as! NSString).longLongValue,
-                         pinyin: PinYinUtil.converterToPinyin(userInfo["nickname"] as! String),
+                         pinyin: PinYinUtil.converterToPinyin(userInfo["nickname"] as! String) as NSString,
                          bombNum: BaseInfoUtil.getIntegerFromAnyObject(userInfo["bomb_num"]),
                          hasGuide: BaseInfoUtil.getIntegerFromAnyObject(userInfo["has_guide"]) == 1,
                          friendNum: BaseInfoUtil.getIntegerFromAnyObject(userInfo["friend_num"]),
@@ -73,8 +73,8 @@ class UserCache {
     }
     
     func ifLogin()-> Bool {
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        let sessionToken = userDefault.objectForKey(UserDefaultParam.SESSION_TOKEN) as? NSString
+        let userDefault = UserDefaults.standard
+        let sessionToken = userDefault.object(forKey: UserDefaultParam.SESSION_TOKEN) as? NSString
         
         return sessionToken != nil
     }

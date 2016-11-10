@@ -18,25 +18,25 @@ class NewFriendCache : BaseCache<User> {
         return cacheList
     }
     
-    private override init() {
+    fileprivate override init() {
         super.init()
         newFriendTableManager = NewFriendTableManager.instance
     }
     
-    func setFriend(friendInfo: NSDictionary, message: NSString, isFriend: Bool) {
+    func setFriend(_ friendInfo: NSDictionary, message: NSString, isFriend: Bool) {
         saveFriend(friendInfo, message: message, isFriend: isFriend)
         
         cacheList = newFriendTableManager.searchFriends()
     }
     
-    func setFriends(friendRequests: NSArray) {
+    func setFriends(_ friendRequests: NSArray) {
         for friendRequest in friendRequests {
             let friendInfo = friendRequest as! NSDictionary
             let isFriend = BaseInfoUtil.getIntegerFromAnyObject(friendInfo["status"]) == 1
             
             var message: NSString
             if isFriend {
-                message = NSLocalizedString("ACCEPT_FRIEND_REQUEST", comment: "Accepted your friend request")
+                message = NSLocalizedString("ACCEPT_FRIEND_REQUEST", comment: "Accepted your friend request") as NSString
             } else {
                 message = friendInfo["message"] as! NSString
             }
@@ -53,7 +53,7 @@ class NewFriendCache : BaseCache<User> {
         cacheList = newFriendTableManager.searchFriends()
     }
     
-    func saveFriend(friendInfo: NSDictionary, message: NSString, isFriend: Bool) {
+    func saveFriend(_ friendInfo: NSDictionary, message: NSString, isFriend: Bool) {
         let friendIdStr = friendInfo["pk_id"] as! NSString
         let pinyinStr = PinYinUtil.converterToPinyin(friendInfo["nickname"] as! String)
         let friend = User(
@@ -75,13 +75,13 @@ class NewFriendCache : BaseCache<User> {
         newFriendTableManager.updateFriends(friend)
     }
     
-    func updateFriendStatus(friendId: Int64) {
+    func updateFriendStatus(_ friendId: Int64) {
         newFriendTableManager.updateFriendStatus(friendId)
         
         cacheList = newFriendTableManager.searchFriends()
     }
     
-    func removeFriend(friend: User) {
+    func removeFriend(_ friend: User) {
         newFriendTableManager.removeFriend(friend.pkId)
         
         cacheList = newFriendTableManager.searchFriends()

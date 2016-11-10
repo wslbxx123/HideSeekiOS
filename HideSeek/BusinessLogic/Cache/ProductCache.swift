@@ -24,36 +24,36 @@ class ProductCache : BaseCache<Product> {
     var productIdList: NSMutableArray {
         get {
             let tempProductIds = NSMutableArray()
-            let bundleId = NSBundle.mainBundle().bundleIdentifier!.lowercaseString
+            let bundleId = Bundle.main.bundleIdentifier!.lowercased()
             
             for productItem in cacheList {
                 let product = productItem as! Product
-                tempProductIds.addObject(bundleId + "\(product.pkId)")
+                tempProductIds.add(bundleId + "\(product.pkId)")
             }
             
             return tempProductIds
         }
     }
     
-    private override init() {
+    fileprivate override init() {
         super.init()
         productTableManager = ProductTableManager.instance
     }
     
-    func setProducts(result: NSDictionary!) {
+    func setProducts(_ result: NSDictionary!) {
         saveProducts(result)
         
         cacheList = productTableManager.searchProducts()
         version = productTableManager.version
     }
     
-    func addProducts(result: NSDictionary!) {
+    func addProducts(_ result: NSDictionary!) {
         saveProducts(result)
         
         getMoreProducts(10, hasLoaded: true)
     }
     
-    func saveProducts(result: NSDictionary!) {
+    func saveProducts(_ result: NSDictionary!) {
         let list = NSMutableArray()
         let tempVersion = result["version"] as? NSString
         var version: Int64
@@ -68,7 +68,7 @@ class ProductCache : BaseCache<Product> {
         
         for product in productArray {
             let productInfo = product as! NSDictionary
-            list.addObject(Product(pkId: (productInfo["pk_id"] as! NSString).longLongValue,
+            list.add(Product(pkId: (productInfo["pk_id"] as! NSString).longLongValue,
                 name: productInfo["product_name"] as! String,
                 imageUrl: productInfo["product_image_url"] as? String,
                 price: (productInfo["price"] as! NSString).doubleValue,
@@ -80,10 +80,10 @@ class ProductCache : BaseCache<Product> {
         productTableManager.updateProducts(productMinId, version: version, productList: list)
     }
     
-    func getMoreProducts(count: Int, hasLoaded: Bool) -> Bool {
+    func getMoreProducts(_ count: Int, hasLoaded: Bool) -> Bool {
         let productList = productTableManager.getMoreProducts(count, version: version, hasLoaded: hasLoaded)
         
-        self.cacheList.addObjectsFromArray(productList as [AnyObject])
+        self.cacheList.addObjects(from: productList as [AnyObject])
         
         return productList.count > 0
     }

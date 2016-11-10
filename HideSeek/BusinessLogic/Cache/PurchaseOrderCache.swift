@@ -19,26 +19,26 @@ class PurchaseOrderCache : BaseCache<PurchaseOrder> {
         return super.cacheList
     }
     
-    private override init() {
+    fileprivate override init() {
         super.init()
         purchaseOrderTableManager = PurchaseOrderTableManager.instance
     }
     
-    func getMoreOrders(count: Int, hasLoaded: Bool) -> Bool {
+    func getMoreOrders(_ count: Int, hasLoaded: Bool) -> Bool {
         let orderList = purchaseOrderTableManager.getMoreOrders(count, version: version, hasLoaded: hasLoaded)
         
-        self.cacheList.addObjectsFromArray(orderList as [AnyObject])
+        self.cacheList.addObjects(from: orderList as [AnyObject])
         return orderList.count > 0
     }
     
-    func setOrders(orderInfo: NSDictionary!) {
+    func setOrders(_ orderInfo: NSDictionary!) {
         saveOrders(orderInfo)
         
         cacheList = purchaseOrderTableManager.searchOrders()
         version = purchaseOrderTableManager.version
     }
     
-    func saveOrders(result: NSDictionary!) {
+    func saveOrders(_ result: NSDictionary!) {
         let list = NSMutableArray()
         let temp_version = result["version"] as? NSString
         var version: Int64
@@ -52,7 +52,7 @@ class PurchaseOrderCache : BaseCache<PurchaseOrder> {
         
         for order in orderArray {
             let orderInfo = order as! NSDictionary
-            list.addObject(PurchaseOrder(
+            list.add(PurchaseOrder(
                 orderId: (orderInfo["pk_id"] as! NSString).longLongValue,
                 status: BaseInfoUtil.getIntegerFromAnyObject(orderInfo["status"]),
                 createTime: orderInfo["create_time"] as! String,
@@ -71,7 +71,7 @@ class PurchaseOrderCache : BaseCache<PurchaseOrder> {
         purchaseOrderTableManager.updateOrders(orderMinId, version: version, orderList: list)
     }
     
-    func addOrders(result: NSDictionary!) {
+    func addOrders(_ result: NSDictionary!) {
         saveOrders(result)
         
         getMoreOrders(10, hasLoaded: true)

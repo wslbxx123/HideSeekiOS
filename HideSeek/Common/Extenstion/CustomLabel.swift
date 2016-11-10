@@ -8,25 +8,25 @@
 
 extension UILabel {
     func modifyHeight() {
-        let option = NSStringDrawingOptions.UsesLineFragmentOrigin
-        let attributes = NSDictionary(object: self.font, forKey: NSFontAttributeName)
-        let size = CGSizeMake(self.frame.width, CGFloat(MAXFLOAT))
-        let stringRect = self.text!.boundingRectWithSize(size,
+        let option = NSStringDrawingOptions.usesLineFragmentOrigin
+        let attributes = NSDictionary(object: self.font, forKey: NSFontAttributeName as NSCopying)
+        let size = CGSize(width: self.frame.width, height: CGFloat(MAXFLOAT))
+        let stringRect = self.text!.boundingRect(with: size,
                                                          options: option,
                                                          attributes: attributes as? [String : AnyObject],
                                                          context: nil)
-        self.layer.frame = CGRectMake(self.frame.minX, self.frame.minY, stringRect.size.width, stringRect.size.height)
+        self.layer.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: stringRect.size.width, height: stringRect.size.height)
         
     }
     
     func modifyWidth() {
-        let option = NSStringDrawingOptions.UsesLineFragmentOrigin
-        let attributes = NSDictionary(object: self.font, forKey: NSFontAttributeName)
-        let size = CGSizeMake(CGFloat(MAXFLOAT), self.frame.height)
-        let stringRect = self.text!.boundingRectWithSize(size,
+        let option = NSStringDrawingOptions.usesLineFragmentOrigin
+        let attributes = NSDictionary(object: self.font, forKey: NSFontAttributeName as NSCopying)
+        let size = CGSize(width: CGFloat(MAXFLOAT), height: self.frame.height)
+        let stringRect = self.text!.boundingRect(with: size,
                                                          options: option,
                                                          attributes: attributes as? [String : AnyObject],
                                                          context: nil)
-        self.layer.frame = CGRectMake(self.frame.minX, self.frame.minY, stringRect.size.width, stringRect.size.height)
+        self.layer.frame = CGRect(x: self.frame.minX, y: self.frame.minY, width: stringRect.size.width, height: stringRect.size.height)
     }
 }

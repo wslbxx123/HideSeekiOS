@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MatchRoleController: UIViewController {
+class MatchRoleController: UIViewController, CAAnimationDelegate {
 
     @IBOutlet weak var roleNameLabel: UILabel!
     @IBOutlet weak var roleImageView: UIImageView!
@@ -16,8 +16,8 @@ class MatchRoleController: UIViewController {
     var animation: CAKeyframeAnimation!
     var imageArray: Array<CGImage> = Array<CGImage>()
     
-    @IBAction func registerBtnClicked(sender: AnyObject) {
-        self.navigationController?.popToRootViewControllerAnimated(true)
+    @IBAction func registerBtnClicked(_ sender: AnyObject) {
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     override func viewDidLoad() {
@@ -28,8 +28,8 @@ class MatchRoleController: UIViewController {
         let imageNameArray = AnimationImageFactory.getRoleArray()
         
         for imageName in imageNameArray {
-            let filePath = NSBundle.mainBundle().pathForResource(imageName as? String, ofType: ".png")
-            imageArray.append((UIImage(contentsOfFile: filePath!)?.CGImage)!)
+            let filePath = Bundle.main.path(forResource: imageName as? String, ofType: ".png")
+            imageArray.append((UIImage(contentsOfFile: filePath!)?.cgImage)!)
         }
         
         animation = CAKeyframeAnimation(keyPath: "contents")
@@ -39,28 +39,28 @@ class MatchRoleController: UIViewController {
         animation.repeatCount = 10
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        roleImageView.layer.addAnimation(animation, forKey: "role")
-        self.navigationController?.navigationBarHidden = true
+        roleImageView.layer.add(animation, forKey: "role")
+        self.navigationController?.isNavigationBarHidden = true
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        self.navigationController?.navigationBarHidden = false
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
         
         super.viewWillDisappear(animated)
     }
     
-    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         let image = imageArray[UserCache.instance.user.role.rawValue]
-        roleImageView.image = UIImage(CGImage: image)
+        roleImageView.image = UIImage(cgImage: image)
         roleNameLabel.text = UserCache.instance.user.roleName
     }
 

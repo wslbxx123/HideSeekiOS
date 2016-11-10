@@ -7,5 +7,5 @@
 //
 
 protocol UpdateGoalDelegate {
-    func updateEndGoal(goalId: Int64)
+    func updateEndGoal(_ goalId: Int64)
 }

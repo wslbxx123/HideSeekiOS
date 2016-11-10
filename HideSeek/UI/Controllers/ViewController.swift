@@ -13,30 +13,30 @@ class ViewController: UITabBarController {
     let HtmlType = "text/html"
     @IBOutlet weak var uiTabBar: UITabBar!
     var manager: CustomRequestManager!
-    var httpManager: AFHTTPRequestOperationManager!
+    var httpManager: AFHTTPSessionManager!
     var postChanneldId = 0
     var updateSettingCount = 0
         
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        uiTabBar.tintColor = UIColor.blackColor()
+        uiTabBar.tintColor = UIColor.black
         
         for item in uiTabBar.items! {
-            item.image = item.image?.imageWithRenderingMode(.AlwaysOriginal)
-            item.selectedImage = item.selectedImage?.imageWithRenderingMode(.AlwaysOriginal)
+            item.image = item.image?.withRenderingMode(.alwaysOriginal)
+            item.selectedImage = item.selectedImage?.withRenderingMode(.alwaysOriginal)
         }
-        httpManager = AFHTTPRequestOperationManager()
-        httpManager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        httpManager = AFHTTPSessionManager()
+        httpManager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
@@ -45,12 +45,12 @@ class ViewController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
-    func updateChannelId(channelId: String) {
-        let tempChannelId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.CHANNEL_ID) as? NSString
+    func updateChannelId(_ channelId: String) {
+        let tempChannelId = UserDefaults.standard.object(forKey: UserDefaultParam.CHANNEL_ID) as? NSString
         
-        if (tempChannelId == nil || tempChannelId! != channelId) {
-            NSUserDefaults.standardUserDefaults().setObject(channelId, forKey: UserDefaultParam.CHANNEL_ID)
-            NSUserDefaults.standardUserDefaults().synchronize()
+        if (tempChannelId == nil || tempChannelId! as String != channelId) {
+            UserDefaults.standard.set(channelId, forKey: UserDefaultParam.CHANNEL_ID)
+            UserDefaults.standard.synchronize()
             
             if(UserCache.instance.ifLogin()) {
                 postChanneldId = 0
@@ -59,7 +59,7 @@ class ViewController: UITabBarController {
         }
     }
     
-    func postChannelId(channelId: String) {
+    func postChannelId(_ channelId: String) {
         postChanneldId += 1
         
         if postChanneldId > 5 {
@@ -67,7 +67,7 @@ class ViewController: UITabBarController {
         }
         
         let paramDict: NSMutableDictionary = ["channel_id": channelId]
-        manager.POST(UrlParam.UPDATE_CHANNEL_URL,
+        _ = manager.POST(UrlParam.UPDATE_CHANNEL_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
                         print("JSON: " + responseObject.description!)
@@ -90,10 +90,10 @@ class ViewController: UITabBarController {
             return;
         }
         
-        httpManager.POST(UrlParam.GET_SETTINGS, parameters: [],
+        _ = httpManager.post(UrlParam.GET_SETTINGS, parameters: [],
                          success: { (operation, responseObject) in
                             let response = responseObject as! NSDictionary
-                            print("JSON: " + responseObject.description!)
+                            print("JSON: " + (responseObject as AnyObject).description!)
             
                             self.setInfoFromCallback(response)
                 },
@@ -103,7 +103,7 @@ class ViewController: UITabBarController {
             })
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
+    func setInfoFromCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -123,14 +123,14 @@ class ViewController: UITabBarController {
     
     func showUpdateDialog() {
         let alertController = UIAlertController(title: nil,
-                                                message: NSLocalizedString("MESSAGE_UPDATE_APP", comment: "There is a new version of this app. Go to app store to update it?"), preferredStyle: UIAlertControllerStyle.Alert)
+                                                message: NSLocalizedString("MESSAGE_UPDATE_APP", comment: "There is a new version of this app. Go to app store to update it?"), preferredStyle: UIAlertControllerStyle.alert)
         let cancelAction = UIAlertAction(title: NSLocalizedString("NEXT_TIME", comment: "Next Time"),
-                                         style: UIAlertActionStyle.Cancel, handler: nil)
-        let okAction = UIAlertAction(title: NSLocalizedString("UPDATE", comment: "Update"), style: UIAlertActionStyle.Default, handler: { (action) in
-            UIApplication.sharedApplication().openURL(NSURL(string: UrlParam.APP_STORE_URL)!)
+                                         style: UIAlertActionStyle.cancel, handler: nil)
+        let okAction = UIAlertAction(title: NSLocalizedString("UPDATE", comment: "Update"), style: UIAlertActionStyle.default, handler: { (action) in
+            UIApplication.shared.openURL(URL(string: UrlParam.APP_STORE_URL)!)
         })
         alertController.addAction(cancelAction)
         alertController.addAction(okAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 }

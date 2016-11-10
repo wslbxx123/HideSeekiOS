@@ -9,7 +9,7 @@
 class PayManager : NSObject {
     var purchaseDelegate: PurchaseDelegate!
     
-    func purchase(sign: NSString, tradeNo: NSString, product: Product,
+    func purchase(_ sign: NSString, tradeNo: NSString, product: Product,
                   count: Int, orderId: Int64) {
         
     }

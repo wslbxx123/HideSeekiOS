@@ -21,14 +21,14 @@ class UpdateNicknameController: UIViewController {
 
         initView()
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as! Set<String>
     }
 
-    @IBAction func nicknameChanged(sender: AnyObject) {
+    @IBAction func nicknameChanged(_ sender: AnyObject) {
         if(value != nicknameTextField.text) {
             value = nicknameTextField.text
             
-            rightBarButton.enabled = true
+            rightBarButton.isEnabled = true
         }
     }
     
@@ -39,19 +39,19 @@ class UpdateNicknameController: UIViewController {
     
     func initView() {
         nicknameTextField.text = value
-        let leftBarButton = UIBarButtonItem(title: NSLocalizedString("CANCEL", comment: "Cancel"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(UpdateNicknameController.cancelBtnClicked))
+        let leftBarButton = UIBarButtonItem(title: NSLocalizedString("CANCEL", comment: "Cancel"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(UpdateNicknameController.cancelBtnClicked))
         self.navigationItem.leftBarButtonItem = leftBarButton
-        rightBarButton = UIBarButtonItem(title: NSLocalizedString("SAVE", comment: "Save"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(UpdateNicknameController.saveBtnClicked))
-        rightBarButton.enabled = false
+        rightBarButton = UIBarButtonItem(title: NSLocalizedString("SAVE", comment: "Save"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(UpdateNicknameController.saveBtnClicked))
+        rightBarButton.isEnabled = false
         self.navigationItem.rightBarButtonItem = rightBarButton
     }
     
     func cancelBtnClicked() {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func saveBtnClicked() {
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
         hud.dimBackground = true
         let paramDict = NSMutableDictionary()
@@ -61,18 +61,16 @@ class UpdateNicknameController: UIViewController {
             print("JSON: " + responseObject.description!)
             self.setInfoFromCallback(response)
             hud.removeFromSuperview()
-            hud = nil
-            self.navigationController?.popViewControllerAnimated(true)
+            self.navigationController?.popViewController(animated: true)
             }) { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
                 hud.removeFromSuperview()
-                hud = nil
         }
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
+    func setInfoFromCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -80,7 +78,7 @@ class UpdateNicknameController: UIViewController {
             updateUser(result)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -88,9 +86,9 @@ class UpdateNicknameController: UIViewController {
         }
     }
 
-    func updateUser(profileInfo: NSDictionary) {
+    func updateUser(_ profileInfo: NSDictionary) {
         let user = UserCache.instance.user
         
-        user.nickname = profileInfo["nickname"] as! NSString
+        user?.nickname = profileInfo["nickname"] as! NSString
     }
 }

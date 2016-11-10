@@ -23,11 +23,11 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
 
         initView()
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         friendTableManager = FriendTableManager.instance
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         refreshData()
@@ -39,7 +39,7 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
     }
     
     func initView() {
-        let rightBarButton = UIBarButtonItem(image: UIImage(named: "add_friends"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(FriendController.addFriendBtnClicked))
+        let rightBarButton = UIBarButtonItem(image: UIImage(named: "add_friends"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(FriendController.addFriendBtnClicked))
         self.navigationItem.rightBarButtonItem = rightBarButton
         searchBar.delegate = self
         friendTableView.goToNewFriendDelegate = self
@@ -61,7 +61,7 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
         })
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
+    func setInfoFromCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -75,7 +75,7 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
             }
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -85,11 +85,11 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
     
     func addFriendBtnClicked() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        addFriendController = storyboard.instantiateViewControllerWithIdentifier("addFriend") as! AddFriendController
+        addFriendController = storyboard.instantiateViewController(withIdentifier: "addFriend") as! AddFriendController
         self.navigationController?.pushViewController(addFriendController, animated: true)
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if (!searchText.isEmpty) {
             friendTableView.friendList = friendTableManager.searchFriends(searchText)
             friendTableView.isSearching = true
@@ -105,7 +105,7 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
         }
     }
 
-    func getAlphaIndexFromList(friendList: NSMutableArray) -> NSMutableDictionary{
+    func getAlphaIndexFromList(_ friendList: NSMutableArray) -> NSMutableDictionary{
         let alphaIndex = NSMutableDictionary()
         var previewStr = ""
         
@@ -115,7 +115,7 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
         
         for i in 0...friendList.count - 1 {
             let friend = friendList[i] as! User
-            var currentStr = friend.pinyin.substringToIndex(1).uppercaseString
+            var currentStr = friend.pinyin.substring(to: 1).uppercased()
             
             for char in currentStr.utf8  {
                 if (char <= 64 || char >= 91) {
@@ -126,7 +126,7 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
             
             if i >= 1 {
                 let lastFriend = friendList[i - 1] as! User
-                previewStr = (lastFriend.pinyin as NSString).substringToIndex(1).uppercaseString
+                previewStr = (lastFriend.pinyin as NSString).substring(to: 1).uppercased()
                 
                 for char in previewStr.utf8  {
                     if (char <= 64 || char >= 91) {
@@ -146,35 +146,35 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
     
     func goToNewFriend() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let newFriendController = storyboard.instantiateViewControllerWithIdentifier("NewFriend") as! NewFriendController
+        let newFriendController = storyboard.instantiateViewController(withIdentifier: "NewFriend") as! NewFriendController
         self.navigationController?.pushViewController(newFriendController, animated: true)
     }
     
-    func goToProfile(user: User) {
+    func goToProfile(_ user: User) {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let profileController = storyboard.instantiateViewControllerWithIdentifier("Profile") as! ProfileController
+        let profileController = storyboard.instantiateViewController(withIdentifier: "Profile") as! ProfileController
         profileController.user = user
         self.navigationController?.pushViewController(profileController, animated: true)
     }
     
-    func checkRemoveFriend(friend: User) {
+    func checkRemoveFriend(_ friend: User) {
         let alertController = UIAlertController(title: nil,
-                                                message: NSLocalizedString("CONFIRM_REMOVE_FRIEND", comment: "Are you sure to remove this friend?"), preferredStyle: UIAlertControllerStyle.Alert)
+                                                message: NSLocalizedString("CONFIRM_REMOVE_FRIEND", comment: "Are you sure to remove this friend?"), preferredStyle: UIAlertControllerStyle.alert)
         let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: "Cancel"),
-                                         style: UIAlertActionStyle.Cancel, handler: nil)
-        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Default, handler: { (action) in
+                                         style: UIAlertActionStyle.cancel, handler: nil)
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.default, handler: { (action) in
             self.removeFriend(friend)
         })
         alertController.addAction(cancelAction)
         alertController.addAction(okAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
-    func removeFriend(friend: User) {
+    func removeFriend(_ friend: User) {
         let paramDict: NSMutableDictionary = ["friend_id": "\(friend.pkId)"]
         
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
         hud.dimBackground = true
         
         manager.POST(UrlParam.REMOVE_FRIEND_URL,
@@ -185,17 +185,15 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
                         self.setInfoFromRemoveFriendCallback(response, friend: friend)
                         
                         hud.removeFromSuperview()
-                        hud = nil
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
                 hud.removeFromSuperview()
-                hud = nil
         })
     }
     
-    func setInfoFromRemoveFriendCallback(response: NSDictionary, friend: User) {
+    func setInfoFromRemoveFriendCallback(_ response: NSDictionary, friend: User) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -207,7 +205,7 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
             self.friendTableView.reloadData()
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }

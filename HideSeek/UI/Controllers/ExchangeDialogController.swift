@@ -36,38 +36,38 @@ class ExchangeDialogController: UIViewController, UITextFieldDelegate {
     }
     var address: String = ""
 
-    @IBAction func addressChanged(sender: AnyObject) {
+    @IBAction func addressChanged(_ sender: AnyObject) {
         address = addressTextField.text!
     }
     
-    @IBAction func areaSelected(sender: AnyObject) {
+    @IBAction func areaSelected(_ sender: AnyObject) {
         showAreaDelegate?.showAreaPickerView()
         
         dismissKeyboard()
     }
     
-    @IBAction func upBtnClicked(sender: AnyObject) {
+    @IBAction func upBtnClicked(_ sender: AnyObject) {
         count += 1
         refreshAmount()
     }
     
-    @IBAction func downBtnClicked(sender: AnyObject) {
+    @IBAction func downBtnClicked(_ sender: AnyObject) {
         if(count > 0) {
             count -= 1
         }
         refreshAmount()
     }
     
-    @IBAction func confirmBtnClicked(sender: AnyObject) {
+    @IBAction func confirmBtnClicked(_ sender: AnyObject) {
         confirmExchangeDelegate?.confirmExchange(reward, count: count)
     }
     
-    @IBAction func closeBtnClicked(sender: AnyObject) {
+    @IBAction func closeBtnClicked(_ sender: AnyObject) {
         closeDelegate?.close()
     }
     
     func checkIfConfirmEnabled() {
-        confirmBtn.enabled = !address.isEmpty && !area.isEmpty
+        confirmBtn.isEnabled = !address.isEmpty && !area.isEmpty
     }
 
     override func viewDidLoad() {
@@ -79,20 +79,20 @@ class ExchangeDialogController: UIViewController, UITextFieldDelegate {
         areaTextField.tintColor = BaseInfoUtil.stringToRGB("#0088ff")
         addressTextField.tintColor = BaseInfoUtil.stringToRGB("#0088ff")
         areaTextField.delegate = self
-        addressTextField.exclusiveTouch = true
+        addressTextField.isExclusiveTouch = true
         
         if UserCache.instance.ifLogin() {
             let user = UserCache.instance.user
-            areaTextField.text = user.defaultArea as String
-            addressTextField.text = user.defaultAddress as String
-            _area = user.defaultArea as String
-            address = user.defaultAddress as String
+            areaTextField.text = user?.defaultArea as? String
+            addressTextField.text = user?.defaultAddress as? String
+            _area = user?.defaultArea as! String
+            address = user?.defaultAddress as! String
         }
         
         checkIfConfirmEnabled()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         count = 1
         refreshAmount()
     }
@@ -108,12 +108,12 @@ class ExchangeDialogController: UIViewController, UITextFieldDelegate {
         recordLabel.text = "\(amount)"
     }
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return false;
     }
     
     func dismissKeyboard() {
-        if self.addressTextField != nil && self.addressTextField.exclusiveTouch {
+        if self.addressTextField != nil && self.addressTextField.isExclusiveTouch {
             self.addressTextField.resignFirstResponder()
         }
     }

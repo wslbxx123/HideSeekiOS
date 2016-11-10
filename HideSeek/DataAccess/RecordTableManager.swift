@@ -22,44 +22,44 @@ class RecordTableManager {
     var database: Connection!
     var recordTable: Table!
     var _recordMinId: Int64! = 0
-    var timeFormatter: NSDateFormatter = NSDateFormatter()
+    var timeFormatter: DateFormatter = DateFormatter()
 
     var recordMinId: Int64 {
         get{
-            let tempRecordMinId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.RECORD_MIN_ID) as? NSNumber
+            let tempRecordMinId = UserDefaults.standard.object(forKey: UserDefaultParam.RECORD_MIN_ID) as? NSNumber
             
             if(tempRecordMinId == nil) {
                 return 0
             }
-            return (tempRecordMinId?.longLongValue)!
+            return (tempRecordMinId?.int64Value)!
         }
     }
     
     var version: Int64 {
         get{
-            let tempVersion = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.RECORD_VERSION) as? NSNumber
+            let tempVersion = UserDefaults.standard.object(forKey: UserDefaultParam.RECORD_VERSION) as? NSNumber
             
             if(tempVersion == nil) {
                 return 0
             }
-            return (tempVersion?.longLongValue)!
+            return (tempVersion?.int64Value)!
         }
     }
     
     var scoreSumValue: Int {
         get {
-            let tempScoreSum = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.SCORE_SUM) as? NSNumber
+            let tempScoreSum = UserDefaults.standard.object(forKey: UserDefaultParam.SCORE_SUM) as? NSNumber
             
             if(tempScoreSum == nil) {
                 return 0
             }
-            return (tempScoreSum?.integerValue)!
+            return (tempScoreSum?.intValue)!
         }
     }
     
     var updateDate: String {
         get{
-            let tempUpdateDate = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.RECORD_UPDATE_TIME) as? NSString
+            let tempUpdateDate = UserDefaults.standard.object(forKey: UserDefaultParam.RECORD_UPDATE_TIME) as? NSString
             
             if(tempUpdateDate == nil) {
                 return ""
@@ -68,7 +68,7 @@ class RecordTableManager {
         }
     }
     
-    private init() {
+    fileprivate init() {
         do {
             database = DatabaseManager.instance.database
             timeFormatter.dateFormat = "yyyy-MM-dd"
@@ -91,13 +91,13 @@ class RecordTableManager {
         }
     }
     
-    func updateRecords(sum: Int, recordMinId: Int64, version: Int64,
+    func updateRecords(_ sum: Int, recordMinId: Int64, version: Int64,
                        recordList: NSArray) {
         do {
-            NSUserDefaults.standardUserDefaults().setObject(sum, forKey: UserDefaultParam.SCORE_SUM)
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:version), forKey: UserDefaultParam.RECORD_VERSION)
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:recordMinId), forKey: UserDefaultParam.RECORD_MIN_ID)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(sum, forKey: UserDefaultParam.SCORE_SUM)
+            UserDefaults.standard.set(NSNumber(value: version as Int64), forKey: UserDefaultParam.RECORD_VERSION)
+            UserDefaults.standard.set(NSNumber(value: recordMinId as Int64), forKey: UserDefaultParam.RECORD_MIN_ID)
+            UserDefaults.standard.synchronize()
             
             for record in recordList {
                 let recordInfo = record as! Record
@@ -135,15 +135,15 @@ class RecordTableManager {
     }
     
     func searchRecords() -> NSMutableArray {
-        let curDate = NSDate()
-        let curDateStr = timeFormatter.stringFromDate(curDate)
+        let curDate = Date()
+        let curDateStr = timeFormatter.string(from: curDate)
         
         if(curDateStr != updateDate) {
             clearMoreData()
         }
         
-        NSUserDefaults.standardUserDefaults().setObject(curDateStr, forKey: UserDefaultParam.RECORD_UPDATE_TIME)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.set(curDateStr, forKey: UserDefaultParam.RECORD_UPDATE_TIME)
+        UserDefaults.standard.synchronize()
         
         let recordList = NSMutableArray()
         do {
@@ -155,7 +155,7 @@ class RecordTableManager {
             }
             
             for item in try database.prepare(result) {
-                recordList.addObject(Record(date: item[dateStr],
+                recordList.add(Record(date: item[dateStr],
                     recordId: item[recordId],
                     time: item[time],
                     goalType: Goal.GoalTypeEnum(rawValue: item[goalType])!,
@@ -177,16 +177,16 @@ class RecordTableManager {
         return recordList
     }
     
-    func getMoreRecords(count: Int, version: Int64, hasLoaded: Bool) -> NSMutableArray {
+    func getMoreRecords(_ count: Int, version: Int64, hasLoaded: Bool) -> NSMutableArray {
         let recordList = NSMutableArray()
         do {
             let result = recordTable.filter(pullVersion <= version && recordId < _recordMinId).order(recordId.desc).limit(count)
             
-            let resultCount = database.scalar(result.count)
+            let resultCount = try database.scalar(result.count)
             
             if resultCount == count || hasLoaded {
                 for item in try database.prepare(result) {
-                    recordList.addObject(Record(date: item[dateStr],
+                    recordList.add(Record(date: item[dateStr],
                         recordId: item[recordId],
                         time: item[time],
                         goalType: Goal.GoalTypeEnum(rawValue: item[goalType])!,
@@ -213,7 +213,7 @@ class RecordTableManager {
         do {
             let result = recordTable.order(recordId.desc).limit(20)
             
-            if database.scalar(result.count) > 0 {
+            if try database.scalar(result.count) > 0 {
                 var minRecordId: Int64 = 0
                 for item in try database.prepare(result) {
                     minRecordId = item[recordId]
@@ -223,8 +223,8 @@ class RecordTableManager {
                     _recordMinId = minRecordId
                 }
                 
-                NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:recordMinId), forKey: UserDefaultParam.RECORD_MIN_ID)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(NSNumber(value: recordMinId as Int64), forKey: UserDefaultParam.RECORD_MIN_ID)
+                UserDefaults.standard.synchronize()
                 
                 let deleteResult = recordTable.filter(recordId < minRecordId)
                 try database.run(deleteResult.delete())

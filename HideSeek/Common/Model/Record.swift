@@ -39,8 +39,6 @@ class Record {
                 return NSLocalizedString("bomb", comment: "bomb")
             case .monster:
                 return NSLocalizedString(showTypeName!, comment: "dragon")
-            default:
-                return ""
             }
         }
     }

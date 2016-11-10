@@ -25,33 +25,33 @@ class RaceGroupTableManager {
     var database: Connection!
     var raceGroupTable: Table!
     var _recordMinId: Int64 = 0
-    var timeFormatter: NSDateFormatter = NSDateFormatter()
+    var timeFormatter: DateFormatter = DateFormatter()
     
     var recordMinId: Int64 {
         get{
-            let tempRecordMinId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.RACE_GROUP_RECORD_MIN_ID) as? NSNumber
+            let tempRecordMinId = UserDefaults.standard.object(forKey: UserDefaultParam.RACE_GROUP_RECORD_MIN_ID) as? NSNumber
             
             if(tempRecordMinId == nil) {
                 return 0
             }
-            return (tempRecordMinId?.longLongValue)!
+            return (tempRecordMinId?.int64Value)!
         }
     }
     
     var version: Int64 {
         get{
-            let tempVersion = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.RACE_GROUP_VERSION) as? NSNumber
+            let tempVersion = UserDefaults.standard.object(forKey: UserDefaultParam.RACE_GROUP_VERSION) as? NSNumber
             
             if(tempVersion == nil) {
                 return 0
             }
-            return (tempVersion?.longLongValue)!
+            return (tempVersion?.int64Value)!
         }
     }
     
     var updateDate: String {
         get{
-            let tempUpdateDate = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.RACE_GROUP_UPDATE_TIME) as? NSString
+            let tempUpdateDate = UserDefaults.standard.object(forKey: UserDefaultParam.RACE_GROUP_UPDATE_TIME) as? NSString
             
             if(tempUpdateDate == nil) {
                 return ""
@@ -60,7 +60,7 @@ class RaceGroupTableManager {
         }
     }
     
-    private init() {
+    fileprivate init() {
         do {
             database = DatabaseManager.instance.database
             
@@ -88,15 +88,15 @@ class RaceGroupTableManager {
     }
     
     func searchRaceGroup() -> NSMutableArray {
-        let curDate = NSDate()
-        let curDateStr = timeFormatter.stringFromDate(curDate)
+        let curDate = Date()
+        let curDateStr = timeFormatter.string(from: curDate)
         
         if(curDateStr != updateDate) {
             clearMoreData()
         }
         
-        NSUserDefaults.standardUserDefaults().setObject(curDateStr, forKey: UserDefaultParam.RACE_GROUP_UPDATE_TIME)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.set(curDateStr, forKey: UserDefaultParam.RACE_GROUP_UPDATE_TIME)
+        UserDefaults.standard.synchronize()
         
         let raceGroupList = NSMutableArray()
         do {
@@ -108,7 +108,7 @@ class RaceGroupTableManager {
             }
             
             for item in try database.prepare(result) {
-                raceGroupList.addObject(RaceGroup(
+                raceGroupList.add(RaceGroup(
                     recordId: item[recordId],
                     nickname: item[nickname],
                     photoUrl: item[photoUrl],
@@ -135,11 +135,11 @@ class RaceGroupTableManager {
         return raceGroupList
     }
     
-    func updateRaceGroup(recordMinId: Int64, version: Int64, raceGroupList: NSArray) {
+    func updateRaceGroup(_ recordMinId: Int64, version: Int64, raceGroupList: NSArray) {
         do {
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:version), forKey: UserDefaultParam.RACE_GROUP_VERSION)
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:recordMinId), forKey: UserDefaultParam.RACE_GROUP_RECORD_MIN_ID)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(NSNumber(value: version as Int64), forKey: UserDefaultParam.RACE_GROUP_VERSION)
+            UserDefaults.standard.set(NSNumber(value: recordMinId as Int64), forKey: UserDefaultParam.RACE_GROUP_RECORD_MIN_ID)
+            UserDefaults.standard.synchronize()
             
             for raceGroupItem in raceGroupList {
                 let raceGroupInfo = raceGroupItem as! RaceGroup
@@ -182,16 +182,16 @@ class RaceGroupTableManager {
         }
     }
     
-    func getMoreRaceGroup(count: Int, version: Int64, hasLoaded: Bool)-> NSMutableArray {
+    func getMoreRaceGroup(_ count: Int, version: Int64, hasLoaded: Bool)-> NSMutableArray {
         let raceGroupList = NSMutableArray()
         
         do {
             let result = raceGroupTable.filter(pullVersion <= version && recordId < _recordMinId)
                 .order(recordId.desc).limit(count)
             
-            if(database.scalar(result.count) == count || hasLoaded) {
+            if(try database.scalar(result.count) == count || hasLoaded) {
                 for item in try database.prepare(result) {
-                    raceGroupList.addObject(RaceGroup(
+                    raceGroupList.add(RaceGroup(
                         recordId: item[recordId],
                         nickname: item[nickname],
                         photoUrl: item[photoUrl],
@@ -223,7 +223,7 @@ class RaceGroupTableManager {
         do {
             let result = raceGroupTable.order(recordId.desc).limit(20)
             
-            if database.scalar(result.count) > 0 {
+            if try database.scalar(result.count) > 0 {
                 var minRecordId: Int64 = 0
                 for item in try database.prepare(result) {
                     minRecordId = item[recordId]
@@ -233,8 +233,8 @@ class RaceGroupTableManager {
                     _recordMinId = minRecordId
                 }
                 
-                NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:recordMinId), forKey: UserDefaultParam.RACE_GROUP_RECORD_MIN_ID)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                UserDefaults.standard.set(NSNumber(value: recordMinId as Int64), forKey: UserDefaultParam.RACE_GROUP_RECORD_MIN_ID)
+                UserDefaults.standard.synchronize()
                 
                 let deleteResult = raceGroupTable.filter(recordId < minRecordId)
                 try database.run(deleteResult.delete())

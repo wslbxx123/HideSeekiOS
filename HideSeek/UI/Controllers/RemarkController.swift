@@ -17,11 +17,11 @@ class RemarkController: UIViewController {
     var rightBarButton: UIBarButtonItem!
     var manager: CustomRequestManager!
 
-    @IBAction func aliasChanged(sender: AnyObject) {
+    @IBAction func aliasChanged(_ sender: AnyObject) {
         if(aliasValue != aliasTextField.text) {
             aliasValue = aliasTextField.text
             
-            rightBarButton.enabled = true
+            rightBarButton.isEnabled = true
         }
     }
     
@@ -29,11 +29,11 @@ class RemarkController: UIViewController {
         super.viewDidLoad()
 
         aliasTextField.text = aliasValue
-        rightBarButton = UIBarButtonItem(title: NSLocalizedString("SAVE", comment: "Save"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(RemarkController.saveBtnClicked))
-        rightBarButton.enabled = false
+        rightBarButton = UIBarButtonItem(title: NSLocalizedString("SAVE", comment: "Save"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(RemarkController.saveBtnClicked))
+        rightBarButton.isEnabled = false
         self.navigationItem.rightBarButtonItem = rightBarButton
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as! Set<String>
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,35 +42,33 @@ class RemarkController: UIViewController {
     }
 
     func saveBtnClicked() {
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
         hud.dimBackground = true
         let paramDict = NSMutableDictionary()
         paramDict["remark"] = aliasValue
         paramDict["friend_id"] = "\(friend.pkId)"
-        manager.POST(UrlParam.UPDATE_REMARK, paramDict: paramDict, success: { (operation, responseObject) in
+        _ = manager.POST(UrlParam.UPDATE_REMARK, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
             print("JSON: " + responseObject.description!)
             self.setInfoFromCallback(response)
             hud.removeFromSuperview()
-            hud = nil
-            self.navigationController?.popViewControllerAnimated(true)
+            _ = self.navigationController?.popViewController(animated: true)
         }) { (operation, error) in
             print("Error: " + error.localizedDescription)
             let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
             hud.removeFromSuperview()
-            hud = nil
         }
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
+    func setInfoFromCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         if code == CodeParam.SUCCESS {
-            self.navigationController?.popViewControllerAnimated(true)
+            _ = self.navigationController?.popViewController(animated: true)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
         }
     }
 }

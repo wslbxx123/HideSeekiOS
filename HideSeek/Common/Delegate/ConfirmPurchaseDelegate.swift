@@ -7,5 +7,5 @@
 //
 
 protocol ConfirmPurchaseDelegate {
-    func confirmPurchase(product: Product, count: Int, orderId: Int64)
+    func confirmPurchase(_ product: Product, count: Int, orderId: Int64)
 }

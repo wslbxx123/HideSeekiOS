@@ -31,14 +31,14 @@ class NewFriendTableViewCell: UITableViewCell {
         messageLabel = self.viewWithTag(TAG_MESSAGE_LABEL) as! UILabel
         acceptBtn = self.viewWithTag(TAG_ACCEPT_BUTTON) as! UIButton
         statusLabel = self.viewWithTag(TAG_STATUS_LABEL) as! UILabel
-        self.acceptBtn.addTarget(self, action: #selector(NewFriendTableViewCell.acceptBtnClicked), forControlEvents: UIControlEvents.TouchDown)
+        self.acceptBtn.addTarget(self, action: #selector(NewFriendTableViewCell.acceptBtnClicked), for: UIControlEvents.touchDown)
     }
     
     func acceptBtnClicked() {
         acceptDelegate?.acceptFriend(friendId)
     }
     
-    func initNewFriend(friend: User) {
+    func initNewFriend(_ friend: User) {
         friendId = friend.pkId
         photoImageView.setWebImage(friend.smallPhotoUrl as String, defaultImage: "default_photo", isCache: true)
         nameLabel.text = friend.nickname as String
@@ -48,11 +48,11 @@ class NewFriendTableViewCell: UITableViewCell {
         acceptBtn.layer.masksToBounds = true
         
         if friend.isFriend {
-            acceptBtn.hidden = true
-            statusLabel.hidden = false
+            acceptBtn.isHidden = true
+            statusLabel.isHidden = false
         } else {
-            acceptBtn.hidden = false
-            statusLabel.hidden = true
+            acceptBtn.isHidden = false
+            statusLabel.isHidden = true
         }
     }
 }

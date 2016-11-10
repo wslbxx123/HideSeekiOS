@@ -7,7 +7,7 @@
 //
 
 class ErrorMessageFactory {
-    class func get(errorCode: Int) -> String {
+    class func get(_ errorCode: Int) -> String {
         switch errorCode {
         case CodeParam.ERROR_VOLLEY_CODE:
             return NSLocalizedString("ERROR_CONNECT_NETWORK_FAILED", comment: "Failed to connect the network")

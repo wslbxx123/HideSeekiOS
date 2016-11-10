@@ -7,5 +7,5 @@
 //
 
 protocol ShowToastDelegate {
-    func showToast(text: String)
+    func showToast(_ text: String)
 }

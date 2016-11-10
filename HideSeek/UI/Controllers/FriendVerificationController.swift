@@ -18,29 +18,29 @@ class FriendVerificationController: UIViewController {
     var user: User!
     var count: Int = 0
 
-    @IBAction func clearBtnClicked(sender: AnyObject) {
+    @IBAction func clearBtnClicked(_ sender: AnyObject) {
         requestTextField.text = ""
     }
     
-    @IBAction func requestChanged(sender: AnyObject) {
+    @IBAction func requestChanged(_ sender: AnyObject) {
         if requestTextField == nil || (requestTextField.text?.isEmpty)! {
-            navigation.rightBarButtonItem?.enabled = false
+            navigation.rightBarButtonItem?.isEnabled = false
         } else {
-            navigation.rightBarButtonItem?.enabled = true
+            navigation.rightBarButtonItem?.isEnabled = true
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let leftBarButton = UIBarButtonItem(title: NSLocalizedString("CANCEL", comment: "Cancel"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(FriendVerificationController.cancelBtnClicked))
-        let rightBarButton = UIBarButtonItem(title: NSLocalizedString("SEND", comment: "Send"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(FriendVerificationController.sendBtnClicked))
+        let leftBarButton = UIBarButtonItem(title: NSLocalizedString("CANCEL", comment: "Cancel"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(FriendVerificationController.cancelBtnClicked))
+        let rightBarButton = UIBarButtonItem(title: NSLocalizedString("SEND", comment: "Send"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(FriendVerificationController.sendBtnClicked))
         
         navigation.leftBarButtonItem = leftBarButton
         navigation.rightBarButtonItem = rightBarButton
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
-        requestTextField.text = NSString(format: NSLocalizedString("SELF_INTRODUCTION", comment: "I am %@"), UserCache.instance.user.nickname) as String
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
+        requestTextField.text = NSString(format: NSLocalizedString("SELF_INTRODUCTION", comment: "I am %@") as NSString, UserCache.instance.user.nickname) as String
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,7 +49,7 @@ class FriendVerificationController: UIViewController {
     }
 
     func cancelBtnClicked() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     func sendBtnClicked() {
@@ -61,36 +61,34 @@ class FriendVerificationController: UIViewController {
         count += 1
         let message = requestTextField.text == nil ? "" : requestTextField.text!
         let paramDict: NSMutableDictionary = ["friend_id": "\(user.pkId)", "message": message]
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
         hud.dimBackground = true
         
-        manager.POST(UrlParam.ADD_FRIENDS_URL,
+        _ = manager.POST(UrlParam.ADD_FRIENDS_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
                         print("JSON: " + responseObject.description!)
                         let response = responseObject as! NSDictionary
                         self.setInfoFromCallback(response)
                         hud.removeFromSuperview()
-                        hud = nil
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 hud.removeFromSuperview()
-                hud = nil
         })
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
+    func setInfoFromCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         } else {
             if code == CodeParam.ERROR_FAIL_SEND_MESSAGE && count <= 5 {
                 sendFriendRequest()
             } else {
                 let errorMessage = ErrorMessageFactory.get(code)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                     if code == CodeParam.ERROR_SESSION_INVALID {
                         UserInfoManager.instance.logout(self)
                     }

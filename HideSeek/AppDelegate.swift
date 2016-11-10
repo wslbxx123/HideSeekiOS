@@ -27,44 +27,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var isBackgroundActivateApplication: Bool = false
     var tabBarController: ViewController!
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        tabBarController = storyboard.instantiateViewControllerWithIdentifier("main") as! ViewController
+        tabBarController = storyboard.instantiateViewController(withIdentifier: "main") as! ViewController
         self.window?.rootViewController = tabBarController
         
-        AMapServices.sharedServices().apiKey = MAP_KEY
+        AMapServices.shared().apiKey = MAP_KEY
         let initString = NSString.init(format: "appid=%@", AUDIO_KEY)
         IFlySpeechUtility.createUtility(initString as String)
         SMSSDK.registerApp(SMS_KEY, withSecret: SMS_SECRET)
         
         PushManager.instance.startApp(launchOptions)
-        Bugly.startWithAppId(BUGLY_ID)
+        Bugly.start(withAppId: BUGLY_ID)
         
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
         ShareSDK.registerApp(SHARE_KEY, activePlatforms: [
-            SSDKPlatformType.TypeSinaWeibo.rawValue,
-            SSDKPlatformType.TypeMail.rawValue,
-            SSDKPlatformType.TypeSMS.rawValue,
-            SSDKPlatformType.TypeCopy.rawValue,
-            SSDKPlatformType.TypeWechat.rawValue,
-            SSDKPlatformType.TypeQQ.rawValue,
-            SSDKPlatformType.TypeRenren.rawValue,
-            SSDKPlatformType.TypeGooglePlus.rawValue],
+            SSDKPlatformType.typeSinaWeibo.rawValue,
+            SSDKPlatformType.typeMail.rawValue,
+            SSDKPlatformType.typeSMS.rawValue,
+            SSDKPlatformType.typeCopy.rawValue,
+            SSDKPlatformType.typeWechat.rawValue,
+            SSDKPlatformType.typeQQ.rawValue,
+            SSDKPlatformType.typeRenren.rawValue,
+            SSDKPlatformType.typeGooglePlus.rawValue],
             onImport: { (platformType) in
                 switch(platformType) {
-                case SSDKPlatformType.TypeWechat:
+                case SSDKPlatformType.typeWechat:
                     ShareSDKConnector.connectWeChat(WXApi.classForCoder())
                     break;
-                case SSDKPlatformType.TypeQQ:
+                case SSDKPlatformType.typeQQ:
                     ShareSDKConnector.connectQQ(QQApiInterface.self, tencentOAuthClass: TencentOAuth.classForCoder())
                     break;
-                case SSDKPlatformType.TypeSinaWeibo:
+                case SSDKPlatformType.typeSinaWeibo:
                     ShareSDKConnector.connectWeibo(WeiboSDK.classForCoder())
                     break;
-                case SSDKPlatformType.TypeRenren:
+                case SSDKPlatformType.typeRenren:
                     ShareSDKConnector.connectRenren(RennClient.classForCoder())
                     break;
                 default:
@@ -72,30 +72,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }) { (platformType, appInfo) in
                 switch(platformType) {
-                case SSDKPlatformType.TypeSinaWeibo:
-                    appInfo
-                        .SSDKSetupSinaWeiboByAppKey("568898243",
+                case SSDKPlatformType.typeSinaWeibo:
+                    appInfo?
+                        .ssdkSetupSinaWeibo(byAppKey: "568898243",
                                                        appSecret: "38a4f8204cc784f81f9f0daaf31e02e3",
                                                        redirectUri: "http://www.sharesdk.cn",
                                                        authType: SSDKAuthTypeBoth)
                     break;
-                case SSDKPlatformType.TypeWechat:
-                    appInfo.SSDKSetupWeChatByAppId(self.SHARE_KEY,
+                case SSDKPlatformType.typeWechat:
+                    appInfo?.ssdkSetupWeChat(byAppId: self.SHARE_KEY,
                                                    appSecret: self.SHARE_SECRET)
                     break;
-                case SSDKPlatformType.TypeQQ:
-                    appInfo.SSDKSetupQQByAppId(self.QQ_SHARE_ID,
+                case SSDKPlatformType.typeQQ:
+                    appInfo?.ssdkSetupQQ(byAppId: self.QQ_SHARE_ID,
                                                appKey: self.QQ_SHARE_KEY,
                                                authType: SSDKAuthTypeBoth)
                     break;
-                case SSDKPlatformType.TypeRenren:
-                    appInfo.SSDKSetupRenRenByAppId("226427",
+                case SSDKPlatformType.typeRenren:
+                    appInfo?.ssdkSetupRenRen(byAppId: "226427",
                                                    appKey: "fc5b8aed373c4c27a05b712acba0f8c3",
                                                    secretKey: "f29df781abdd4f49beca5a2194676ca4",
                                                    authType: SSDKAuthTypeBoth)
                     break;
-                case SSDKPlatformType.TypeGooglePlus:
-                    appInfo.SSDKSetupGooglePlusByClientID("232554794995.apps.googleusercontent.com",
+                case SSDKPlatformType.typeGooglePlus:
+                    appInfo?.ssdkSetupGooglePlus(byClientID: "232554794995.apps.googleusercontent.com",
                                                           clientSecret: "PEdFgtrMw97aCvf0joQj7EMk",
                                                           redirectUri: "http://localhost")
                     break;
@@ -107,35 +107,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.Portrait
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
     }
     
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         if UserCache.instance.ifLogin() {
             XGPush.setAccount(UserCache.instance.user.phone as String)
             var deviceTokenStr = XGPush.registerDevice(deviceToken, successCallback: {
@@ -145,30 +145,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
             if deviceTokenStr == nil || deviceTokenStr == "" {
-                deviceTokenStr = deviceToken.description.stringByReplacingOccurrencesOfString("<", withString: "")
-                    .stringByReplacingOccurrencesOfString(">", withString: "")
-                    .stringByReplacingOccurrencesOfString(" ", withString: "")
+                deviceTokenStr = deviceToken.description.replacingOccurrences(of: "<", with: "")
+                    .replacingOccurrences(of: ">", with: "")
+                    .replacingOccurrences(of: " ", with: "")
             }
             
-            NSLog("[XGPush Demo]device token: " + deviceTokenStr);
+            NSLog("[XGPush Demo]device token: " + deviceTokenStr!);
             
-            tabBarController.updateChannelId(deviceTokenStr as String)
+            tabBarController.updateChannelId(deviceTokenStr! as String)
         }
         
         tabBarController.refreshSetting()
     }
     
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-        NSLog("DeviceToken 获取失败，原因：％@", error.description)
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        NSLog("DeviceToken 获取失败，原因：％@", error.localizedDescription)
     }
     
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         XGPush.handleReceiveNotification(userInfo)
         
         let result = userInfo as NSDictionary
         let type = BaseInfoUtil.getIntegerFromAnyObject(result["type"])
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let newFriendController = storyboard.instantiateViewControllerWithIdentifier("NewFriend") as! NewFriendController
+        let newFriendController = storyboard.instantiateViewController(withIdentifier: "NewFriend") as! NewFriendController
         
         switch(type) {
         case SEND_FRIEND_REQUEST:
@@ -182,31 +182,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             BadgeUtil.updateMeBadge()
             break;
         case LOGOUT:
-            UserInfoManager.instance.logout(tabBarController)
+            let topController = BaseInfoUtil.topViewController()
+            let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_SESSION_INVALID)
+            
+            HudToastFactory.show(errorMessage, view: topController!.view, type: HudToastFactory.MessageType.error, callback: {
+                UserInfoManager.instance.logout(topController!)
+            })
             break;
         default:
             break;
         }
         
-        if application.applicationState != UIApplicationState.Active
-            && application.applicationState == UIApplicationState.Background {
+        if application.applicationState != UIApplicationState.active
+            && application.applicationState == UIApplicationState.background {
             (tabBarController.selectedViewController! as! UINavigationController).pushViewController(newFriendController, animated: true)
         }
         
         NSLog("%@", userInfo)
     }
     
-    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         NSLog("接收本地通知啦")
     }
     
     // 此方法是 用户点击了通知，应用在前台 或者开启后台并且应用在后台时调起
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        completionHandler(UIBackgroundFetchResult.NewData)
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        completionHandler(UIBackgroundFetchResult.newData)
         let result = userInfo as NSDictionary
         let type = BaseInfoUtil.getIntegerFromAnyObject(result["type"])
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let newFriendController = storyboard.instantiateViewControllerWithIdentifier("NewFriend") as! NewFriendController
+        let newFriendController = storyboard.instantiateViewController(withIdentifier: "NewFriend") as! NewFriendController
         
         switch(type) {
         case SEND_FRIEND_REQUEST:
@@ -220,17 +225,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             BadgeUtil.updateMeBadge()
             break;
         case LOGOUT:
-            UserInfoManager.instance.logout(tabBarController)
+            let topController = BaseInfoUtil.topViewController()
+            let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_SESSION_INVALID)
+            
+            HudToastFactory.show(errorMessage, view: topController!.view, type: HudToastFactory.MessageType.error, callback: {
+                UserInfoManager.instance.logout(topController!)
+            })
             break;
         default:
             break;
         }
         
-        if application.applicationState == UIApplicationState.Inactive && !isBackgroundActivateApplication {
+        if application.applicationState == UIApplicationState.inactive && !isBackgroundActivateApplication {
             (tabBarController.selectedViewController! as! UINavigationController).pushViewController(newFriendController, animated: true)
         }
         
-        if application.applicationState == UIApplicationState.Background {
+        if application.applicationState == UIApplicationState.background {
             NSLog("background is Activated Application ")
             
             isBackgroundActivateApplication = true
@@ -240,23 +250,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     // 在 iOS8系统中，需要添加这个方法。通过新的 API 注册推送服务
-    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
         application.registerForRemoteNotifications()
     }
     
-    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
         if !UserCache.instance.ifLogin() {
             let errorMessage = NSLocalizedString("ERROR_NOT_LOGIN", comment: "Please login first")
-            HudToastFactory.show(errorMessage, view: tabBarController.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(errorMessage, view: tabBarController.view, type: HudToastFactory.MessageType.error)
             return true
         }
         
         if userActivity.webpageURL != nil {
             let query = userActivity.webpageURL?.query
             if query != nil {
-                let params = UrlUtil.getDictionaryFromQuery(query!)
+                let params = UrlUtil.getDictionaryFromQuery(query! as NSString)
                 
-                let goalIdStr = params.valueForKey("goal_id") as? NSString
+                let goalIdStr = params.value(forKey: "goal_id") as? NSString
                 if goalIdStr != nil {
                     let navigationController = tabBarController.viewControllers![0] as!UINavigationController
                     let homeController = navigationController.viewControllers[0] as! HomeController
@@ -268,14 +278,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true;
     }
 
-    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
         if url.host == "safepay" {
             AlipayManager.instance.checkAlipayResult(url)
         }
         return true
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         if url.host == "safepay" {
             AlipayManager.instance.checkAlipayResult(url)
         }

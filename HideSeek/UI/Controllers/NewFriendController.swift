@@ -19,12 +19,12 @@ class NewFriendController: UIViewController, AcceptDelegate {
         super.viewDidLoad()
         
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         self.automaticallyAdjustsScrollViewInsets = false
         newFriendTableView.acceptDelegate = self
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         BadgeUtil.clearMeBadge()
@@ -38,7 +38,7 @@ class NewFriendController: UIViewController, AcceptDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func setFriendRequest(userInfo: NSDictionary, isFriend: Bool) {
+    func setFriendRequest(_ userInfo: NSDictionary, isFriend: Bool) {
         let friendInfo = userInfo["object"] as! NSDictionary
         var message: NSString = ""
         
@@ -54,8 +54,8 @@ class NewFriendController: UIViewController, AcceptDelegate {
         NewFriendCache.instance.setFriend(friendInfo, message: message, isFriend: isFriend)
     }
     
-    func acceptFriend(friendId: Int64) {
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+    func acceptFriend(_ friendId: Int64) {
+        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
         hud.dimBackground = true
         
@@ -67,17 +67,15 @@ class NewFriendController: UIViewController, AcceptDelegate {
                         print("JSON: " + responseObject.description!)
                         self.setInfoFromCallback(response, friendId: friendId)
                         hud.removeFromSuperview()
-                        hud = nil
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
                 hud.removeFromSuperview()
-                hud = nil
         })
     }
     
-    func setInfoFromCallback(response: NSDictionary, friendId: Int64) {
+    func setInfoFromCallback(_ response: NSDictionary, friendId: Int64) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -87,7 +85,7 @@ class NewFriendController: UIViewController, AcceptDelegate {
             newFriendTableView.reloadData()
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }

@@ -12,10 +12,10 @@ extension UIWindow {
         return getVisibleViewControllerFrom(rootViewController!)
     }
     
-    func getVisibleViewControllerFrom(viewController: UIViewController) -> UIViewController {
-        if viewController.isKindOfClass(UINavigationController) {
+    func getVisibleViewControllerFrom(_ viewController: UIViewController) -> UIViewController {
+        if viewController.isKind(of: UINavigationController.self) {
             return getVisibleViewControllerFrom((viewController as! UINavigationController).visibleViewController!)
-        } else if viewController.isKindOfClass(UITabBarController) {
+        } else if viewController.isKind(of: UITabBarController.self) {
             return getVisibleViewControllerFrom((viewController as! UITabBarController).selectedViewController!)
         } else {
             if (viewController.presentedViewController != nil) {

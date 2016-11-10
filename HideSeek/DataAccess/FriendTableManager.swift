@@ -29,16 +29,16 @@ class FriendTableManager {
     
     var version: Int64 {
         get{
-            let tempVersion = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.FRIEND_VERSION) as? NSNumber
+            let tempVersion = UserDefaults.standard.object(forKey: UserDefaultParam.FRIEND_VERSION) as? NSNumber
             
             if(tempVersion == nil) {
                 return 0
             }
-            return (tempVersion?.longLongValue)!
+            return (tempVersion?.int64Value)!
         }
     }
     
-    private init() {
+    fileprivate init() {
         do {
             database = DatabaseManager.instance.database
             
@@ -71,21 +71,21 @@ class FriendTableManager {
             for item in try database.prepare(friendTable.order(pinyin.asc)) {
                 let user = User(
                     pkId: item[accountId],
-                    phone: item[phone],
-                    nickname: item[nickname],
-                    registerDateStr: item[registerDate],
-                    photoUrl: item[photoUrl],
-                    smallPhotoUrl: item[smallPhotoUrl],
+                    phone: item[phone] as NSString,
+                    nickname: item[nickname] as NSString,
+                    registerDateStr: item[registerDate] as NSString,
+                    photoUrl: item[photoUrl] as NSString?,
+                    smallPhotoUrl: item[smallPhotoUrl] as NSString?,
                     sex: User.SexEnum(rawValue: item[sex])!,
-                    region: (item[region] == nil ? nil : item[region]),
+                    region: item[region] as NSString?,
                     role: User.RoleEnum(rawValue: item[role])!,
                     version: item[pullVersion],
-                    pinyin: item[pinyin]!)
+                    pinyin: item[pinyin]! as NSString)
                 
                 if item[alias] != nil {
-                    user.alias = item[alias]!
+                    user.alias = item[alias]! as NSString
                 }
-                friendList.addObject(user)
+                friendList.add(user)
             }
         }
         catch let error as NSError {
@@ -96,27 +96,27 @@ class FriendTableManager {
         return friendList
     }
     
-    func searchFriends(keyword: String) -> NSMutableArray {
+    func searchFriends(_ keyword: String) -> NSMutableArray {
         let friendList = NSMutableArray()
         do {
             for item in try database.prepare(friendTable.filter(nickname.like("%\(keyword)%") || pinyin.like("%\(keyword)%") || alias.like("%\(keyword)%")).order(pinyin.asc)) {
                 let user = User(
                     pkId: item[accountId],
-                    phone: item[phone],
-                    nickname: item[nickname],
-                    registerDateStr: item[registerDate],
-                    photoUrl: item[photoUrl],
-                    smallPhotoUrl: item[smallPhotoUrl],
+                    phone: item[phone] as NSString,
+                    nickname: item[nickname] as NSString,
+                    registerDateStr: item[registerDate] as NSString,
+                    photoUrl: item[photoUrl] as NSString?,
+                    smallPhotoUrl: item[smallPhotoUrl] as NSString?,
                     sex: User.SexEnum(rawValue: item[sex])!,
-                    region: (item[region] == nil ? nil : item[region]),
+                    region: item[region] as NSString?,
                     role: User.RoleEnum(rawValue: item[role])!,
                     version: item[pullVersion],
-                    pinyin: item[pinyin]!)
+                    pinyin: item[pinyin]! as NSString)
                 
                 if item[alias] != nil {
-                    user.alias = item[alias]!
+                    user.alias = item[alias]! as NSString
                 }
-                friendList.addObject(user)
+                friendList.add(user)
             }
         }
         catch let error as NSError {
@@ -127,12 +127,12 @@ class FriendTableManager {
         return friendList
     }
     
-    func updateFriends(version: Int64, friendList: NSArray) {
+    func updateFriends(_ version: Int64, friendList: NSArray) {
         do {
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:version), forKey: UserDefaultParam.FRIEND_VERSION)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(NSNumber(value: version as Int64), forKey: UserDefaultParam.FRIEND_VERSION)
+            UserDefaults.standard.synchronize()
             
-            let dateFormatter = NSDateFormatter()
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             
             for friendItem in friendList {
@@ -142,7 +142,7 @@ class FriendTableManager {
                     .update(
                         phone <- (friendInfo.phone as String),
                         nickname <- (friendInfo.nickname as String),
-                        registerDate <- dateFormatter.stringFromDate(friendInfo.registerDate),
+                        registerDate <- dateFormatter.string(from: friendInfo.registerDate),
                         photoUrl <- (friendInfo.photoUrl as String),
                         smallPhotoUrl <- (friendInfo.smallPhotoUrl as String),
                         sex <- friendInfo.sex.rawValue,
@@ -156,7 +156,7 @@ class FriendTableManager {
                     let insert = friendTable.insert(
                         phone <- (friendInfo.phone as String),
                         nickname <- (friendInfo.nickname as String),
-                        registerDate <- dateFormatter.stringFromDate(friendInfo.registerDate),
+                        registerDate <- dateFormatter.string(from: friendInfo.registerDate),
                         photoUrl <- (friendInfo.photoUrl as String),
                         smallPhotoUrl <- (friendInfo.smallPhotoUrl as String),
                         sex <- friendInfo.sex.rawValue,
@@ -178,7 +178,7 @@ class FriendTableManager {
         }
     }
     
-    func removeFriend(friendId: Int64) {
+    func removeFriend(_ friendId: Int64) {
         do {
             try database.run(friendTable.filter(accountId == friendId)
                 .delete())

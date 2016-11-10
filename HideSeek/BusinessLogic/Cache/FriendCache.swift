@@ -21,7 +21,7 @@ class FriendCache : BaseCache<User> {
         return cacheList
     }
     
-    private override init() {
+    fileprivate override init() {
         super.init()
         friendTableManager = FriendTableManager.instance
     }
@@ -31,30 +31,30 @@ class FriendCache : BaseCache<User> {
         
         for i in 0...cacheList.count - 1 {
             let friend = cacheList[i] as! User
-            let currentStr = friend.pinyin.substringToIndex(1).uppercaseString
+            let currentStr = friend.pinyin.substring(to: 1).uppercased()
             
             for char in currentStr.utf8  {
                 if (char <= 64 || char >= 91) {
-                    tempFriendList.addObject(friend)
+                    tempFriendList.add(friend)
                     break;
                 }
             }
         }
         
-        cacheList.removeObjectsInArray(tempFriendList as [AnyObject])
+        cacheList.removeObjects(in: tempFriendList as [AnyObject])
         
         if tempFriendList.count > 0 {
-            cacheList.addObjectsFromArray(tempFriendList as [AnyObject])
+            cacheList.addObjects(from: tempFriendList as [AnyObject])
         }
     }
     
-    func setFriends(friendInfo: NSDictionary!) {
+    func setFriends(_ friendInfo: NSDictionary!) {
         saveFriends(friendInfo)
         
         cacheList = friendTableManager.searchFriends()
     }
     
-    func saveFriends(result: NSDictionary!) {
+    func saveFriends(_ result: NSDictionary!) {
         let list = NSMutableArray()
         let version = (result["version"] as! NSString).longLongValue
         let friendArray = result["friends"] as! NSArray
@@ -70,22 +70,22 @@ class FriendCache : BaseCache<User> {
                 registerDateStr: friendInfo["register_date"] as! NSString,
                 photoUrl: friendInfo["photo_url"] as? NSString,
                 smallPhotoUrl: friendInfo["small_photo_url"] as? NSString,
-                sex: User.SexEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(friendInfo["sex"]))!,
+                sex: User.SexEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(friendInfo["sex"] as AnyObject))!,
                 region: friendInfo["region"] as? NSString,
-                role: User.RoleEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(friendInfo["role"]))!,
+                role: User.RoleEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(friendInfo["role"] as AnyObject))!,
                 version: (friendInfo["version"] as! NSString).longLongValue,
                 pinyin: NSString(string: pinyinStr))
             
-            if (friendInfo.objectForKey("remark") != nil && !friendInfo.objectForKey("remark")!.isKindOfClass(NSNull)) {
+            if (friendInfo.object(forKey: "remark") != nil && !(friendInfo.object(forKey: "remark")! as AnyObject).isKind(of: NSNull.self)) {
                 user.alias = friendInfo["remark"] as! NSString
             }
-            list.addObject(user)
+            list.add(user)
         }
         
         friendTableManager.updateFriends(version, friendList: list)
     }
     
-    func removeFriend(friend: User) {
+    func removeFriend(_ friend: User) {
         friendTableManager.removeFriend(friend.pkId)
         
         cacheList = friendTableManager.searchFriends()

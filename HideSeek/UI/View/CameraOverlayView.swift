@@ -50,7 +50,7 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     var hideBottomBarDelegate: HideBottomBarDelegate!
     var step: Int = 0
     
-    private var _endGoal: Goal! = nil
+    fileprivate var _endGoal: Goal! = nil
     var endGoal: Goal! {
         get {
             return _endGoal
@@ -61,7 +61,7 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
         }
     }
     
-    @IBAction func getBtnClicked(sender: AnyObject) {
+    @IBAction func getBtnClicked(_ sender: AnyObject) {
         if ifGoalShow() {
             switch(_endGoal.type) {
             case .mushroom:
@@ -77,39 +77,39 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
         }
     }
     
-    @IBAction func refreshBtnClicked(sender: AnyObject) {
+    @IBAction func refreshBtnClicked(_ sender: AnyObject) {
         refreshMapDelegate?.refresh()
     }
     
-    @IBAction func setBombClicked(sender: AnyObject) {
+    @IBAction func setBombClicked(_ sender: AnyObject) {
         setBombDelegate?.setBomb()
     }
     
-    @IBAction func monsterGuideClicked(sender: AnyObject) {
+    @IBAction func monsterGuideClicked(_ sender: AnyObject) {
         guideMonsterDelegate?.guideMonster()
     }
     
-    @IBAction func guideBtnClicked(sender: AnyObject) {
+    @IBAction func guideBtnClicked(_ sender: AnyObject) {
         guideDelegate?.guideMe()
     }
     
-    @IBAction func bombNumClicked(sender: AnyObject) {
+    @IBAction func bombNumClicked(_ sender: AnyObject) {
         setBombDelegate?.setBomb()
     }
     
-    @IBAction func warningBtnClicked(sender: AnyObject) {
+    @IBAction func warningBtnClicked(_ sender: AnyObject) {
         warningDelegate?.goToWarning()
     }
     
-    @IBAction func shareBtnClicked(sender: AnyObject) {
+    @IBAction func shareBtnClicked(_ sender: AnyObject) {
         shareDelegate?.share()
     }
     
-    @IBAction func nextStepBtnClicked(sender: AnyObject) {
+    @IBAction func nextStepBtnClicked(_ sender: AnyObject) {
         refreshGuide()
     }
     
-    @IBAction func startBtnClicked(sender: AnyObject) {
+    @IBAction func startBtnClicked(_ sender: AnyObject) {
         refreshGuide()
     }
     
@@ -121,7 +121,7 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
         super.init(coder: aDecoder)
     }
     
-    func getDuration(endGoal: Goal) -> Double{
+    func getDuration(_ endGoal: Goal) -> Double{
         switch(endGoal.type) {
         case .bomb:
             return 3
@@ -134,9 +134,9 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
         }
     }
     
-    func addMapView(mapViewDelegate: MAMapViewDelegate) {
+    func addMapView(_ mapViewDelegate: MAMapViewDelegate) {
         if mapView == nil {
-            mapView = MAMapView(frame: CGRectMake(0, 0, CGRectGetWidth(mapUIView.bounds), CGRectGetHeight(mapUIView.bounds)))
+            mapView = MAMapView(frame: CGRect(x: 0, y: 0, width: mapUIView.bounds.width, height: mapUIView.bounds.height))
         } else {
             mapView.removeFromSuperview()
         }
@@ -152,17 +152,17 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
         swordImageView.hitMonsterDelegate = self
         
         print("goalImageView show!!!!!!!!'")
-        goalImageView.hidden = false
+        goalImageView.isHidden = false
         goalImageView.startAnimating()
     }
     
     func hideGoal() {
-        goalImageView.hidden = true
+        goalImageView.isHidden = true
         goalImageView.stopAnimating()
     }
     
     func ifGoalShow() -> Bool {
-        return !goalImageView.hidden
+        return !goalImageView.isHidden
     }
     
     func hitMonster() {
@@ -196,66 +196,66 @@ class CameraOverlayView: UIView, HitMonsterDelegate {
     }
     
     func showMapGuide() {
-        self.guideView.hidden = false
-        self.nextStepBtn.hidden = false
-        self.mapGuideImageView.hidden = false
-        self.getGuideImageView.hidden = true
-        self.getMonsterGuideImageView.hidden = true
-        self.boxGuideImageView.hidden = true
-        self.refreshGuideImageView.hidden = true
-        self.refreshGuideArrowImageView.hidden = true
-        self.startBtn.hidden = true
+        self.guideView.isHidden = false
+        self.nextStepBtn.isHidden = false
+        self.mapGuideImageView.isHidden = false
+        self.getGuideImageView.isHidden = true
+        self.getMonsterGuideImageView.isHidden = true
+        self.boxGuideImageView.isHidden = true
+        self.refreshGuideImageView.isHidden = true
+        self.refreshGuideArrowImageView.isHidden = true
+        self.startBtn.isHidden = true
     }
     
     func showGetGuide() {
-        self.guideView.hidden = false
-        self.nextStepBtn.hidden = false
-        self.mapGuideImageView.hidden = true
-        self.getGuideImageView.hidden = false
-        self.getMonsterGuideImageView.hidden = true
-        self.boxGuideImageView.hidden = true
-        self.refreshGuideImageView.hidden = true
-        self.refreshGuideArrowImageView.hidden = true
-        self.startBtn.hidden = true
+        self.guideView.isHidden = false
+        self.nextStepBtn.isHidden = false
+        self.mapGuideImageView.isHidden = true
+        self.getGuideImageView.isHidden = false
+        self.getMonsterGuideImageView.isHidden = true
+        self.boxGuideImageView.isHidden = true
+        self.refreshGuideImageView.isHidden = true
+        self.refreshGuideArrowImageView.isHidden = true
+        self.startBtn.isHidden = true
     }
     
     func showGetMonsterGuide() {
-        self.guideView.hidden = false
-        self.nextStepBtn.hidden = false
-        self.mapGuideImageView.hidden = true
-        self.getGuideImageView.hidden = true
-        self.getMonsterGuideImageView.hidden = false
-        self.boxGuideImageView.hidden = false
-        self.refreshGuideImageView.hidden = true
-        self.refreshGuideArrowImageView.hidden = true
-        self.startBtn.hidden = true
+        self.guideView.isHidden = false
+        self.nextStepBtn.isHidden = false
+        self.mapGuideImageView.isHidden = true
+        self.getGuideImageView.isHidden = true
+        self.getMonsterGuideImageView.isHidden = false
+        self.boxGuideImageView.isHidden = false
+        self.refreshGuideImageView.isHidden = true
+        self.refreshGuideArrowImageView.isHidden = true
+        self.startBtn.isHidden = true
     }
     
     func showRefreshGuide() {
-        self.guideView.hidden = false
-        self.nextStepBtn.hidden = true
-        self.mapGuideImageView.hidden = true
-        self.getGuideImageView.hidden = true
-        self.getMonsterGuideImageView.hidden = true
-        self.boxGuideImageView.hidden = true
-        self.refreshGuideImageView.hidden = false
-        self.refreshGuideArrowImageView.hidden = false
-        self.startBtn.hidden = false
+        self.guideView.isHidden = false
+        self.nextStepBtn.isHidden = true
+        self.mapGuideImageView.isHidden = true
+        self.getGuideImageView.isHidden = true
+        self.getMonsterGuideImageView.isHidden = true
+        self.boxGuideImageView.isHidden = true
+        self.refreshGuideImageView.isHidden = false
+        self.refreshGuideArrowImageView.isHidden = false
+        self.startBtn.isHidden = false
     }
     
     func finishGuide() {
-        self.guideView.hidden = true
-        self.nextStepBtn.hidden = true
-        self.mapGuideImageView.hidden = true
-        self.getGuideImageView.hidden = true
-        self.getMonsterGuideImageView.hidden = true
-        self.boxGuideImageView.hidden = true
-        self.refreshGuideImageView.hidden = true
-        self.refreshGuideArrowImageView.hidden = true
-        self.startBtn.hidden = true
+        self.guideView.isHidden = true
+        self.nextStepBtn.isHidden = true
+        self.mapGuideImageView.isHidden = true
+        self.getGuideImageView.isHidden = true
+        self.getMonsterGuideImageView.isHidden = true
+        self.boxGuideImageView.isHidden = true
+        self.refreshGuideImageView.isHidden = true
+        self.refreshGuideArrowImageView.isHidden = true
+        self.startBtn.isHidden = true
         
-        NSUserDefaults.standardUserDefaults().setObject(BaseInfoUtil.getAppVersion(), forKey: UserDefaultParam.APP_VERSION)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.set(BaseInfoUtil.getAppVersion(), forKey: UserDefaultParam.APP_VERSION)
+        UserDefaults.standard.synchronize()
         hideBottomBarDelegate?.hideBottomBar()
     }
 }

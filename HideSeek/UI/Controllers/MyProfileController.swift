@@ -37,7 +37,7 @@ class MyProfileController: UIViewController, TouchDownDelegate {
         setProfileInfo()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         setProfileInfo()
@@ -65,20 +65,20 @@ class MyProfileController: UIViewController, TouchDownDelegate {
     
     func setProfileInfo() {
         let user = UserCache.instance.user
-        photoImageView.setWebImage(user.smallPhotoUrl as String, defaultImage: "default_photo", isCache: true)
-        nicknameLabel.text = user.nickname as String
-        phoneLabel.text = user.phone as String
-        roleLabel.text = user.roleName
-        sexLabel.text = user.sexName
+        photoImageView.setWebImage(user?.smallPhotoUrl as! String, defaultImage: "default_photo", isCache: true)
+        nicknameLabel.text = user?.nickname as! String
+        phoneLabel.text = user?.phone as! String
+        roleLabel.text = user?.roleName
+        sexLabel.text = user?.sexName
         
-        if user.region == "" {
+        if user?.region == "" {
             regionLabel.text = NSLocalizedString("NOT_SET", comment: "Not Set")
         } else {
-            regionLabel.text = user.region as String
+            regionLabel.text = user?.region as! String
         }
     }
     
-    func touchDown(tag: Int) {
+    func touchDown(_ tag: Int) {
         switch(tag) {
         case TAG_PHOTO_VIEW:
             updatePhoto()
@@ -99,24 +99,24 @@ class MyProfileController: UIViewController, TouchDownDelegate {
     
     func updatePhoto() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        photoController = storyboard.instantiateViewControllerWithIdentifier("photo") as! PhotoController
+        photoController = storyboard.instantiateViewController(withIdentifier: "photo") as! PhotoController
         let user = UserCache.instance.user
-        photoController.photoUrl = user.photoUrl as String
-        photoController.smallPhotoUrl = user.smallPhotoUrl as String
+        photoController.photoUrl = user?.photoUrl as! String
+        photoController.smallPhotoUrl = user?.smallPhotoUrl as! String
         photoController.ifEdit = true
         self.navigationController?.pushViewController(photoController, animated: true)
     }
     
     func updateNickname() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        updateNicknameController = storyboard.instantiateViewControllerWithIdentifier("updateNickname") as! UpdateNicknameController
+        updateNicknameController = storyboard.instantiateViewController(withIdentifier: "updateNickname") as! UpdateNicknameController
         updateNicknameController.value = UserCache.instance.user.nickname as String
         self.navigationController?.pushViewController(updateNicknameController, animated: true)
     }
     
     func updateSex() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        updateSexController = storyboard.instantiateViewControllerWithIdentifier("updateSex") as! UpdateSexController
+        updateSexController = storyboard.instantiateViewController(withIdentifier: "updateSex") as! UpdateSexController
         updateSexController.sex = UserCache.instance.user.sex
         updateSexController.sexName = UserCache.instance.user.sexName
         self.navigationController?.pushViewController(updateSexController, animated: true)
@@ -124,11 +124,11 @@ class MyProfileController: UIViewController, TouchDownDelegate {
 
     func updateRegion() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        regionController = storyboard.instantiateViewControllerWithIdentifier("region") as! RegionController
+        regionController = storyboard.instantiateViewController(withIdentifier: "region") as! RegionController
         
         regionController.callBack { (name) in
             self.regionLabel.text = name
-            UserCache.instance.user.region = name
+            UserCache.instance.user.region = name as NSString
         }
         self.navigationController?.pushViewController(regionController, animated: true)
     }

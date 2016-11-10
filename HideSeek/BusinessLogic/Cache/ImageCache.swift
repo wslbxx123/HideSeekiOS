@@ -7,12 +7,12 @@
 //
 
 class ImageCache: NSObject {
-    class func readCacheFromUrl(url: String)->NSData? {
-        var data: NSData?
+    class func readCacheFromUrl(_ url: String)->Data? {
+        var data: Data?
         do {
             let path: String = try getFullCachePathFromUrl(url)
-            if NSFileManager.defaultManager().fileExistsAtPath(path) {
-                data = try NSData(contentsOfFile: path, options: NSDataReadingOptions.DataReadingMappedAlways)
+            if FileManager.default.fileExists(atPath: path) {
+                data = try Data(contentsOf: URL(fileURLWithPath: path), options: NSData.ReadingOptions.alwaysMapped)
             }
         } catch let error as NSError{
             NSLog("\(error.localizedDescription)")
@@ -22,34 +22,34 @@ class ImageCache: NSObject {
         return data
     }
     
-    class func writeCacheToUrl(url: String, data: NSData){
+    class func writeCacheToUrl(_ url: String, data: Data){
         do {
             let path: String = try getFullCachePathFromUrl(url)
-            print(data.writeToFile(path, atomically: true))
+            print((try? data.write(to: URL(fileURLWithPath: path), options: [.atomic])) != nil)
         } catch let error as NSError{
             NSLog("\(error.localizedDescription)")
         }
         
     }
     
-    class func getFullCachePathFromUrl(url: String) throws -> String {
-        var cachePaths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory,NSSearchPathDomainMask.AllDomainsMask, true)
+    class func getFullCachePathFromUrl(_ url: String) throws -> String {
+        var cachePaths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory,FileManager.SearchPathDomainMask.allDomainsMask, true)
         var cachePath = cachePaths[0] as String
-        cachePath = cachePath.stringByAppendingFormat("/%@", NSBundle.mainBundle().bundleIdentifier! + "/image")
-        let fileManager: NSFileManager = NSFileManager.defaultManager()
+        cachePath = cachePath.appendingFormat("/%@", Bundle.main.bundleIdentifier! + "/image")
+        let fileManager: FileManager = FileManager.default
         
-        if !(fileManager.fileExistsAtPath(cachePath)) {
-            try fileManager.createDirectoryAtPath(cachePath, withIntermediateDirectories: true, attributes: nil)
+        if !(fileManager.fileExists(atPath: cachePath)) {
+            try fileManager.createDirectory(atPath: cachePath, withIntermediateDirectories: true, attributes: nil)
         }
         
         var newURL:NSString
-        newURL = getFileNameFromUrl(url)
-        cachePath = cachePath.stringByAppendingFormat("/%@", newURL)
+        newURL = getFileNameFromUrl(url) as NSString
+        cachePath = cachePath.appendingFormat("/%@", newURL)
         return cachePath
     }
     
-    class func getFileNameFromUrl(url: String) -> String{
-        let splitedArray = url.componentsSeparatedByString("/")
+    class func getFileNameFromUrl(_ url: String) -> String{
+        let splitedArray = url.components(separatedBy: "/")
         let fileName = splitedArray[splitedArray.count - 1]
         return fileName
         

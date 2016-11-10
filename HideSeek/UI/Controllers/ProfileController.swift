@@ -23,21 +23,21 @@ class ProfileController: UIViewController {
     
     var user: User!
     
-    @IBAction func goToRemark(sender: AnyObject) {
+    @IBAction func goToRemark(_ sender: AnyObject) {
         if user.isFriend {
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
-            let remarkController = storyboard.instantiateViewControllerWithIdentifier("Remark") as! RemarkController
+            let remarkController = storyboard.instantiateViewController(withIdentifier: "Remark") as! RemarkController
             remarkController.aliasValue = user.alias as String
             remarkController.friend = user
             self.navigationController?.pushViewController(remarkController, animated: true)
         }
     }
     
-    @IBAction func addFriendBtn(sender: AnyObject) {
+    @IBAction func addFriendBtn(_ sender: AnyObject) {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let friendVerificationController = storyboard.instantiateViewControllerWithIdentifier("friendVerification") as! FriendVerificationController
+        let friendVerificationController = storyboard.instantiateViewController(withIdentifier: "friendVerification") as! FriendVerificationController
         friendVerificationController.user = user
-        self.presentViewController(friendVerificationController, animated: true, completion: nil)
+        self.present(friendVerificationController, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -58,7 +58,7 @@ class ProfileController: UIViewController {
         addFriendBtn.layer.cornerRadius = 5
         addFriendBtn.layer.masksToBounds = true
         if user.isFriend {
-            addFriendBtn.enabled = false
+            addFriendBtn.isEnabled = false
         }
         profileScrollView.delaysContentTouches = false
         photoImageView.layer.cornerRadius = photoImageView.frame.height / 2
@@ -67,30 +67,30 @@ class ProfileController: UIViewController {
         nameLabel.text = user.nickname as String
         
         if user.sexImageName.isEmpty {
-            sexImageView.hidden = true
+            sexImageView.isHidden = true
         } else {
             sexImageView.image = UIImage(named: user.sexImageName)
-            sexImageView.hidden = false
+            sexImageView.isHidden = false
         }
         regionLabel.text = user.region as String
         raceLabel.text = user.roleName
         roleImageView.image = UIImage(named: user.roleImageName)
         
         if user.isFriend {
-            remarkLabel.hidden = false
-            rightArrowImageView.hidden = false
+            remarkLabel.isHidden = false
+            rightArrowImageView.isHidden = false
             
             if user.alias != "" {
                 nameLabel.text = user.alias as String
-                nickNameLabel.hidden = false
-                nickNameLabel.text = NSString(format: NSLocalizedString("NAME", comment: "Name: %@"), user.nickname) as String
+                nickNameLabel.isHidden = false
+                nickNameLabel.text = NSString(format: NSLocalizedString("NAME", comment: "Name: %@") as NSString, user.nickname) as String
             } else {
-                nickNameLabel.hidden = true
+                nickNameLabel.isHidden = true
             }
         } else {
-            remarkLabel.hidden = true
-            rightArrowImageView.hidden = true
-            nickNameLabel.hidden = true
+            remarkLabel.isHidden = true
+            rightArrowImageView.isHidden = true
+            nickNameLabel.isHidden = true
         }
     }
 }

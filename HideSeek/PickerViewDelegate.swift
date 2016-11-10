@@ -7,5 +7,5 @@
 //
 
 protocol PickerViewDelegate {
-    func pickerViewSelected(row: Int, item: AnyObject)
+    func pickerViewSelected(_ row: Int, item: AnyObject)
 }

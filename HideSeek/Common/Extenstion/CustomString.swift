@@ -7,9 +7,9 @@
 //
 
 extension String {
-    func compareTo (otherStr: String, separator: String) -> Int {
-        let strArray = self.componentsSeparatedByString(separator)
-        let otherStrArray = otherStr.componentsSeparatedByString(separator)
+    func compareTo (_ otherStr: String, separator: String) -> Int {
+        let strArray = self.components(separatedBy: separator)
+        let otherStrArray = otherStr.components(separatedBy: separator)
         
         let length = strArray.count > otherStrArray.count ?
             otherStrArray.count : strArray.count

@@ -16,19 +16,19 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
     var internalController: InternalController!
     var externalController: ExternalController!
     
-    @IBAction func backBtnClicked(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func backBtnClicked(_ sender: AnyObject) {
+        self.navigationController?.popViewController(animated: true)
         self.internalController = nil
         self.externalController = nil
     }
     
-    @IBAction func internalBtnClicked(sender: AnyObject) {
+    @IBAction func internalBtnClicked(_ sender: AnyObject) {
         showInternal()
     }
     
-    @IBAction func externalBtnClicked(sender: AnyObject) {
-        internalBtn.selected = false
-        externalBtn.selected = true
+    @IBAction func externalBtnClicked(_ sender: AnyObject) {
+        internalBtn.isSelected = false
+        externalBtn.isSelected = true
         
         self.addChildViewController(externalController)
         contentView.addSubview(externalController.view)
@@ -43,38 +43,38 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
         externalBtn.setImageUpTitleDown()
         
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        internalController = storyboard.instantiateViewControllerWithIdentifier("internal") as! InternalController
-        externalController = storyboard.instantiateViewControllerWithIdentifier("external") as! ExternalController
+        internalController = storyboard.instantiateViewController(withIdentifier: "internal") as! InternalController
+        externalController = storyboard.instantiateViewController(withIdentifier: "external") as! ExternalController
         internalController.selectRegionDelegate = self
         externalController.selectRegionDelegate = self
         internalController.showToastDelegate = self
         externalController.showToastDelegate = self
         
-        internalController.view.layer.frame = CGRectMake(
-            internalController.view.layer.frame.minX,
-            internalController.view.layer.frame.minY,
-            internalController.view.layer.frame.width,
-            internalController.view.layer.frame.height - 120)
-        externalController.view.layer.frame = CGRectMake(
-            externalController.view.layer.frame.minX,
-            externalController.view.layer.frame.minY,
-            externalController.view.layer.frame.width,
-            externalController.view.layer.frame.height - 120)
+        internalController.view.layer.frame = CGRect(
+            x: internalController.view.layer.frame.minX,
+            y: internalController.view.layer.frame.minY,
+            width: internalController.view.layer.frame.width,
+            height: internalController.view.layer.frame.height - 120)
+        externalController.view.layer.frame = CGRect(
+            x: externalController.view.layer.frame.minX,
+            y: externalController.view.layer.frame.minY,
+            width: externalController.view.layer.frame.width,
+            height: externalController.view.layer.frame.height - 120)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showInternal()
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = false
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBarHidden = false
+        self.navigationController?.isNavigationBarHidden = false
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
 
@@ -84,8 +84,8 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
     }
     
     func showInternal() {
-        internalBtn.selected = true
-        externalBtn.selected = false
+        internalBtn.isSelected = true
+        externalBtn.isSelected = false
         
         self.addChildViewController(internalController)
         contentView.addSubview(internalController.view)
@@ -93,28 +93,28 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
         externalController.removeFromParentViewController()
     }
     
-    func regionSelected(name: String) {
-        self.navigationController?.popViewControllerAnimated(true)
+    func regionSelected(_ name: String) {
+        self.navigationController?.popViewController(animated: true)
         self.internalController = nil
         self.externalController = nil
-        self.closure(name: name)
+        self.closure(name)
     }
     
-    typealias Closure = (name: String) ->Void
+    typealias Closure = (_ name: String) ->Void
     var closure: Closure!
     
-    func callBack(closure: Closure!) {
+    func callBack(_ closure: Closure!) {
         self.closure = closure
     }
     
-    func showToast(text: String) {
-        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+    func showToast(_ text: String) {
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.labelText = text
-        hud.labelFont = UIFont.systemFontOfSize(30)
-        hud.labelColor = UIColor.whiteColor()
+        hud.labelFont = UIFont.systemFont(ofSize: 30)
+        hud.labelColor = UIColor.white
         hud.cornerRadius = 0
-        hud.mode = MBProgressHUDMode.Text
-        hud.userInteractionEnabled = false
+        hud.mode = MBProgressHUDMode.text
+        hud.isUserInteractionEnabled = false
         hud.removeFromSuperViewOnHide = true;
         hud.hide(true, afterDelay: 1)
     }

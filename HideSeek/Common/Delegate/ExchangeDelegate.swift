@@ -7,5 +7,5 @@
 //
 
 protocol ExchangeDelegate {
-    func exchange(reward: Reward)
+    func exchange(_ reward: Reward)
 }

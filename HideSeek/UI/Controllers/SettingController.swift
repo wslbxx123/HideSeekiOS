@@ -18,28 +18,28 @@ class SettingController: UIViewController {
     @IBOutlet weak var cacheSizeLabel: UILabel!
     var manager: CustomRequestManager!
     
-    @IBAction func settingBackBtnClicked(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func settingBackBtnClicked(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        logOutView.addTarget(self, action: #selector(SettingController.logOutClicked), forControlEvents: UIControlEvents.TouchDown)
+        logOutView.addTarget(self, action: #selector(SettingController.logOutClicked), for: UIControlEvents.touchDown)
         self.automaticallyAdjustsScrollViewInsets = false
         settingScrollView.delaysContentTouches = false
         let rateGesture = UITapGestureRecognizer(target: self, action: #selector(SettingController.rateHideSeek))
-        rateHideSeekView.userInteractionEnabled = true
+        rateHideSeekView.isUserInteractionEnabled = true
         rateHideSeekView.addGestureRecognizer(rateGesture)
         let clearCacheGesture = UITapGestureRecognizer(target: self, action: #selector(SettingController.clearCache))
-        clearCacheView.userInteractionEnabled = true
+        clearCacheView.isUserInteractionEnabled = true
         clearCacheView.addGestureRecognizer(clearCacheGesture)
         cacheSizeLabel.text = BaseInfoUtil.cachefileSize()
         let goToManualGesture = UITapGestureRecognizer(target: self, action: #selector(SettingController.goToManual))
-        manualView.userInteractionEnabled = true
+        manualView.isUserInteractionEnabled = true
         manualView.addGestureRecognizer(goToManualGesture)
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,34 +48,34 @@ class SettingController: UIViewController {
     }
     
     func goToManual() {
-        UIApplication.sharedApplication().openURL(NSURL(string: UrlParam.MANUAL_URL)!)
+        UIApplication.shared.openURL(URL(string: UrlParam.MANUAL_URL)!)
     }
     
     func rateHideSeek() {
-        let systemVersion: NSString = UIDevice.currentDevice().systemVersion
+        let systemVersion: NSString = UIDevice.current.systemVersion as NSString
         
         if systemVersion.floatValue != 7.0 {
-            UIApplication.sharedApplication().openURL(NSURL(string: UrlParam.APP_STORE_REVIEW_URL)!)
+            UIApplication.shared.openURL(URL(string: UrlParam.APP_STORE_REVIEW_URL)!)
         } else {
-            UIApplication.sharedApplication().openURL(NSURL(string: UrlParam.IOS7_APP_STORE_REVIEW_URL)!)
+            UIApplication.shared.openURL(URL(string: UrlParam.IOS7_APP_STORE_REVIEW_URL)!)
         }
     }
     
     func clearCache() {
-        BaseInfoUtil.clearCache()
+        _ = BaseInfoUtil.clearCache()
         cacheSizeLabel.text = BaseInfoUtil.cachefileSize()
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
+    func setInfoFromCallback(_ response: NSDictionary) {
         UserInfoManager.instance.clearData()
         GoalCache.instance.ifNeedClearMap = true
-        self.navigationController?.popViewControllerAnimated(true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     func logOutClicked() {
         let paramDict = NSMutableDictionary()
 
-        manager.POST(UrlParam.LOGOUT_URL,
+        _ = manager.POST(UrlParam.LOGOUT_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
                         print("JSON: " + responseObject.description!)
@@ -86,7 +86,7 @@ class SettingController: UIViewController {
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
         })
     }
 }

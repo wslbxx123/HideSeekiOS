@@ -14,9 +14,9 @@ class HomeView: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.addTarget(self, action: #selector(HomeView.touchDown), forControlEvents: UIControlEvents.TouchDown)
-        self.addTarget(self, action: #selector(HomeView.touchCancel), forControlEvents: UIControlEvents.TouchCancel)
-        self.addTarget(self, action: #selector(HomeView.touchCancel), forControlEvents: UIControlEvents.TouchUpInside)
+        self.addTarget(self, action: #selector(HomeView.touchDown), for: UIControlEvents.touchDown)
+        self.addTarget(self, action: #selector(HomeView.touchCancel), for: UIControlEvents.touchCancel)
+        self.addTarget(self, action: #selector(HomeView.touchCancel), for: UIControlEvents.touchUpInside)
         let gesture = UITapGestureRecognizer(target: self, action: #selector(HomeView.gestureTouchDown))
         self.addGestureRecognizer(gesture)
     }
@@ -26,7 +26,7 @@ class HomeView: UIControl {
     }
     
     func touchDown() {
-        self.backgroundColor = UIColor.whiteColor()
+        self.backgroundColor = UIColor.white
     }
     
     func touchCancel() {

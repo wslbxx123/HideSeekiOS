@@ -7,5 +7,5 @@
 //
 
 protocol SelectRegionDelegate {
-    func regionSelected(name: String)
+    func regionSelected(_ name: String)
 }

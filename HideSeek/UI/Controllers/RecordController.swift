@@ -27,40 +27,40 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
         super.viewDidLoad()
 
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         recordTableManager = RecordTableManager.instance
         initView()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         self.scoreSumLabel.text = String(RecordCache.instance.scoreSum)
         self.recordTableView.recordList = RecordCache.instance.recordList
         self.recordTableView.reloadData()
         if self.recordTableView.recordList.count == 0 {
-            self.noResultView.hidden = false
-            self.recordTableView.hidden = true
+            self.noResultView.isHidden = false
+            self.recordTableView.isHidden = true
         } else {
-            self.noResultView.hidden = true
-            self.recordTableView.hidden = false
+            self.noResultView.isHidden = true
+            self.recordTableView.isHidden = false
         }
         
         if(UserCache.instance.ifLogin()) {
-            UIView.animateWithDuration(0.25,
+            UIView.animate(withDuration: 0.25,
                                        delay: 0,
-                                       options: UIViewAnimationOptions.BeginFromCurrentState,
+                                       options: UIViewAnimationOptions.beginFromCurrentState,
                                        animations: {
                                         
-                                        self.recordTableView.contentOffset = CGPointMake(0, -self.refreshControl.frame.size.height);
+                                        self.recordTableView.contentOffset = CGPoint(x: 0, y: -self.refreshControl.frame.size.height);
                 }, completion: { (finished) in
                     self.refreshControl.beginRefreshing()
-                    self.refreshControl.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+                    self.refreshControl.sendActions(for: UIControlEvents.valueChanged)
             })
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         
         super.viewWillDisappear(animated)
     }
@@ -72,24 +72,24 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
     
     func initView() {
         refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(RecordController.refreshData), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(RecordController.refreshData), for: UIControlEvents.valueChanged)
         recordTableView.addSubview(refreshControl)
         recordTableView.loadMoreDelegate = self
-        recordTableView.separatorStyle = UITableViewCellSeparatorStyle.None;
+        recordTableView.separatorStyle = UITableViewCellSeparatorStyle.none;
         
-        let refreshContents = NSBundle.mainBundle().loadNibNamed("RefreshView",
+        let refreshContents = Bundle.main.loadNibNamed("RefreshView",
                                                                  owner: self, options: nil)
-        customLoadingView = refreshContents[0] as! UIView
+        customLoadingView = refreshContents?[0] as! UIView
         loadingImageView = customLoadingView.viewWithTag(TAG_LOADING_IMAGEVIEW) as! UIImageView
         customLoadingView.frame = refreshControl.bounds
         refreshControl.addSubview(customLoadingView)
-        recordTableView.layoutMargins = UIEdgeInsetsZero
+        recordTableView.layoutMargins = UIEdgeInsets.zero
 //        self.automaticallyAdjustsScrollViewInsets = false
     }
     
     func refreshData() {
         let paramDict: NSMutableDictionary = ["version": String(recordTableManager.version), "record_min_id": String(recordTableManager.recordMinId)]
-        manager.POST(UrlParam.REFRESH_RECORD_URL,
+        _ = manager.POST(UrlParam.REFRESH_RECORD_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
                         print("JSON: " + responseObject.description!)
@@ -104,7 +104,7 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
         playAnimateRefresh()
     }
     
-    func setInfoFromRefreshCallback(response: NSDictionary) {
+    func setInfoFromRefreshCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -112,17 +112,17 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
             self.scoreSumLabel.text = String(RecordCache.instance.scoreSum)
             self.recordTableView.recordList = RecordCache.instance.cacheList
             if self.recordTableView.recordList.count == 0 {
-                self.noResultView.hidden = false
-                self.recordTableView.hidden = true
+                self.noResultView.isHidden = false
+                self.recordTableView.isHidden = true
             } else {
-                self.noResultView.hidden = true
-                self.recordTableView.hidden = false
+                self.noResultView.isHidden = true
+                self.recordTableView.isHidden = false
             }
             self.recordTableView.reloadData()
             self.refreshControl.endRefreshing()
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -135,13 +135,13 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
         UIView.beginAnimations(nil, context: nil)
         UIView.setAnimationDuration(0.01)
         UIView.setAnimationDelegate(self)
-        UIView.setAnimationDidStopSelector(#selector(RecordController.endAnimation))
-        self.loadingImageView.transform = CGAffineTransformMakeRotation(angle * CGFloat(M_PI / 180))
+        UIView.setAnimationDidStop(#selector(RecordController.endAnimation))
+        self.loadingImageView.transform = CGAffineTransform(rotationAngle: angle * CGFloat(M_PI / 180))
         UIView.commitAnimations()
     }
 
     func endAnimation() {
-        if(refreshControl.refreshing) {
+        if(refreshControl.isRefreshing) {
             angle += 10;
             playAnimateRefresh()
         }
@@ -155,7 +155,7 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
             
             if(!hasData) {
                 let paramDict: NSMutableDictionary = ["version": String(recordTableManager.version), "record_min_id": String(recordTableManager.recordMinId)]
-                manager.POST(UrlParam.GET_RECORD_URL,
+                _ = manager.POST(UrlParam.GET_RECORD_URL,
                              paramDict: paramDict,
                              success: { (operation, responseObject) in
                                 print("JSON: " + responseObject.description!)
@@ -168,16 +168,16 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
                 })
             } else {
                 self.recordTableView.recordList.removeAllObjects()
-                self.recordTableView.recordList.addObjectsFromArray(RecordCache.instance.recordList as [AnyObject])
+                self.recordTableView.recordList.addObjects(from: RecordCache.instance.recordList as [AnyObject])
                 self.recordTableView.reloadData()
                 
                 isLoading = false
-                self.recordTableView.tableFooterView?.hidden = true
+                self.recordTableView.tableFooterView?.isHidden = true
             }
         }
     }
     
-    func setInfoFromGetCallback(response: NSDictionary) {
+    func setInfoFromGetCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -186,10 +186,10 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
             self.recordTableView.recordList = RecordCache.instance.cacheList
             self.recordTableView.reloadData()
             self.isLoading = false
-            self.recordTableView.tableFooterView?.hidden = true
+            self.recordTableView.tableFooterView?.isHidden = true
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }

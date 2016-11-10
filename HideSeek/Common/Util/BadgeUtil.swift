@@ -7,7 +7,7 @@
 //
 
 class BadgeUtil {
-    class func addMeBadge(num: Int) {
+    class func addMeBadge(_ num: Int) {
         let tabBarController = BaseInfoUtil.getRootViewController() as! ViewController
         
         let item = tabBarController.uiTabBar.items![3]

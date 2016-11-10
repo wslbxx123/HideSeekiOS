@@ -17,35 +17,35 @@ class UpdatePasswordController: UIViewController {
     @IBOutlet weak var rePasswordTextField: UITextField!
     @IBOutlet weak var updatePasswordScrollView: UIScrollView!
     
-    var manager: AFHTTPRequestOperationManager!
+    var manager: AFHTTPSessionManager!
     var phone: String!
     var password: String = ""
     var rePassword: String = ""
     
-    @IBAction func closeBtnClicked(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func closeBtnClicked(_ sender: AnyObject) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     
-    @IBAction func passwordChanged(sender: AnyObject) {
+    @IBAction func passwordChanged(_ sender: AnyObject) {
         password = passwordTextField.text!
         
         checkIfSaveBtnEnabled()
     }
     
-    @IBAction func rePasswordChanged(sender: AnyObject) {
+    @IBAction func rePasswordChanged(_ sender: AnyObject) {
         rePassword = rePasswordTextField.text!
         
         checkIfSaveBtnEnabled()
     }
     
-    @IBAction func saveBtnClicked(sender: AnyObject) {
+    @IBAction func saveBtnClicked(_ sender: AnyObject) {
         if self.password != self.rePassword {
             HudToastFactory.show(
                 NSLocalizedString("ERROR_PASSWORD_NOT_SAME",
                     comment: "Two passwords are not the same"),
                 view: self.view,
-                type: HudToastFactory.MessageType.ERROR)
+                type: HudToastFactory.MessageType.error)
             return
         }
         
@@ -54,7 +54,7 @@ class UpdatePasswordController: UIViewController {
                 NSLocalizedString("ERROR_PASSWORD_SHORT",
                     comment: "The password is too short"),
                 view: self.view,
-                type: HudToastFactory.MessageType.ERROR)
+                type: HudToastFactory.MessageType.error)
             return
         }
         
@@ -63,7 +63,7 @@ class UpdatePasswordController: UIViewController {
                 NSLocalizedString("ERROR_PASSWORD_LONG",
                     comment: "The length of password cannot be greater than 45"),
                 view: self.view,
-                type: HudToastFactory.MessageType.ERROR)
+                type: HudToastFactory.MessageType.error)
             return
         }
         
@@ -74,26 +74,24 @@ class UpdatePasswordController: UIViewController {
         let paramDict = ["phone": phone,
                          "password": password]
         
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
         hud.dimBackground = true
         
-        manager.POST(UrlParam.UPDATE_PASSWORD_URL,
+        _ = manager.post(UrlParam.UPDATE_PASSWORD_URL,
                      parameters: paramDict,
                      success: { (operation, responseObject) in
                         let response = responseObject as! NSDictionary
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + (responseObject as AnyObject).description!)
                         self.setInfoFromCallback(response)
                         
                         hud.removeFromSuperview()
-                        hud = nil
             },
                      failure: { (operation, error) in
                         print("Error: " + error.localizedDescription)
                         let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                        HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                        HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
                         hud.removeFromSuperview()
-                        hud = nil
         })
     }
     
@@ -101,8 +99,8 @@ class UpdatePasswordController: UIViewController {
         super.viewDidLoad()
 
         initView()
-        manager = AFHTTPRequestOperationManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager = AFHTTPSessionManager()
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
     }
 
     override func didReceiveMemoryWarning() {
@@ -110,20 +108,20 @@ class UpdatePasswordController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        self.navigationController?.navigationBarHidden = false
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
         
         super.viewWillDisappear(animated)
     }
@@ -137,25 +135,25 @@ class UpdatePasswordController: UIViewController {
     }
     
     func checkIfSaveBtnEnabled() {
-        saveBtn.enabled = !password.isEmpty && !rePassword.isEmpty
+        saveBtn.isEnabled = !password.isEmpty && !rePassword.isEmpty
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
+    func setInfoFromCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             let alertController = UIAlertController(title: nil,
-                                                    message: NSLocalizedString("SUCCESS_UPDATE_PASSWORD", comment: "Update password successfully"), preferredStyle: UIAlertControllerStyle.Alert)
+                                                    message: NSLocalizedString("SUCCESS_UPDATE_PASSWORD", comment: "Update password successfully"), preferredStyle: UIAlertControllerStyle.alert)
             
             let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"),
-                                         style: UIAlertActionStyle.Default, handler: { (action) in
-                                            self.navigationController?.popToRootViewControllerAnimated(true)
+                                         style: UIAlertActionStyle.default, handler: { (action) in
+                                            self.navigationController?.popToRootViewController(animated: true)
             })
             alertController.addAction(okAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
         }
     }
 

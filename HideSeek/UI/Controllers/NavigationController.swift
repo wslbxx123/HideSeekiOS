@@ -24,12 +24,12 @@ class NavigationController: UIViewController, AMapNaviWalkManagerDelegate, AMapN
         initWalkManager()
         speechSynthesizer = IFlySpeechSynthesizer.sharedInstance()
         speechSynthesizer.delegate = self
-        speechSynthesizer.setParameter(IFlySpeechConstant.TYPE_CLOUD(), forKey: IFlySpeechConstant.ENGINE_TYPE())
-        speechSynthesizer.setParameter("50", forKey: IFlySpeechConstant.VOLUME())
-        speechSynthesizer.setParameter("xiaoyan", forKey: IFlySpeechConstant.VOICE_NAME())
+        speechSynthesizer.setParameter(IFlySpeechConstant.type_CLOUD(), forKey: IFlySpeechConstant.engine_TYPE())
+        speechSynthesizer.setParameter("50", forKey: IFlySpeechConstant.volume())
+        speechSynthesizer.setParameter("xiaoyan", forKey: IFlySpeechConstant.voice_NAME())
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.calculateRoute()
     }
@@ -42,48 +42,48 @@ class NavigationController: UIViewController, AMapNaviWalkManagerDelegate, AMapN
     /**
         AMapNaviWalkDataRepresentable
     **/
-    func walkManager(walkManager: AMapNaviWalkManager, updateNaviMode naviMode: AMapNaviMode) {
+    func walkManager(_ walkManager: AMapNaviWalkManager, update naviMode: AMapNaviMode) {
         NSLog("updateNaviMode:%ld", naviMode.rawValue);
     }
     
-    func walkManager(walkManager: AMapNaviWalkManager, updateNaviRouteID naviRouteID: Int) {
+    func walkManager(_ walkManager: AMapNaviWalkManager, updateNaviRouteID naviRouteID: Int) {
         NSLog("updateNaviRouteID:%ld", naviRouteID);
     }
     
-    func walkManager(walkManager: AMapNaviWalkManager, updateNaviRoute naviRoute: AMapNaviRoute?) {
+    func walkManager(_ walkManager: AMapNaviWalkManager, update naviRoute: AMapNaviRoute?) {
         NSLog("updateNaviRoute");
     }
     
-    func walkManager(walkManager: AMapNaviWalkManager, updateNaviInfo naviInfo: AMapNaviInfo?) {
+    func walkManager(_ walkManager: AMapNaviWalkManager, update naviInfo: AMapNaviInfo?) {
 
     }
     
-    func walkManager(walkManager: AMapNaviWalkManager, updateNaviLocation naviLocation: AMapNaviLocation?) {
+    func walkManager(_ walkManager: AMapNaviWalkManager, update naviLocation: AMapNaviLocation?) {
         NSLog("updateNaviLocation");
     }
     
     /**
      AMapNaviWalkManager Delegate
     **/
-    func walkManager(walkManager: AMapNaviWalkManager, error: NSError) {
-        NSLog("error:{%ld - %@}", error.code, error.localizedDescription)
+    func walkManager(_ walkManager: AMapNaviWalkManager, error: Error) {
+        NSLog("error:{%ld - %@}", error._code, error.localizedDescription)
     }
     
-    func walkManagerOnCalculateRouteSuccess(walkManager: AMapNaviWalkManager) {
+    func walkManager(onCalculateRouteSuccess walkManager: AMapNaviWalkManager) {
         NSLog("onCalculateRouteSuccess")
         
         self.walkManager.startGPSNavi()
     }
     
-    func walkManager(walkManager: AMapNaviWalkManager, onCalculateRouteFailure error: NSError) {
-        NSLog("onCalculateRouteFailure:{%ld - %@}", error.code, error.localizedDescription)
+    func walkManager(_ walkManager: AMapNaviWalkManager, onCalculateRouteFailure error: Error) {
+        NSLog("onCalculateRouteFailure:{%ld - %@}", error._code, error.localizedDescription)
     }
     
-    func walkManager(walkManager: AMapNaviWalkManager, didStartNavi naviMode: AMapNaviMode) {
+    func walkManager(_ walkManager: AMapNaviWalkManager, didStartNavi naviMode: AMapNaviMode) {
         NSLog("didStartNavi")
     }
     
-    func walkManager(walkManager: AMapNaviWalkManager, playNaviSoundString soundString: String, soundStringType: AMapNaviSoundType) {
+    func walkManager(_ walkManager: AMapNaviWalkManager, playNaviSound soundString: String, soundStringType: AMapNaviSoundType) {
         
         NSLog("playNaviSoundString:{%ld:%@}", soundStringType.rawValue, soundString)
         
@@ -91,13 +91,13 @@ class NavigationController: UIViewController, AMapNaviWalkManagerDelegate, AMapN
         
     }
     
-    func walkManagerOnArrivedDestination(walkManager: AMapNaviWalkManager) {
+    func walkManager(onArrivedDestination walkManager: AMapNaviWalkManager) {
         NSLog("arrived at the goal!")
         
         arriveDelegate?.arrivedAtGoal()
     }
     
-    func walkViewCloseButtonClicked(walkView: AMapNaviWalkView) {
+    func walkViewCloseButtonClicked(_ walkView: AMapNaviWalkView) {
         self.walkManager.stopNavi()
         self.walkManager.removeDataRepresentative(self.walkView)
         
@@ -105,11 +105,11 @@ class NavigationController: UIViewController, AMapNaviWalkManagerDelegate, AMapN
         
         speechSynthesizer.stopSpeaking()
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     func calculateRoute() {
-        self.walkManager.calculateWalkRouteWithStartPoints([startPoint], endPoints: [endPoint])
+        self.walkManager.calculateWalkRoute(withStart: [startPoint], end: [endPoint])
     }
     
     func initWalkView() {
@@ -133,7 +133,7 @@ class NavigationController: UIViewController, AMapNaviWalkManagerDelegate, AMapN
         }
     }
     
-    func onCompleted(error: IFlySpeechError!) {
+    func onCompleted(_ error: IFlySpeechError!) {
         
     }
 }

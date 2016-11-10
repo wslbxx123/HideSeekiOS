@@ -7,7 +7,7 @@
 //
 
 class PinYinUtil {
-    class func converterToPinyin(chinese: String)-> String{
+    class func converterToPinyin(_ chinese: String)-> String{
         let mutableString = NSMutableString(string: chinese) as CFMutableString
 
         CFStringTransform(mutableString, nil, kCFStringTransformMandarinLatin, false)

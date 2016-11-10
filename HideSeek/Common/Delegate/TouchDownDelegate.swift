@@ -7,6 +7,6 @@
 //
 
 protocol TouchDownDelegate {
-    func touchDown(tag: Int)
+    func touchDown(_ tag: Int)
 }
 

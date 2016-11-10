@@ -21,29 +21,29 @@ class RewardTableManager {
     
     var database: Connection!
     var rewardTable: Table!
-    private var _rewardMinId: Int64 = 0
+    fileprivate var _rewardMinId: Int64 = 0
     
     var rewardMinId: Int64 {
-        let tempRewardMinId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.REWARD_MIN_ID) as? NSNumber
+        let tempRewardMinId = UserDefaults.standard.object(forKey: UserDefaultParam.REWARD_MIN_ID) as? NSNumber
         
         if(tempRewardMinId == nil) {
             return 0
         }
-        return (tempRewardMinId?.longLongValue)!
+        return (tempRewardMinId?.int64Value)!
     }
     
     var version: Int64 {
         get{
-            let tempVersion = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.REWARD_VERSION) as? NSNumber
+            let tempVersion = UserDefaults.standard.object(forKey: UserDefaultParam.REWARD_VERSION) as? NSNumber
             
             if(tempVersion == nil) {
                 return 0
             }
-            return (tempVersion?.longLongValue)!
+            return (tempVersion?.int64Value)!
         }
     }
     
-    private init() {
+    fileprivate init() {
         do {
             database = DatabaseManager.instance.database
             
@@ -78,7 +78,7 @@ class RewardTableManager {
             }
             
             for item in try database.prepare(result) {
-                productList.addObject(Reward(
+                productList.add(Reward(
                     pkId: item[rewardId],
                     name: item[name],
                     imageUrl: item[imageUrl],
@@ -100,11 +100,11 @@ class RewardTableManager {
         return productList
     }
     
-    func updateRewards(rewardMinId: Int64, version: Int64, rewardList: NSArray) {
+    func updateRewards(_ rewardMinId: Int64, version: Int64, rewardList: NSArray) {
         do {
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:version), forKey: UserDefaultParam.REWARD_VERSION)
-            NSUserDefaults.standardUserDefaults().setObject(NSNumber(longLong:rewardMinId), forKey: UserDefaultParam.REWARD_MIN_ID)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(NSNumber(value: version as Int64), forKey: UserDefaultParam.REWARD_VERSION)
+            UserDefaults.standard.set(NSNumber(value: rewardMinId as Int64), forKey: UserDefaultParam.REWARD_MIN_ID)
+            UserDefaults.standard.synchronize()
             
             for rewardItem in rewardList {
                 let rewardInfo = rewardItem as! Reward
@@ -139,16 +139,16 @@ class RewardTableManager {
         }
     }
     
-    func getMoreRewards(count: Int, version: Int64, hasLoaded: Bool) -> NSMutableArray {
+    func getMoreRewards(_ count: Int, version: Int64, hasLoaded: Bool) -> NSMutableArray {
         let rewardList = NSMutableArray()
         do {
             let result = rewardTable.filter(pullVersion <= version && rewardId < _rewardMinId).order(rewardId.desc).limit(count)
             
-            let resultCount = database.scalar(result.count)
+            let resultCount = try database.scalar(result.count)
             
             if resultCount == count || hasLoaded {
                 for item in try database.prepare(result) {
-                    rewardList.addObject(Reward(pkId: item[rewardId],
+                    rewardList.add(Reward(pkId: item[rewardId],
                         name: item[name],
                         imageUrl: item[imageUrl],
                         record: item[record],

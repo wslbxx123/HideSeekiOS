@@ -39,6 +39,12 @@ typedef NS_ENUM(NSInteger, MAAnnotationViewDragState)
  */
 @property (nonatomic, readonly, copy) NSString *reuseIdentifier;
 
+/*!
+ @brief z值，大值在上，默认为0。
+ */
+@property (nonatomic, assign) NSInteger zIndex;
+
+
 /**
  *  当从reuse队列里取出时被调用, 子类重新必须调用super
  */

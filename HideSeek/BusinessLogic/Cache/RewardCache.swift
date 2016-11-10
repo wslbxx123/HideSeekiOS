@@ -21,25 +21,25 @@ class RewardCache : BaseCache<Reward> {
         }
     }
     
-    private override init() {
+    fileprivate override init() {
         super.init()
         rewardTableManager = RewardTableManager.instance
     }
     
-    func setRewards(result: NSDictionary!) {
+    func setRewards(_ result: NSDictionary!) {
         saveRewards(result)
         
         cacheList = rewardTableManager.searchRewards()
         version = rewardTableManager.version
     }
     
-    func addRewards(result: NSDictionary!) {
+    func addRewards(_ result: NSDictionary!) {
         saveRewards(result)
         
-        getMoreRewards(10, hasLoaded: true)
+        _ = getMoreRewards(10, hasLoaded: true)
     }
     
-    func saveRewards(result: NSDictionary!) {
+    func saveRewards(_ result: NSDictionary!) {
         let list = NSMutableArray()
         let tempVersion = result["version"] as? NSString
         var version: Int64
@@ -54,7 +54,7 @@ class RewardCache : BaseCache<Reward> {
         
         for reward in rewardArray {
             let rewardInfo = reward as! NSDictionary
-            list.addObject(Reward(pkId: (rewardInfo["pk_id"] as! NSString).longLongValue,
+            list.add(Reward(pkId: (rewardInfo["pk_id"] as! NSString).longLongValue,
                 name: rewardInfo["reward_name"] as! String,
                 imageUrl: rewardInfo["reward_image_url"] as? String,
                 record: BaseInfoUtil.getIntegerFromAnyObject(rewardInfo["record"]),
@@ -66,10 +66,10 @@ class RewardCache : BaseCache<Reward> {
         rewardTableManager.updateRewards(rewardMinId, version: version, rewardList: list)
     }
     
-    func getMoreRewards(count: Int, hasLoaded: Bool) -> Bool {
+    func getMoreRewards(_ count: Int, hasLoaded: Bool) -> Bool {
         let rewardList = rewardTableManager.getMoreRewards(count, version: version, hasLoaded: hasLoaded)
         
-        self.cacheList.addObjectsFromArray(rewardList as [AnyObject])
+        self.cacheList.addObjects(from: rewardList as [AnyObject])
         
         return rewardList.count > 0
     }

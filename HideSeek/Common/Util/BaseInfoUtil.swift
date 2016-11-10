@@ -8,79 +8,90 @@
 
 import Foundation
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class BaseInfoUtil {
-    class func stringToRGB(colorStr:String)->UIColor {
-        var cStr:String = colorStr.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).uppercaseString
+    class func stringToRGB(_ colorStr:String)->UIColor {
+        var cStr:String = colorStr.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).uppercased()
         
         if(cStr.hasPrefix("#")) {
-            cStr = (cStr as NSString).substringFromIndex(1)
+            cStr = (cStr as NSString).substring(from: 1)
         }
         
         if(cStr.characters.count != 6) {
-            return UIColor.grayColor()
+            return UIColor.gray
         }
         
-        let rStr = (cStr as NSString).substringToIndex(2)
-        let gStr = ((cStr as NSString).substringFromIndex(2) as NSString).substringToIndex(2)
-        let bStr = ((cStr as NSString).substringFromIndex(4) as NSString).substringToIndex(2)
+        let rStr = (cStr as NSString).substring(to: 2)
+        let gStr = ((cStr as NSString).substring(from: 2) as NSString).substring(to: 2)
+        let bStr = ((cStr as NSString).substring(from: 4) as NSString).substring(to: 2)
         
         var r:CUnsignedInt = 0, g:CUnsignedInt = 0, b:CUnsignedInt = 0;
-        NSScanner(string: rStr).scanHexInt(&r)
-        NSScanner(string: gStr).scanHexInt(&g)
-        NSScanner(string: bStr).scanHexInt(&b)
+        Scanner(string: rStr).scanHexInt32(&r)
+        Scanner(string: gStr).scanHexInt32(&g)
+        Scanner(string: bStr).scanHexInt32(&b)
         
         return UIColor(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(1))
     }
     
-    class func getLabelHeight(size: CGFloat, width: CGFloat, message: NSString?) -> CGFloat{
+    class func getLabelHeight(_ size: CGFloat, width: CGFloat, message: String?) -> CGFloat{
         if message == nil {
             return 0
         }
         
-        let font = UIFont.systemFontOfSize(size)
-        let option = NSStringDrawingOptions.UsesLineFragmentOrigin
-        let attributes = NSDictionary(object: font, forKey: NSFontAttributeName)
-        let size = CGSizeMake(width, CGFloat(MAXFLOAT))
-        let stringRect = message!.boundingRectWithSize(size, options: option, attributes: attributes as? [String : AnyObject], context: nil)
-        return stringRect.height + 10
+        let font = UIFont.systemFont(ofSize: size)
+        let option = NSStringDrawingOptions.usesLineFragmentOrigin
+        let attributes = NSDictionary(object: font, forKey: NSFontAttributeName as NSCopying)
+        let size = CGSize(width: width, height: CGFloat(MAXFLOAT))
+        let stringRect = message?.boundingRect(with: size, options: option, attributes: attributes as? [String : AnyObject], context: nil)
+        return stringRect!.height + 10
     }
     
-    class func getLabelWidth(size: CGFloat, height: CGFloat, message: NSString?) -> CGFloat{
+    class func getLabelWidth(_ size: CGFloat, height: CGFloat, message: String?) -> CGFloat{
         if message == nil {
             return 0
         }
         
-        let font = UIFont.systemFontOfSize(size)
-        let option = NSStringDrawingOptions.UsesLineFragmentOrigin
-        let attributes = NSDictionary(object: font, forKey: NSFontAttributeName)
-        let size = CGSizeMake(CGFloat(MAXFLOAT), height)
-        let stringRect = message!.boundingRectWithSize(size, options: option, attributes: attributes as? [String : AnyObject], context: nil)
-        return stringRect.width
+        let font = UIFont.systemFont(ofSize: size)
+        let option = NSStringDrawingOptions.usesLineFragmentOrigin
+        let attributes = NSDictionary(object: font, forKey: NSFontAttributeName as NSCopying)
+        let size = CGSize(width: CGFloat(MAXFLOAT), height: height)
+        let stringRect = message?.boundingRect(with: size, options: option, attributes: attributes as? [String : AnyObject], context: nil)
+        return stringRect!.width
     }
 
-    class func cancelButtonDelay(tableView: UITableView) {
+    class func cancelButtonDelay(_ tableView: UITableView) {
         for view in tableView.subviews {
-            if view.isKindOfClass(UIScrollView) {
+            if view.isKind(of: UIScrollView.self) {
                 let scroll = view as! UIScrollView
                 scroll.delaysContentTouches = false
             }
         }
     }
     
-    class func cancelButtonDelay(collectionView: UICollectionView) {
+    class func cancelButtonDelay(_ collectionView: UICollectionView) {
         for view in collectionView.subviews {
-            if view.isKindOfClass(UIScrollView) {
+            if view.isKind(of: UIScrollView.self) {
                 let scroll = view as! UIScrollView
                 scroll.delaysContentTouches = false
             }
         }
     }
     
-    class func cancelButtonDelay(cell: UITableViewCell) {
+    class func cancelButtonDelay(_ cell: UITableViewCell) {
         for view in cell.subviews
         {
-            if view.isKindOfClass(UIScrollView)
+            if view.isKind(of: UIScrollView.self)
             {
                 let scroll = view as! UIScrollView;
                 scroll.delaysContentTouches = false;
@@ -88,10 +99,10 @@ class BaseInfoUtil {
         }
     }
     
-    class func cancelButtonDelay(cell: UICollectionViewCell) {
+    class func cancelButtonDelay(_ cell: UICollectionViewCell) {
         for view in cell.subviews
         {
-            if view.isKindOfClass(UIScrollView)
+            if view.isKind(of: UIScrollView.self)
             {
                 let scroll = view as! UIScrollView;
                 scroll.delaysContentTouches = false;
@@ -99,15 +110,15 @@ class BaseInfoUtil {
         }
     }
     
-    class func removeNullFromDictionary(dictionary: NSDictionary) -> NSMutableDictionary{
+    class func removeNullFromDictionary(_ dictionary: NSDictionary) -> NSMutableDictionary{
         let mutableDictionary = NSMutableDictionary()
         
         for key in dictionary.allKeys {
-            let value = dictionary.objectForKey(key);
+            let value = dictionary.object(forKey: key);
             
-            if (value != nil && !value!.isKindOfClass(NSNull)) {
-                if value!.isKindOfClass(NSString) {
-                    mutableDictionary.setValue(dictionary.objectForKey(key) as! NSString, forKey: key as! String);
+            if (value != nil && !(value! as AnyObject).isKind(of: NSNull.self)) {
+                if (value! as AnyObject).isKind(of: NSString.self) {
+                    mutableDictionary.setValue(dictionary.object(forKey: key) as! NSString, forKey: key as! String);
                 }
             }
         }
@@ -117,39 +128,39 @@ class BaseInfoUtil {
     
     class func getRootViewController() -> UIViewController{
         var controller: UIViewController
-        let systemVersion: NSString = UIDevice.currentDevice().systemVersion
+        let systemVersion: NSString = UIDevice.current.systemVersion as NSString
         if systemVersion.floatValue < 6.0 {
-            let array = UIApplication.sharedApplication().windows
+            let array = UIApplication.shared.windows
             let window = array[0]
             
             let uiview = window.subviews[0]
-            controller = uiview.nextResponder() as! UIViewController
+            controller = uiview.next as! UIViewController
         } else {
-            controller = (UIApplication.sharedApplication().keyWindow?.rootViewController)!
+            controller = (UIApplication.shared.keyWindow?.rootViewController)!
         }
         
         return controller
     }
     
     class func getCachesPath() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, .UserDomainMask, true)
+        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, .userDomainMask, true)
         var cachePath = paths[0]
-        cachePath = cachePath.stringByAppendingFormat("/%@", NSBundle.mainBundle().bundleIdentifier!)
+        cachePath = cachePath.appendingFormat("/%@", Bundle.main.bundleIdentifier!)
         return cachePath
     }
     
     class func cachefileSize() -> String {
         let basePath = getCachesPath()
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
         var total: Float = 0
-        if fileManager.fileExistsAtPath(basePath){
-            let childrenPath = fileManager.subpathsAtPath(basePath)
+        if fileManager.fileExists(atPath: basePath){
+            let childrenPath = fileManager.subpaths(atPath: basePath)
             if childrenPath != nil{
                 for path in childrenPath!{
-                    let childPath = basePath.stringByAppendingString("/").stringByAppendingString(path)
+                    let childPath = (basePath + "/") + path
                     do{
-                        let attr = try fileManager.attributesOfItemAtPath(childPath)
-                        let fileSize = attr["NSFileSize"] as! Float
+                        let attr = try fileManager.attributesOfItem(atPath: childPath)
+                        let fileSize = (attr[FileAttributeKey.size] as! NSNumber).floatValue
                         total += fileSize
                         
                     }catch _{
@@ -164,14 +175,14 @@ class BaseInfoUtil {
     
     class func clearCache() -> Bool{
         var result = true
-        let basePath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
-        let fileManager = NSFileManager.defaultManager()
-        if fileManager.fileExistsAtPath(basePath!){
-            let childrenPath = fileManager.subpathsAtPath(basePath!)
+        let basePath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).first
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: basePath!){
+            let childrenPath = fileManager.subpaths(atPath: basePath!)
             for childPath in childrenPath!{
-                let cachePath = basePath?.stringByAppendingString("/").stringByAppendingString(childPath)
+                let cachePath = ((basePath)! + "/") + childPath
                 do{
-                    try fileManager.removeItemAtPath(cachePath!)
+                    try fileManager.removeItem(atPath: cachePath)
                 }catch _{
                     result = false
                 }
@@ -181,16 +192,44 @@ class BaseInfoUtil {
         return result
     }
     
-    class func getIntegerFromAnyObject(object: AnyObject?) -> Int {
+    class func getIntegerFromAnyObject(_ object: Any?) -> Int {
         return object is NSString ?
             (object as! NSString).integerValue :
-            (object as! NSNumber).integerValue
+            (object as! NSNumber).intValue
     }
     
     class func getAppVersion() -> String {
-        let version = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! NSString
-        let buildVersion = NSBundle.mainBundle().infoDictionary!["CFBundleVersion"] as! NSString
+        let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! NSString
+        let buildVersion = Bundle.main.infoDictionary!["CFBundleVersion"] as! NSString
         
         return (version as String) + "." + (buildVersion as String)
+    }
+    
+    class func topViewController() -> UIViewController? {
+        var resultViewController: UIViewController? = nil
+        // 多window的情况下， 需要对window进行有效选择选择
+        if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+            resultViewController = getTopViewController(rootViewController)
+            while resultViewController?.presentedViewController != nil {
+                resultViewController = resultViewController?.presentedViewController
+            }
+        }
+        return resultViewController
+    }
+    
+    class func getTopViewController(_ object: AnyObject!) -> UIViewController? {
+        if let navigationController = object as? UINavigationController {
+            return getTopViewController(navigationController.viewControllers.last)
+        }
+        else if let tabBarController = object as? UITabBarController {
+            if tabBarController.selectedIndex < tabBarController.viewControllers?.count {
+                return getTopViewController(tabBarController.viewControllers![tabBarController.selectedIndex])
+            }
+        }
+        else if let vc = object as? UIViewController {
+            return vc
+        }
+        
+        return nil
     }
 }

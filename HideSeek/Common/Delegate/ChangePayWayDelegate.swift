@@ -7,5 +7,5 @@
 //
 
 protocol ChangePayWayDelegate {
-    func payWayChanged(payWay: PayWayFactory.PayWayEnum)
+    func payWayChanged(_ payWay: PayWayFactory.PayWayEnum)
 }

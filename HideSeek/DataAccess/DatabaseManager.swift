@@ -13,16 +13,16 @@ class DatabaseManager {
     let ASSETS_NAME = "hideseek_cities.db"
     var database: Connection!
     
-    private init() {
+    fileprivate init() {
         do {
-            let fileManager = NSFileManager.defaultManager()
-            let docDir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)[0]
-            let path = (docDir as NSString).stringByAppendingPathComponent(DatabaseParam.HIDE_SEEK_DATABASE)
+            let fileManager = FileManager.default
+            let docDir = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0]
+            let path = (docDir as NSString).appendingPathComponent(DatabaseParam.HIDE_SEEK_DATABASE)
             
-            if !(fileManager.fileExistsAtPath(path)) {
-                let assetPath = (NSBundle.mainBundle().resourcePath! as NSString).stringByAppendingPathComponent(ASSETS_NAME)
+            if !(fileManager.fileExists(atPath: path)) {
+                let assetPath = (Bundle.main.resourcePath! as NSString).appendingPathComponent(ASSETS_NAME)
                 
-                try fileManager.copyItemAtPath(assetPath, toPath: path)
+                try fileManager.copyItem(atPath: assetPath, toPath: path)
             }
             
             database = try Connection(path)

@@ -15,7 +15,7 @@ class AboutController: UIViewController {
         super.viewDidLoad()
         
         let format = NSLocalizedString("VERSION_FORMAT", comment: "HideSeek %@")
-        versionLabel.text = NSString(format: format, BaseInfoUtil.getAppVersion()) as String
+        versionLabel.text = NSString(format: format as NSString, BaseInfoUtil.getAppVersion()) as String
     }
 
     override func didReceiveMemoryWarning() {

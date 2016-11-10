@@ -36,11 +36,11 @@ class RaceGroupTableViewCell: UITableViewCell {
         self.timeLabel = self.viewWithTag(TAG_TIME_LABEL) as! UILabel
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(RaceGroupTableViewCell.photoImageViewSelected))
-        self.photoImageView.userInteractionEnabled = true
+        self.photoImageView.isUserInteractionEnabled = true
         self.photoImageView.addGestureRecognizer(tapGesture)
     }
     
-    func initRaceGroup(raceGroup: RaceGroup) {
+    func initRaceGroup(_ raceGroup: RaceGroup) {
         photoImageView.layer.cornerRadius = 5
         photoImageView.layer.masksToBounds = true
         photoImageView.setWebImage(raceGroup.smallPhotoUrl, defaultImage: "default_photo", isCache: true)

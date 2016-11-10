@@ -9,35 +9,35 @@
 class AnimationImageFactory {
     class func getSwordArray() -> NSArray {
         let imageArray = NSMutableArray()
-        imageArray.addObject("sword_a")
-        imageArray.addObject("sword_b")
-        imageArray.addObject("sword_c")
-        imageArray.addObject("sword_d")
-        imageArray.addObject("sword_e")
-        imageArray.addObject("sword_f")
-        imageArray.addObject("sword_g")
-        imageArray.addObject("sword_h")
+        imageArray.add("sword_a")
+        imageArray.add("sword_b")
+        imageArray.add("sword_c")
+        imageArray.add("sword_d")
+        imageArray.add("sword_e")
+        imageArray.add("sword_f")
+        imageArray.add("sword_g")
+        imageArray.add("sword_h")
         return imageArray
     }
     
-    class func get(goal: Goal) -> NSArray {
+    class func get(_ goal: Goal) -> NSArray {
         var imageArray = NSMutableArray()
         switch goal.type {
         case .mushroom:
-            imageArray.addObject("mushroom")
-            imageArray.addObject("mushroom_a")
-            imageArray.addObject("mushroom_b")
-            imageArray.addObject("mushroom_c")
-            imageArray.addObject("mushroom_d")
+            imageArray.add("mushroom")
+            imageArray.add("mushroom_a")
+            imageArray.add("mushroom_b")
+            imageArray.add("mushroom_c")
+            imageArray.add("mushroom_d")
             break;
         case .bomb:
-            imageArray.addObject("bomb")
+            imageArray.add("bomb")
             
             if UserCache.instance.ifLogin() && goal.createBy != UserCache.instance.user.pkId {
-                imageArray.addObject("bomb_a")
-                imageArray.addObject("bomb_b")
-                imageArray.addObject("bomb_c")
-                imageArray.addObject("bomb_d")
+                imageArray.add("bomb_a")
+                imageArray.add("bomb_b")
+                imageArray.add("bomb_c")
+                imageArray.add("bomb_d")
             }
             break;
         case .monster:
@@ -50,38 +50,38 @@ class AnimationImageFactory {
         return imageArray
     }
     
-    class func getMonsterArray(name: String)-> NSMutableArray {
+    class func getMonsterArray(_ name: String)-> NSMutableArray {
         let imageArray = NSMutableArray()
         switch(name) {
         case "dragon":
-            imageArray.addObject("dragon")
-            imageArray.addObject("dragon_a")
-            imageArray.addObject("dragon_b")
+            imageArray.add("dragon")
+            imageArray.add("dragon_a")
+            imageArray.add("dragon_b")
             break
         case "bird":
-            imageArray.addObject("bird")
-            imageArray.addObject("bird_a")
-            imageArray.addObject("bird_b")
-            imageArray.addObject("bird_c")
-            imageArray.addObject("bird_d")
+            imageArray.add("bird")
+            imageArray.add("bird_a")
+            imageArray.add("bird_b")
+            imageArray.add("bird_c")
+            imageArray.add("bird_d")
             break
         case "giraffe":
-            imageArray.addObject("giraffe")
-            imageArray.addObject("giraffe_a")
-            imageArray.addObject("giraffe_b")
-            imageArray.addObject("giraffe_c")
-            imageArray.addObject("giraffe_d")
-            imageArray.addObject("giraffe_e")
+            imageArray.add("giraffe")
+            imageArray.add("giraffe_a")
+            imageArray.add("giraffe_b")
+            imageArray.add("giraffe_c")
+            imageArray.add("giraffe_d")
+            imageArray.add("giraffe_e")
             break
         case "cow":
-            imageArray.addObject("cow")
-            imageArray.addObject("cow_a")
-            imageArray.addObject("cow_b")
-            imageArray.addObject("cow_c")
+            imageArray.add("cow")
+            imageArray.add("cow_a")
+            imageArray.add("cow_b")
+            imageArray.add("cow_c")
             break
         case "egg":
-            imageArray.addObject("egg")
-            imageArray.addObject("egg_a")
+            imageArray.add("egg")
+            imageArray.add("egg_a")
             break
         default:
             break;
@@ -89,7 +89,7 @@ class AnimationImageFactory {
         return imageArray
     }
     
-    class func getDuration(goal: Goal)-> NSTimeInterval {
+    class func getDuration(_ goal: Goal)-> TimeInterval {
         switch goal.type {
         case .mushroom:
             return 5
@@ -104,11 +104,11 @@ class AnimationImageFactory {
     
     class func getRoleArray()-> NSMutableArray{
         let imageArray = NSMutableArray()
-        imageArray.addObject("grass_fairy")
-        imageArray.addObject("water_magician")
-        imageArray.addObject("fire_knight")
-        imageArray.addObject("stone_monster")
-        imageArray.addObject("lightning_giant")
+        imageArray.add("grass_fairy")
+        imageArray.add("water_magician")
+        imageArray.add("fire_knight")
+        imageArray.add("stone_monster")
+        imageArray.add("lightning_giant")
         return imageArray
     }
 }

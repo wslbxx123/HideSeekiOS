@@ -27,23 +27,23 @@ class PurchaseDialogController: UIViewController, TouchDownDelegate, PickerViewD
     var orderId: Int64 = 0
     var payWay: PayWayFactory.PayWayEnum = PayWayFactory.PayWayEnum.applePay
     
-    @IBAction func upBtnClicked(sender: AnyObject) {
+    @IBAction func upBtnClicked(_ sender: AnyObject) {
         count += 1
         refreshAmount()
     }
     
-    @IBAction func downBtnClicked(sender: AnyObject) {
+    @IBAction func downBtnClicked(_ sender: AnyObject) {
         if(count > 0) {
             count -= 1
         }
         refreshAmount()
     }
     
-    @IBAction func closeBtnClicked(sender: AnyObject) {
+    @IBAction func closeBtnClicked(_ sender: AnyObject) {
         closeDelegate?.close()
     }
     
-    @IBAction func confirmBtnClicked(sender: AnyObject) {
+    @IBAction func confirmBtnClicked(_ sender: AnyObject) {
         confirmPurchaseDelegate?.confirmPurchase(product, count: count, orderId: orderId)
     }
     
@@ -53,7 +53,7 @@ class PurchaseDialogController: UIViewController, TouchDownDelegate, PickerViewD
         initView()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         count = 1
         refreshAmount()
     }
@@ -64,10 +64,10 @@ class PurchaseDialogController: UIViewController, TouchDownDelegate, PickerViewD
         confirmBtn.layer.masksToBounds = true
         
         let itemArray = NSMutableArray()
-        itemArray.addObject(NSLocalizedString("APPLE_PAY", comment: "Apple Pay"))
+        itemArray.add(NSLocalizedString("APPLE_PAY", comment: "Apple Pay"))
         
         if !Setting.IF_STORE_HIDDEN && Setting.LATEST_APP_VERSION.compareTo(BaseInfoUtil.getAppVersion(), separator: ".") >= 0 {
-            itemArray.addObject(NSLocalizedString("ALIPAY", comment: "Alipay"))
+            itemArray.add(NSLocalizedString("ALIPAY", comment: "Alipay"))
         }
         
         payWayPickerView.items = itemArray
@@ -75,7 +75,7 @@ class PurchaseDialogController: UIViewController, TouchDownDelegate, PickerViewD
         payView.touchDownDelegate = self
         
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(PurchaseDialogController.closePayWayView))
-        payWayView.userInteractionEnabled = true
+        payWayView.isUserInteractionEnabled = true
         payWayView.addGestureRecognizer(gestureRecognizer)
         
         switch(payWay) {
@@ -94,16 +94,16 @@ class PurchaseDialogController: UIViewController, TouchDownDelegate, PickerViewD
         priceLabel.text = "\(amount)"
     }
     
-    func touchDown(tag: Int) {
-        payWayView.hidden = false
+    func touchDown(_ tag: Int) {
+        payWayView.isHidden = false
     }
     
     func closePayWayView() {
-        payWayView.hidden = true
+        payWayView.isHidden = true
     }
     
-    func pickerViewSelected(row: Int, item: AnyObject) {
-        payWayView.hidden = true
+    func pickerViewSelected(_ row: Int, item: AnyObject) {
+        payWayView.isHidden = true
         payWay = PayWayFactory.PayWayEnum(rawValue: row)!
         payWayLabel.text = item as? String
         changePayWayDelegate.payWayChanged(payWay)

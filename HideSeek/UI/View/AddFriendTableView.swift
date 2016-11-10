@@ -21,21 +21,21 @@ class AddFriendTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         self.dataSource = self
         self.delegate = self
         self.addFriendList = NSMutableArray()
-        self.screenHeight = UIScreen.mainScreen().bounds.height - 44
-        self.separatorStyle = UITableViewCellSeparatorStyle.None;
+        self.screenHeight = UIScreen.main.bounds.height - 44
+        self.separatorStyle = UITableViewCellSeparatorStyle.none;
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.dequeueReusableCellWithIdentifier("addFriendCell")! as UITableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.dequeueReusableCell(withIdentifier: "addFriendCell")! as UITableViewCell
         
-        if addFriendList.count < indexPath.row + 1 {
+        if addFriendList.count < (indexPath as NSIndexPath).row + 1 {
             return cell
         }
-        let friend = addFriendList.objectAtIndex(indexPath.row) as! User
+        let friend = addFriendList.object(at: (indexPath as NSIndexPath).row) as! User
         
         let photoImageView = cell.viewWithTag(TAG_PHOTO_IMAGEVIEW) as! UIImageView
         let nameLabel = cell.viewWithTag(TAG_NAME_LABEL) as! UILabel
@@ -47,24 +47,24 @@ class AddFriendTableView: UITableView, UITableViewDataSource, UITableViewDelegat
         return cell
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return addFriendList.count
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if addFriendList.count < indexPath.row + 1 {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if addFriendList.count < (indexPath as NSIndexPath).row + 1 {
             return
         }
         
-        let friend = addFriendList.objectAtIndex(indexPath.row) as! User
+        let friend = addFriendList.object(at: (indexPath as NSIndexPath).row) as! User
         
         self.goToProfileDelegate?.goToProfile(friend)
     }

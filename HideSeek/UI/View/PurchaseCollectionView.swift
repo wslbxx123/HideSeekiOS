@@ -20,9 +20,9 @@ class PurchaseCollectionView: UICollectionView, UICollectionViewDelegateFlowLayo
         super.init(coder: aDecoder)
         self.delegate = self
         self.dataSource = self
-        self.registerClass(PurchaseCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        self.register(PurchaseCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifier)
         self.productList = NSMutableArray()
-        self.bound = UIScreen.mainScreen().bounds
+        self.bound = UIScreen.main.bounds
         self.screenHeight = bound.height
         
         self.delaysContentTouches = false
@@ -32,17 +32,17 @@ class PurchaseCollectionView: UICollectionView, UICollectionViewDelegateFlowLayo
     /**
     UICollectionViewDataSource
     **/
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return productList.count;
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PurchaseCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! PurchaseCollectionViewCell
         
-        if(indexPath.row < productList.count) {
-            let product = productList.objectAtIndex(indexPath.row) as! Product
+        if((indexPath as NSIndexPath).row < productList.count) {
+            let product = productList.object(at: (indexPath as NSIndexPath).row) as! Product
             cell.purchaseDelegate = purchaseDelegate
-            cell.backgroundColor = UIColor.whiteColor()
+            cell.backgroundColor = UIColor.white
             cell.product = product
             cell.setName(product.name)
             cell.setImageUrl(product.imageUrl)
@@ -55,49 +55,49 @@ class PurchaseCollectionView: UICollectionView, UICollectionViewDelegateFlowLayo
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if productList.count < indexPath.row + 1 {
-            return CGSizeMake(0, 0)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if productList.count < (indexPath as NSIndexPath).row + 1 {
+            return CGSize(width: 0, height: 0)
         }
         
-        let product = productList.objectAtIndex(indexPath.row) as! Product
+        let product = productList.object(at: (indexPath as NSIndexPath).row) as! Product
         
         let nameheight = BaseInfoUtil.getLabelHeight(15,
                                                      width: bound.width / 2 - 40,
                                                      message: product.name)
         
         let height = nameheight + bound.width / 2 + 80
-        return CGSizeMake((bound.width - 40) / 2, height)
+        return CGSize(width: (bound.width - 40) / 2, height: height)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let edgeInsets = UIEdgeInsetsMake(15, 15, 5, 15)
         return edgeInsets
     }
     
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         var reusableView: UICollectionReusableView!
         
         if (kind == UICollectionElementKindSectionFooter)
         {
-            footer = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "FooterView", forIndexPath: indexPath)
-            footer.backgroundColor = UIColor.whiteColor()
+            footer = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "FooterView", for: indexPath)
+            footer.backgroundColor = UIColor.white
             reusableView = footer;
         }
         return reusableView;
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        let indexPath = self.indexPathForItemAtPoint(CGPointMake(scrollView.contentOffset.x + 30, scrollView.contentOffset.y + screenHeight - 104))
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let indexPath = self.indexPathForItem(at: CGPoint(x: scrollView.contentOffset.x + 30, y: scrollView.contentOffset.y + screenHeight - 104))
         
-        if indexPath != nil && indexPath!.row >= self.productList.count / 2 - VISIBLE_REFRESH_COUNT && self.productList.count >= 10{
+        if indexPath != nil && (indexPath! as NSIndexPath).row >= self.productList.count / 2 - VISIBLE_REFRESH_COUNT && self.productList.count >= 10{
             
             loadMoreDelegate?.loadMore()
         }
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let location:CGPoint! = touches.first?.locationInView(self)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let location:CGPoint! = touches.first?.location(in: self)
         
         print("\(location.x) : \(location.y)")
     }

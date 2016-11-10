@@ -29,40 +29,40 @@ class ForeignCityTableView: UITableView, UITableViewDataSource, UITableViewDeleg
         self.delegate = self
         
         self.delaysContentTouches = false
-        self.sectionIndexColor = UIColor.blackColor()
+        self.sectionIndexColor = UIColor.black
         self.sectionIndexBackgroundColor = BaseInfoUtil.stringToRGB("#f0f0f0")
         
         BaseInfoUtil.cancelButtonDelay(self)
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         let toBeReturned = NSMutableArray()
         
         for index in 0...25 {
             let randomNum = 65 + index
-            let char = Character(UnicodeScalar(randomNum))
-            toBeReturned.addObject(String(char))
+            let char = Character(UnicodeScalar(randomNum)!)
+            toBeReturned.add(String(char))
         }
         return toBeReturned.copy() as? [String]
     }
     
-    func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         let position = alphaIndex[title]
         
         if (position != nil) {
-            tableView.scrollToRowAtIndexPath(NSIndexPath(forItem: position as! Int, inSection: 0), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+            tableView.scrollToRow(at: IndexPath(item: position as! Int, section: 0), at: UITableViewScrollPosition.top, animated: true)
         }
         
         return index
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let showAlpha = alphaIndex.allValues.contains({ value in
-            return value as! Int == indexPath.row
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let showAlpha = alphaIndex.allValues.contains(where: { value in
+            return value as! Int == (indexPath as NSIndexPath).row
         })
         
         if showAlpha && !isSearching {
@@ -72,20 +72,20 @@ class ForeignCityTableView: UITableView, UITableViewDataSource, UITableViewDeleg
         }
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.dequeueReusableCellWithIdentifier("foreignCityCell")! as UITableViewCell
-        if cityList.count < indexPath.row + 1 {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.dequeueReusableCell(withIdentifier: "foreignCityCell")! as UITableViewCell
+        if cityList.count < (indexPath as NSIndexPath).row + 1 {
             return cell
         }
         
-        let city = cityList.objectAtIndex(indexPath.row) as! ForeignCity
+        let city = cityList.object(at: (indexPath as NSIndexPath).row) as! ForeignCity
         
-        let showAlpha = alphaIndex.allValues.contains({ value in
-            return value as! Int == indexPath.row
+        let showAlpha = alphaIndex.allValues.contains(where: { value in
+            return value as! Int == (indexPath as NSIndexPath).row
         })
         let cityNameLabel = cell.viewWithTag(TAG_CITY_NAME_LABEL) as! UILabel
         let alphaLabel = cell.viewWithTag(TAG_ALPHA_LABEL) as! UILabel
@@ -94,10 +94,10 @@ class ForeignCityTableView: UITableView, UITableViewDataSource, UITableViewDeleg
         cityNameLabel.text = city.name
         
         if showAlpha && !isSearching {
-            alphaView!.hidden = false
-            alphaLabel.text = alphaIndex.allKeysForObject(indexPath.row)[0] as? String
+            alphaView!.isHidden = false
+            alphaLabel.text = alphaIndex.allKeys(for: (indexPath as NSIndexPath).row)[0] as? String
         } else {
-            alphaView!.hidden = true
+            alphaView!.isHidden = true
             alphaLabel.text = ""
         }
         
@@ -105,44 +105,44 @@ class ForeignCityTableView: UITableView, UITableViewDataSource, UITableViewDeleg
         return cell
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         hideKeyboardDelegate?.hideKeyboard()
         
-        let indexPath = self.indexPathForRowAtPoint(CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y))
+        let indexPath = self.indexPathForRow(at: CGPoint(x: scrollView.contentOffset.x, y: scrollView.contentOffset.y))
         
         if indexPath != nil {
-            let showAlpha = alphaIndex.allValues.contains({ value in
-                return value as! Int == indexPath!.row
+            let showAlpha = alphaIndex.allValues.contains(where: { value in
+                return value as! Int == (indexPath! as NSIndexPath).row
             })
             
             if showAlpha && !isSearching {
-                let alpha = alphaIndex.allKeysForObject(indexPath!.row)[0]
+                let alpha = alphaIndex.allKeys(for: (indexPath! as NSIndexPath).row)[0]
                 
                 showToastDelegate?.showToast(alpha as! String)
             }
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cityList.count
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if cityList.count < indexPath.row + 1 {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if cityList.count < (indexPath as NSIndexPath).row + 1 {
             return
         }
         
-        let city = cityList.objectAtIndex(indexPath.row) as! ForeignCity
+        let city = cityList.object(at: (indexPath as NSIndexPath).row) as! ForeignCity
         
         self.selectRegionDelegate?.regionSelected(city.name)
     }
     
-    override func touchesShouldCancelInContentView(view: UIView) -> Bool {
-        if view.isKindOfClass(UIButton) {
+    override func touchesShouldCancel(in view: UIView) -> Bool {
+        if view.isKind(of: UIButton.self) {
             return true
         }
         
-        return super.touchesShouldCancelInContentView(view)
+        return super.touchesShouldCancel(in: view)
     }
 
 }

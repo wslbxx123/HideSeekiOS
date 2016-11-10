@@ -29,24 +29,24 @@ class PurchaseOrderTableView: UITableView, UITableViewDataSource, UITableViewDel
         self.delegate = self
         self.orderList = NSMutableArray()
         self.setupInfiniteScrollingView()
-        self.screenRect = UIScreen.mainScreen().bounds
+        self.screenRect = UIScreen.main.bounds
         self.screenHeight = screenRect.height - 44
         
         self.delaysContentTouches = false
         BaseInfoUtil.cancelButtonDelay(self)
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.dequeueReusableCellWithIdentifier("orderCell")! as! PurchaseOrderTableViewCell
-        if orderList.count < indexPath.row + 1 {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.dequeueReusableCell(withIdentifier: "orderCell")! as! PurchaseOrderTableViewCell
+        if orderList.count < (indexPath as NSIndexPath).row + 1 {
             return cell
         }
         
-        let purchaseOrder = orderList.objectAtIndex(indexPath.row) as! PurchaseOrder
+        let purchaseOrder = orderList.object(at: (indexPath as NSIndexPath).row) as! PurchaseOrder
         cell.purchaseDelegate = purchaseDelegate
         cell.initOrder(purchaseOrder)
         
@@ -55,44 +55,44 @@ class PurchaseOrderTableView: UITableView, UITableViewDataSource, UITableViewDel
         return cell
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return orderList.count
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        let indexPath = self.indexPathForRowAtPoint(CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y + screenHeight))
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let indexPath = self.indexPathForRow(at: CGPoint(x: scrollView.contentOffset.x, y: scrollView.contentOffset.y + screenHeight))
         
         if indexPath != nil {
-            print(indexPath!.row)
+            print((indexPath! as NSIndexPath).row)
         }
         
-        if indexPath != nil && indexPath!.row >= self.orderList.count - VISIBLE_REFRESH_COUNT && self.orderList.count >= 10{
+        if indexPath != nil && (indexPath! as NSIndexPath).row >= self.orderList.count - VISIBLE_REFRESH_COUNT && self.orderList.count >= 10{
             self.tableFooterView = self.infiniteScrollingView
-            self.tableFooterView?.hidden = false
+            self.tableFooterView?.isHidden = false
             
             loadMoreDelegate?.loadMore()
         }
     }
     
     func setupInfiniteScrollingView() {
-        let screenWidth = UIScreen.mainScreen().bounds.width
-        self.infiniteScrollingView = UIView(frame: CGRectMake(0, self.contentSize.height, screenWidth, 40))
-        self.infiniteScrollingView!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
-        self.infiniteScrollingView!.backgroundColor = UIColor.whiteColor()
+        let screenWidth = UIScreen.main.bounds.width
+        self.infiniteScrollingView = UIView(frame: CGRect(x: 0, y: self.contentSize.height, width: screenWidth, height: 40))
+        self.infiniteScrollingView!.autoresizingMask = UIViewAutoresizing.flexibleWidth
+        self.infiniteScrollingView!.backgroundColor = UIColor.white
         
         let loadinglabel = UILabel()
         loadinglabel.frame.size = CGSize(width: 100, height: 30)
         loadinglabel.text = NSLocalizedString("LOADING", comment: "Loading...")
-        loadinglabel.textAlignment = NSTextAlignment.Center
-        loadinglabel.font = UIFont.systemFontOfSize(15.0)
+        loadinglabel.textAlignment = NSTextAlignment.center
+        loadinglabel.font = UIFont.systemFont(ofSize: 15.0)
         loadinglabel.center = CGPoint(x: self.infiniteScrollingView.bounds.size.width / 2,
                                       y: self.infiniteScrollingView.bounds.size.height / 2)
         self.infiniteScrollingView!.addSubview(loadinglabel)

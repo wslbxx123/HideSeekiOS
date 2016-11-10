@@ -22,7 +22,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
     @IBOutlet weak var regionView: UIControl!
     @IBOutlet weak var regionResultLabel: UILabel!
     
-    var manager: AFHTTPRequestOperationManager!
+    var manager: AFHTTPSessionManager!
     var phone: String!
     var nickname: String!
     var password: String!
@@ -30,16 +30,16 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
     var sex: User.SexEnum = User.SexEnum.notSet
     var croppedImage: UIImage!
     
-    @IBAction func closeBtnClicked(sender: AnyObject) {
-        self.navigationController?.popToRootViewControllerAnimated(true)
+    @IBAction func closeBtnClicked(_ sender: AnyObject) {
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
-    @IBAction func cameraBtnClicked(sender: AnyObject) {
+    @IBAction func cameraBtnClicked(_ sender: AnyObject) {
         photoImageViewClicked()
     }
     
-    @IBAction func matchRoleBtnClicked(sender: AnyObject) {
-        let channalId = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.CHANNEL_ID) as? String
+    @IBAction func matchRoleBtnClicked(_ sender: AnyObject) {
+        let channalId = UserDefaults.standard.object(forKey: UserDefaultParam.CHANNEL_ID) as? String
         let paramDict = NSMutableDictionary()
         let role = arc4random_uniform(5)
         paramDict["phone"] = phone
@@ -54,48 +54,46 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
             paramDict["region"] = region
         }
         
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
         hud.dimBackground = true
-        manager.POST(UrlParam.REGISTER_URL, parameters: paramDict, constructingBodyWithBlock: { (formData) in
+        manager.post(UrlParam.REGISTER_URL, parameters: paramDict, constructingBodyWith: { (formData) in
 
             if self.croppedImage != nil {
                 let imgData = UIImageJPEGRepresentation(self.croppedImage!, 1);
-                formData.appendPartWithFileData(imgData!, name: "photo", fileName: "photo", mimeType: "image/jpeg")
+                formData.appendPart(withFileData: imgData!, name: "photo", fileName: "photo", mimeType: "image/jpeg")
             }}, success: { (operation, responseObject) in
                 let response = responseObject as! NSDictionary
                 self.setInfoFromCallback(response)
-                print("JSON: " + responseObject.description!)
+                print("JSON: " + (responseObject as AnyObject).description!)
                 hud.removeFromSuperview()
-                hud = nil
             }) { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
                 hud.removeFromSuperview()
-                hud = nil
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        self.navigationController?.navigationBarHidden = false
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
         
         super.viewWillDisappear(animated)
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
+    func setInfoFromCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -104,11 +102,11 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
             PushManager.instance.register()
             GoalCache.instance.ifNeedClearMap = true
             let storyboard = UIStoryboard(name:"Main", bundle: nil)
-            let viewController = storyboard.instantiateViewControllerWithIdentifier("matchRole") as! MatchRoleController
+            let viewController = storyboard.instantiateViewController(withIdentifier: "matchRole") as! MatchRoleController
             self.navigationController?.pushViewController(viewController, animated: true)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -121,7 +119,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
 
         photoImageView.layer.cornerRadius = photoImageView.frame.height / 2
         photoImageView.layer.masksToBounds = true
-        photoImageView.userInteractionEnabled = true
+        photoImageView.isUserInteractionEnabled = true
         photoImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(UploadPhotoController.photoImageViewClicked)))
         matchRoleBtn.setBackgroundColor("#fccb05", selectedColorStr: "#ffa200", disabledColorStr: "#bab8b8")
         sexPickerView.items = [NSLocalizedString("FEMALE", comment: "Female"),
@@ -129,15 +127,15 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
                                NSLocalizedString("SECRET", comment: "Secret")]
         sexPickerView.reloadAllComponents()
         
-        sexView.addTarget(self, action: #selector(UploadPhotoController.sexViewClicked), forControlEvents: UIControlEvents.TouchDown)
-        regionView.addTarget(self, action: #selector(UploadPhotoController.regionViewClicked), forControlEvents: UIControlEvents.TouchDown)
-        pickerView.backgroundColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+        sexView.addTarget(self, action: #selector(UploadPhotoController.sexViewClicked), for: UIControlEvents.touchDown)
+        regionView.addTarget(self, action: #selector(UploadPhotoController.regionViewClicked), for: UIControlEvents.touchDown)
+        pickerView.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
         sexPickerView.pickerViewDelegate = self
-        manager = AFHTTPRequestOperationManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager = AFHTTPSessionManager()
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UploadPhotoController.cancelEditSex))
-        pickerView.userInteractionEnabled = true
+        pickerView.isUserInteractionEnabled = true
         pickerView.addGestureRecognizer(gestureRecognizer)
     }
 
@@ -151,17 +149,17 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
             sex = User.SexEnum.female
         }
         
-        sexResultLabel.text = sexPickerView.items.objectAtIndex(sex.rawValue - 1) as? String
-        pickerView.hidden = true
+        sexResultLabel.text = sexPickerView.items.object(at: sex.rawValue - 1) as? String
+        pickerView.isHidden = true
     }
 
     func sexViewClicked() {
-        pickerView.hidden = false
+        pickerView.isHidden = false
     }
     
     func regionViewClicked() {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let viewController = storyboard.instantiateViewControllerWithIdentifier("region") as! RegionController
+        let viewController = storyboard.instantiateViewController(withIdentifier: "region") as! RegionController
         self.navigationController?.pushViewController(viewController, animated: true)
         viewController.callBack { (name) in
             self.region = name
@@ -169,8 +167,8 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
         }
     }
     
-    func pickerViewSelected(row: Int, item: AnyObject) {
-        pickerView.hidden = true
+    func pickerViewSelected(_ row: Int, item: AnyObject) {
+        pickerView.isHidden = true
         sex = User.SexEnum(rawValue: row + 1)!
         sexResultLabel.text = item as? String
     }
@@ -178,35 +176,35 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
     func photoImageViewClicked() {
         let picker = UIImagePickerController()
         picker.delegate = self
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
-        let cameraAction = UIAlertAction(title: NSLocalizedString("CAMERA", comment: "Camera"), style: UIAlertActionStyle.Default) { (action) in
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) {
-                picker.sourceType = UIImagePickerControllerSourceType.Camera
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let cameraAction = UIAlertAction(title: NSLocalizedString("CAMERA", comment: "Camera"), style: UIAlertActionStyle.default) { (action) in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+                picker.sourceType = UIImagePickerControllerSourceType.camera
             } else {
                 NSLog("模拟器无法打开相机")
             }
-            self.presentViewController(picker, animated: true, completion: nil)
+            self.present(picker, animated: true, completion: nil)
         }
         alertController.addAction(cameraAction)
         
-        let photoLibraryAction = UIAlertAction(title: NSLocalizedString("PHOTO_LIBRARY", comment: "Photo Library"), style: UIAlertActionStyle.Default) { (action) in
-            picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-            self.presentViewController(picker, animated: true, completion: nil)
+        let photoLibraryAction = UIAlertAction(title: NSLocalizedString("PHOTO_LIBRARY", comment: "Photo Library"), style: UIAlertActionStyle.default) { (action) in
+            picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+            self.present(picker, animated: true, completion: nil)
         }
         alertController.addAction(photoLibraryAction)
         
-        let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: "Cancel"), style: UIAlertActionStyle.Cancel) { (action) in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: "Cancel"), style: UIAlertActionStyle.cancel) { (action) in
         }
         alertController.addAction(cancelAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        UIApplication.sharedApplication().statusBarHidden = false
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        UIApplication.shared.isStatusBarHidden = false
         
         let mediaType = info[UIImagePickerControllerMediaType]
-        var data: NSData
-        if mediaType != nil && mediaType!.isEqualToString("public.image") {
+        var data: Data
+        if mediaType != nil && (mediaType! as AnyObject).isEqual(to: "public.image") {
             let originImage = info[UIImagePickerControllerOriginalImage] as! UIImage
             
             let scaledImage = scaleImage(originImage, toScale: 0.8)
@@ -219,7 +217,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
             
             let image = UIImage(data: data)
             
-            picker.dismissViewControllerAnimated(true, completion: {
+            picker.dismiss(animated: true, completion: {
                 let controller = PECropViewController()
                 controller.delegate = self
                 controller.image = image
@@ -227,33 +225,33 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
                 let width = image!.size.width;
                 let height = image!.size.height;
                 let length = min(width, height);
-                controller.imageCropRect = CGRectMake((width - length) / 2,
-                    (height - length) / 2,
-                    length,
-                    length);
+                controller.imageCropRect = CGRect(x: (width - length) / 2,
+                    y: (height - length) / 2,
+                    width: length,
+                    height: length);
                 controller.keepingCropAspectRatio = true
                 
                 let navigationController = UINavigationController.init(rootViewController: controller)
                 
-                self.presentViewController(navigationController, animated: true, completion: nil)
+                self.present(navigationController, animated: true, completion: nil)
             })
         }
     }
     
-    func scaleImage(image: UIImage, toScale: CGFloat) -> UIImage {
-        UIGraphicsBeginImageContext(CGSizeMake(image.size.width * toScale, image.size.height * toScale))
-        image.drawInRect(CGRectMake(0, 0, image.size.width * toScale, image.size.height * toScale))
+    func scaleImage(_ image: UIImage, toScale: CGFloat) -> UIImage {
+        UIGraphicsBeginImageContext(CGSize(width: image.size.width * toScale, height: image.size.height * toScale))
+        image.draw(in: CGRect(x: 0, y: 0, width: image.size.width * toScale, height: image.size.height * toScale))
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return scaledImage
+        return scaledImage!
     }
     
-    func cropViewControllerDidCancel(controller: PECropViewController!) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
+    func cropViewControllerDidCancel(_ controller: PECropViewController!) {
+        controller.dismiss(animated: true, completion: nil)
     }
     
-    func cropViewController(controller: PECropViewController!, didFinishCroppingImage croppedImage: UIImage!) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
+    func cropViewController(_ controller: PECropViewController!, didFinishCroppingImage croppedImage: UIImage!) {
+        controller.dismiss(animated: true, completion: nil)
         self.croppedImage = croppedImage
         self.photoImageView.image = croppedImage
     }

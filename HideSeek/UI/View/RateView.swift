@@ -16,7 +16,7 @@ class RateView: UIView {
     @IBOutlet weak var fourthStarImageView: UIImageView!
     @IBOutlet weak var fifthStarImageView: UIImageView!
     
-    func initStar(num: Int) {
+    func initStar(_ num: Int) {
         let tempNum = abs(num)
         firstStarImageView.image = UIImage(named: "star")
         secondStarImageView.image = UIImage(named: "star")

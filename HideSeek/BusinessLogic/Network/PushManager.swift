@@ -15,24 +15,24 @@ class PushManager {
         let acceptAction = UIMutableUserNotificationAction()
         acceptAction.identifier = "ACCEPT_IDENTIFIER"
         acceptAction.title = "Accept"
-        acceptAction.activationMode = UIUserNotificationActivationMode.Foreground;
-        acceptAction.destructive = false;
-        acceptAction.authenticationRequired = false;
+        acceptAction.activationMode = UIUserNotificationActivationMode.foreground;
+        acceptAction.isDestructive = false;
+        acceptAction.isAuthenticationRequired = false;
         
         let inviteCategory = UIMutableUserNotificationCategory()
         inviteCategory.identifier = "INVITE_CATEGORY"
-        inviteCategory.setActions([acceptAction], forContext: UIUserNotificationActionContext.Default)
-        inviteCategory.setActions([acceptAction], forContext: UIUserNotificationActionContext.Minimal)
+        inviteCategory.setActions([acceptAction], for: UIUserNotificationActionContext.default)
+        inviteCategory.setActions([acceptAction], for: UIUserNotificationActionContext.minimal)
         
         let categories = NSSet(objects: inviteCategory)
-        let mySettings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: categories as! Set<UIUserNotificationCategory>)
+        let mySettings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: categories as? Set<UIUserNotificationCategory>)
         
-        UIApplication.sharedApplication().registerUserNotificationSettings(mySettings)
-        UIApplication.sharedApplication().registerForRemoteNotifications()
+        UIApplication.shared.registerUserNotificationSettings(mySettings)
+        UIApplication.shared.registerForRemoteNotifications()
     }
     
     func registerPush() {
-        UIApplication.sharedApplication().registerForRemoteNotificationTypes([.Badge, .Sound, .Alert])
+        _ = UIApplication.shared.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
     }
     
     func register() {
@@ -40,12 +40,12 @@ class PushManager {
             NSLog("Reregister initialize successfully.")
         }
         
-        let systemVersion: NSString = UIDevice.currentDevice().systemVersion
+        let systemVersion: NSString = UIDevice.current.systemVersion as NSString
         if systemVersion.floatValue >= 8.0 {
-            let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: nil)
-            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+            let settings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
+            UIApplication.shared.registerUserNotificationSettings(settings)
         } else {
-            UIApplication.sharedApplication().registerForRemoteNotificationTypes([.Badge, .Sound, .Alert])
+            UIApplication.shared.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
         }
     }
     
@@ -53,7 +53,7 @@ class PushManager {
         XGPush.unRegisterDevice()
     }
     
-    func startApp(launchOptions: [NSObject: AnyObject]?) {
+    func startApp(_ launchOptions: [AnyHashable: Any]?) {
         XGPush.startApp(TENCENT_IM_ID, appKey: TENCENT_IM_KEY)
         
         XGPush.handleLaunching(launchOptions)

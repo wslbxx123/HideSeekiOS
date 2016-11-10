@@ -18,19 +18,19 @@ class WarningController: UIViewController, UpdateGoalDelegate {
     @IBOutlet weak var minuteSecondSplit: UILabel!
     
     var manager: CustomRequestManager!
-    var timer: NSTimer!
+    var timer: Timer!
     var updateGoalDelegate: UpdateGoalDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         self.automaticallyAdjustsScrollViewInsets = false
         warningTableView.updateGoalDelegate = self
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         refreshData()
@@ -41,7 +41,7 @@ class WarningController: UIViewController, UpdateGoalDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         timer.invalidate()
@@ -50,46 +50,46 @@ class WarningController: UIViewController, UpdateGoalDelegate {
     
     func callEverySecond() {
         let updateTime = getUpdateTime()
-        WarningCache.instance.serverTime = WarningCache.instance.serverTime.dateByAddingTimeInterval(1)
+        WarningCache.instance.serverTime = WarningCache.instance.serverTime.addingTimeInterval(1)
         
-        let durationDateComponents = NSCalendar(identifier: NSCalendarIdentifierGregorian)!.components( [.Year, .Month, .Day, .Hour, .Minute, .Second], fromDate: WarningCache.instance.serverTime, toDate: updateTime, options: [])
+        let durationDateComponents = (Calendar(identifier: Calendar.Identifier.gregorian) as NSCalendar).components( [.year, .month, .day, .hour, .minute, .second], from: WarningCache.instance.serverTime, to: updateTime, options: [])
         
-        if durationDateComponents.hour < 1 {
-            hourLabel.textColor = UIColor.redColor()
-            minuteLabel.textColor = UIColor.redColor()
-            secondLabel.textColor = UIColor.redColor()
-            hourMinuteSplit.textColor = UIColor.redColor()
-            minuteSecondSplit.textColor = UIColor.redColor()
+        if durationDateComponents.hour! < 1 {
+            hourLabel.textColor = UIColor.red
+            minuteLabel.textColor = UIColor.red
+            secondLabel.textColor = UIColor.red
+            hourMinuteSplit.textColor = UIColor.red
+            minuteSecondSplit.textColor = UIColor.red
         } else {
-            hourLabel.textColor = UIColor.blackColor()
-            minuteLabel.textColor = UIColor.blackColor()
-            secondLabel.textColor = UIColor.blackColor()
-            hourMinuteSplit.textColor = UIColor.blackColor()
-            minuteSecondSplit.textColor = UIColor.blackColor()
+            hourLabel.textColor = UIColor.black
+            minuteLabel.textColor = UIColor.black
+            secondLabel.textColor = UIColor.black
+            hourMinuteSplit.textColor = UIColor.black
+            minuteSecondSplit.textColor = UIColor.black
         }
-        hourLabel.text =  durationDateComponents.hour > 9 ?
+        hourLabel.text =  durationDateComponents.hour! > 9 ?
             "\(durationDateComponents.hour)" : "0\(durationDateComponents.hour)"
-        minuteLabel.text =  durationDateComponents.minute > 9 ?
+        minuteLabel.text =  durationDateComponents.minute! > 9 ?
             "\(durationDateComponents.minute)" : "0\(durationDateComponents.minute)"
-        secondLabel.text = durationDateComponents.second > 9 ?
+        secondLabel.text = durationDateComponents.second! > 9 ?
             "\(durationDateComponents.second)" : "0\(durationDateComponents.second)"
     }
     
-    func getUpdateTime() -> NSDate {
-        let calendar = NSCalendar.currentCalendar()
-        let startDate = NSDate()
+    func getUpdateTime() -> Date {
+        let calendar = Calendar.current
+        let startDate = Date()
         
-        let dateComponents = calendar.components([.Year, .Month, .Day, .Hour, .Minute, .Second], fromDate: startDate)
-        dateComponents.day += 1
+        var dateComponents = (calendar as NSCalendar).components([.year, .month, .day, .hour, .minute, .second], from: startDate)
+        dateComponents.day = dateComponents.day! + 1
         dateComponents.hour = 0
         dateComponents.minute = 0
         dateComponents.second = 0
-        return calendar.dateFromComponents(dateComponents)!
+        return calendar.date(from: dateComponents)!
     }
     
     func refreshData() {
         let paramDict = NSMutableDictionary()
-        manager.POST(UrlParam.GET_DANGER_WARNING_URL,
+        _ = manager.POST(UrlParam.GET_DANGER_WARNING_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
                         print("JSON: " + responseObject.description!)
@@ -101,17 +101,17 @@ class WarningController: UIViewController, UpdateGoalDelegate {
         })
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
+    func setInfoFromCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
             WarningCache.instance.setWarnings(response["result"] as! NSDictionary)
             self.warningTableView.warningList = WarningCache.instance.cacheList
             self.warningTableView.reloadData()
-            timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(WarningController.callEverySecond), userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(WarningController.callEverySecond), userInfo: nil, repeats: true)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -119,7 +119,7 @@ class WarningController: UIViewController, UpdateGoalDelegate {
         }
     }
     
-    func getWarnings(result: NSArray) -> NSMutableArray {
+    func getWarnings(_ result: NSArray) -> NSMutableArray {
         let list = NSMutableArray()
         
         for warningItem in result {
@@ -138,15 +138,15 @@ class WarningController: UIViewController, UpdateGoalDelegate {
                 unionType: BaseInfoUtil.getIntegerFromAnyObject(warningInfo["union_type"])),
                 createTime: warningInfo["create_time"] as! String)
             
-            list.addObject(warning)
+            list.add(warning)
         }
         
         return list
     }
     
-    func updateEndGoal(goalId: Int64) {
+    func updateEndGoal(_ goalId: Int64) {
         updateGoalDelegate?.updateEndGoal(goalId)
         
-        self.navigationController?.popViewControllerAnimated(true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 }

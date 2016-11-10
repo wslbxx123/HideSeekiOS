@@ -60,7 +60,7 @@ BLY_START_NONNULL
 /**
  *  设置自定义设备唯一标识
  */
-@property (nonatomic, copy) NSString *deviceId;
+@property (nonatomic, copy) NSString *deviceIdentifier;
 
 /**
  *  卡顿监控开关，默认关闭
@@ -115,7 +115,7 @@ BLY_START_NONNULL
 @property (nonatomic, copy) NSArray * excludeModuleFilter;
 
 /**
- * 控制台日志上报开关，默认关闭
+ * 控制台日志上报开关，默认开启
  */
 @property (nonatomic, assign) BOOL  consolelogEnable;
 

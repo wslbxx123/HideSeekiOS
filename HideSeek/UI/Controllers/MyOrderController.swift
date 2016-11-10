@@ -15,11 +15,11 @@ class MyOrderController: UIViewController {
     var exchangeOrderController: ExchangeOrderController!
     var rect: CGRect!
     
-    @IBAction func backBtnClicked(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func backBtnClicked(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func segmentControlChanged(sender: AnyObject) {
+    @IBAction func segmentControlChanged(_ sender: AnyObject) {
         switch(self.segmentControl.selectedSegmentIndex) {
         case 0:
             showPurchaseArea()
@@ -38,7 +38,7 @@ class MyOrderController: UIViewController {
         initView()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         showPurchaseArea()
@@ -49,8 +49,8 @@ class MyOrderController: UIViewController {
     }
 
     func initView() {
-        let font = UIFont.systemFontOfSize(14.0)
-        let color = UIColor.blackColor()
+        let font = UIFont.systemFont(ofSize: 14.0)
+        let color = UIColor.black
         let yellowColor = BaseInfoUtil.stringToRGB("#ffcc00")
         let nomalAttributes = NSDictionary(dictionary: [
             NSFontAttributeName : font,
@@ -59,29 +59,29 @@ class MyOrderController: UIViewController {
             NSFontAttributeName : font,
             NSForegroundColorAttributeName: color])
         
-        segmentControl.tintColor = UIColor.clearColor()
-        segmentControl.setTitleTextAttributes(nomalAttributes as [NSObject : AnyObject], forState: UIControlState.Normal)
-        segmentControl.setTitleTextAttributes(selectedAttributes as [NSObject : AnyObject], forState: UIControlState.Selected)
-        segmentControl.setBackgroundImage(UIImage.createImageWithColor(UIColor.whiteColor()), forState: UIControlState.Normal, barMetrics: UIBarMetrics.Default)
-        segmentControl.setBackgroundImage(UIImage.createImageWithColor(yellowColor), forState: UIControlState.Selected, barMetrics: UIBarMetrics.Default)
+        segmentControl.tintColor = UIColor.clear
+        segmentControl.setTitleTextAttributes(nomalAttributes as! [AnyHashable: Any], for: UIControlState())
+        segmentControl.setTitleTextAttributes(selectedAttributes as! [AnyHashable: Any], for: UIControlState.selected)
+        segmentControl.setBackgroundImage(UIImage.createImageWithColor(UIColor.white), for: UIControlState(), barMetrics: UIBarMetrics.default)
+        segmentControl.setBackgroundImage(UIImage.createImageWithColor(yellowColor), for: UIControlState.selected, barMetrics: UIBarMetrics.default)
         segmentControl.layer.cornerRadius = 5;
         segmentControl.layer.masksToBounds = true;
         segmentControl.apportionsSegmentWidthsByContent = true
         
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        purchaseOrderController = storyboard.instantiateViewControllerWithIdentifier("purchaseOrder") as! PurchaseOrderController
-        exchangeOrderController = storyboard.instantiateViewControllerWithIdentifier("exchangeOrder") as! ExchangeOrderController
-        rect = UIScreen.mainScreen().bounds
-        purchaseOrderController.view.layer.frame = CGRectMake(
-            purchaseOrderController.view.layer.frame.minX,
-            purchaseOrderController.view.layer.frame.minY,
-            purchaseOrderController.view.layer.frame.width,
-            purchaseOrderController.view.layer.frame.height - 128)
-        exchangeOrderController.view.layer.frame = CGRectMake(
-            exchangeOrderController.view.layer.frame.minX,
-            exchangeOrderController.view.layer.frame.minY,
-            exchangeOrderController.view.layer.frame.width,
-            exchangeOrderController.view.layer.frame.height - 128)
+        purchaseOrderController = storyboard.instantiateViewController(withIdentifier: "purchaseOrder") as! PurchaseOrderController
+        exchangeOrderController = storyboard.instantiateViewController(withIdentifier: "exchangeOrder") as! ExchangeOrderController
+        rect = UIScreen.main.bounds
+        purchaseOrderController.view.layer.frame = CGRect(
+            x: purchaseOrderController.view.layer.frame.minX,
+            y: purchaseOrderController.view.layer.frame.minY,
+            width: purchaseOrderController.view.layer.frame.width,
+            height: purchaseOrderController.view.layer.frame.height - 128)
+        exchangeOrderController.view.layer.frame = CGRect(
+            x: exchangeOrderController.view.layer.frame.minX,
+            y: exchangeOrderController.view.layer.frame.minY,
+            width: exchangeOrderController.view.layer.frame.width,
+            height: exchangeOrderController.view.layer.frame.height - 128)
     }
     
     func showPurchaseArea() {

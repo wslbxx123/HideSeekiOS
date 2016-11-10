@@ -17,28 +17,28 @@ class ComboxPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSour
         items = NSMutableArray()
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return items.count
     }
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         let item = items[row]
         
         return item as? String
     }
     
-    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         
         var pickerLabel = view as? UILabel
         
         if pickerLabel == nil {
             pickerLabel = UILabel()
-            pickerLabel!.font = UIFont.systemFontOfSize(20)
-            pickerLabel?.textAlignment = NSTextAlignment.Center
+            pickerLabel!.font = UIFont.systemFont(ofSize: 20)
+            pickerLabel?.textAlignment = NSTextAlignment.center
         }
         
         pickerLabel?.text = self.pickerView(self, titleForRow: row, forComponent: component)
@@ -46,7 +46,7 @@ class ComboxPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSour
         return pickerLabel!
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        pickerViewDelegate?.pickerViewSelected(row, item: items[row])
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        pickerViewDelegate?.pickerViewSelected(row, item: items.object(at: row) as AnyObject)
     }
 }

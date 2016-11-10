@@ -7,7 +7,7 @@
 //
 
 class PayWayFactory {
-    class func get(payWay: PayWayEnum) -> PayManager {
+    class func get(_ payWay: PayWayEnum) -> PayManager {
         switch payWay {
         case PayWayEnum.applePay:
             return InAppPurchaseManager.instance

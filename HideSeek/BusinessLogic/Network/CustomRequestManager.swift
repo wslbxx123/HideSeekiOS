@@ -7,35 +7,39 @@
 //
 import AFNetworking
 
-class CustomRequestManager: AFHTTPRequestOperationManager {
+class CustomRequestManager: AFHTTPSessionManager {
     var ifLock: Bool = false
     
-    func POST(URLString: String,
+    func POST(_ URLString: String,
               paramDict: NSMutableDictionary,
-              success: ((AFHTTPRequestOperation, AnyObject) -> Void)?,
-              failure: ((AFHTTPRequestOperation?, NSError) -> Void)?) -> AFHTTPRequestOperation? {
+              success: ((URLSessionDataTask, AnyObject) -> Void)?,
+              failure: ((URLSessionDataTask?, NSError) -> Void)?) -> URLSessionDataTask? {
         if ifLock {
             return nil
         }
         
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        let sessionToken = userDefault.objectForKey(UserDefaultParam.SESSION_TOKEN) as? String
+        let userDefault = UserDefaults.standard
+        let sessionToken = userDefault.object(forKey: UserDefaultParam.SESSION_TOKEN) as? String
         
         paramDict["session_id"] = sessionToken
         paramDict["app_version"] = BaseInfoUtil.getAppVersion()
         
-        return super.POST(URLString, parameters: paramDict, success: success, failure: failure)
+        return super.post(URLString, parameters: paramDict, progress: nil, success: success as! ((URLSessionDataTask, Any) -> Void)?, failure: failure as! ((URLSessionDataTask?, Error) -> Void)?)
     }
     
-    func POST(URLString: String, paramDict: NSMutableDictionary, constructingBodyWithBlock block: ((AFMultipartFormData) -> Void)?, success: ((AFHTTPRequestOperation, AnyObject) -> Void)?, failure: ((AFHTTPRequestOperation?, NSError) -> Void)?) -> AFHTTPRequestOperation? {
+    func POST(_ URLString: String, paramDict: NSMutableDictionary, constructingBodyWithBlock block: ((AFMultipartFormData) -> Void)?, success: ((URLSessionDataTask, AnyObject) -> Void)?, failure: ((URLSessionDataTask?, NSError) -> Void)?) -> URLSessionDataTask? {
         if ifLock {
             return nil
         }
 
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        let sessionToken = userDefault.objectForKey(UserDefaultParam.SESSION_TOKEN) as? String
+        let userDefault = UserDefaults.standard
+        let sessionToken = userDefault.object(forKey: UserDefaultParam.SESSION_TOKEN) as? String
         paramDict["session_id"] = sessionToken
         
-        return super.POST(URLString, parameters: paramDict, constructingBodyWithBlock: block, success: success, failure: failure)
+        return super.post(URLString, parameters: paramDict,
+                          constructingBodyWith: block,
+                          progress: nil,
+                          success: success as! ((URLSessionDataTask, Any) -> Void)?,
+                          failure: failure as! ((URLSessionDataTask?, Error) -> Void)?)
     }
 }

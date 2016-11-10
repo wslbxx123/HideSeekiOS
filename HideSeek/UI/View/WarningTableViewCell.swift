@@ -29,16 +29,16 @@ class WarningTableViewCell: UITableViewCell {
         getBtn.layer.cornerRadius = 5
         getBtn.layer.masksToBounds = true
         
-        self.getBtn.addTarget(self, action: #selector(WarningTableViewCell.getBtnClicked), forControlEvents: UIControlEvents.TouchDown)
+        self.getBtn.addTarget(self, action: #selector(WarningTableViewCell.getBtnClicked), for: UIControlEvents.touchDown)
     }
     
     func getBtnClicked() {
         updateGoalDelegate?.updateEndGoal(self.warning.goal.pkId)
     }
     
-    func initWarning(warning: Warning) {
+    func initWarning(_ warning: Warning) {
         self.warning = warning
-        let message = NSString(format: NSLocalizedString("WATCHED_BY_MONSTER", comment: "You are watched by a %@"), warning.goal.goalName)
+        let message = NSString(format: NSLocalizedString("WATCHED_BY_MONSTER", comment: "You are watched by a %@") as NSString, warning.goal.goalName)
         messageLabel.text = message as String
         
         goalImageView.image = UIImage(named: GoalImageFactory.get(warning.goal.type, showTypeName: warning.goal.showTypeName))

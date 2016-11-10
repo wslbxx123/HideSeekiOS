@@ -19,12 +19,12 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
         super.viewDidLoad()
 
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         searchBar.delegate = self
         addFriendTableView.goToProfileDelegate = self
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
 
@@ -33,7 +33,7 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
         // Dispose of any resources that can be recreated.
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text != nil && !searchBar.text!.isEmpty {
             refreshData()
         }
@@ -42,7 +42,7 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
     func refreshData() {
         let paramDict: NSMutableDictionary = ["search_word": searchBar.text!]
         
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
         hud.dimBackground = true
         
@@ -53,17 +53,15 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
                         let response = responseObject as! NSDictionary
                         self.setInfoFromCallback(response)
                         hud.removeFromSuperview()
-                        hud = nil
             }, failure: { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
                 hud.removeFromSuperview()
-                hud = nil
         })
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
+    func setInfoFromCallback(_ response: NSDictionary) {
         let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         
         if code == CodeParam.SUCCESS {
@@ -77,15 +75,15 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
                 goToProfile(userList[0] as! User)
             } else {
                 let alertController = UIAlertController(title: nil,
-                                                        message: NSLocalizedString("SEARCH_NO_USER", comment: "There are no users matched"), preferredStyle: UIAlertControllerStyle.Alert)
-                let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.Cancel, handler: nil)
+                                                        message: NSLocalizedString("SEARCH_NO_USER", comment: "There are no users matched"), preferredStyle: UIAlertControllerStyle.alert)
+                let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: UIAlertActionStyle.cancel, handler: nil)
                 alertController.addAction(okAction)
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
             }
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
             
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR, callback: {
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error, callback: {
                 if code == CodeParam.ERROR_SESSION_INVALID {
                     UserInfoManager.instance.logout(self)
                 }
@@ -93,32 +91,32 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
         }
     }
     
-    func getUsers(result: NSArray) -> NSMutableArray {
+    func getUsers(_ result: NSArray) -> NSMutableArray {
         let list = NSMutableArray()
         
         for userItem in result {
             let userInfo = userItem as! NSDictionary
             let user = User(pkId: (userInfo["pk_id"] as! NSString).longLongValue,
-                            phone: userInfo["phone"] as! String,
-                            nickname: userInfo["nickname"] as! String,
-                            registerDateStr: userInfo["register_date"] as! String,
+                            phone: userInfo["phone"] as! String as NSString,
+                            nickname: userInfo["nickname"] as! String as NSString,
+                            registerDateStr: userInfo["register_date"] as! String as NSString,
                             photoUrl: userInfo["photo_url"] as? NSString,
                             smallPhotoUrl: userInfo["small_photo_url"] as? NSString,
                             sex: User.SexEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(userInfo["sex"]))!,
                             region: userInfo["region"] as? NSString,
                             role: User.RoleEnum(rawValue: BaseInfoUtil.getIntegerFromAnyObject(userInfo["role"]))!,
                             version: (userInfo["version"] as! NSString).longLongValue,
-                            pinyin: PinYinUtil.converterToPinyin(userInfo["nickname"] as! String))
+                            pinyin: PinYinUtil.converterToPinyin(userInfo["nickname"] as! String) as NSString)
             user.isFriend = BaseInfoUtil.getIntegerFromAnyObject(userInfo["is_friend"]) == 1
-            list.addObject(user)
+            list.add(user)
         }
         
         return list
     }
     
-    func goToProfile(user: User) {
+    func goToProfile(_ user: User) {
         let storyboard = UIStoryboard(name:"Main", bundle: nil)
-        let profileController = storyboard.instantiateViewControllerWithIdentifier("Profile") as! ProfileController
+        let profileController = storyboard.instantiateViewController(withIdentifier: "Profile") as! ProfileController
         profileController.user = user
         self.navigationController?.pushViewController(profileController, animated: true)
     }

@@ -32,12 +32,12 @@ class NewFriendTableManager {
     
     var version: Int64 {
         get{
-            let tempVersion = NSUserDefaults.standardUserDefaults().objectForKey(UserDefaultParam.FRIEND_VERSION) as? NSNumber
+            let tempVersion = UserDefaults.standard.object(forKey: UserDefaultParam.FRIEND_VERSION) as? NSNumber
             
             if(tempVersion == nil) {
                 return 0
             }
-            return (tempVersion?.longLongValue)!
+            return (tempVersion?.int64Value)!
         }
     }
     
@@ -47,7 +47,7 @@ class NewFriendTableManager {
         }
     }
     
-    func refreshTable (userId: Int64) {
+    func refreshTable (_ userId: Int64) {
         do {
             database = DatabaseManager.instance.database
             
@@ -82,21 +82,21 @@ class NewFriendTableManager {
             for item in try database.prepare(friendTable.order(pinyin.asc)) {
                 let user = User(
                     pkId: item[accountId],
-                    phone: item[phone],
-                    nickname: item[nickname],
-                    registerDateStr: item[registerDate],
-                    photoUrl: item[photoUrl],
-                    smallPhotoUrl: item[smallPhotoUrl],
+                    phone: item[phone] as NSString,
+                    nickname: item[nickname] as NSString,
+                    registerDateStr: item[registerDate] as NSString,
+                    photoUrl: item[photoUrl] as NSString?,
+                    smallPhotoUrl: item[smallPhotoUrl] as NSString?,
                     sex: User.SexEnum(rawValue: item[sex])!,
-                    region: (item[region] == nil ? nil : item[region]),
+                    region: item[region] as NSString?,
                     role: User.RoleEnum(rawValue: item[role])!,
                     version: item[pullVersion],
-                    pinyin: item[pinyin]!)
+                    pinyin: item[pinyin]! as NSString)
                 
-                user.addTime = item[addTime]
-                user.requestMessage = item[message]
+                user.addTime = item[addTime] as NSString
+                user.requestMessage = item[message] as NSString
                 user.isFriend = item[isFriend]
-                friendList.addObject(user)
+                friendList.add(user)
             }
         }
         catch let error as NSError {
@@ -107,17 +107,17 @@ class NewFriendTableManager {
         return friendList
     }
     
-    func updateFriends(friendInfo: User) {
+    func updateFriends(_ friendInfo: User) {
         do {
-            let date = NSDate()
-            let timeFormatter = NSDateFormatter()
+            let date = Date()
+            let timeFormatter = DateFormatter()
             timeFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            let timeStr = timeFormatter.stringFromDate(date)
+            let timeStr = timeFormatter.string(from: date)
             let count = try database.run(friendTable.filter(accountId == friendInfo.pkId)
                 .update(
                     phone <- (friendInfo.phone as String),
                     nickname <- (friendInfo.nickname as String),
-                    registerDate <- timeFormatter.stringFromDate(friendInfo.registerDate),
+                    registerDate <- timeFormatter.string(from: friendInfo.registerDate),
                     photoUrl <- (friendInfo.photoUrl as String),
                     smallPhotoUrl <- (friendInfo.smallPhotoUrl as String),
                     sex <- friendInfo.sex.rawValue,
@@ -133,7 +133,7 @@ class NewFriendTableManager {
                 let insert = friendTable.insert(
                     phone <- (friendInfo.phone as String),
                     nickname <- (friendInfo.nickname as String),
-                    registerDate <- timeFormatter.stringFromDate(friendInfo.registerDate),
+                    registerDate <- timeFormatter.string(from: friendInfo.registerDate),
                     photoUrl <- (friendInfo.photoUrl as String),
                     smallPhotoUrl <- (friendInfo.smallPhotoUrl as String),
                     sex <- friendInfo.sex.rawValue,
@@ -146,7 +146,7 @@ class NewFriendTableManager {
                     isFriend <- friendInfo.isFriend,
                     accountId <- friendInfo.pkId)
                 
-                try database.run(insert)
+                _ = try database.run(insert)
             }
         }
         catch let error as NSError {
@@ -156,9 +156,9 @@ class NewFriendTableManager {
         }
     }
     
-    func updateFriendStatus(friendId: Int64) {
+    func updateFriendStatus(_ friendId: Int64) {
         do {
-            try database.run(friendTable.filter(accountId == friendId)
+            _ = try database.run(friendTable.filter(accountId == friendId)
                 .update(isFriend <- true))
         }
         catch let error as NSError {
@@ -168,9 +168,9 @@ class NewFriendTableManager {
         }
     }
     
-    func removeFriend(friendId: Int64) {
+    func removeFriend(_ friendId: Int64) {
         do {
-            try database.run(friendTable.filter(accountId == friendId)
+            _ = try database.run(friendTable.filter(accountId == friendId)
                 .delete())
         }
         catch let error as NSError {

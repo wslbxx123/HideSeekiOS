@@ -11,6 +11,6 @@ import UIKit
 
 class CameraUtil {
     class func isAvailable()->Bool {
-        return UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+        return UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
     }
 }

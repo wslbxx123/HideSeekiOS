@@ -22,8 +22,8 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     var infiniteScrollingView: UIView!
     var loadMoreDelegate: LoadMoreDelegate!
     var screenHeight: CGFloat!
-    let dateFormatter = NSDateFormatter()
-    var customDateFormatter = NSDateFormatter()
+    let dateFormatter = DateFormatter()
+    var customDateFormatter = DateFormatter()
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -32,23 +32,23 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         self.delegate = self
         self.recordList = NSMutableArray()
         self.setupInfiniteScrollingView()
-        self.screenHeight = UIScreen.mainScreen().bounds.height - 184
+        self.screenHeight = UIScreen.main.bounds.height - 184
         dateFormatter.dateFormat = "yyyy-MM-dd"
         customDateFormatter.dateFormat = "MM-dd"
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = self.dequeueReusableCellWithIdentifier("recordCell")! as UITableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = self.dequeueReusableCell(withIdentifier: "recordCell")! as UITableViewCell
         
-        if recordList.count < indexPath.row + 1 {
+        if recordList.count < (indexPath as NSIndexPath).row + 1 {
             return cell
         }
         
-        let record = recordList.objectAtIndex(indexPath.row) as! Record
+        let record = recordList.object(at: (indexPath as NSIndexPath).row) as! Record
         
         let dateLabel = cell.viewWithTag(TAG_DATE_LABEL) as! UILabel
         let timeLabel = cell.viewWithTag(TAG_TIME_LABEL) as! UILabel
@@ -68,60 +68,60 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
             scoreLabel.text = String(record.score)
         }
         
-        let date = dateFormatter.dateFromString(record.date)
-        dateLabel.text = customDateFormatter.stringFromDate(date!)
+        let date = dateFormatter.date(from: record.date)
+        dateLabel.text = customDateFormatter.string(from: date!)
         
-        if indexPath.row == 0 ||
-            record.date != (recordList.objectAtIndex(indexPath.row - 1) as! Record).date {
-            whiteView?.hidden = false
+        if (indexPath as NSIndexPath).row == 0 ||
+            record.date != (recordList.object(at: (indexPath as NSIndexPath).row - 1) as! Record).date {
+            whiteView?.isHidden = false
         } else {
             dateLabel.text = ""
-            whiteView?.hidden = true
+            whiteView?.isHidden = true
         }
 
-        cell.selectionStyle = UITableViewCellSelectionStyle.None
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
         return cell
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recordList.count
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if recordList.count < indexPath.row + 1 {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if recordList.count < (indexPath as NSIndexPath).row + 1 {
             return 0
         }
         
-        let record = recordList.objectAtIndex(indexPath.row) as! Record
+        let record = recordList.object(at: (indexPath as NSIndexPath).row) as! Record
         
-        if indexPath.row == 0 ||
-            record.date != (recordList.objectAtIndex(indexPath.row - 1) as! Record).date {
+        if (indexPath as NSIndexPath).row == 0 ||
+            record.date != (recordList.object(at: (indexPath as NSIndexPath).row - 1) as! Record).date {
             return 110
         }
         
         return 78
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        let indexPath = self.indexPathForRowAtPoint(CGPointMake(scrollView.contentOffset.x + 30, scrollView.contentOffset.y + screenHeight - 100))
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let indexPath = self.indexPathForRow(at: CGPoint(x: scrollView.contentOffset.x + 30, y: scrollView.contentOffset.y + screenHeight - 100))
         
         if indexPath != nil {
-            print(indexPath!.row)
+            print((indexPath! as NSIndexPath).row)
         }
         
-        if indexPath != nil && indexPath!.row >= self.recordList.count - VISIBLE_REFRESH_COUNT && self.recordList.count >= 10{
+        if indexPath != nil && (indexPath! as NSIndexPath).row >= self.recordList.count - VISIBLE_REFRESH_COUNT && self.recordList.count >= 10{
             self.tableFooterView = self.infiniteScrollingView
-            self.tableFooterView?.hidden = false
+            self.tableFooterView?.isHidden = false
             
             loadMoreDelegate?.loadMore()
         }
     }
     
-    func getMessage(goalType: Goal.GoalTypeEnum)-> String {
+    func getMessage(_ goalType: Goal.GoalTypeEnum)-> String {
         switch(goalType) {
         case .mushroom:
             return NSLocalizedString("MESSAGE_GET_MUSHROOM", comment: "Get a mushroom into a sack successfully")
@@ -135,16 +135,16 @@ class RecordTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func setupInfiniteScrollingView() {
-        let screenWidth = UIScreen.mainScreen().bounds.width
-        self.infiniteScrollingView = UIView(frame: CGRectMake(0, self.contentSize.height, screenWidth, 40))
-        self.infiniteScrollingView!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
+        let screenWidth = UIScreen.main.bounds.width
+        self.infiniteScrollingView = UIView(frame: CGRect(x: 0, y: self.contentSize.height, width: screenWidth, height: 40))
+        self.infiniteScrollingView!.autoresizingMask = UIViewAutoresizing.flexibleWidth
 //        self.infiniteScrollingView!.backgroundColor = UIColor.whiteColor()
         
         let loadinglabel = UILabel()
         loadinglabel.frame.size = CGSize(width: 100, height: 20)
         loadinglabel.text = NSLocalizedString("LOADING", comment: "Loading...")
-        loadinglabel.textAlignment = NSTextAlignment.Center
-        loadinglabel.font = UIFont.systemFontOfSize(15.0)
+        loadinglabel.textAlignment = NSTextAlignment.center
+        loadinglabel.font = UIFont.systemFont(ofSize: 15.0)
         loadinglabel.center = CGPoint(x: self.infiniteScrollingView.bounds.size.width / 2,
                                       y: self.infiniteScrollingView.bounds.size.height / 2)
         self.infiniteScrollingView!.addSubview(loadinglabel)

@@ -6,6 +6,8 @@
 //  Copyright © 2016年 AutoNavi. All rights reserved.
 //
 
+#if MA_INCLUDE_TRACE_CORRECT
+
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
@@ -24,3 +26,5 @@
 @property (nonatomic, assign) double time; //单位毫秒
 
 @end
+
+#endif

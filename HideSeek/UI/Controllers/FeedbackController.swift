@@ -20,19 +20,19 @@ class FeedbackController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var queryBtn: UIButton!
     @IBOutlet weak var contactTextField: UITextField!
     var type: Int = 0
-    var manager: AFHTTPRequestOperationManager!
+    var manager: AFHTTPSessionManager!
     var contact: String!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        manager = AFHTTPRequestOperationManager()
-        manager.responseSerializer.acceptableContentTypes =  NSSet().setByAddingObject(HtmlType)
+        manager = AFHTTPSessionManager()
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         initView()
     }
     
     override func viewDidLayoutSubviews() {
-        feedbackScrollView.contentSize = CGSizeMake(UIScreen.mainScreen().bounds.width, 700)
+        feedbackScrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 700)
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,40 +40,40 @@ class FeedbackController: UIViewController, UIScrollViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func suggestBtnClicked(sender: AnyObject) {
+    @IBAction func suggestBtnClicked(_ sender: AnyObject) {
         type = 0
         suggestBtn.setBackgroundImage(
-            suggestBtn.getImageWithColor(BaseInfoUtil.stringToRGB("#fccb05")), forState: UIControlState.Normal)
+            suggestBtn.getImageWithColor(BaseInfoUtil.stringToRGB("#fccb05")), for: UIControlState())
         queryBtn.setBackgroundImage(
-            queryBtn.getImageWithColor(UIColor.whiteColor()), forState: UIControlState.Normal)
+            queryBtn.getImageWithColor(UIColor.white), for: UIControlState())
         complainBtn.setBackgroundImage(
-            queryBtn.getImageWithColor(UIColor.whiteColor()), forState: UIControlState.Normal)
+            queryBtn.getImageWithColor(UIColor.white), for: UIControlState())
     }
     
-    @IBAction func queryBtnClicked(sender: AnyObject) {
+    @IBAction func queryBtnClicked(_ sender: AnyObject) {
         type = 1
         suggestBtn.setBackgroundImage(
-            queryBtn.getImageWithColor(UIColor.whiteColor()), forState: UIControlState.Normal)
+            queryBtn.getImageWithColor(UIColor.white), for: UIControlState())
         queryBtn.setBackgroundImage(
-            suggestBtn.getImageWithColor(BaseInfoUtil.stringToRGB("#fccb05")), forState: UIControlState.Normal)
+            suggestBtn.getImageWithColor(BaseInfoUtil.stringToRGB("#fccb05")), for: UIControlState())
         complainBtn.setBackgroundImage(
-            queryBtn.getImageWithColor(UIColor.whiteColor()), forState: UIControlState.Normal)
+            queryBtn.getImageWithColor(UIColor.white), for: UIControlState())
     }
     
     
-    @IBAction func complainBtnClicked(sender: AnyObject) {
+    @IBAction func complainBtnClicked(_ sender: AnyObject) {
         type = 2
         suggestBtn.setBackgroundImage(
-            queryBtn.getImageWithColor(UIColor.whiteColor()), forState: UIControlState.Normal)
+            queryBtn.getImageWithColor(UIColor.white), for: UIControlState())
         queryBtn.setBackgroundImage(
-            queryBtn.getImageWithColor(UIColor.whiteColor()), forState: UIControlState.Normal)
+            queryBtn.getImageWithColor(UIColor.white), for: UIControlState())
         complainBtn.setBackgroundImage(
-            suggestBtn.getImageWithColor(BaseInfoUtil.stringToRGB("#fccb05")), forState: UIControlState.Normal)
+            suggestBtn.getImageWithColor(BaseInfoUtil.stringToRGB("#fccb05")), for: UIControlState())
     }
     
-    @IBAction func commitBtnClicked(sender: AnyObject) {
+    @IBAction func commitBtnClicked(_ sender: AnyObject) {
         if feedbackTextView.text.isEmpty {
-            HudToastFactory.show(NSLocalizedString("ERROR_FEEDBACK_EMPTY", comment: "The content of feedback cannot be empty"), view: self.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(NSLocalizedString("ERROR_FEEDBACK_EMPTY", comment: "The content of feedback cannot be empty"), view: self.view, type: HudToastFactory.MessageType.error)
             return
         }
         
@@ -82,52 +82,50 @@ class FeedbackController: UIViewController, UIScrollViewDelegate {
         paramDict["content"] = feedbackTextView.text
         paramDict["contact"] = contactTextField.text
         
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
         hud.dimBackground = true
         
-        manager.POST(UrlParam.ADD_FEEDBACK_URL,
+        _ = manager.post(UrlParam.ADD_FEEDBACK_URL,
                      parameters: paramDict,
                      success: { (operation, responseObject) in
                         let response = responseObject as! NSDictionary
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + (responseObject as AnyObject).description!)
                         self.setInfoFromCallback(response)
                         self.feedbackTextView.text = ""
                         hud.removeFromSuperview()
-                        hud = nil
             },
                      failure: { (operation, error) in
                         print("Error: " + error.localizedDescription)
                         let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                        HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+                        HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
                         hud.removeFromSuperview()
-                        hud = nil
         })
     }
     
-    @IBAction func contactChanged(sender: AnyObject) {
+    @IBAction func contactChanged(_ sender: AnyObject) {
         contact = contactTextField.text
         
         if contact == nil || contact.isEmpty {
-            commitBtn.enabled = false
+            commitBtn.isEnabled = false
         } else {
-            commitBtn.enabled = true
+            commitBtn.isEnabled = true
         }
     }
     
-    func setInfoFromCallback(response: NSDictionary) {
-        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])        
+    func setInfoFromCallback(_ response: NSDictionary) {
+        let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
         if code == CodeParam.SUCCESS {
             let alertController = UIAlertController(title: nil,
-                                                    message: NSLocalizedString("SUCCESS_COMMIT_FEEDBACK", comment: "Commit feedback successfully"), preferredStyle: UIAlertControllerStyle.Alert)
+                                                    message: NSLocalizedString("SUCCESS_COMMIT_FEEDBACK", comment: "Commit feedback successfully"), preferredStyle: UIAlertControllerStyle.alert)
             
             let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"),
-                                         style: UIAlertActionStyle.Cancel, handler: nil)
+                                         style: UIAlertActionStyle.cancel, handler: nil)
             alertController.addAction(okAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         } else {
             let errorMessage = ErrorMessageFactory.get(code)
-            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.ERROR)
+            HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
         }
     }
     
@@ -151,10 +149,10 @@ class FeedbackController: UIViewController, UIScrollViewDelegate {
         queryBtn.layer.masksToBounds = true
         queryBtn.adjustsImageWhenHighlighted = false
         suggestBtn.setBackgroundImage(
-            suggestBtn.getImageWithColor(BaseInfoUtil.stringToRGB("#fccb05")), forState: UIControlState.Normal)
+            suggestBtn.getImageWithColor(BaseInfoUtil.stringToRGB("#fccb05")), for: UIControlState())
     }
 
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         feedbackTextView.resignFirstResponder()
         contactTextField.resignFirstResponder()
     }
