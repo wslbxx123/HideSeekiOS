@@ -575,18 +575,18 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                 
                 self.setGoalsOnMap(GoalCache.instance.updateList)
                 
-//                if hud != nil {
-//                    hud.removeFromSuperview()
-//                    hud = nil
-//                }
+                if hud != nil {
+                    hud.removeFromSuperview()
+                    hud = nil
+                }
                 
                 self.ifRefreshing = false
             }, failure: { (dataTask, error) in
                 print("Error: " + error.localizedDescription)
-//                if hud != nil {
-//                    hud.removeFromSuperview()
-//                    hud = nil
-//                }
+                if hud != nil {
+                    hud.removeFromSuperview()
+                    hud = nil
+                }
                 self.ifRefreshing = false
         })
 

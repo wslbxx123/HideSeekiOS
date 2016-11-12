@@ -64,7 +64,7 @@ class HudToastFactory {
         }
     }
     
-    class ProgressHudDelegate: MBProgressHUDDelegate {
+    class ProgressHudDelegate: NSObject, MBProgressHUDDelegate {
         private var _callback: (() -> Void)?
         
         init(callback: (() -> Void)?) {

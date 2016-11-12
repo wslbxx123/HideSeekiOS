@@ -122,6 +122,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        photoImageView.layoutIfNeeded()
         photoImageView.layer.cornerRadius = photoImageView.frame.height / 2
         photoImageView.layer.masksToBounds = true
         photoImageView.isUserInteractionEnabled = true

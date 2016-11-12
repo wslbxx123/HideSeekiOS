@@ -76,12 +76,14 @@ extension UIImageView {
             do {
                 let tempUrl = URL(string: url!)
                 
-                let data = try Data(contentsOf: tempUrl!)
-                image = UIImage(data: data)
-                ImageCache.writeCacheToUrl(url!, data: data)
-                DispatchQueue.main.async(execute: { () -> Void in
-                    self.image = image
-                })
+                if tempUrl != nil {
+                    let data = try Data(contentsOf: tempUrl!)
+                    image = UIImage(data: data)
+                    ImageCache.writeCacheToUrl(url!, data: data)
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        self.image = image
+                    })
+                }
             }
             catch let error as NSError {
                 print("Error - \(error.localizedDescription)")

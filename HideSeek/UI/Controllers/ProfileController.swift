@@ -61,6 +61,7 @@ class ProfileController: UIViewController {
             addFriendBtn.isEnabled = false
         }
         profileScrollView.delaysContentTouches = false
+        photoImageView.layoutIfNeeded()
         photoImageView.layer.cornerRadius = photoImageView.frame.height / 2
         photoImageView.layer.masksToBounds = true
         photoImageView.setWebImage(user.smallPhotoUrl as String, defaultImage: "default_photo", isCache: true)

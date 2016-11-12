@@ -50,6 +50,7 @@ class MyProfileController: UIViewController, TouchDownDelegate {
 
     func initView() {
         myProfileScrollView.delaysContentTouches = false
+        photoImageView.layoutIfNeeded()
         photoImageView.layer.cornerRadius = photoImageView.frame.height / 2
         photoImageView.layer.masksToBounds = true
         self.automaticallyAdjustsScrollViewInsets = false

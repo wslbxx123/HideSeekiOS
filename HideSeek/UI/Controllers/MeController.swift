@@ -115,6 +115,7 @@ class MeController: UIViewController, TouchDownDelegate {
         photoImageView.isUserInteractionEnabled = true
         photoImageView.addGestureRecognizer(gotoPhotoGestureRecognizer)
         
+        pushNumView.layoutIfNeeded()
         pushNumView.layer.cornerRadius = pushNumView.frame.height / 2
         pushNumView.layer.masksToBounds = true
         
