@@ -31,7 +31,7 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
     var croppedImage: UIImage!
     
     @IBAction func closeBtnClicked(_ sender: AnyObject) {
-        self.navigationController?.popToRootViewController(animated: true)
+        _ = self.navigationController?.popToRootViewController(animated: true)
     }
     
     @IBAction func cameraBtnClicked(_ sender: AnyObject) {
@@ -54,25 +54,30 @@ class UploadPhotoController: UIViewController, UITextFieldDelegate, PickerViewDe
             paramDict["region"] = region
         }
         
-        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-        hud.dimBackground = true
-        manager.post(UrlParam.REGISTER_URL, parameters: paramDict, constructingBodyWith: { (formData) in
-
-            if self.croppedImage != nil {
-                let imgData = UIImageJPEGRepresentation(self.croppedImage!, 1);
-                formData.appendPart(withFileData: imgData!, name: "photo", fileName: "photo", mimeType: "image/jpeg")
-            }}, success: { (operation, responseObject) in
-                let response = responseObject as! NSDictionary
-                self.setInfoFromCallback(response)
-                print("JSON: " + (responseObject as AnyObject).description!)
-                hud.removeFromSuperview()
-            }) { (operation, error) in
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        
+        _ = manager.post(UrlParam.REGISTER_URL,
+                         parameters: paramDict,
+                         constructingBodyWith: { (formData) in
+                            if self.croppedImage != nil {
+                                let imgData = UIImageJPEGRepresentation(self.croppedImage!, 1);
+                                formData.appendPart(withFileData: imgData!, name: "photo", fileName: "photo", mimeType: "image/jpeg")
+                            }
+            },
+                         progress: nil,
+                         success: { (dataTask, responseObject) in
+                            let response = responseObject as! NSDictionary
+                            self.setInfoFromCallback(response)
+                            print("JSON: " + (responseObject as AnyObject).description!)
+                            hud.removeFromSuperview()
+            }, failure: { (dataTask, error) in
                 print("Error: " + error.localizedDescription)
                 let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
                 HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
                 hud.removeFromSuperview()
-        }
+        })
     }
     
     override func viewDidAppear(_ animated: Bool) {

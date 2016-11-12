@@ -17,7 +17,7 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
     var externalController: ExternalController!
     
     @IBAction func backBtnClicked(_ sender: AnyObject) {
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
         self.internalController = nil
         self.externalController = nil
     }
@@ -94,7 +94,7 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
     }
     
     func regionSelected(_ name: String) {
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
         self.internalController = nil
         self.externalController = nil
         self.closure(name)
@@ -109,13 +109,13 @@ class RegionController: UIViewController, SelectRegionDelegate, ShowToastDelegat
     
     func showToast(_ text: String) {
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        hud.labelText = text
-        hud.labelFont = UIFont.systemFont(ofSize: 30)
-        hud.labelColor = UIColor.white
-        hud.cornerRadius = 0
+        hud.label.text = text
+        hud.label.font = UIFont.systemFont(ofSize: 30)
+        hud.label.textColor = UIColor.white
+        hud.bezelView.layer.cornerRadius = 0
         hud.mode = MBProgressHUDMode.text
         hud.isUserInteractionEnabled = false
         hud.removeFromSuperViewOnHide = true;
-        hud.hide(true, afterDelay: 1)
+        hud.hide(animated: true, afterDelay: 1)
     }
 }

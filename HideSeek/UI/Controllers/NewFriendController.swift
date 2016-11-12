@@ -55,16 +55,16 @@ class NewFriendController: UIViewController, AcceptDelegate {
     }
     
     func acceptFriend(_ friendId: Int64) {
-        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-        hud.dimBackground = true
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         
         let paramDict: NSMutableDictionary = ["friend_id": "\(friendId)"]
-        manager.POST(UrlParam.ACCEPT_FRIEND_URL,
+        _ = manager.POST(UrlParam.ACCEPT_FRIEND_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
                         let response = responseObject as! NSDictionary
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + responseObject.debugDescription)
                         self.setInfoFromCallback(response, friendId: friendId)
                         hud.removeFromSuperview()
             }, failure: { (operation, error) in

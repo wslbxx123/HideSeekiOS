@@ -117,7 +117,8 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
         let paramDict = NSMutableDictionary()
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-        hud.dimBackground = true
+        hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        
         _ = manager.POST(UrlParam.UPDATE_PHOTO_URL, paramDict: paramDict, constructingBodyWithBlock: { (formData) in
             if self.croppedImage != nil {
                 let imgData = UIImageJPEGRepresentation(self.croppedImage!, 1);

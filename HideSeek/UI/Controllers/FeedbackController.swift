@@ -84,22 +84,22 @@ class FeedbackController: UIViewController, UIScrollViewDelegate {
         
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-        hud.dimBackground = true
+        hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         
         _ = manager.post(UrlParam.ADD_FEEDBACK_URL,
-                     parameters: paramDict,
-                     success: { (operation, responseObject) in
-                        let response = responseObject as! NSDictionary
-                        print("JSON: " + (responseObject as AnyObject).description!)
-                        self.setInfoFromCallback(response)
-                        self.feedbackTextView.text = ""
-                        hud.removeFromSuperview()
-            },
-                     failure: { (operation, error) in
-                        print("Error: " + error.localizedDescription)
-                        let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                        HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
-                        hud.removeFromSuperview()
+                         parameters: paramDict,
+                         progress: nil,
+                         success: { (dataTask, responseObject) in
+                            let response = responseObject as! NSDictionary
+                            print("JSON: " + responseObject.debugDescription)
+                            self.setInfoFromCallback(response)
+                            self.feedbackTextView.text = ""
+                            hud.removeFromSuperview()
+            }, failure: { (dataTask, error) in
+                print("Error: " + error.localizedDescription)
+                let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
+                hud.removeFromSuperview()
         })
     }
     

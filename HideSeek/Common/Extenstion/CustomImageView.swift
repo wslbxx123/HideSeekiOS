@@ -70,18 +70,22 @@ extension UIImageView {
     
     func refreshImage(_ url: String?) {
         var image: UIImage?
-        let dispath = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high)
-        dispath.async(execute: { () -> Void in
-            let URL: Foundation.URL = Foundation.URL(string: url!)!
-            let data: Data? = try? Data(contentsOf: URL)
-            if data != nil {
-                image = UIImage(data: data!)
-                ImageCache.writeCacheToUrl(url!, data: data!)
+        let dispath = DispatchQueue.global()
+        
+        dispath.async {
+            do {
+                let tempUrl = URL(string: url!)
+                
+                let data = try Data(contentsOf: tempUrl!)
+                image = UIImage(data: data)
+                ImageCache.writeCacheToUrl(url!, data: data)
                 DispatchQueue.main.async(execute: { () -> Void in
                     self.image = image
                 })
             }
-            
-        })
+            catch let error as NSError {
+                print("Error - \(error.localizedDescription)")
+            }
+        }
     }
 }

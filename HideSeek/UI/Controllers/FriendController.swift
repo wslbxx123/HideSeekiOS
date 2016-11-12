@@ -49,10 +49,10 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
     
     func refreshData() {
         let paramDict: NSMutableDictionary = ["version": String(friendTableManager.version)]
-        manager.POST(UrlParam.GET_FRIENDS_URL,
+        _ = manager.POST(UrlParam.GET_FRIENDS_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + responseObject.debugDescription)
                         let response = responseObject as! NSDictionary
                         
                         self.setInfoFromCallback(response)
@@ -173,14 +173,14 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
     func removeFriend(_ friend: User) {
         let paramDict: NSMutableDictionary = ["friend_id": "\(friend.pkId)"]
         
-        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-        hud.dimBackground = true
+        hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         
-        manager.POST(UrlParam.REMOVE_FRIEND_URL,
+        _ = manager.POST(UrlParam.REMOVE_FRIEND_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + responseObject.debugDescription)
                         let response = responseObject as! NSDictionary
                         self.setInfoFromRemoveFriendCallback(response, friend: friend)
                         

@@ -13,21 +13,17 @@ class HudToastFactory {
     }
     
     class func show(_ message: String, view: UIView, type: MessageType, callback: (() -> Void)?) {
-        var hud = MBProgressHUD.showAdded(to: view, animated: true)
+        let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.label.text = message;
         hud.mode = MBProgressHUDMode.text;
-        hud.yOffset = -150
-        hud.color = getMessageColor(type)
-        hud.labelColor = UIColor.white
-        hud.cornerRadius = 25
+        hud.offset.y = -150
+        hud.bezelView.color = getMessageColor(type)
+        hud.label.textColor = UIColor.white
+        hud.bezelView.layer.cornerRadius = 25
         hud.margin = 15
-        hud.show(animated: true, whileExecuting: {
-            sleep(3)
-        }) {
-            callback?()
-            hud.removeFromSuperview()
-        }
-
+        
+        hud.hide(animated: true, afterDelay: 3)
+        hud.delegate = ProgressHudDelegate(callback: callback)
     }
     
     class func getMessageColor(_ type: MessageType) -> UIColor {
@@ -65,6 +61,19 @@ class HudToastFactory {
             scoreView.alpha = 0;
             }) { (finished) in
                 scoreView.removeFromSuperview()
+        }
+    }
+    
+    class ProgressHudDelegate: MBProgressHUDDelegate {
+        private var _callback: (() -> Void)?
+        
+        init(callback: (() -> Void)?) {
+            self._callback = callback
+        }
+        
+        func hudWasHidden(_ hud: MBProgressHUD) {
+            _callback?()
+            hud.removeFromSuperview()
         }
     }
 }

@@ -92,7 +92,7 @@ class WarningController: UIViewController, UpdateGoalDelegate {
         _ = manager.POST(UrlParam.GET_DANGER_WARNING_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + responseObject.debugDescription)
                         let response = responseObject as! NSDictionary
                         
                         self.setInfoFromCallback(response)

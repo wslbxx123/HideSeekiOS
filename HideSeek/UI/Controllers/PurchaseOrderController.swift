@@ -33,10 +33,10 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
         super.viewDidLoad()
 
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as! Set<String>
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
         
         getOrderManager = CustomRequestManager()
-        getOrderManager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as! Set<String>
+        getOrderManager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
 
         purchaseOrderTableManager = PurchaseOrderTableManager.instance
         initView()
@@ -95,10 +95,10 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
     func refreshData() {
         let paramDict: NSMutableDictionary = ["version": String(purchaseOrderTableManager.version), "order_min_id": String(purchaseOrderTableManager.orderMinId)]
         isLoading = true
-        manager.POST(UrlParam.REFRESH_PURCHASE_ORDERS_URL,
+        _ = manager.POST(UrlParam.REFRESH_PURCHASE_ORDERS_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + responseObject.debugDescription)
                         let response = responseObject as! NSDictionary
                         
                         self.setInfoFromRefreshCallback(response)
@@ -152,10 +152,10 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
             
             if(!hasData) {
                 let paramDict: NSMutableDictionary = ["version": String(purchaseOrderTableManager.version), "order_min_id": String(purchaseOrderTableManager.orderMinId)]
-                manager.POST(UrlParam.GET_PURCHASE_ORDERS_URL,
+                _ = manager.POST(UrlParam.GET_PURCHASE_ORDERS_URL,
                              paramDict: paramDict,
                              success: { (operation, responseObject) in
-                                print("JSON: " + responseObject.description!)
+                                print("JSON: " + responseObject.debugDescription)
                                 let response = responseObject as! NSDictionary
                                 
                                 self.setInfoFromGetCallback(response)
@@ -235,7 +235,7 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
         let paramDict: NSMutableDictionary = ["order_id": "\(orderId)",
                                               "store_id": "\(product.pkId)",
                                               "count": "\(count)"]
-        getOrderManager.POST(UrlParam.GET_PURCHASE_ORDER_URL,
+        _ = getOrderManager.POST(UrlParam.GET_PURCHASE_ORDER_URL,
                                 paramDict: paramDict,
                                 success: { (operation, responseObject) in
                                     let response = responseObject as! NSDictionary
@@ -283,11 +283,11 @@ class PurchaseOrderController: UIViewController, LoadMoreDelegate, PurchaseDeleg
         HudToastFactory.show(successMessage, view: self.view, type: HudToastFactory.MessageType.success)
         
         let paramDict: NSMutableDictionary = ["order_id": "\(purchaseDialogController.orderId)"]
-        manager.POST(UrlParam.PURCHASE_URL,
+        _ = manager.POST(UrlParam.PURCHASE_URL,
                              paramDict: paramDict,
                              success: { (operation, responseObject) in
                                 let response = responseObject as! NSDictionary
-                                print("JSON: " + responseObject.description!)
+                                print("JSON: " + responseObject.debugDescription)
                                 
                                 self.setInfoFromPurchaseCallback(response)
                                 

@@ -101,21 +101,22 @@ class ExchangeController: UIViewController, ExchangeDelegate,
                                               "reward_min_id": "\(rewardTableManager.rewardMinId)"]
         isLoading = true
         _ = manager.post(UrlParam.REFRESH_REWARD_URL,
-                     parameters: paramDict,
-                     success: { (operation, responseObject) in
-                        let response = responseObject as! NSDictionary
-                        print("JSON: " + (responseObject as AnyObject).description!)
-                        RewardCache.instance.setRewards(response["result"] as! NSDictionary)
-                        
-                        self.collectionView.rewardList = RewardCache.instance.cacheList
-                        self.collectionView.reloadData()
-                        self.rewardRefreshControl.endRefreshing()
-                        self.isLoading = false
-            },
-                     failure: { (operation, error) in
-                        print("Error: " + error.localizedDescription)
-                        self.isLoading = false
+                         parameters: paramDict,
+                         progress: nil,
+                         success: { (dataTask, responseObject) in
+                            let response = responseObject as! NSDictionary
+                            print("JSON: " + (responseObject as AnyObject).description!)
+                            RewardCache.instance.setRewards(response["result"] as! NSDictionary)
+                            
+                            self.collectionView.rewardList = RewardCache.instance.cacheList
+                            self.collectionView.reloadData()
+                            self.rewardRefreshControl.endRefreshing()
+                            self.isLoading = false
+            }, failure: { (dataTask, error) in
+                print("Error: " + error.localizedDescription)
+                self.isLoading = false
         })
+        
         playAnimateRefresh()
     }
     
@@ -164,7 +165,7 @@ class ExchangeController: UIViewController, ExchangeDelegate,
                                               "address": exchangeDialogController.address,
                                               "set_default": setDefault]
         
-        createOrderManager.POST(UrlParam.CREATE_EXCHANGE_ORDER_URL,
+        _ = createOrderManager.POST(UrlParam.CREATE_EXCHANGE_ORDER_URL,
                                 paramDict: paramDict,
                                 success: { (operation, responseObject) in
                                     let response = responseObject as! NSDictionary
@@ -214,25 +215,26 @@ class ExchangeController: UIViewController, ExchangeDelegate,
             
             if(!hasData) {
                 let paramDict: NSMutableDictionary = ["version": String(rewardTableManager.version), "reward_min_id": String(rewardTableManager.rewardMinId)]
+                
                 _ = manager.post(UrlParam.GET_REWARD_URL,
-                             parameters: paramDict,
-                             success: { (operation, responseObject) in
-                                print("JSON: " + (responseObject as AnyObject).description!)
-                                let response = responseObject as! NSDictionary
-                                
-                                RewardCache.instance.addRewards(response["result"] as! NSDictionary)
-                                if self.collectionView.footer != nil {
-                                    self.collectionView.footer.isHidden = true
-                                }
-                                self.collectionView.rewardList = RewardCache.instance.cacheList
-                                self.collectionView.reloadData()
-                                self.isLoading = false
-                    },
-                             failure: { (operation, error) in
-                                print("Error: " + error.localizedDescription)
-                                if self.collectionView.footer != nil {
-                                    self.collectionView.footer.isHidden = true
-                                }
+                                 parameters: paramDict,
+                                 progress: nil,
+                                 success: { (dataTask, responseObject) in
+                                    print("JSON: " + (responseObject as AnyObject).description!)
+                                    let response = responseObject as! NSDictionary
+                                    
+                                    RewardCache.instance.addRewards(response["result"] as! NSDictionary)
+                                    if self.collectionView.footer != nil {
+                                        self.collectionView.footer.isHidden = true
+                                    }
+                                    self.collectionView.rewardList = RewardCache.instance.cacheList
+                                    self.collectionView.reloadData()
+                                    self.isLoading = false
+                    }, failure: { (dataTask, error) in
+                        print("Error: " + error.localizedDescription)
+                        if self.collectionView.footer != nil {
+                            self.collectionView.footer.isHidden = true
+                        }
                 })
             } else {
             

@@ -17,7 +17,7 @@ class MatchRoleController: UIViewController, CAAnimationDelegate {
     var imageArray: Array<CGImage> = Array<CGImage>()
     
     @IBAction func registerBtnClicked(_ sender: AnyObject) {
-        self.navigationController?.popToRootViewController(animated: true)
+        _ = self.navigationController?.popToRootViewController(animated: true)
     }
     
     override func viewDidLoad() {

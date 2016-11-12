@@ -70,7 +70,7 @@ class ViewController: UITabBarController {
         _ = manager.POST(UrlParam.UPDATE_CHANNEL_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + responseObject.debugDescription)
             },
                      failure: { (operation, error) in
                         print("Error: " + error.localizedDescription)
@@ -90,17 +90,19 @@ class ViewController: UITabBarController {
             return;
         }
         
-        _ = httpManager.post(UrlParam.GET_SETTINGS, parameters: [],
-                         success: { (operation, responseObject) in
-                            let response = responseObject as! NSDictionary
-                            print("JSON: " + (responseObject as AnyObject).description!)
-            
-                            self.setInfoFromCallback(response)
-                },
-                         failure: { (operation, error) in
-                            print("Error: " + error.localizedDescription)
-                            self.updateSetting()
-            })
+        _ = httpManager.post(UrlParam.GET_SETTINGS,
+                             parameters: [],
+                             progress: nil,
+                             success: { (dataTask, responseObject) in
+                                let response = responseObject as! NSDictionary
+                                print("JSON: " + responseObject.debugDescription)
+                                
+                                self.setInfoFromCallback(response)
+            }, failure: { (dataTask, error) in
+                print("Error: " + error.localizedDescription)
+                self.updateSetting()
+        })
+        
     }
     
     func setInfoFromCallback(_ response: NSDictionary) {

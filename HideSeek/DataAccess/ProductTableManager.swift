@@ -130,7 +130,7 @@ class ProductTableManager {
                         pullVersion <- productInfo.version,
                         productId <- productInfo.pkId)
                     
-                    try database.run(insert)
+                    _ = try database.run(insert)
                 }
             }
         }

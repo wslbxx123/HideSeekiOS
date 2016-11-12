@@ -76,22 +76,22 @@ class UpdatePasswordController: UIViewController {
         
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-        hud.dimBackground = true
+        hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         
         _ = manager.post(UrlParam.UPDATE_PASSWORD_URL,
-                     parameters: paramDict,
-                     success: { (operation, responseObject) in
-                        let response = responseObject as! NSDictionary
-                        print("JSON: " + (responseObject as AnyObject).description!)
-                        self.setInfoFromCallback(response)
-                        
-                        hud.removeFromSuperview()
-            },
-                     failure: { (operation, error) in
-                        print("Error: " + error.localizedDescription)
-                        let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                        HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
-                        hud.removeFromSuperview()
+                         parameters: paramDict,
+                         progress: nil, success: { (dataTask, responseObject) in
+                            let response = responseObject as! NSDictionary
+                            print("JSON: " + (responseObject as AnyObject).description!)
+                            self.setInfoFromCallback(response)
+                            
+                            hud.removeFromSuperview()
+                            
+            }, failure: { (dataTask, error) in
+                print("Error: " + error.localizedDescription)
+                let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
+                hud.removeFromSuperview()
         })
     }
     
@@ -147,7 +147,7 @@ class UpdatePasswordController: UIViewController {
             
             let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK"),
                                          style: UIAlertActionStyle.default, handler: { (action) in
-                                            self.navigationController?.popToRootViewController(animated: true)
+                                            _ = self.navigationController?.popToRootViewController(animated: true)
             })
             alertController.addAction(okAction)
             self.present(alertController, animated: true, completion: nil)

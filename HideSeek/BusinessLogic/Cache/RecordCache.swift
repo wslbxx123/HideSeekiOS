@@ -46,7 +46,7 @@ class RecordCache : BaseCache<Record> {
     func addRecords(_ result: NSDictionary!) {
         saveRecords(result)
         
-        getMoreRecord(10, hasLoaded: true)
+        _ = getMoreRecord(10, hasLoaded: true)
     }
     
     func saveRecords(_ result: NSDictionary!) {

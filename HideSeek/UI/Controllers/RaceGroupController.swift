@@ -86,7 +86,7 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
         _ = manager.POST(UrlParam.REFRESH_RACE_GROUP_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + responseObject.debugDescription)
                         let response = responseObject as! NSDictionary
                         self.setInfoFromRefreshCallback(response)
                         
@@ -151,7 +151,7 @@ class RaceGroupController: UIViewController, UIScrollViewDelegate, LoadMoreDeleg
                 _ = manager.POST(UrlParam.GET_RACE_GROUP_URL,
                              paramDict: paramDict,
                              success: { (operation, responseObject) in
-                                print("JSON: " + responseObject.description!)
+                                print("JSON: " + responseObject.debugDescription)
                                 let response = responseObject as! NSDictionary
                                 
                                 self.setInfoFromGetCallback(response)

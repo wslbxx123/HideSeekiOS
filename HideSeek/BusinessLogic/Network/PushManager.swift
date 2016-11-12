@@ -11,7 +11,7 @@ class PushManager {
     let TENCENT_IM_ID: UInt32 = 2200218505
     let TENCENT_IM_KEY = "IWW9FA6G499F"
     
-    func registerPushForIOS8() {
+    func registerPush() {
         let acceptAction = UIMutableUserNotificationAction()
         acceptAction.identifier = "ACCEPT_IDENTIFIER"
         acceptAction.title = "Accept"
@@ -31,22 +31,12 @@ class PushManager {
         UIApplication.shared.registerForRemoteNotifications()
     }
     
-    func registerPush() {
-        _ = UIApplication.shared.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
-    }
-    
     func register() {
         XGPush.initForReregister {
             NSLog("Reregister initialize successfully.")
         }
         
-        let systemVersion: NSString = UIDevice.current.systemVersion as NSString
-        if systemVersion.floatValue >= 8.0 {
-            let settings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
-            UIApplication.shared.registerUserNotificationSettings(settings)
-        } else {
-            UIApplication.shared.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
-        }
+        registerPush()
     }
     
     func unRegister() {

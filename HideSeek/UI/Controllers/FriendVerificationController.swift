@@ -63,12 +63,12 @@ class FriendVerificationController: UIViewController {
         let paramDict: NSMutableDictionary = ["friend_id": "\(user.pkId)", "message": message]
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-        hud.dimBackground = true
+        hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         
         _ = manager.POST(UrlParam.ADD_FRIENDS_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + responseObject.debugDescription)
                         let response = responseObject as! NSDictionary
                         self.setInfoFromCallback(response)
                         hud.removeFromSuperview()

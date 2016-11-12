@@ -74,6 +74,6 @@ class PurchaseOrderCache : BaseCache<PurchaseOrder> {
     func addOrders(_ result: NSDictionary!) {
         saveOrders(result)
         
-        getMoreOrders(10, hasLoaded: true)
+        _ = getMoreOrders(10, hasLoaded: true)
     }
 }

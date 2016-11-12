@@ -71,7 +71,7 @@ class DomesticCityTableManager {
                     pinyin <- city.pinYin,
                     timestamp <- Date())
                 
-                try database.run(insert)
+                _ = try database.run(insert)
             }
             
         }

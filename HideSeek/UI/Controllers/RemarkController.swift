@@ -33,7 +33,7 @@ class RemarkController: UIViewController {
         rightBarButton.isEnabled = false
         self.navigationItem.rightBarButtonItem = rightBarButton
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as! Set<String>
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,13 +44,14 @@ class RemarkController: UIViewController {
     func saveBtnClicked() {
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-        hud.dimBackground = true
+        hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        
         let paramDict = NSMutableDictionary()
         paramDict["remark"] = aliasValue
         paramDict["friend_id"] = "\(friend.pkId)"
         _ = manager.POST(UrlParam.UPDATE_REMARK, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
-            print("JSON: " + responseObject.description!)
+            print("JSON: " + responseObject.debugDescription)
             self.setInfoFromCallback(response)
             hud.removeFromSuperview()
             _ = self.navigationController?.popViewController(animated: true)

@@ -153,7 +153,7 @@ class ExchangeOrderTableManager {
                         pullVersion <- orderInfo.version,
                         orderId <- orderInfo.orderId)
                     
-                    try database.run(insert)
+                    _ = try database.run(insert)
                 }
             }
         }

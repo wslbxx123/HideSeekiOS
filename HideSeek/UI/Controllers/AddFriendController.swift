@@ -42,14 +42,14 @@ class AddFriendController: UIViewController, UISearchBarDelegate, GoToProfileDel
     func refreshData() {
         let paramDict: NSMutableDictionary = ["search_word": searchBar.text!]
         
-        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-        hud.dimBackground = true
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         
-        manager.POST(UrlParam.SEARCH_FRIENDS_URL,
+        _ = manager.POST(UrlParam.SEARCH_FRIENDS_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + responseObject.debugDescription)
                         let response = responseObject as! NSDictionary
                         self.setInfoFromCallback(response)
                         hud.removeFromSuperview()

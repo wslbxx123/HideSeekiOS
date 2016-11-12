@@ -60,8 +60,8 @@ class MyOrderController: UIViewController {
             NSForegroundColorAttributeName: color])
         
         segmentControl.tintColor = UIColor.clear
-        segmentControl.setTitleTextAttributes(nomalAttributes as! [AnyHashable: Any], for: UIControlState())
-        segmentControl.setTitleTextAttributes(selectedAttributes as! [AnyHashable: Any], for: UIControlState.selected)
+        segmentControl.setTitleTextAttributes(nomalAttributes as? [AnyHashable: Any], for: UIControlState())
+        segmentControl.setTitleTextAttributes(selectedAttributes as? [AnyHashable: Any], for: UIControlState.selected)
         segmentControl.setBackgroundImage(UIImage.createImageWithColor(UIColor.white), for: UIControlState(), barMetrics: UIBarMetrics.default)
         segmentControl.setBackgroundImage(UIImage.createImageWithColor(yellowColor), for: UIControlState.selected, barMetrics: UIBarMetrics.default)
         segmentControl.layer.cornerRadius = 5;

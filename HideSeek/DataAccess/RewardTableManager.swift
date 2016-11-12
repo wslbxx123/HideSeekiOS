@@ -128,7 +128,7 @@ class RewardTableManager {
                         pullVersion <- rewardInfo.version,
                         rewardId <- rewardInfo.pkId)
                     
-                    try database.run(insert)
+                    _ = try database.run(insert)
                 }
             }
         }

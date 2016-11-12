@@ -171,7 +171,7 @@ class RaceGroupTableManager {
                         showTypeName <- raceGroupInfo.recordItem.showTypeName,
                         recordId <- raceGroupInfo.recordId)
                     
-                    try database.run(insert)
+                    _ = try database.run(insert)
                 }
             }
         }
@@ -237,7 +237,7 @@ class RaceGroupTableManager {
                 UserDefaults.standard.synchronize()
                 
                 let deleteResult = raceGroupTable.filter(recordId < minRecordId)
-                try database.run(deleteResult.delete())
+                _ = try database.run(deleteResult.delete())
             }
         }
         catch let error as NSError {

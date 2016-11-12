@@ -78,7 +78,7 @@ class SettingController: UIViewController {
         _ = manager.POST(UrlParam.LOGOUT_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + responseObject.debugDescription)
                         let response = responseObject as! NSDictionary
                         
                         self.setInfoFromCallback(response)

@@ -12,8 +12,8 @@ class CustomRequestManager: AFHTTPSessionManager {
     
     func POST(_ URLString: String,
               paramDict: NSMutableDictionary,
-              success: ((URLSessionDataTask, AnyObject) -> Void)?,
-              failure: ((URLSessionDataTask?, NSError) -> Void)?) -> URLSessionDataTask? {
+              success: ((URLSessionDataTask, Any?) -> Void)?,
+              failure: ((URLSessionDataTask?, Error) -> Void)?) -> URLSessionDataTask? {
         if ifLock {
             return nil
         }
@@ -24,7 +24,10 @@ class CustomRequestManager: AFHTTPSessionManager {
         paramDict["session_id"] = sessionToken
         paramDict["app_version"] = BaseInfoUtil.getAppVersion()
         
-        return super.post(URLString, parameters: paramDict, progress: nil, success: success as! ((URLSessionDataTask, Any) -> Void)?, failure: failure as! ((URLSessionDataTask?, Error) -> Void)?)
+        return super.post(URLString, parameters: paramDict,
+                          progress: nil,
+                          success: success,
+                          failure: failure)
     }
     
     func POST(_ URLString: String, paramDict: NSMutableDictionary, constructingBodyWithBlock block: ((AFMultipartFormData) -> Void)?, success: ((URLSessionDataTask, AnyObject) -> Void)?, failure: ((URLSessionDataTask?, NSError) -> Void)?) -> URLSessionDataTask? {

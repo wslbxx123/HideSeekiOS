@@ -74,6 +74,6 @@ class RaceGroupCache : BaseCache<RaceGroup> {
     func addRaceGroup(_ result: NSDictionary!) {
         saveRaceGroup(result)
         
-        getMoreRaceGroup(10, hasLoaded: true)
+        _ = getMoreRaceGroup(10, hasLoaded: true)
     }
 }

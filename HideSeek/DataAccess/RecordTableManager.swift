@@ -123,7 +123,7 @@ class RecordTableManager {
                         showTypeName <- recordInfo.showTypeName,
                         recordId <- recordInfo.recordId)
                     
-                    try database.run(insert)
+                    _ = try database.run(insert)
                 }
             }
         }
@@ -227,7 +227,7 @@ class RecordTableManager {
                 UserDefaults.standard.synchronize()
                 
                 let deleteResult = recordTable.filter(recordId < minRecordId)
-                try database.run(deleteResult.delete())
+                _ = try database.run(deleteResult.delete())
             }
         }
         catch let error as NSError {

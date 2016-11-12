@@ -152,7 +152,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         let paramDict = NSMutableDictionary()
         _ = updateUserInfoManager.POST(UrlParam.UPDATE_USER_INFO_URL, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
-            print("JSON: " + responseObject.description!)
+            print("JSON: " + responseObject.debugDescription)
             
             self.setInfoFromUpdateUserInfoCallback(response)
         }) { (operation, error) in
@@ -412,7 +412,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         let pkId: Int64 = (endGoal.pkId)
         paramDict["goal_id"] = "\(pkId)"
         _ = getGoalManager.POST(UrlParam.SEE_MONSTER_URL, paramDict: paramDict, success: { (operation, responseObject) in
-            print("JSON: " + responseObject.description!)
+            print("JSON: " + responseObject.debugDescription)
             let response = responseObject as! NSDictionary
             let code = BaseInfoUtil.getIntegerFromAnyObject(response["code"])
             
@@ -547,48 +547,47 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         if GoalCache.instance.version == 0 {
             hud = MBProgressHUD.showAdded(to: self.view, animated: true)
             hud.label.text = NSLocalizedString("REFRESH_MAP_HINT", comment: "Refreshing map...")
-            hud.dimBackground = true
+            hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         }
         
         startPoint = MAMapPointForCoordinate(CLLocationCoordinate2DMake(latitude, longitude));
         
         if UserCache.instance.ifLogin() {
             let user = UserCache.instance.user
-            paramDict["account_role"] = String(describing: user?.role.rawValue)
+            paramDict["account_role"] = "\(user!.role.rawValue)"
         }
         
         _ = manager.post(UrlParam.REFRESH_MAP_URL,
-                    parameters: paramDict,
-                    success: { (operation, responseObject) in
-                        let response = responseObject as! NSDictionary
-                        print("JSON: " + (responseObject as AnyObject).description!)
-                        
-                        if let resultInfo = response["result"] as? NSDictionary {
-                            GoalCache.instance.setGoals(resultInfo, latitude: self.latitude, longitude: self.longitude)
-                        }
-                        
-                        
-                        if hud != nil {
-                            GoalCache.instance.refreshClosestGoal(self.latitude, longitude: self.longitude)
-                            self.setEndGoal()
-                        }
-
-                        self.setGoalsOnMap(GoalCache.instance.updateList)
-                        
-                        if hud != nil {
-                            hud.removeFromSuperview()
-                            hud = nil
-                        }
-                        
-                        self.ifRefreshing = false
-            },
-                    failure: { (operation, error) in
-                        print("Error: " + error.localizedDescription)
-                        if hud != nil {
-                            hud.removeFromSuperview()
-                            hud = nil
-                        }
-                        self.ifRefreshing = false
+                         parameters: paramDict, progress: { (progress) in
+            }, success: { (dataTask, responseObject) in
+                let response = responseObject as! NSDictionary
+                print("JSON: " + responseObject.debugDescription)
+                
+                if let resultInfo = response["result"] as? NSDictionary {
+                    GoalCache.instance.setGoals(resultInfo, latitude: self.latitude, longitude: self.longitude)
+                }
+                
+                
+                if hud != nil {
+                    GoalCache.instance.refreshClosestGoal(self.latitude, longitude: self.longitude)
+                    self.setEndGoal()
+                }
+                
+                self.setGoalsOnMap(GoalCache.instance.updateList)
+                
+//                if hud != nil {
+//                    hud.removeFromSuperview()
+//                    hud = nil
+//                }
+                
+                self.ifRefreshing = false
+            }, failure: { (dataTask, error) in
+                print("Error: " + error.localizedDescription)
+//                if hud != nil {
+//                    hud.removeFromSuperview()
+//                    hud = nil
+//                }
+                self.ifRefreshing = false
         })
 
     }
@@ -660,16 +659,16 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
             
             let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
             hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-            hud.dimBackground = true
+            hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
             
             let paramDict = NSMutableDictionary()
             paramDict["latitude"] = "\(latitude)"
             paramDict["longitude"] = "\(longitude)"
             paramDict["orientation"] = "\(orientation)"
             
-            setBombManager.POST(UrlParam.SET_BOMB_URL, paramDict: paramDict, success: { (operation, responseObject) in
+            _ = setBombManager.POST(UrlParam.SET_BOMB_URL, paramDict: paramDict, success: { (operation, responseObject) in
                 let response = responseObject as! NSDictionary
-                print("JSON: " + responseObject.description!)
+                print("JSON: " + responseObject.debugDescription)
                 hud.removeFromSuperview()
                 
                 self.setInfoFromSetBombCallback(response)
@@ -748,9 +747,9 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         paramDict["goal_id"] = "\(pkId)"
         paramDict["goal_type"] = "\(goalType)"
         
-        getGoalManager.POST(UrlParam.GET_GOAL_URL, paramDict: paramDict, success: { (operation, responseObject) in
+        _ = getGoalManager.POST(UrlParam.GET_GOAL_URL, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
-            print("JSON: " + responseObject.description!)
+            print("JSON: " + responseObject.debugDescription)
             self.setInfoFromGetGoalCallback(response)
         }) { (operation, error) in
             let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
@@ -863,7 +862,7 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         paramDict["goal_id"] = "\(pkId)"
         paramDict["account_role"] = "\(accountRole)"
         
-        hitMonsterManager.POST(UrlParam.HIT_MONSTER_URL, paramDict: paramDict, success: { (operation, responseObject) in
+        _ = hitMonsterManager.POST(UrlParam.HIT_MONSTER_URL, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
             
             self.setInfoFromHitMonsterCallback(response)

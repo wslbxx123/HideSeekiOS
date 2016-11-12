@@ -21,7 +21,7 @@ class UpdateNicknameController: UIViewController {
 
         initView()
         manager = CustomRequestManager()
-        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as! Set<String>
+        manager.responseSerializer.acceptableContentTypes = NSSet(object: HtmlType) as? Set<String>
     }
 
     @IBAction func nicknameChanged(_ sender: AnyObject) {
@@ -47,21 +47,21 @@ class UpdateNicknameController: UIViewController {
     }
     
     func cancelBtnClicked() {
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     func saveBtnClicked() {
-        var hud = MBProgressHUD.showAdded(to: self.view, animated: true)
-        hud.labelText = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-        hud.dimBackground = true
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
+        hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         let paramDict = NSMutableDictionary()
         paramDict["nickname"] = value
-        manager.POST(UrlParam.UPDATE_NICKNAME, paramDict: paramDict, success: { (operation, responseObject) in
+        _ = manager.POST(UrlParam.UPDATE_NICKNAME, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
-            print("JSON: " + responseObject.description!)
+            print("JSON: " + responseObject.debugDescription)
             self.setInfoFromCallback(response)
             hud.removeFromSuperview()
-            self.navigationController?.popViewController(animated: true)
+            _ = self.navigationController?.popViewController(animated: true)
             }) { (operation, error) in
                 print("Error: " + error.localizedDescription)
                 let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)

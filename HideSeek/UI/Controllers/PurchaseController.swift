@@ -95,22 +95,24 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
         let paramDict: NSMutableDictionary = ["version": "\(productTableManager.version)",
                                                "product_min_id": "\(productTableManager.productMinId)"]
         isLoading = true
-        manager.post(UrlParam.REFRESH_PRODUCT_URL,
-                     parameters: paramDict,
-                     success: { (operation, responseObject) in
-                        let response = responseObject as! NSDictionary
-                        print("JSON: " + (responseObject as AnyObject).description!)
-                        ProductCache.instance.setProducts(response["result"] as! NSDictionary)
-                        
-                        self.collectionView.productList = ProductCache.instance.cacheList
-                        self.collectionView.reloadData()
-                        self.productRefreshControl.endRefreshing()
-                        self.isLoading = false
-            },
-                     failure: { (operation, error) in
-                        print("Error: " + error.localizedDescription)
-                        self.isLoading = false
+        
+        _ = manager.post(UrlParam.REFRESH_PRODUCT_URL,
+                         parameters: paramDict,
+                         progress: nil,
+                         success: { (dataTask, responseObject) in
+                            let response = responseObject as! NSDictionary
+                            print("JSON: " + responseObject.debugDescription)
+                            ProductCache.instance.setProducts(response["result"] as! NSDictionary)
+                            
+                            self.collectionView.productList = ProductCache.instance.cacheList
+                            self.collectionView.reloadData()
+                            self.productRefreshControl.endRefreshing()
+                            self.isLoading = false
+            }, failure: { (dataTask, error) in
+                print("Error: " + error.localizedDescription)
+                self.isLoading = false
         })
+        
         playAnimateRefresh()
     }
     
@@ -220,24 +222,24 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
             
             if(!hasData) {
                 let paramDict: NSMutableDictionary = ["version": String(productTableManager.version), "product_min_id": String(productTableManager.productMinId)]
-                manager.post(UrlParam.GET_PRODUCT_URL,
-                             parameters: paramDict,
-                             success: { (operation, responseObject) in
-                                print("JSON: " + (responseObject as AnyObject).description!)
-                                let response = responseObject as! NSDictionary
-                                ProductCache.instance.addProducts(response["result"] as! NSDictionary)
-                                if self.collectionView.footer != nil {
-                                    self.collectionView.footer.isHidden = true
-                                }
-                                self.collectionView.productList = ProductCache.instance.cacheList
-                                self.collectionView.reloadData()
-                                self.isLoading = false
-                    },
-                             failure: { (operation, error) in
-                                print("Error: " + error.localizedDescription)
-                                if self.collectionView.footer != nil {
-                                    self.collectionView.footer.isHidden = true
-                                }
+                
+                _ = manager.post(UrlParam.GET_PRODUCT_URL,
+                                 parameters: paramDict,
+                                 progress: nil, success: { (dataTask, responseObject) in
+                                    print("JSON: " + responseObject.debugDescription)
+                                    let response = responseObject as! NSDictionary
+                                    ProductCache.instance.addProducts(response["result"] as! NSDictionary)
+                                    if self.collectionView.footer != nil {
+                                        self.collectionView.footer.isHidden = true
+                                    }
+                                    self.collectionView.productList = ProductCache.instance.cacheList
+                                    self.collectionView.reloadData()
+                                    self.isLoading = false
+                    }, failure: { (dataTask, error) in
+                        print("Error: " + error.localizedDescription)
+                        if self.collectionView.footer != nil {
+                            self.collectionView.footer.isHidden = true
+                        }
                 })
             } else {
                 self.collectionView.productList.addObjects(from: ProductCache.instance.productList as [AnyObject])
@@ -261,7 +263,7 @@ class PurchaseController: UIViewController, PurchaseDelegate, ConfirmPurchaseDel
                                 paramDict: paramDict,
                                 success: { (operation, responseObject) in
                                     let response = responseObject as! NSDictionary
-                                    print("JSON: " + responseObject.description!)
+                                    print("JSON: " + responseObject.debugDescription)
                                     
                                     self.setInfoFromPurchaseCallback(response)
                                     

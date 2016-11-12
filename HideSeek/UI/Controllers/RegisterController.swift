@@ -95,24 +95,24 @@ class RegisterController: UIViewController {
     @IBAction func registerBtnClicked(_ sender: AnyObject) {
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-        hud.dimBackground = true
+        hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         
         let paramDict = ["phone": phone]
         
         _ = manager.post(UrlParam.CHECK_IF_USER_EXIST_URL,
-                     parameters: paramDict,
-                     success: { (operation, responseObject) in
-                        let response = responseObject as! NSDictionary
-                        print("JSON: " + (responseObject as AnyObject).description!)
-                        
-                        self.setInfoFromCallback(response)
-                        hud.removeFromSuperview()
-            },
-                     failure: { (operation, error) in
-                        print("Error: " + error.localizedDescription)
-                        let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
-                        HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
-                        hud.removeFromSuperview()
+                         parameters: paramDict,
+                         progress: nil,
+                         success: { (dataTask, responseObject) in
+                            let response = responseObject as! NSDictionary
+                            print("JSON: " + responseObject.debugDescription)
+                            
+                            self.setInfoFromCallback(response)
+                            hud.removeFromSuperview()
+            }, failure: { (dataTask, error) in
+                print("Error: " + error.localizedDescription)
+                let errorMessage = ErrorMessageFactory.get(CodeParam.ERROR_VOLLEY_CODE)
+                HudToastFactory.show(errorMessage, view: self.view, type: HudToastFactory.MessageType.error)
+                hud.removeFromSuperview()
         })
     }
     

@@ -167,7 +167,7 @@ class FriendTableManager {
                         alias <- (friendInfo.alias as String),
                         accountId <- friendInfo.pkId)
                     
-                    try database.run(insert)
+                    _ = try database.run(insert)
                 }
             }
         }
@@ -180,7 +180,7 @@ class FriendTableManager {
     
     func removeFriend(_ friendId: Int64) {
         do {
-            try database.run(friendTable.filter(accountId == friendId)
+            _ = try database.run(friendTable.filter(accountId == friendId)
                 .delete())
         }
         catch let error as NSError {

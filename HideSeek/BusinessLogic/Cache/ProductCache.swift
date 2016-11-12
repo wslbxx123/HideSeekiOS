@@ -50,7 +50,7 @@ class ProductCache : BaseCache<Product> {
     func addProducts(_ result: NSDictionary!) {
         saveProducts(result)
         
-        getMoreProducts(10, hasLoaded: true)
+        _ = getMoreProducts(10, hasLoaded: true)
     }
     
     func saveProducts(_ result: NSDictionary!) {

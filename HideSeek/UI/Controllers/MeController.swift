@@ -98,6 +98,7 @@ class MeController: UIViewController, TouchDownDelegate {
     }
     
     func initView() {
+        photoImageView.layoutIfNeeded()
         photoImageView.layer.cornerRadius = photoImageView.frame.height / 2
         photoImageView.layer.masksToBounds = true
         scrollView.delaysContentTouches = false
@@ -142,9 +143,9 @@ class MeController: UIViewController, TouchDownDelegate {
         }
         
         let paramDict = NSMutableDictionary()
-        getFriendRequestManager.POST(UrlParam.GET_FRIEND_REQUESTS_URL, paramDict: paramDict, success: { (operation, responseObject) in
+        _ = getFriendRequestManager.POST(UrlParam.GET_FRIEND_REQUESTS_URL, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
-            print("JSON: " + responseObject.description!)
+            print("JSON: " + responseObject.debugDescription)
             
             self.setInfoFromCallback(response)
             
@@ -175,8 +176,8 @@ class MeController: UIViewController, TouchDownDelegate {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         if(UserCache.instance.ifLogin()) {
             let user = UserCache.instance.user
-            photoUrl = user?.smallPhotoUrl as! String
-            nameLabel.text = user?.nickname as! String
+            photoUrl = user?.smallPhotoUrl as? String
+            nameLabel.text = user?.nickname as? String
             registerDateLabel.text = dateFormatter.string(from: (user?.registerDate)!)
                 + " " + NSLocalizedString("JOIN", comment: "join")
             roleImageView.image = UIImage(named: (user?.roleImageName)!)
@@ -184,8 +185,8 @@ class MeController: UIViewController, TouchDownDelegate {
             profileView.isHidden = false
             profileLabel.isHidden = false
             
-            scoreNumLabel.text = "\(user?.record)"
-            friendNumLabel.text = "\(user?.friendNum)"
+            scoreNumLabel.text = "\(user!.record)"
+            friendNumLabel.text = "\(user!.friendNum)"
             friendView.addGestureRecognizer(goToFriendGesture)
         } else {
             profileView.isHidden = true

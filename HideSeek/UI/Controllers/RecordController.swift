@@ -92,7 +92,7 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
         _ = manager.POST(UrlParam.REFRESH_RECORD_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + responseObject.debugDescription)
                         let response = responseObject as! NSDictionary
                         
                         self.setInfoFromRefreshCallback(response)
@@ -158,7 +158,7 @@ class RecordController: UIViewController, UIScrollViewDelegate, LoadMoreDelegate
                 _ = manager.POST(UrlParam.GET_RECORD_URL,
                              paramDict: paramDict,
                              success: { (operation, responseObject) in
-                                print("JSON: " + responseObject.description!)
+                                print("JSON: " + responseObject.debugDescription)
                                 let response = responseObject as! NSDictionary
                                 
                                 self.setInfoFromGetCallback(response)

@@ -65,16 +65,16 @@ class MyProfileController: UIViewController, TouchDownDelegate {
     
     func setProfileInfo() {
         let user = UserCache.instance.user
-        photoImageView.setWebImage(user?.smallPhotoUrl as! String, defaultImage: "default_photo", isCache: true)
-        nicknameLabel.text = user?.nickname as! String
-        phoneLabel.text = user?.phone as! String
+        photoImageView.setWebImage(user?.smallPhotoUrl as? String, defaultImage: "default_photo", isCache: true)
+        nicknameLabel.text = user?.nickname as? String
+        phoneLabel.text = user?.phone as? String
         roleLabel.text = user?.roleName
         sexLabel.text = user?.sexName
         
         if user?.region == "" {
             regionLabel.text = NSLocalizedString("NOT_SET", comment: "Not Set")
         } else {
-            regionLabel.text = user?.region as! String
+            regionLabel.text = user?.region as? String
         }
     }
     

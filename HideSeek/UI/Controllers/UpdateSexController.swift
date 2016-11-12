@@ -61,12 +61,12 @@ class UpdateSexController: UIViewController, TouchDownDelegate, PickerViewDelega
     func saveBtnClicked() {
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.label.text = NSLocalizedString("LOADING_HINT", comment: "Please wait...")
-        hud.dimBackground = true
+        hud.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         let paramDict = NSMutableDictionary()
         paramDict["sex"] = "\(sex.rawValue)"
         _ = manager.POST(UrlParam.UPDATE_SEX, paramDict: paramDict, success: { (operation, responseObject) in
             let response = responseObject as! NSDictionary
-            print("JSON: " + responseObject.description!)
+            print("JSON: " + responseObject.debugDescription)
             self.setInfoFromCallback(response)
             hud.removeFromSuperview()
             _ = self.navigationController?.popViewController(animated: true)

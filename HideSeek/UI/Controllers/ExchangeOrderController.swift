@@ -102,7 +102,7 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
         _ = manager.POST(UrlParam.REFRESH_EXCHANGE_ORDERS_URL,
                      paramDict: paramDict,
                      success: { (operation, responseObject) in
-                        print("JSON: " + responseObject.description!)
+                        print("JSON: " + responseObject.debugDescription)
                         let response = responseObject as! NSDictionary
                         
                         self.setRefreshInfoFromCallback(response)
@@ -158,7 +158,7 @@ class ExchangeOrderController: UIViewController, LoadMoreDelegate,
                 _ = manager.POST(UrlParam.GET_EXCHANGE_ORDERS_URL,
                              paramDict: paramDict,
                              success: { (operation, responseObject) in
-                                print("JSON: " + responseObject.description!)
+                                print("JSON: " + responseObject.debugDescription)
                                 let response = responseObject as! NSDictionary
                                 
                                 self.setInfoFromGetCallback(response)
