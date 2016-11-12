@@ -127,7 +127,7 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
             }, success: { (operation, responseObject) in
                 let response = responseObject as! NSDictionary
                 self.setInfoFromCallback(response)
-                print("JSON: " + responseObject.description!)
+                print("JSON: " + (responseObject as AnyObject).debugDescription)
                 hud.removeFromSuperview()
             }) { (operation, error) in
                 print("Error: " + error.localizedDescription)

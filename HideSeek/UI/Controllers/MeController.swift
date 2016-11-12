@@ -87,6 +87,8 @@ class MeController: UIViewController, TouchDownDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     override func viewDidLayoutSubviews() {

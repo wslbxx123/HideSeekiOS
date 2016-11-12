@@ -22,7 +22,6 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
     var getGoalManager: CustomRequestManager!
     var hitMonsterManager: CustomRequestManager!
     var updateUserInfoManager: CustomRequestManager!
-//    var success: AFHTTPRequestOperation!
     var latitude: CLLocationDegrees!
     var longitude: CLLocationDegrees!
     var endGoal: Goal!
@@ -539,8 +538,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         
         ifRefreshing = true
         let paramDict = NSMutableDictionary()
-        paramDict["latitude"] = "\(latitude)"
-        paramDict["longitude"] = "\(longitude)"
+        paramDict["latitude"] = "\(latitude.datatypeValue)"
+        paramDict["longitude"] = "\(longitude.datatypeValue)"
         paramDict["version"] = "\(GoalCache.instance.version)"
         
         var hud: MBProgressHUD!
@@ -558,8 +557,9 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
         }
         
         _ = manager.post(UrlParam.REFRESH_MAP_URL,
-                         parameters: paramDict, progress: { (progress) in
-            }, success: { (dataTask, responseObject) in
+                         parameters: paramDict,
+                         progress: nil,
+                         success: { (dataTask, responseObject) in
                 let response = responseObject as! NSDictionary
                 print("JSON: " + responseObject.debugDescription)
                 
@@ -581,7 +581,8 @@ class HomeController: UIViewController, MAMapViewDelegate, SetBombDelegate, Guid
                 }
                 
                 self.ifRefreshing = false
-            }, failure: { (dataTask, error) in
+            },
+                         failure: { (dataTask, error) in
                 print("Error: " + error.localizedDescription)
                 if hud != nil {
                     hud.removeFromSuperview()

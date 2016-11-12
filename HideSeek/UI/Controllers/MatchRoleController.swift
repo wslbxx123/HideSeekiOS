@@ -53,9 +53,15 @@ class MatchRoleController: UIViewController, CAAnimationDelegate {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = false
         
-        super.viewWillDisappear(animated)
+        super.viewDidDisappear(animated)
     }
     
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {

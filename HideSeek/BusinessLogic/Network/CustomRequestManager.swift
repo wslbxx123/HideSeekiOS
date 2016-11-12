@@ -30,7 +30,7 @@ class CustomRequestManager: AFHTTPSessionManager {
                           failure: failure)
     }
     
-    func POST(_ URLString: String, paramDict: NSMutableDictionary, constructingBodyWithBlock block: ((AFMultipartFormData) -> Void)?, success: ((URLSessionDataTask, AnyObject) -> Void)?, failure: ((URLSessionDataTask?, NSError) -> Void)?) -> URLSessionDataTask? {
+    func POST(_ URLString: String, paramDict: NSMutableDictionary, constructingBodyWithBlock block: ((AFMultipartFormData) -> Void)?, success: ((URLSessionDataTask, Any) -> Void)?, failure: ((URLSessionDataTask?, Error) -> Void)?) -> URLSessionDataTask? {
         if ifLock {
             return nil
         }
@@ -42,7 +42,7 @@ class CustomRequestManager: AFHTTPSessionManager {
         return super.post(URLString, parameters: paramDict,
                           constructingBodyWith: block,
                           progress: nil,
-                          success: success as! ((URLSessionDataTask, Any) -> Void)?,
-                          failure: failure as! ((URLSessionDataTask?, Error) -> Void)?)
+                          success: success,
+                          failure: failure)
     }
 }

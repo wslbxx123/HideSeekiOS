@@ -82,7 +82,9 @@ class GoalCache : BaseCache<Goal> {
             let goal = item as! Goal
             if(!goal.valid) {
                 NSLog("goalId = \(goal.pkId)")
+                objc_sync_enter(cacheList)
                 cacheList.remove(goal)
+                objc_sync_exit(cacheList)
                 NSLog("\(cacheList.count)")
                 continue
             }
