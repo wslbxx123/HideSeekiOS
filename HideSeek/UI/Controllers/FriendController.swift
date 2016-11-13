@@ -31,7 +31,19 @@ class FriendController: UIViewController, UISearchBarDelegate, GoToNewFriendDele
         super.viewDidAppear(animated)
         
         refreshData()
+        self.navigationController?.isNavigationBarHidden = false
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

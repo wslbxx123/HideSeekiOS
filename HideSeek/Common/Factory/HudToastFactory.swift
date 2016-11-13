@@ -22,8 +22,14 @@ class HudToastFactory {
         hud.bezelView.layer.cornerRadius = 25
         hud.margin = 15
         
-        hud.hide(animated: true, afterDelay: 3)
-        hud.delegate = ProgressHudDelegate(callback: callback)
+        DispatchQueue.global().async {
+            usleep(3000);
+            
+            DispatchQueue.main.async(execute: { () -> Void in
+                hud.removeFromSuperview()
+                callback?()
+            })
+        }
     }
     
     class func getMessageColor(_ type: MessageType) -> UIColor {

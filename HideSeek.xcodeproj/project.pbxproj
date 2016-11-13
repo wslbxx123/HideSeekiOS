@@ -1955,7 +1955,7 @@
 				CODE_SIGN_ENTITLEMENTS = HideSeek/HideSeek.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Min Xiang (2R6YHLQQAT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = EH35J6D2H3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2002,7 +2002,7 @@
 				CODE_SIGN_ENTITLEMENTS = HideSeek/HideSeek.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Min Xiang (EH35J6D2H3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = EH35J6D2H3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
