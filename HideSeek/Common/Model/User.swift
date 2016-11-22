@@ -353,7 +353,12 @@ class User: NSObject {
         self.phone = phone
         self._nickname = nickname
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        self.registerDate = dateFormatter.date(from: registerDateStr as String)!
+        
+        let date = dateFormatter.date(from: registerDateStr as String)
+        
+        if(date != nil) {
+            self.registerDate = date!
+        }
         
         if photoUrl != nil {
             self._photoUrl = photoUrl!

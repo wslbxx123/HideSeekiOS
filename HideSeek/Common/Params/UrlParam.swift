@@ -51,7 +51,7 @@ class UrlParam {
     static let UPDATE_USER_INFO_URL = "https://www.hideseek.cn/home/user/updateUserInfo"
     
     
-//    static let IP_ADDRESS = "192.168.1.103"
+//    static let IP_ADDRESS = "192.168.1.101"
 //    static let GET_SETTINGS = "http://" + IP_ADDRESS + "/home/user/getSettings"
 //    static let LOGIN_URL = "http://" + IP_ADDRESS + "/home/user/login"
 //    static let REGISTER_URL = "http://" + IP_ADDRESS + "/home/user/register"

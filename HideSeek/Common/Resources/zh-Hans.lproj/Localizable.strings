@@ -68,7 +68,7 @@
 "SHARE_MESSAGE" = "天啊，一只怪兽正在盯着我，快来救我。";
 "SHARE_TITLE" = "进入部落时代";
 "REFRESH_MAP_HINT" = "刷新地图中……";
-"FRIEND_ACCEPT_MESSAGE" = "%@接受你的好友请求";
+"FRIEND_ACCEPT_MESSAGE" = "%1$@接受你的好友请求";
 "CONFIRM_REMOVE_FRIEND" = "确认要删除这个好友吗？";
 "ACCEPT_FRIEND_REQUEST" = "已接受你的请求";
 "NONE" = "无";

@@ -31,6 +31,17 @@ class NewFriendController: UIViewController, AcceptDelegate {
         
         newFriendTableView.newFriendList = NewFriendCache.instance.friendList
         newFriendTableView.reloadData()
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
 
     override func didReceiveMemoryWarning() {

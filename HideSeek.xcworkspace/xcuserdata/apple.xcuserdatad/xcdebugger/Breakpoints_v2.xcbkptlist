@@ -508,38 +508,6 @@
             endingLineNumber = "9"
             landmarkName = "BaseCache"
             landmarkType = "3">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "HideSeek.BaseCache.__deallocating_deinit"
-                  moduleName = "HideSeek"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Project/iOS/HideSeek/HideSeek/BusinessLogic/Cache/BaseCache.swift"
-                  timestampString = "500643727.516631"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "HideSeek.BaseCache.deinit"
-                  moduleName = "HideSeek"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/apple/Documents/Project/iOS/HideSeek/HideSeek/BusinessLogic/Cache/BaseCache.swift"
-                  timestampString = "500643727.521558"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "16">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3378,22 +3346,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HideSeek/Common/Model/User.swift"
-            timestampString = "495694380.246053"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "354"
-            endingLineNumber = "354"
-            landmarkName = "init(pkId:phone:nickname:registerDateStr:photoUrl:smallPhotoUrl:sex:region:role:version:pinyin:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "HideSeek/BusinessLogic/Cache/UserCache.swift"
             timestampString = "495858534.331567"
             startingColumnNumber = "9223372036854775807"
@@ -3411,11 +3363,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/Common/Model/User.swift"
-            timestampString = "495704811.58151"
+            timestampString = "501484279.608848"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "369"
-            endingLineNumber = "369"
+            startingLineNumber = "374"
+            endingLineNumber = "374"
             landmarkName = "init(pkId:phone:nickname:registerDateStr:photoUrl:smallPhotoUrl:sex:region:role:version:pinyin:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -4585,7 +4537,7 @@
             startingLineNumber = "47"
             endingLineNumber = "47"
             landmarkName = "confirmBtnClicked(_:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -6231,11 +6183,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/NewFriendController.swift"
-            timestampString = "495682724.191026"
+            timestampString = "501477502.361441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
             landmarkName = "setFriendRequest(_:isFriend:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -6396,8 +6348,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "34"
             endingLineNumber = "34"
-            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
-            landmarkType = "5">
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -6407,11 +6359,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/NewFriendController.swift"
-            timestampString = "495682724.191026"
+            timestampString = "501477502.361441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
             landmarkName = "acceptFriend(_:)"
             landmarkType = "7">
             <Locations>
@@ -6470,11 +6422,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/NewFriendController.swift"
-            timestampString = "495682724.191026"
+            timestampString = "501477502.361441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
             landmarkName = "acceptFriend(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -6539,8 +6491,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "59"
             endingLineNumber = "59"
-            landmarkName = "tableView(_:editingStyleForRowAtIndexPath:)"
-            landmarkType = "5">
+            landmarkName = "tableView(_:editingStyleForRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -6715,8 +6667,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "71"
             endingLineNumber = "71"
-            landmarkName = "tableView(_:commitEditingStyle:forRowAtIndexPath:)"
-            landmarkType = "5">
+            landmarkName = "tableView(_:commit:forRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -7270,11 +7222,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/NewFriendController.swift"
-            timestampString = "500479660.732332"
+            timestampString = "501477502.361441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
             landmarkName = "setInfoFromCallback(_:friendId:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -7286,11 +7238,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/NewFriendController.swift"
-            timestampString = "495682724.191026"
+            timestampString = "501477502.361441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
             landmarkName = "acceptFriend(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -7302,11 +7254,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/NewFriendController.swift"
-            timestampString = "495682724.191026"
+            timestampString = "501477502.361441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
             landmarkName = "acceptFriend(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -7318,11 +7270,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/UI/Controllers/NewFriendController.swift"
-            timestampString = "495682724.191026"
+            timestampString = "501477502.361441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "acceptFriend(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -9323,7 +9275,7 @@
             startingLineNumber = "11"
             endingLineNumber = "11"
             landmarkName = "compareTo(_:separator:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -9339,7 +9291,7 @@
             startingLineNumber = "39"
             endingLineNumber = "39"
             landmarkName = "compareTo(_:separator:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -9355,7 +9307,7 @@
             startingLineNumber = "34"
             endingLineNumber = "34"
             landmarkName = "compareTo(_:separator:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -9371,7 +9323,7 @@
             startingLineNumber = "36"
             endingLineNumber = "36"
             landmarkName = "compareTo(_:separator:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -9387,7 +9339,7 @@
             startingLineNumber = "37"
             endingLineNumber = "37"
             landmarkName = "compareTo(_:separator:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -9993,7 +9945,7 @@
             startingLineNumber = "98"
             endingLineNumber = "98"
             landmarkName = "touchDown(_:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -10009,7 +9961,7 @@
             startingLineNumber = "102"
             endingLineNumber = "102"
             landmarkName = "closePayWayView()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -10137,22 +10089,6 @@
             startingLineNumber = "97"
             endingLineNumber = "97"
             landmarkName = "updateRecords(_:recordMinId:version:recordList:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HideSeek/AppDelegate.swift"
-            timestampString = "500273282.593512"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "166"
-            endingLineNumber = "166"
-            landmarkName = "application(_:didReceiveRemoteNotification:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -10833,7 +10769,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/Common/Factory/HudToastFactory.swift"
-            timestampString = "500642409.283934"
+            timestampString = "501483917.989333"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "81"
@@ -10849,12 +10785,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HideSeek/Common/Factory/HudToastFactory.swift"
-            timestampString = "500642409.283934"
+            timestampString = "501483917.989333"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "77"
             endingLineNumber = "77"
             landmarkName = "init(callback:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HideSeek/Common/Factory/HudToastFactory.swift"
+            timestampString = "501482264.363352"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "show(_:view:type:callback:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "HideSeek/Common/Factory/HudToastFactory.swift"
+            timestampString = "501482885.504503"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "show(_:view:type:callback:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

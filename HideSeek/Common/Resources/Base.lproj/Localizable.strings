@@ -68,7 +68,7 @@
 "SHARE_MESSAGE" = "My God! A monster is watching at me, please help me!";
 "SHARE_TITLE" = "Enter into the age of Tribes";
 "REFRESH_MAP_HINT" = "Refreshing map...";
-"FRIEND_ACCEPT_MESSAGE" = "%@ accept you friend request";
+"FRIEND_ACCEPT_MESSAGE" = "%1$@ accept you friend request";
 "CONFIRM_REMOVE_FRIEND" = "Are you sure to remove this friend?";
 "ACCEPT_FRIEND_REQUEST" = "Accepted your friend request";
 "NONE" = "None";

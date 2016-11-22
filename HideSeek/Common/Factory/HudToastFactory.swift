@@ -23,12 +23,12 @@ class HudToastFactory {
         hud.margin = 15
         
         DispatchQueue.global().async {
-            usleep(3000);
+            sleep(3);
             
-            DispatchQueue.main.async(execute: { () -> Void in
+            DispatchQueue.main.async {
                 hud.removeFromSuperview()
                 callback?()
-            })
+            }
         }
     }
     
